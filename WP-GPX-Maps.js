@@ -2,9 +2,9 @@
 Plugin Name: WP-GPX-Maps
 Plugin URI: http://www.devfarm.it/
 Description: Draws a gpx track with altitude graph
-Version: 1.3.15
+Version: 1.5.00
 Author: Bastianon Massimo
-Author URI: http://www.pedemontanadelgrappa.it/
+Author URI: http://www.devfarm.it/
 */
 
 (function ( $ ) {
@@ -125,6 +125,8 @@ Author URI: http://www.pedemontanadelgrappa.it/
 		var ThunderforestApiKey = params.TFApiKey;
 		
 		var hasThunderforestApiKey = (ThunderforestApiKey + '').length > 0;
+		
+		var _formats=[];
 
 		// Unit of measure settings
 		var l_s;
@@ -638,20 +640,32 @@ Author URI: http://www.pedemontanadelgrappa.it/
 					{
 						marker.setPosition(event.latLng);	
 						marker.setTitle(lng.currentPosition);
-						if (hchart)
+						if (myChart)
 						{
-							var tooltip = hchart.tooltip;
 							var l1 = event.latLng.lat();
 							var l2 = event.latLng.lng();
 							var ci = getClosestIndex(mapData,l1,l2);
-							var items = [];
-							var seriesLen = hchart.series.length;
+							var activeElements = [];
+							var seriesLen = myChart.data.datasets.length;												
 							for(var i=0; i<seriesLen;i++)
 							{
-								items.push(hchart.series[i].data[ci]);
+								activeElements.push(myChart.chart.getDatasetMeta(i).data[ci]);
 							}
-							if (items.length > 0)
-								tooltip.refresh(items);
+							if (activeElements.length > 0)
+							{
+								myChart.options.customLine.x = activeElements[0]._model.x;
+								if (isNaN(myChart.tooltip._eventPosition))
+								{
+									myChart.tooltip._eventPosition = {
+											x: activeElements[0]._model.x, 
+											y: activeElements[0]._model.y
+										};
+								}								
+								myChart.tooltip._active = activeElements;
+								myChart.tooltip.update(true);
+								myChart.draw();
+							}
+
 						}
 					}
 				});		
@@ -707,15 +721,14 @@ Author URI: http://www.pedemontanadelgrappa.it/
 
 		});
 		
-		var graphh = jQuery('#hchart_' + params.targetId).css("height");
+		var graphh = jQuery('#myChart_' + params.targetId).css("height");
 		
 		if (graphDist != '' && (graphEle != '' || graphSpeed != '' || graphHr != '' || graphAtemp != '' || graphCad != '') && graphh != "0px")
 		{
 
 			var valLen = graphDist.length;
 		
-			var l_y_arr = [];
-			
+		
 			if (unit=="1")
 			{
 				l_x = { suf : "mi", dec : 1 };
@@ -761,8 +774,94 @@ Author URI: http://www.pedemontanadelgrappa.it/
 				
 			// define the options
 			var hoptions = {
-				chart: {
-					renderTo: 'hchart_' + params.targetId,
+				type: 'line',
+				data: {
+					datasets: [],
+				},
+				options: {
+					customLine: {
+						color: 'gray'
+					},
+					scales: {
+						yAxes: [],
+			            xAxes: [{
+			                type: 'linear',
+							ticks: {
+								suggestedMin: 0,
+								max: graphDist[graphDist.length-1],
+								// Include a dollar sign in the ticks
+								callback: function(value, index, values) {
+									var fpt = _formats[0];
+									return Math.round(value, fpt.dec) + fpt.suf;
+								}
+							}
+			            }]
+					},
+					tooltips: {
+						position: 'nearest',
+						mode: 'index',
+						intersect: true,
+						callbacks : {
+							title: function(tooltipItems, data) {
+								//Return value for title
+								var fpt = _formats[0];
+								return Math.round(tooltipItems[0].xLabel, fpt.dec) + fpt.suf;;
+							},
+							label : function(tooltipItem, data) {
+								// format list values
+								var label = data.datasets[tooltipItem.datasetIndex].label || '';
+								var fpt = _formats[tooltipItem.datasetIndex];
+								if (label) {
+									label += ': ';
+								}
+								label += Math.round(tooltipItem.yLabel, fpt.dec) + fpt.suf;
+								return label;
+							},
+							footer : function(tooltipItem){
+								// move the point in map
+								var i = tooltipItem[0].index;
+								if (marker)
+								{
+									var point = getItemFromArray(mapData,i)
+									if (point)
+									{
+										marker.setPosition(new google.maps.LatLng(point[0],point[1]));
+									}
+									marker.setTitle(lng.currentPosition);								
+								}
+							}						
+						}
+					},
+				},
+				
+				plugins: [{
+					beforeEvent: function(chart, e) {
+						if ((e.type === 'mousemove')
+						&& (e.x >= e.chart.chartArea.left)
+						&& (e.x <= e.chart.chartArea.right)
+						) {
+							chart.options.customLine.x = e.x;
+						}
+					},
+					afterDraw: function(chart, easing) {
+						var ctx = chart.chart.ctx;
+						var chartArea = chart.chartArea;
+						var x = chart.options.customLine.x;
+						if (!isNaN(x)) {
+							ctx.save();
+							ctx.strokeStyle = chart.options.customLine.color;
+							ctx.moveTo(chart.options.customLine.x, chartArea.bottom);
+							ctx.lineTo(chart.options.customLine.x, chartArea.top);
+							ctx.stroke();
+							ctx.restore();
+						}
+					}
+				}],
+				
+				labels : graphDist,
+				
+				oldchart: {
+					renderTo: 'myChart_' + params.targetId,
 					type: 'area',
 					events: {
 						selection: function(event) {
@@ -816,107 +915,23 @@ Author URI: http://www.pedemontanadelgrappa.it/
 					},
 					zoomType: 'x'
 				},
-				title: {
-					text: null
-				},
-				xAxis: {
-					type: 'integer',
-					//gridLineWidth: 1,
-					//tickInterval: 1000,
-					labels: {
-						formatter: function() {
-							return Highcharts.numberFormat(this.value, l_x.dec,decPoint,thousandsSep) + l_x.suf;
-						}
-					}
-				},
-				yAxis: [],
-				legend: {
-					align: 'center',
-					verticalAlign: 'top',
-					y: -5,
-					floating: true,
-					borderWidth: 0
-				},
-				tooltip: {
-					shared: true,
-					crosshairs: true,
-					formatter: function() {
-						if (marker)
-						{
-							var hchart_xserie = hchart.xAxis[0].series[0].data;
-							for(var i=0; i<hchart_xserie.length;i++){
-								var item = hchart_xserie[i];
-								if(item.x == this.x)
-								{
-									var point = getItemFromArray(mapData,i)
-									if (point)
-									{
-										marker.setPosition(new google.maps.LatLng(point[0],point[1]));
-									}
-									marker.setTitle(lng.currentPosition);
-									i+=10000000;
-								}
-							}			
-						}
-						var tooltip = "<b>" + Highcharts.numberFormat(this.x, l_x.dec,decPoint,thousandsSep) + l_x.suf + "</b><br />"; 
-						for (i=0; i < this.points.length; i++)
-						{
-							tooltip += this.points[i].series.name + ": " + Highcharts.numberFormat(this.points[i].y, l_y_arr[i].dec,decPoint,thousandsSep) + l_y_arr[i].suf + "<br />"; 					
-						}
-						return tooltip;
-					}
-				},
-				plotOptions: {
-					area: {
-						fillOpacity: 0.1,
-						connectNulls : true,
-						marker: {
-							enabled: false,
-							symbol: 'circle',
-							radius: 2,
-							states: {
-								hover: {
-									enabled: true
-								}
-							}
-						}					
-					}
-				},
-				credits: {
-					enabled: false
-				},	
-				series: []
 			};
 		
 			if (graphEle != '')
 			{
 				
-				var eleData = [];
-				var myelemin = 99999;
-				var myelemax = -99999;
-		
-				for (i=0; i<valLen; i++) 
-				{
-					if (graphDist[i] != null)
-					{
-						var _graphEle = graphEle[i];
-						eleData.push([graphDist[i],_graphEle]);
-						if (_graphEle > myelemax) 
-							myelemax = _graphEle; 
-						if (_graphEle < myelemin) 
-							myelemin = _graphEle;
-					}
-				}
+				var myData = mergeArrayForChart(graphDist, graphEle);
 
-				var yaxe = { 
-					title: { text: null },
-					labels: {
-						align: 'left',
-						formatter: function() {
-							return Highcharts.numberFormat(this.value, l_y.dec,decPoint,thousandsSep) + l_y.suf;
+				var yaxe = {
+					type: 'linear',
+					ticks: {
+						// Include a dollar sign in the ticks
+						callback: function(value, index, values) {
+							return Math.round(value, l_y.dec) + l_y.suf;
 						}
-					}
-				}
+					},
+					id: "y-axis-" + (hoptions.options.scales.yAxes.length + 1),
+				};
 		
 				if ( chartFrom1 != '' )
 				{
@@ -924,7 +939,7 @@ Author URI: http://www.pedemontanadelgrappa.it/
 					yaxe.startOnTick = false;
 				}
 				else { 
-					yaxe.min = myelemin; 
+					yaxe.min = myData.Min; 
 				}
 				
 				if ( chartTo1 != '' )
@@ -933,24 +948,19 @@ Author URI: http://www.pedemontanadelgrappa.it/
 					yaxe.endOnTick = false;
 				}
 				else { 
-					yaxe.max = myelemax; 
+					yaxe.max = myData.Max; 
 				}
-									
-				hoptions.yAxis.push(yaxe);
-				hoptions.series.push({
-										name: lng.altitude,
-										lineWidth: 1,
-										marker: { radius: 0 },
-										data : eleData,
-										color: color2,
-										yAxis: hoptions.series.length
-									});			
-				
-				l_y_arr.push(l_y);
+				_formats.push(l_y)
+				hoptions.options.scales.yAxes.push(yaxe);
+				hoptions.data.datasets.push( getDataset(lng.altitude, myData.Items, color2, yaxe.id ));		
+
 			}
 			
-			if (graphSpeed != '')			{
-				if (unitspeed == '6') /* min/100m */				{					l_s = { suf : "min/100m", dec : 2 };				} 
+			if (graphSpeed != '') {
+				if (unitspeed == '6') /* min/100m */				
+				{					
+					l_s = { suf : "min/100m", dec : 2 };				
+				} 
 				else if (unitspeed == '5') /* knots */
 				{
 					l_s = { suf : "knots", dec : 2 };
@@ -976,29 +986,28 @@ Author URI: http://www.pedemontanadelgrappa.it/
 					l_s = { suf : "m/s", dec : 0 };
 				}
 				
-				var speedData = [];
-			
-				for (i=0; i<valLen; i++) 
-				{
-					if (graphDist[i] != null)
-						speedData.push([graphDist[i],graphSpeed[i]]);
-				}
+				var myData = mergeArrayForChart(graphDist, graphSpeed);
 
 				var yaxe = { 
-					title: { text: null },
-					labels: {
-						//align: 'right',
-						formatter: function() {
-							return Highcharts.numberFormat(this.value, l_s.dec,decPoint,thousandsSep) + l_s.suf;
+					type: 'linear',
+					ticks: {
+						// Include a dollar sign in the ticks
+						callback: function(value, index, values) {
+							return Math.round(value, l_s.dec) + l_s.suf;
 						}
 					},
-					opposite: true
-				}
+					position: 'right',
+					scalePositionLeft: false,
+					id: "y-axis-" + (hoptions.options.scales.yAxes.length + 1),
+				};
 							
 				if ( chartFrom2 != '' )
 				{
 					yaxe.min = chartFrom2;
 					yaxe.startOnTick = false;				
+				}
+				else { 
+					yaxe.min = myData.Min; 
 				}
 				
 				if ( chartTo2 != '' )
@@ -1006,191 +1015,191 @@ Author URI: http://www.pedemontanadelgrappa.it/
 					yaxe.max = chartTo2;
 					yaxe.endOnTick = false;				
 				}
-									
-				hoptions.yAxis.push(yaxe);
-				hoptions.series.push({
-										name: lng.speed,
-										lineWidth: 1,
-										marker: { radius: 0 },
-										data : speedData,
-										color: color3,
-										yAxis: hoptions.series.length
-									});			
+				else { 
+					yaxe.max = myData.Max; 
+				}
+
 				
-				l_y_arr.push(l_s);
+				_formats.push(l_s);
+				hoptions.options.scales.yAxes.push(yaxe);
+				hoptions.data.datasets.push( getDataset(lng.speed, myData.Items, color3, yaxe.id ) );			
+
 			}
 			
 			if (graphHr != '')
 			{
 				
-				var hrData = [];
-			
-				for (i=0; i<valLen; i++) 
-				{
-					if (graphDist[i] != null)
-					{
-						var c = graphHr[i];
-						if (c==0)
-							c = null;
-						hrData.push([graphDist[i],c]);				
-					}
-				}
+				var myData = mergeArrayForChart(graphDist, graphHr);
 
-				var yaxe = { 
-					title: { text: null },
-					labels: {
-						//align: 'right',
-						formatter: function() {
-							return Highcharts.numberFormat(this.value, l_hr.dec,decPoint,thousandsSep) + l_hr.suf;
+				var yaxe = {
+					type: 'linear',					
+					ticks: {
+						// Include a dollar sign in the ticks
+						callback: function(value, index, values) {
+							return Math.round(value, l_hr.dec) + l_hr.suf;
 						}
 					},
-					opposite: true
-				}
+					position: 'right',
+					scalePositionLeft: false,
+					id: "y-axis-" + (hoptions.options.scales.yAxes.length + 1),
+				};
 
-				hoptions.yAxis.push(yaxe);
-				hoptions.series.push({
-										name: lng.heartRate,
-										lineWidth: 1,
-										marker: { radius: 0 },
-										data : hrData,
-										color: color4,
-										yAxis: hoptions.series.length
-									});			
-				
-				l_y_arr.push(l_hr);
+				hoptions.options.scales.yAxes.push(yaxe);
+				hoptions.data.datasets.push( getDataset(lng.heartRate, myData.Items, color4, yaxe.id ) );			
+				_formats.push(l_hr);
 			}
 			
 			
 			if (graphAtemp != '')
 			{
 				
-				var atempData = [];
-			
-				for (i=0; i<valLen; i++) 
-				{
-					if (graphDist[i] != null)
-					{
-						var c = graphAtemp[i];
-						if (c==0)
-							c = null;
-						atempData.push([graphDist[i],c]);				
-					}
-				}
+				var myData = mergeArrayForChart(graphDist, graphAtemp);
 
-				var yaxe = { 
-					title: { text: null },
-					labels: {
-						//align: 'right',
-						formatter: function() {
-							return Highcharts.numberFormat(this.value, 1, decPoint,thousandsSep) + " °C";
+				var yaxe = {
+					type: 'linear',
+					ticks: {
+						// Include a dollar sign in the ticks
+						callback: function(value, index, values) {
+							return Math.round(value, 1) + "°C";
 						}
 					},
-					opposite: true
-				}
-
-				hoptions.yAxis.push(yaxe);
-				hoptions.series.push({
-										name: lng.atemp,
-										lineWidth: 1,
-										marker: { radius: 0 },
-										data : atempData,
-										color: color7,
-										yAxis: hoptions.series.length
-									});			
+					position: 'right',
+					scalePositionLeft: false,
+					id: "y-axis-" + (hoptions.options.scales.yAxes.length + 1),
+				};
 				
-				l_y_arr.push({ suf : "°C", dec : 1 });
+				hoptions.options.scales.yAxes.push(yaxe);
+				hoptions.data.datasets.push( getDataset(lng.atemp, myData,Items, color7, yaxe.id ) );			
+				_formats.push({ suf : "°C", dec : 1 });
+				
 			}
 			
 			
 			if (graphCad != '')
 			{
 				
-				var cadData = [];
-			
-				for (i=0; i<valLen; i++) 
-				{
-					if (graphDist[i] != null)
-					{
-						var c = graphCad[i];
-						if (c==0)
-							c = null;
-						cadData.push([graphDist[i],c]);
-					}
-				}
-
-				var yaxe = { 
-					title: { text: null },
-					labels: {
-						//align: 'right',
-						formatter: function() {
-							return Highcharts.numberFormat(this.value, l_cad.dec,decPoint,thousandsSep) + l_cad.suf;
+				var myData = mergeArrayForChart(graphDist, graphCad, true);
+				
+				var yaxe = {
+					type: 'linear',
+					ticks: {
+						// Include a dollar sign in the ticks
+						callback: function(value, index, values) {
+							return Math.round(value, l_cad.dec) + l_cad.suf;
 						}
 					},
-					opposite: true
-				}
+					position: 'right',
+					scalePositionLeft: false,
+					id: "y-axis-" + (hoptions.options.scales.yAxes.length + 1),
+				};
 									
-				hoptions.yAxis.push(yaxe);
-				hoptions.series.push({
-										name: lng.cadence,
-										lineWidth: 1,
-										marker: { radius: 0 },
-										data : cadData,
-										color: color5,
-										yAxis: hoptions.series.length
-									});			
+				hoptions.options.scales.yAxes.push(yaxe);
+				hoptions.data.datasets.push( getDataset(lng.cadence, myData.Items, color5, yaxe.id) );
+				_formats.push(l_cad);
 				
-				l_y_arr.push(l_cad);
 			}
 
 			if (graphGrade != '')
 			{
 				
-				var cadData = [];
-			
-				for (i=0; i<valLen; i++) 
-				{
-					if (graphDist[i] != null)
-					{
-						var c = graphGrade[i];
-						if (c==0)
-							c = null;
-						cadData.push([graphDist[i],c]);
-					}
-				}
+				var myData = mergeArrayForChart(graphDist, graphGrade);
 
-				var yaxe = { 
-					title: { text: null },
-					labels: {
-						//align: 'right',
-						formatter: function() {
-							return Highcharts.numberFormat(this.value, l_grade.dec,decPoint,thousandsSep) + l_grade.suf;
+				var yaxe = {
+					type: 'linear',					
+					ticks: {
+						// Include a dollar sign in the ticks
+						callback: function(value, index, values) {
+							return Math.round(value, l_grade.dec) + l_grade.suf;
 						}
 					},
-					opposite: true
-				}
-									
-				hoptions.yAxis.push(yaxe);
-				hoptions.series.push({
-										name: lng.grade,
-										lineWidth: 1,
-										marker: { radius: 0 },
-										data : cadData,
-										color: color6,
-										yAxis: hoptions.series.length
-									});			
+					position: 'right',
+					scalePositionLeft: false,
+					id: "y-axis-" + (hoptions.options.scales.yAxes.length + 1),
+				};
 				
-				l_y_arr.push(l_grade);
+				_formats.push(l_grade);
+				hoptions.options.scales.yAxes.push(yaxe);
+				hoptions.data.datasets.push( getDataset(lng.grade, myData.Items, color6, yaxe.id ) );			
+				
 			}
+			
+			var ctx = document.getElementById("myChart_" + params.targetId).getContext('2d');
 
-			var hchart = new Highcharts.Chart(hoptions);
+			var myChart = new Chart(ctx, hoptions);
+
 		
 		}
 		else  {
-			jQuery("#hchart_" + params.targetId).css("display","none");
+			jQuery("#myChart_" + params.targetId).css("display","none");
 		}
 	
         return this;
     };
+	
+	function mergeArrayForChart(distArr, dataArr, setZerosAsNull)
+	{
+		var l = distArr.length;
+		
+		var items = new Array(l);
+		var min=10000;
+		var max=-10000;
+		
+		for (i=0; i<l; i++) 
+		{
+			if (distArr[i] != null)
+			{
+				var _item = dataArr[i];
+				
+				if (setZerosAsNull === true && _item === 0)
+				{
+					_item = null;					
+				}
+				
+				items[i] = {
+								x: distArr[i], 
+								y:_item
+							};
+				if (_item > max) 
+					max = _item; 
+				if (_item < min) 
+					min = _item;
+			}
+		}
+		
+		return {
+			Items : items,
+			Min : min,
+			Max : max,			
+		}
+		
+	}
+	
+	function getDataset(name,data,color, id) {
+		return {
+			label: name,
+			data : data,
+			borderColor: color,
+			backgroundColor: hexToRgbA(color, .3),
+			pointRadius: 0,
+			borderWidth: 0,
+			pointHoverRadius: 1,
+			yAxisID: id,
+		}
+	}
+	
+	function hexToRgbA(hex,a){
+		var c;
+		if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+			c= hex.substring(1).split('');
+			if(c.length== 3){
+				c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+			}
+			c= '0x'+c.join('');
+			return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',' + a +')';
+		}
+		throw new Error('Bad Hex');
+	}
+		
 	
 	function addWayPoint(map, image, shadow, lat, lon, title, descr)
 	{

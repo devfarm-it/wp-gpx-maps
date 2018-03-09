@@ -4,8 +4,8 @@ Contributors: bastianonm, Stephan Klein, Michel Selerin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
 Tags: maps, gpx, gps, graph, chart, google maps, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 2.0.0
-Tested up to: 4.8.2
-Stable tag: 1.3.16
+Tested up to: 4.9.4
+Stable tag: 1.5.00
 
 Draws a gpx track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -34,8 +34,6 @@ NextGen Gallery Integration:
 
 Display your NextGen Gallery images inside the map! 
 Even if you don't have a gps camera, this plugin can retrive the image position starting from the image date and you gpx file. 
-
-Old NGGallery Images (without gps data) and gpx: <a href="http://www.pedemontanadelgrappa.it/mappe/itinerario-3-alta-via-degli-eroi/">http://www.pedemontanadelgrappa.it/mappe/itinerario-3-alta-via-degli-eroi/</a>
 
 Post Attachments Integration:
 
@@ -66,7 +64,7 @@ Translated into 14 languages:
 
 - iphone/ipad/ipod Compatible
 
-Try this plugin: <a href="http://www.pedemontanadelgrappa.it/category/mappe/">http://www.pedemontanadelgrappa.it/category/mappe/</a>
+Try this plugin: <a href="https://devfarm.it/wp-gpx-maps-demo/">https://devfarm.it/wp-gpx-maps-demo/</a>
 
 <a href="http://www.devfarm.it/forums/forum/wp-gpx-maps/">Support Forum</a>
 
@@ -80,9 +78,7 @@ Supported gpx namespaces are:
 
 1. http://www.garmin.com/xmlschemas/TrackPointExtension/v1
 
-Thanks to: <a href="http://www.securcube.net/">www.securcube.net</a>, <a href="http://www.devfarm.it/">www.devfarm.it</a>, <a href="http://www.pedemontanadelgrappa.it/">www.pedemontanadelgrappa.it</a>
-
-Up to version 1.1.15 [Highcharts-API](http://www.highcharts.com/) is the only available rendering engine. Please respect their license and pricing (only Free for Non-Commercial usage).
+Thanks to: <a href="http://www.securcube.net/">www.securcube.net</a>, <a href="http://www.devfarm.it/">www.devfarm.it</a>
 
 == Installation ==
 
@@ -157,6 +153,8 @@ Yes!
 1. Altitude & Speed & Hearth rate
 
 == Changelog ==
+= 1.5.00 =
+* replaced highcharts with chartjs. This is a forced choice due highcharts license issue, view:  https://devfarm.it/wordpress-plugin/wordpress-plugin-directory-notice-wp-gpx-maps-temporarily-disabled/
 = 1.3.16 =
 * Added Norwegian nb_NO translation (thanks to thordivel) 
 * Added Japanese ja_JP translation (thanks to dentos) 

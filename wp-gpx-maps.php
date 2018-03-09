@@ -3,9 +3,9 @@
 Plugin Name: WP-GPX-Maps
 Plugin URI: http://www.devfarm.it/
 Description: Draws a GPX track with altitude chart
-Version: 1.3.16
+Version: 1.5.00
 Author: Bastianon Massimo
-Author URI: http://www.pedemontanadelgrappa.it/
+Author URI: http://www.devfarm.it/
 */
 
 //error_reporting (E_ALL);
@@ -47,16 +47,23 @@ function WP_GPX_Maps_action_links($links, $file) {
 }
 
 function enqueue_WP_GPX_Maps_scripts()
-{		$wpgpxmaps_googlemapsv3_apikey = get_option('wpgpxmaps_googlemapsv3_apikey');
-	wp_enqueue_script( 'jquery' );	if ($wpgpxmaps_googlemapsv3_apikey)	{		wp_enqueue_script( 'googlemaps', '//maps.googleapis.com/maps/api/js?key='.$wpgpxmaps_googlemapsv3_apikey, null, null);					}	else	{		wp_enqueue_script( 'googlemaps', '//maps.googleapis.com/maps/api/js', null, null);			}	
-
-    wp_enqueue_script( 'highcharts', "//code.highcharts.com/3.0.10/highcharts.js", array('jquery'), "3.0.10", true);
-    wp_enqueue_script( 'WP-GPX-Maps', plugins_url('/WP-GPX-Maps.js', __FILE__), array('jquery','googlemaps','highcharts'), "1.3.15");
+{		
+	$wpgpxmaps_googlemapsv3_apikey = get_option('wpgpxmaps_googlemapsv3_apikey');
+	wp_enqueue_script( 'jquery' );	
+	if ($wpgpxmaps_googlemapsv3_apikey)	{		
+		wp_enqueue_script( 'googlemaps', '//maps.googleapis.com/maps/api/js?key='.$wpgpxmaps_googlemapsv3_apikey, null, null);					
+	}	
+	else {		
+		wp_enqueue_script( 'googlemaps', '//maps.googleapis.com/maps/api/js', null, null);
+	}	
+	wp_enqueue_script( 'chartjs', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js', array(), "2.7.2" ); 
+    wp_enqueue_script( 'WP-GPX-Maps', plugins_url('/WP-GPX-Maps.js', __FILE__), array('jquery','googlemaps','chartjs'), "1.5.00");
 }
 
 function print_WP_GPX_Maps_styles()
 {
 ?>
+
 <style type="text/css">
 	.wpgpxmaps { clear:both; }
 	#content .wpgpxmaps img,
@@ -627,13 +634,15 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 				<div id="map_'.$r.'" style="width:'.$w.'; height:'.$mh.'"></div>
 				<div id="wpgpxmaps_'.$r.'_osm_footer" class="wpgpxmaps_osm_footer" style="display:none;"><span> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</span></div>			
 			</div>
-			<div id="hchart_'.$r.'" class="plot" style="width:'.$w.'; height:'.$gh.'"></div>
+			<canvas id="myChart_'.$r.'" class="plot" style="width:'.$w.'; height:'.$gh.'"></canvas>
 			<div id="ngimages_'.$r.'" class="ngimages" style="display:none">'.$ngimgs_data.'</div>
 			<div id="report_'.$r.'" class="report"></div>
 		</div>
 		'. $error .'
 		<script type="text/javascript">
+		
 			jQuery(document).ready(function() {
+
 				jQuery("#wpgpxmaps_'.$r.'").wpgpxmaps({ 
 					targetId    : "'.$r.'",
 					mapType     : "'.$mt.'",
@@ -683,8 +692,10 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 							  showImages            : "'.__("Show Images", "wp-gpx-maps").'",
 							  backToCenter		    : "'.__("Back to center", "wp-gpx-maps").'"
 							}
-				});
+				});				
+				
 			});
+	
 		</script>';	
 
 	// print summary
