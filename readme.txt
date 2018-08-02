@@ -2,10 +2,10 @@
 
 Contributors: bastianonm, Stephan Klein, Michel Selerin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
-Tags: maps, gpx, gps, graph, chart, google maps, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
+Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 2.0.0
-Tested up to: 4.9.4
-Stable tag: 1.5.00
+Tested up to: 4.9.7
+Stable tag: 1.6.01
 
 Draws a gpx track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -153,6 +153,25 @@ Yes!
 1. Altitude & Speed & Hearth rate
 
 == Changelog ==
+= 1.6.01 =
+* Removed Gogole maps. Leafletjs instead.
+* -- NextGen Gallery is not working, due next gen image format changed -- I'll fix soon
+= 1.5.05 =
+* renamed javascript functions to avoid collision with other plugins
+* reduced chart line thickness
+= 1.5.04 =
+* fix uom
+* fix file not found
+= 1.5.03 =
+* fix random error
+= 1.5.02 =
+* Security improvements
+= 1.5.01 =
+* Improved security
+* Included javascript
+* Multiple file upload
+* Implemented sorting in file list
+* Renamed internal function to improve wp compatibility
 = 1.5.00 =
 * replaced highcharts with chartjs. This is a forced choice due highcharts license issue, view:  https://devfarm.it/wordpress-plugin/wordpress-plugin-directory-notice-wp-gpx-maps-temporarily-disabled/
 = 1.3.16 =

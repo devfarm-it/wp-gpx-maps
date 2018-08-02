@@ -3,12 +3,6 @@
 	if ( !current_user_can('manage_options') )
 		return;
 
-?>
-
-<script type="text/javascript" src="http://meta100.github.com/mColorPicker/javascripts/mColorPicker_min.js" charset="UTF-8"></script>
-
-<?php
-	
 	$po = get_option('wpgpxmaps_pointsoffset');
 	$showW = get_option("wpgpxmaps_show_waypoint");	
 	$donotreducegpx = get_option("wpgpxmaps_donotreducegpx");
@@ -222,16 +216,24 @@
 		<tr>
 			<th scope="row">Default Map Type:</th>
 			<td>
+<!--			
 				<input type="radio" name="wpgpxmaps_map_type" value="HYBRID" <?php if ($t == 'HYBRID') echo 'checked'; ?> > HYBRID: transparent layer of major streets on satellite images.<br />
 				<input type="radio" name="wpgpxmaps_map_type" value="ROADMAP" <?php if ($t == 'ROADMAP') echo 'checked'; ?>> ROADMAP: normal street map.<br />
 				<input type="radio" name="wpgpxmaps_map_type" value="SATELLITE" <?php if ($t == 'SATELLITE') echo 'checked'; ?>> SATELLITE: satellite images.<br />
 				<input type="radio" name="wpgpxmaps_map_type" value="TERRAIN" <?php if ($t == 'TERRAIN') echo 'checked'; ?>> TERRAIN: maps with physical features such as terrain and vegetation.<br />
+-->
 				<input type="radio" name="wpgpxmaps_map_type" value="OSM1" <?php if ($t == 'OSM1') echo 'checked'; ?>> Open Street Map<br />
 				<input type="radio" name="wpgpxmaps_map_type" value="OSM2" <?php if ($t == 'OSM2') echo 'checked'; ?>> Open Cycle Map<br />
 				<input type="radio" name="wpgpxmaps_map_type" value="OSM4" <?php if ($t == 'OSM4') echo 'checked'; ?>> Open Cycle Map - Transport<br />
 				<input type="radio" name="wpgpxmaps_map_type" value="OSM5" <?php if ($t == 'OSM5') echo 'checked'; ?>> Open Cycle Map - Landscape<br />
 				<input type="radio" name="wpgpxmaps_map_type" value="OSM3" <?php if ($t == 'OSM3') echo 'checked'; ?>> Hike & Bike<br />
 				<input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ($t == 'OSM6') echo 'checked'; ?>> MapToolKit - Terrain<br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM7" <?php if ($t == 'OSM7') echo 'checked'; ?>> Open Street Map - Humanitarian map style<br />
+				<!--
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM8" <?php if ($t == 'OSM8') echo 'checked'; ?>> Open Ski Map<br />
+				-->
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM9" <?php if ($t == 'OSM9') echo 'checked'; ?>> Hike & Bike<br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM10" <?php if ($t == 'OSM10') echo 'checked'; ?>> Open Sea Map<br />
 			</td>
 		</tr>
 		

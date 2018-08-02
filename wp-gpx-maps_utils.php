@@ -1,8 +1,10 @@
 <?php
 
+	require_once(ABSPATH . 'wp-admin/includes/file.php');
+
 	require_once("wp-gpx-maps_utils_nggallery.php");
 
-	function getAttachedImages($dt, $lat, $lon, $dtoffset, &$error)
+	function wpgpxmaps_getAttachedImages($dt, $lat, $lon, $dtoffset, &$error)
 	{
 		$result = array();
 			
@@ -62,10 +64,10 @@
 		return $result;
 	}
 
-	function sitePath()
+	function wp_gpx_maps_sitePath()
 	{
 		return substr(substr(__FILE__, 0, strrpos(__FILE__,'wp-content')), 0, -1);
-		//		$uploadsPath = 	substr($uploadsPath, 0, -1);
+		//return substr(get_home_path(), 0, -1);
 	}
 
 	function gpxFolderPath()
@@ -96,13 +98,13 @@
 	
 	function relativeGpxFolderPath()
 	{
-		$sitePath = sitePath();
+		$sitePath = wp_gpx_maps_sitePath();
 		$realGpxPath = gpxFolderPath();
 		$ret = str_replace($sitePath,'',$realGpxPath).DIRECTORY_SEPARATOR;
 		return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ret);
 	}
 
-	function recursive_remove_directory($directory, $empty=FALSE)
+	function wpgpxmaps_recursive_remove_directory($directory, $empty=FALSE)
 	{
 		if(substr($directory,-1) == '/')
 		{
@@ -121,7 +123,7 @@
 					$path = $directory.'/'.$item;
 					if(is_dir($path)) 
 					{
-						recursive_remove_directory($path);
+						wpgpxmaps_recursive_remove_directory($path);
 					}else{
 						unlink($path);
 					}
@@ -139,7 +141,7 @@
 		return TRUE;
 	}
 
-	function getPoints($gpxPath, $gpxOffset = 10, $donotreducegpx, $distancetype)
+	function wpgpxmaps_getPoints($gpxPath, $gpxOffset = 10, $donotreducegpx, $distancetype)
 	{
 
 		$points = array();
@@ -152,7 +154,7 @@
 				
 		if (file_exists($gpxPath))
 		{
-			$points = @parseXml($gpxPath, $gpxOffset, $distancetype);			
+			$points = @wpgpxmaps_parseXml($gpxPath, $gpxOffset, $distancetype);			
 		}
 		else
 		{
@@ -186,7 +188,7 @@
 		return $points;
 	}
 
-	function parseXml($filePath, $gpxOffset, $distancetype)
+	function wpgpxmaps_parseXml($filePath, $gpxOffset, $distancetype)
 	{
 
 		$points = null;
@@ -568,7 +570,7 @@
 		return $points;
 	}	
 	
-	function getWayPoints($gpxPath)
+	function wpgpxmaps_getWayPoints($gpxPath)
 	{
 		$points = array();
 		if (file_exists($gpxPath))
@@ -600,11 +602,14 @@
 					$type = (string) $wpt->type;
 					$img  = '';
 					
-					$img_name = 'map-marker-' . $sym;
-					$query = "SELECT ID FROM {$wpdb->prefix}posts WHERE post_name LIKE '{$img_name}' AND post_type LIKE 'attachment'";
-					$img_id = $wpdb->get_var($query);
-					if (!is_null($img_id)) {
-						$img = wp_get_attachment_url($img_id);
+					if ($sym)
+					{
+						$img_name = 'map-marker-' . $sym;
+						$query = "SELECT ID FROM {$wpdb->prefix}posts WHERE post_name LIKE '{$img_name}' AND post_type LIKE 'attachment'";
+						$img_id = $wpdb->get_var($query);
+						if (!is_null($img_id)) {
+							$img = wp_get_attachment_url($img_id);
+						}
 					}
 					
 					array_push($points, array(
