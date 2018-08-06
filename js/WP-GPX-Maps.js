@@ -2,7 +2,7 @@
 Plugin Name: WP-GPX-Maps
 Plugin URI: http://www.devfarm.it/
 Description: Draws a gpx track with altitude graph
-Version: 1.5.05
+Version: 1.6.02
 Author: Bastianon Massimo
 Author URI: http://www.devfarm.it/
 */
@@ -560,29 +560,30 @@ var WPGPXMAPS = {
 			
 				if (startIcon != '')
 				{
-					var startIconImage = new google.maps.MarkerImage(startIcon);
-					var startMarker = new google.maps.Marker({
-							  position: points[0],
-							  map: map,
-							  title: "Start",
-							  animation: google.maps.Animation.DROP,
-							  icon: startIconImage,
-							  zIndex: 10
-						  });
+					
+					var startMarker = L.marker(mapData[0], {icon: L.icon({
+																		iconUrl: startIcon,
+																		iconSize:     [32, 32], // size of the icon
+																		iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+																	})
+																});
+					startMarker.addTo(this.map);
+					startMarker.title = "Start";
+					
 
 				}
 
 				if (endIcon != '')
 				{
-					var endIconImage = new google.maps.MarkerImage(endIcon);
-					var endMarker = new google.maps.Marker({
-							  position: points[ points.length -1 ],
-							  map: map,
-							  title: "Start",
-							  animation: google.maps.Animation.DROP,
-							  icon: endIconImage,
-							  zIndex: 10
-						  });
+					  
+					var endMarker = L.marker(mapData[ mapData.length - 1 ], {icon: L.icon({
+																		iconUrl: endIcon,
+																		iconSize:     [32, 32], // size of the icon
+																		iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+																	})
+																});
+					endMarker.addTo(this.map);
+					endMarker.title = "End";
 				
 				}
 
@@ -790,7 +791,7 @@ var WPGPXMAPS = {
 						mapType, 
 						(zoomOnScrollWheel == 'true'),
 						ThunderforestApiKey);
-						
+					
 		map.EventSelectChart = function(LatLon) 
 		{
 			
@@ -844,10 +845,21 @@ var WPGPXMAPS = {
 				
 					if (context.CurrentGPSPositionMarker == null)
 					{
-						context.CurrentGPSPositionMarker = L.marker(pos)
+						if (currentpositioncon == '')
+						{
+							currentpositioncon = "https://maps.google.com/mapfiles/kml/pal4/icon25.png";
+						}						
+						
+						context.CurrentGPSPositionMarker = L.marker(pos, {icon: L.icon({
+																		iconUrl: currentpositioncon,
+																		iconSize:     [32, 32], // size of the icon
+																		iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+																	})
+																})
 																.addTo(context.map)
-																.bindPopup("You are within " + radius + " meters from this point")
+																.bindPopup(lng.currentPosition)
 																.openPopup();
+																
 					}
 					else 
 					{
@@ -1430,7 +1442,7 @@ var WPGPXMAPS = {
 	
 	function wpgpxmapsGetDataset(name,data,color, id) {
 		return {
-			label: name,
+			label: name, // jQuery("<div/>").html(name).text(), // convert html special chars to text, ugly but it works
 			data : data,
 			borderColor: color,
 			backgroundColor: hexToRgbA(color, .3),
