@@ -1337,7 +1337,7 @@ var WPGPXMAPS = {
 				};
 				
 				hoptions.options.scales.yAxes.push(yaxe);
-				hoptions.data.datasets.push( wpgpxmapsGetDataset(lng.atemp, myData,Items, color7, yaxe.id ) );			
+				hoptions.data.datasets.push( wpgpxmapsGetDataset(lng.atemp, myData.Items, color7, yaxe.id ) );			
 				_formats.push({ suf : "°C", dec : 1 });
 				
 			}

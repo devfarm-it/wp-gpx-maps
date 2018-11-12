@@ -4,8 +4,8 @@ Contributors: bastianonm, Stephan Klein, Michel Selerin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 2.0.0
-Tested up to: 4.9.7
-Stable tag: 1.6.02
+Tested up to: 4.9.8
+Stable tag: 1.6.03
 
 Draws a gpx track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -153,6 +153,8 @@ Yes!
 1. Altitude & Speed & Hearth rate
 
 == Changelog ==
+= 1.6.02 = 
+* Fix syntax error causing graph not to display (thanks to nickstabler)
 = 1.6.02 =
 * Resolved errors with start and end icons
 = 1.6.01 =
