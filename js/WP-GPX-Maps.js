@@ -17,8 +17,10 @@ var WPGPXMAPS = {
 			var lastCut = 0;
 			
 			var result = [];
+			
+			var _len = mapData.length;
 		
-			for (i=0; i < mapData.length; i++) 
+			for (i=0; i < _len; i++) 
 			{	
 				if (mapData[i] == null)
 				{
@@ -27,7 +29,7 @@ var WPGPXMAPS = {
 				}
 			}
 			
-			if (mapData.length != lastCut)
+			if ( (_len - 1 ) != lastCut)
 			{
 				result.push( mapData.slice(lastCut) );
 			}
@@ -885,7 +887,7 @@ var WPGPXMAPS = {
 		
 		
 		// Print WayPoints
-		if (!jQuery.isEmptyObject(waypoints))
+		if (!jQuery.isEmptyObject(waypoints) && waypoints.length > 0)
 		{
 			map.AddWaypoints(waypoints, waypointIcon);
 		}
@@ -893,50 +895,108 @@ var WPGPXMAPS = {
 		// Print Images
 		
 		jQuery("#ngimages_" + targetId).attr("style","display:block;position:absolute;left:-50000px");
-		jQuery("#ngimages_" + targetId + " span").each(function(){
 		
-			var imageLat  = jQuery(this).attr("lat");
-			var imageLon  = jQuery(this).attr("lon");
+		var nggImages = jQuery("#ngimages_" + targetId + " span").toArray();
+		
+		if (nggImages !== undefined && nggImages.length > 0)
+		{
+			var photos = [];
 			
-			jQuery("img",this).each(function() {
-			
-				jQuery(this).load(function(){
-
-					var imageUrl  = jQuery(this).attr("src");
-					var img_w = jQuery(this).width();
-					var img_h = jQuery(this).height();
-					
-					imageLat = imageLat.replace(",", ".");
-					imageLon = imageLon.replace(",", ".");
-					
-					//var p = new google.maps.LatLng(imageLat, imageLon);
-					//bounds.extend(p);
-
-					var mc = new CustomMarker(map, p, imageUrl, img_w, img_h );
-					
-					ngImageMarkers.push(mc);
-					
-					google.maps.event.addListener(mc, "click", function(div) {
-						var lat = div.getAttribute("lat");
-						var lon = div.getAttribute("lon");
-						var a = getClosestImage(lat,lon,targetId).childNodes[0];			
-						if (a)
-						{
-							a.click();
-						}
-					});
-
+			for (var i = 0; i < nggImages.length; i++) {
+				
+				var ngg_span = nggImages[i];
+				var ngg_span_a = ngg_span.children[0];
+				
+				var pos = [	
+							Number(ngg_span.getAttribute("lat")), 
+							Number(ngg_span.getAttribute("lon"))
+							];
+				
+				map.Bounds.push(pos);
+								
+				photos.push({
+							  "lat": pos[0],
+							  "lng": pos[1],
+							  "name": ngg_span_a.getAttribute("data-title"),
+							  "url": ngg_span_a.getAttribute("data-src"),
+							  "thumbnail": ngg_span_a.getAttribute("data-thumbnail")
+							});
+				
+			}
+	
+			if (photos.length > 0)
+			{
+				var photoLayer = L.photo.cluster().on('click', function(evt) {
+					  var photo = evt.layer.photo;
+					  var template = '<img src="{url}" /></a><p>{name}</p>';
+					  evt.layer.bindPopup(L.Util.template(template, photo), {
+							minWidth: 'auto',
+					  }).openPopup();
 				});
-			
-				if (jQuery(this).width() + jQuery(this).height() > 0)
-				{
-					jQuery(this).trigger("load");
-				}
+				
+				photoLayer.add(photos).addTo(map.map);	
 
-			});
-		
-		});
-		
+				map.CenterMap();	
+				
+				
+				/*
+				var showHideImagesCustomControl = L.Control.extend({
+				 
+					options: {
+						position: 'topleft' 
+						//control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+					},
+				 
+				  onAdd: function (map) {
+					  
+					var container = document.createElement('img');
+					container.class= "leaflet-bar leaflet-control leaflet-control-custom"
+					container.style.backgroundColor = 'white';
+					container.style.width = '30px';
+					container.style.height = '30px';
+					container.src = pluginUrl + "/wp-gpx-maps/img/hideImages.png";
+					container.style.cursor = 'pointer';
+					container.title = lng.hideImages;
+					
+					container.onclick = function(){
+
+						var isImagesHidden = (controlUIhi.isImagesHidden == true);
+						var mapDiv = map.getDiv();
+						var center = map.getCenter();
+
+						if (isImagesHidden)
+						{
+							for (var i=0; i<ngImageMarkers.length; i++) {
+								ngImageMarkers[i].setMap(map);
+							}			
+							controlUIhi.src = pluginUrl + "/wp-gpx-maps/img/hideImages.png";	
+							controlUIhi.title = lng.hideImages;
+						}
+						else
+						{
+							for (var i=0; i<ngImageMarkers.length; i++) {
+								ngImageMarkers[i].setMap(null);
+							}			
+							controlUIhi.src = pluginUrl + "/wp-gpx-maps/img/showImages.png";
+							controlUIhi.title = lng.showImages;
+						}
+						controlUIhi.isImagesHidden = !isImagesHidden;
+						return false;	
+
+					}
+
+					return container;
+				  },
+				 
+				});
+	
+				map.map.addControl(new showHideImagesCustomControl());
+				*/
+				
+			}
+
+		}
+			
 		/*
 		
 		// Nextgen Pro Lightbox FIX
@@ -971,44 +1031,7 @@ var WPGPXMAPS = {
 			}
 		}
 		*/
-		
-		if ( jQuery("#ngimages_" + targetId + " span").length > 0 )
-		{
-		
-			// Set CSS for the control border
-			var controlUIhi = document.createElement('img');
-			controlUIhi.src = pluginUrl + "/wp-gpx-maps/img/hideImages.png";
-			controlUIhi.style.cursor = 'pointer';
-			controlUIhi.title = lng.hideImages;
-			controlDiv.appendChild(controlUIhi);
 
-			// Setup the click event listeners
-			google.maps.event.addDomListener(controlUIhi, 'click', function(event) {
-				var isImagesHidden = (controlUIhi.isImagesHidden == true);
-				var mapDiv = map.getDiv();
-				var center = map.getCenter();
-				
-				if (isImagesHidden)
-				{
-					for (var i=0; i<ngImageMarkers.length; i++) {
-						ngImageMarkers[i].setMap(map);
-					}			
-					controlUIhi.src = pluginUrl + "/wp-gpx-maps/img/hideImages.png";	
-					controlUIhi.title = lng.hideImages;
-				}
-				else
-				{
-					for (var i=0; i<ngImageMarkers.length; i++) {
-						ngImageMarkers[i].setMap(null);
-					}			
-					controlUIhi.src = pluginUrl + "/wp-gpx-maps/img/showImages.png";
-					controlUIhi.title = lng.showImages;
-				}
-				controlUIhi.isImagesHidden = !isImagesHidden;
-				return false;			
-			});
-
-		}		
 		
 		// Print Track
 		if (mapData != '')		

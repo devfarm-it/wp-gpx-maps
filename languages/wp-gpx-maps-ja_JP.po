@@ -1,94 +1,94 @@
-msgid ""
-msgstr ""
-"Project-Id-Version: wp-gpx-maps\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 14:41+0100\n"
-"PO-Revision-Date: 2017-10-26 11:18+0900\n"
-"Last-Translator: Taisuke Shimamoto <dentostar@gmail.com>\n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x;_ex;_nx\n"
-"X-Poedit-Basepath: .\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.7\n"
-"X-Poedit-SearchPath-0: ..\n"
-
-#: ../wp-gpx-maps.php:467
-msgid "Altitude"
-msgstr "標高"
-
-#: ../wp-gpx-maps.php:468
-msgid "Current Position"
-msgstr "現在位置"
-
-#: ../wp-gpx-maps.php:469
-msgid "Speed"
-msgstr "速度"
-
-#: ../wp-gpx-maps.php:470
-msgid "Heart rate"
-msgstr "心拍数"
-
-#: ../wp-gpx-maps.php:471
-msgid "Cadence"
-msgstr "ケイデンス"
-
-#: ../wp-gpx-maps.php:472
-msgid "Go Full Screen"
-msgstr "全画面表示"
-
-#: ../wp-gpx-maps.php:473
-msgid "Exit Full Screen"
-msgstr "全画面を閉じる"
-
-#: ../wp-gpx-maps.php:474
-msgid "Hide Images"
-msgstr "画像を非表示"
-
-#: ../wp-gpx-maps.php:475
-msgid "Show Images"
-msgstr "画像を表示"
-
-#: ../wp-gpx-maps.php:476
-msgid "Back to center"
-msgstr "中心に戻る"
-
-#: ../wp-gpx-maps.php:489
-msgid "Total distance"
-msgstr "走行距離"
-
-#: ../wp-gpx-maps.php:494
-msgid "Max elevation"
-msgstr "最大標高"
-
-#: ../wp-gpx-maps.php:496
-msgid "Min elevation"
-msgstr "最小標高"
-
-#: ../wp-gpx-maps.php:498
-msgid "Total climbing"
-msgstr "累積上昇"
-
-#: ../wp-gpx-maps.php:500
-msgid "Total descent"
-msgstr "累積下降"
-
-#: ../wp-gpx-maps.php:504
-msgid "Average speed"
-msgstr "平均速度"
-
-#: ../wp-gpx-maps.php:509
-msgid "Total Time"
-msgstr "総走行時間"
-
-#: ../wp-gpx-maps.php:525
-msgid "Download"
-msgstr "ダウンロード"
-
-#: ../wp-gpx-maps_admin_settings.php:83 ../wp-gpx-maps_admin_settings.php:151
-#: ../wp-gpx-maps_admin_settings.php:229 ../wp-gpx-maps_admin_settings.php:333
-#: ../wp-gpx-maps_admin_settings.php:364
-msgid "Save Changes"
-msgstr "変更を保存"
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-gpx-maps\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-30 14:41+0100\n"
+"PO-Revision-Date: 2017-10-26 11:18+0900\n"
+"Last-Translator: Taisuke Shimamoto <dentostar@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x;_ex;_nx\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../wp-gpx-maps.php:467
+msgid "Altitude"
+msgstr "標高"
+
+#: ../wp-gpx-maps.php:468
+msgid "Current Position"
+msgstr "現在位置"
+
+#: ../wp-gpx-maps.php:469
+msgid "Speed"
+msgstr "速度"
+
+#: ../wp-gpx-maps.php:470
+msgid "Heart rate"
+msgstr "心拍数"
+
+#: ../wp-gpx-maps.php:471
+msgid "Cadence"
+msgstr "ケイデンス"
+
+#: ../wp-gpx-maps.php:472
+msgid "Go Full Screen"
+msgstr "全画面表示"
+
+#: ../wp-gpx-maps.php:473
+msgid "Exit Full Screen"
+msgstr "全画面を閉じる"
+
+#: ../wp-gpx-maps.php:474
+msgid "Hide Images"
+msgstr "画像を非表示"
+
+#: ../wp-gpx-maps.php:475
+msgid "Show Images"
+msgstr "画像を表示"
+
+#: ../wp-gpx-maps.php:476
+msgid "Back to center"
+msgstr "中心に戻る"
+
+#: ../wp-gpx-maps.php:489
+msgid "Total distance"
+msgstr "走行距離"
+
+#: ../wp-gpx-maps.php:494
+msgid "Max elevation"
+msgstr "最大標高"
+
+#: ../wp-gpx-maps.php:496
+msgid "Min elevation"
+msgstr "最小標高"
+
+#: ../wp-gpx-maps.php:498
+msgid "Total climbing"
+msgstr "累積上昇"
+
+#: ../wp-gpx-maps.php:500
+msgid "Total descent"
+msgstr "累積下降"
+
+#: ../wp-gpx-maps.php:504
+msgid "Average speed"
+msgstr "平均速度"
+
+#: ../wp-gpx-maps.php:509
+msgid "Total Time"
+msgstr "総走行時間"
+
+#: ../wp-gpx-maps.php:525
+msgid "Download"
+msgstr "ダウンロード"
+
+#: ../wp-gpx-maps_admin_settings.php:83 ../wp-gpx-maps_admin_settings.php:151
+#: ../wp-gpx-maps_admin_settings.php:229 ../wp-gpx-maps_admin_settings.php:333
+#: ../wp-gpx-maps_admin_settings.php:364
+msgid "Save Changes"
+msgstr "変更を保存"

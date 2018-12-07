@@ -1,95 +1,95 @@
-msgid ""
-msgstr ""
-"Project-Id-Version: wp-gpx-maps\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 14:41+0100\n"
-"PO-Revision-Date: 2016-01-18 10:44+0100\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: __;_e\n"
-"X-Poedit-Basepath: .\n"
-"Language: de_DE\n"
-"X-Generator: Poedit 1.7.5\n"
-"X-Poedit-SearchPath-0: ..\n"
-"X-Poedit-SearchPath-1: ..\n"
-
-#: ../wp-gpx-maps.php:467
-msgid "Altitude"
-msgstr "Höhe"
-
-#: ../wp-gpx-maps.php:468
-msgid "Current Position"
-msgstr "Aktuelle Position"
-
-#: ../wp-gpx-maps.php:469
-msgid "Speed"
-msgstr "Geschwindigkeit"
-
-#: ../wp-gpx-maps.php:470
-msgid "Heart rate"
-msgstr "Herzfrequenz"
-
-#: ../wp-gpx-maps.php:471
-msgid "Cadence"
-msgstr "Trittfrequenz"
-
-#: ../wp-gpx-maps.php:472
-msgid "Go Full Screen"
-msgstr "Vollbildansicht"
-
-#: ../wp-gpx-maps.php:473
-msgid "Exit Full Screen"
-msgstr "Vollbildansicht beenden"
-
-#: ../wp-gpx-maps.php:474
-msgid "Hide Images"
-msgstr "Bilder verbergen"
-
-#: ../wp-gpx-maps.php:475
-msgid "Show Images"
-msgstr "Bilder anzeigen"
-
-#: ../wp-gpx-maps.php:476
-msgid "Back to center"
-msgstr "Zurück zur Mitte"
-
-#: ../wp-gpx-maps.php:489
-msgid "Total distance"
-msgstr "volle Distanz"
-
-#: ../wp-gpx-maps.php:494
-msgid "Max elevation"
-msgstr "Maximale Höhe"
-
-#: ../wp-gpx-maps.php:496
-msgid "Min elevation"
-msgstr "Minimale Höhe"
-
-#: ../wp-gpx-maps.php:498
-msgid "Total climbing"
-msgstr "Gesamtanstieg"
-
-#: ../wp-gpx-maps.php:500
-msgid "Total descent"
-msgstr "Gesamtabstieg"
-
-#: ../wp-gpx-maps.php:504
-msgid "Average speed"
-msgstr "Durchschnittsgeschwindigkeit"
-
-#: ../wp-gpx-maps.php:509
-msgid "Total Time"
-msgstr "Gesamtzeit"
-
-#: ../wp-gpx-maps.php:525
-msgid "Download"
-msgstr "Download"
-
-#: ../wp-gpx-maps_admin_settings.php:83 ../wp-gpx-maps_admin_settings.php:151
-#: ../wp-gpx-maps_admin_settings.php:229 ../wp-gpx-maps_admin_settings.php:333
-#: ../wp-gpx-maps_admin_settings.php:364
-msgid "Save Changes"
-msgstr "Änderungen speichern"
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-gpx-maps\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-30 14:41+0100\n"
+"PO-Revision-Date: 2016-01-18 10:44+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"Language: de_DE\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../wp-gpx-maps.php:467
+msgid "Altitude"
+msgstr "Höhe"
+
+#: ../wp-gpx-maps.php:468
+msgid "Current Position"
+msgstr "Aktuelle Position"
+
+#: ../wp-gpx-maps.php:469
+msgid "Speed"
+msgstr "Geschwindigkeit"
+
+#: ../wp-gpx-maps.php:470
+msgid "Heart rate"
+msgstr "Herzfrequenz"
+
+#: ../wp-gpx-maps.php:471
+msgid "Cadence"
+msgstr "Trittfrequenz"
+
+#: ../wp-gpx-maps.php:472
+msgid "Go Full Screen"
+msgstr "Vollbildansicht"
+
+#: ../wp-gpx-maps.php:473
+msgid "Exit Full Screen"
+msgstr "Vollbildansicht beenden"
+
+#: ../wp-gpx-maps.php:474
+msgid "Hide Images"
+msgstr "Bilder verbergen"
+
+#: ../wp-gpx-maps.php:475
+msgid "Show Images"
+msgstr "Bilder anzeigen"
+
+#: ../wp-gpx-maps.php:476
+msgid "Back to center"
+msgstr "Zurück zur Mitte"
+
+#: ../wp-gpx-maps.php:489
+msgid "Total distance"
+msgstr "volle Distanz"
+
+#: ../wp-gpx-maps.php:494
+msgid "Max elevation"
+msgstr "Maximale Höhe"
+
+#: ../wp-gpx-maps.php:496
+msgid "Min elevation"
+msgstr "Minimale Höhe"
+
+#: ../wp-gpx-maps.php:498
+msgid "Total climbing"
+msgstr "Gesamtanstieg"
+
+#: ../wp-gpx-maps.php:500
+msgid "Total descent"
+msgstr "Gesamtabstieg"
+
+#: ../wp-gpx-maps.php:504
+msgid "Average speed"
+msgstr "Durchschnittsgeschwindigkeit"
+
+#: ../wp-gpx-maps.php:509
+msgid "Total Time"
+msgstr "Gesamtzeit"
+
+#: ../wp-gpx-maps.php:525
+msgid "Download"
+msgstr "Download"
+
+#: ../wp-gpx-maps_admin_settings.php:83 ../wp-gpx-maps_admin_settings.php:151
+#: ../wp-gpx-maps_admin_settings.php:229 ../wp-gpx-maps_admin_settings.php:333
+#: ../wp-gpx-maps_admin_settings.php:364
+msgid "Save Changes"
+msgstr "Änderungen speichern"
