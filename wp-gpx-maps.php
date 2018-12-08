@@ -337,7 +337,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 			$avg_speed = $cache_obj["avg_speed"];
 			$avg_cad = $cache_obj["avg_cad"];
 			$avg_hr = $cache_obj["avg_hr"];
-			$avg_temp = $cache_obj["avg_temp"]
+			$avg_temp = $cache_obj["avg_temp"];
 			$tot_len = $cache_obj["tot_len"];
 			
 		} catch (Exception $e) {
