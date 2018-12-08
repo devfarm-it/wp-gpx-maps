@@ -165,7 +165,7 @@
 		</tr>
 
 		<tr>
-			<th scope="row">Total descent:</th>
+			<th scope="row">Total Descent:</th>
 			<td>
 				<input name="wpgpxmaps_summary_total_ele_down" type="checkbox" value="true" <?php if($total_ele_down == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /> <i>Print Total descent</i>
 			</td>
@@ -186,7 +186,7 @@
 		</tr>
 		
 		<tr>
-			<th scope="row">Average Heartrate:</th>
+			<th scope="row">Average Heart Rate:</th>
 			<td>
 				<input name="wpgpxmaps_summary_avg_hr" type="checkbox" value="true" <?php if($avg_hr == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /> <i>Print Average Heart Rate</i>
 			</td>
