@@ -282,6 +282,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 	$p_avg_speed =        wpgpxmaps_findValue($attr, "summaryavgspeed",    "wpgpxmaps_summary_avg_speed",      false);
 	$p_avg_cad =          wpgpxmaps_findValue($attr, "summaryavgcad",      "wpgpxmaps_summary_avg_cad",      false);
 	$p_avg_hr =           wpgpxmaps_findValue($attr, "summaryavghr",      "wpgpxmaps_summary_avg_hr",      false);
+	$p_avg_temp =           wpgpxmaps_findValue($attr, "summaryavgtemp",      "wpgpxmaps_summary_avg_temp",      false);
 	$p_total_time =       wpgpxmaps_findValue($attr, "summarytotaltime",   "wpgpxmaps_summary_total_time",     false);
 	
 	$usegpsposition =     wpgpxmaps_findValue($attr, "usegpsposition",     "wpgpxmaps_usegpsposition",         false);
@@ -336,6 +337,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 			$avg_speed = $cache_obj["avg_speed"];
 			$avg_cad = $cache_obj["avg_cad"];
 			$avg_hr = $cache_obj["avg_hr"];
+			$avg_temp = $cache_obj["avg_temp"]
 			$tot_len = $cache_obj["tot_len"];
 			
 		} catch (Exception $e) {
@@ -360,6 +362,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 			$avg_speed = 0;
 			$avg_cad = 0;
 			$avgv_hr = 0;
+			$avg_temp
 			$tot_len = 0;
 		}
 	}
@@ -410,6 +413,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 		$avg_speed = $points->avgSpeed;
 		$avg_cad = $points->avgCad;
 		$avg_hr = $points->avgHr;
+		$avg_temp = $points->avgTemp;
 		$tot_len = $points->totalLength;
 			
 		if (is_array ($points_x_lat))
@@ -641,7 +645,8 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 										"total_ele_down"      => $total_ele_down,
 										"avg_speed"           => $avg_speed,
 										"avg_cad"             => $avg_cad,
-										"acg_hr"              => $avg_hr,
+										"avg_hr"              => $avg_hr,
+										"avg_temp"            => $avg_temp,
 										"tot_len"             => $tot_len,
 										"max_time"			  => $max_time,
 										"min_time"			  => $min_time
@@ -757,6 +762,12 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 		{
 			$output .= "<span class='avghr'><span class='summarylabel'>".__("Average Heartrate", "wp-gpx-maps").":</span><span class='summaryvalue'> $avg_hr</span></span><br />";
 		}
+		
+		if ($points_graph_temp != '' && $p_avg_temp == 'true')
+		{
+			$output .= "<span class='avgtemp'><span class='summarylabel'>".__("Average Temperature", "wp-gpx-maps").":</span><span class='summaryvalue'> $avg_temp</span></span><br />";
+		}
+		
 		if ($p_total_time == 'true' && $max_time > 0)
 		{		
 			$time_diff = date("H:i:s", ($max_time - $min_time));
