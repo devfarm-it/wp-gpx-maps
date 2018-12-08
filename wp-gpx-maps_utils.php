@@ -212,6 +212,7 @@
 		$points->totalEleDown = 0;
 		$points->avgSpeed = 0;
 		$points->avgCad = 0;
+		$points->avgHr = 0;
 		$points->totalLength = 0;
 		
 		$gpx = simplexml_load_file($filePath);	
@@ -426,6 +427,10 @@
 				// Calculating Average Cadence
                 $_cad = array_filter($points->cad);
 				$points->avgCad = (float)round(array_sum($_cad) / count($_cad), 0);
+				
+				// Calculating Average Heart Rate
+                $_hr = array_filter($points->hr);
+				$points->avgHr = (float)round(array_sum($_hr) / count($_hr), 0);
 				
 			} catch (Exception $e) { }
 		
