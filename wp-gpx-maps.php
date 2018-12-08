@@ -362,7 +362,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 			$avg_speed = 0;
 			$avg_cad = 0;
 			$avgv_hr = 0;
-			$avg_temp
+			$avg_temp = 0;
 			$tot_len = 0;
 		}
 	}
