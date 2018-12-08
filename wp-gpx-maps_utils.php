@@ -435,7 +435,7 @@
 				
 				// Calculating Average Temperature
                 $_temp = array_filter($points->atemp);
-				$points->avgTemp = (float)round(array_sum($_temp) / count($_temp), 0);
+				$points->avgTemp = (float)round(array_sum($_temp) / count($_temp), 1);
 				
 			} catch (Exception $e) { }
 		
