@@ -280,6 +280,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 	$p_total_ele_up =     wpgpxmaps_findValue($attr, "summaryeleup",       "wpgpxmaps_summary_total_ele_up",   false);
 	$p_total_ele_down =   wpgpxmaps_findValue($attr, "summaryeledown",     "wpgpxmaps_summary_total_ele_down", false);
 	$p_avg_speed =        wpgpxmaps_findValue($attr, "summaryavgspeed",    "wpgpxmaps_summary_avg_speed",      false);
+	$p_avg_cad =          wpgpxmaps_findValue($attr, "summaryavgcad",      "wpgpxmaps_summary_avg_cad",      false);
 	$p_total_time =       wpgpxmaps_findValue($attr, "summarytotaltime",   "wpgpxmaps_summary_total_time",     false);
 	
 	$usegpsposition =     wpgpxmaps_findValue($attr, "usegpsposition",     "wpgpxmaps_usegpsposition",         false);
@@ -332,6 +333,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 			$total_ele_up = $cache_obj["total_ele_up"];
 			$total_ele_down = $cache_obj["total_ele_down"];
 			$avg_speed = $cache_obj["avg_speed"];
+			$avg_cad = $cache_obj["avg_cad"];
 			$tot_len = $cache_obj["tot_len"];
 			
 		} catch (Exception $e) {
@@ -354,6 +356,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 			$total_ele_up = 0;
 			$total_ele_down = 0;
 			$avg_speed = 0;
+			$avg_cad = 0;
 			$tot_len = 0;
 		}
 	}
@@ -402,6 +405,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 		$total_ele_up = $points->totalEleUp;
 		$total_ele_down = $points->totalEleDown;
 		$avg_speed = $points->avgSpeed;
+		$avg_cad = $points->avgCad;
 		$tot_len = $points->totalLength;
 			
 		if (is_array ($points_x_lat))
@@ -545,11 +549,6 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 		
 		if ($showW == true) {
 			$wpoints = wpgpxmaps_getWayPoints($gpx);
-			/*
-			foreach ($wpoints as $p) {
-				$waypoints .= '['.number_format ( (float)$p[0] , 7 , '.' , '' ).','.number_format ( (float)$p[1] , 7 , '.' , '' ).',\''.unescape($p[4]).'\',\''.unescape($p[5]).'\',\''.unescape($p[7]).'\'],';
-			}
-			*/
 			$waypoints = json_encode($wpoints);
 		}
 
@@ -637,6 +636,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 										"total_ele_up"        => $total_ele_up,
 										"total_ele_down"      => $total_ele_down,
 										"avg_speed"           => $avg_speed,
+										"avg_cad"             => $avg_cad,
 										"tot_len"             => $tot_len,
 										"max_time"			  => $max_time,
 										"min_time"			  => $min_time
@@ -743,6 +743,10 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 		if ($points_graph_speed != '' && $p_avg_speed == 'true')
 		{
 			$output .= "<span class='avgspeed'><span class='summarylabel'>".__("Average speed", "wp-gpx-maps").":</span><span class='summaryvalue'> $avg_speed</span></span><br />";
+		}
+		if ($points_graph_cad != '' && $p_avg_cad == 'true')
+		{
+			$output .= "<span class='avgcad'><span class='summarylabel'>".__("Average cadence", "wp-gpx-maps").":</span><span class='summaryvalue'> $avg_cad</span></span><br />";
 		}
 		if ($p_total_time == 'true' && $max_time > 0)
 		{		
