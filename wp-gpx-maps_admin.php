@@ -290,6 +290,8 @@ function WP_GPX_Maps_html_page() {
 
 </li><li><b>summaryavghr</b>: Print Average Heart Rate in summary table (default is FALSE)
 
+</li><li><b>summaryavgtemp</b>: Print Average Temperature in summary table (default is FALSE)
+
 </li><li><b>summarytotaltime</b>: Print Total time in summary table (default is FALSE)  </li>
 
 			</ul>

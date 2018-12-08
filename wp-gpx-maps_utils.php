@@ -213,6 +213,7 @@
 		$points->avgSpeed = 0;
 		$points->avgCad = 0;
 		$points->avgHr = 0;
+		$points->avgTemp = 0;
 		$points->totalLength = 0;
 		
 		$gpx = simplexml_load_file($filePath);	
@@ -431,6 +432,10 @@
 				// Calculating Average Heart Rate
                 $_hr = array_filter($points->hr);
 				$points->avgHr = (float)round(array_sum($_hr) / count($_hr), 0);
+				
+				// Calculating Average Temperature
+                $_temp = array_filter($points->atemp);
+				$points->avgTemp = (float)round(array_sum($_temp) / count($_temp), 0);
 				
 			} catch (Exception $e) { }
 		
