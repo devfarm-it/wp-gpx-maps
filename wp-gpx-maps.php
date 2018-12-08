@@ -281,9 +281,9 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 	$p_total_ele_down =   wpgpxmaps_findValue($attr, "summaryeledown",     "wpgpxmaps_summary_total_ele_down", false);
 	$p_avg_speed =        wpgpxmaps_findValue($attr, "summaryavgspeed",    "wpgpxmaps_summary_avg_speed",      false);
 	$p_avg_cad =          wpgpxmaps_findValue($attr, "summaryavgcad",      "wpgpxmaps_summary_avg_cad",      false);
-	$p_avg_hr =           wpgpxmaps_findValue($attr, "summaryavghr",      "wpgpxmaps_summary_avg_hr",      false);
-	$p_avg_temp =           wpgpxmaps_findValue($attr, "summaryavgtemp",      "wpgpxmaps_summary_avg_temp",      false);
-	$p_total_time =       wpgpxmaps_findValue($attr, "summarytotaltime",   "wpgpxmaps_summary_total_time",     false);
+	$p_avg_hr =           wpgpxmaps_findValue($attr, "summaryavghr",       "wpgpxmaps_summary_avg_hr",      false);
+	$p_avg_temp =         wpgpxmaps_findValue($attr, "summaryavgtemp",     "wpgpxmaps_summary_avg_temp",      false);
+	$p_total_time =       wpgpxmaps_findValue($attr, "summarytotaltime",    "wpgpxmaps_summary_total_time",     false);
 	
 	$usegpsposition =     wpgpxmaps_findValue($attr, "usegpsposition",     "wpgpxmaps_usegpsposition",         false);
 	$currentpositioncon = wpgpxmaps_findValue($attr, "currentpositioncon", "wpgpxmaps_currentpositioncon", 	 "");
