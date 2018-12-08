@@ -763,7 +763,7 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 			$output .= "<span class='avghr'><span class='summarylabel'>".__("Average Heartrate", "wp-gpx-maps").":</span><span class='summaryvalue'> $avg_hr</span></span><br />";
 		}
 		
-		if ($points_graph_temp != '' && $p_avg_temp == 'true')
+		if ($points_graph_atemp != '' && $p_avg_temp == 'true')
 		{
 			$output .= "<span class='avgtemp'><span class='summarylabel'>".__("Average Temperature", "wp-gpx-maps").":</span><span class='summaryvalue'> $avg_temp</span></span><br />";
 		}
