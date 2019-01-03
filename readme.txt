@@ -153,6 +153,8 @@ Yes!
 1. Altitude & Speed & Hearth rate
 
 == Changelog ==
+= 1.6.06 = 
+* Added average values under the graph
 = 1.6.04 = 
 * NGG gallery is working
 * Getting HR, Cad and Temp working again (thanks to cyclinggeorgian)
