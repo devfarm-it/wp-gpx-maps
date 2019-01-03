@@ -211,6 +211,9 @@
 		$points->totalEleUp = 0;
 		$points->totalEleDown = 0;
 		$points->avgSpeed = 0;
+		$points->avgCad = 0;
+		$points->avgHr = 0;
+		$points->avgTemp = 0;
 		$points->totalLength = 0;
 		
 		$gpx = simplexml_load_file($filePath);	
@@ -362,9 +365,7 @@
 							array_push($points->speed, (float)round($avgSpeed, 1) );
 							array_push($points->hr, 	$hr);
 							array_push($points->atemp,	$atemp);
-							
-							
-							array_push($points->cad, $cad);
+							array_push($points->cad,	$cad);
 							array_push($points->grade, (float)round($grade, 2) );
 							
 						}
@@ -414,14 +415,28 @@
 				$_time = array_filter($points->dt);
 				$_ele = array_filter($points->ele);
 				$_dist = array_filter($points->dist);
-				$_speed = array_filter($points->speed);
 				$points->maxEle = max($_ele);
 				$points->minEle = min($_ele);
 				$points->totalLength = max($_dist);
 				$points->maxTime = max($_time);
 				$points->minTime = min($_time);
-				
+
+				// Calculating Average Speed
+				$_speed = array_filter($points->speed);
 				$points->avgSpeed = array_sum($_speed) / count($_speed);
+				
+				// Calculating Average Cadence
+                $_cad = array_filter($points->cad);
+				$points->avgCad = (float)round(array_sum($_cad) / count($_cad), 0);
+				
+				// Calculating Average Heart Rate
+                $_hr = array_filter($points->hr);
+				$points->avgHr = (float)round(array_sum($_hr) / count($_hr), 0);
+				
+				// Calculating Average Temperature
+                $_temp = array_filter($points->atemp);
+				$points->avgTemp = (float)round(array_sum($_temp) / count($_temp), 1);
+				
 			} catch (Exception $e) { }
 		
 		}
@@ -673,9 +688,7 @@
 		$t2 += date_getDecimals($old_date);
 	
 		$offset = (float)($t1 - $t2);
-	  
-		//echo "$offset = $new_date - $old_date; ".strtotime($new_date)." ".strtotime($old_date)." <br />";
-	  
+	  	  
 	  return $offset;
 	}
 
