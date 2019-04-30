@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 2.0.0
 Tested up to: 4.9.8
-Stable tag: 1.6.06
+Stable tag: 1.6.07
 
 Draws a gpx track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -17,7 +17,7 @@ Now on github: https://github.com/devfarm-it/wp-gpx-maps
 On github you can contribuite easly with your code
 
 
-Fully configurable: 
+Fully configurable:
 - Custom colors
 - Custom icons
 - Multiple language support
@@ -32,8 +32,8 @@ Supported charts:
 
 NextGen Gallery Integration:
 
-Display your NextGen Gallery images inside the map! 
-Even if you don't have a gps camera, this plugin can retrive the image position starting from the image date and you gpx file. 
+Display your NextGen Gallery images inside the map!
+Even if you don't have a gps camera, this plugin can retrive the image position starting from the image date and you gpx file.
 
 Post Attachments Integration:
 
@@ -126,17 +126,17 @@ The attributes are:
 1. nggalleries: NextGen Gallery id or a list of Galleries id separated by a comma
 1. ngimages: NextGen Image id or a list of Images id separated by a comma
 1. dtoffset: the difference (in seconds) between your gpx tool date and your camera date
-1. zoomonscrollwheel: zoom on map when mouse scroll wheel 
-1. download: Allow users to download your GPX file 
-1. skipcache: Do not use cache. If TRUE might be very slow (default is FALSE) 
-1. summary: Print summary details of your GPX (default is FALSE) 
-1. summarytotlen: Print Total distance in summary table (default is FALSE) 
-1. summarymaxele: Print Max Elevation in summary table (default is FALSE) 
-1. summaryminele: Print Min Elevation in summary table (default is FALSE) 
-1. summaryeleup: Print Total climbing in summary table (default is FALSE) 
-1. summaryeledown: Print Total descent in summary table (default is FALSE) 
-1. summaryavgspeed: Print Average Speed in summary table (default is FALSE) 
-1. summarytotaltime: Print Total time in summary table (default is FALSE) 
+1. zoomonscrollwheel: zoom on map when mouse scroll wheel
+1. download: Allow users to download your GPX file
+1. skipcache: Do not use cache. If TRUE might be very slow (default is FALSE)
+1. summary: Print summary details of your GPX (default is FALSE)
+1. summarytotlen: Print Total distance in summary table (default is FALSE)
+1. summarymaxele: Print Max Elevation in summary table (default is FALSE)
+1. summaryminele: Print Min Elevation in summary table (default is FALSE)
+1. summaryeleup: Print Total climbing in summary table (default is FALSE)
+1. summaryeledown: Print Total descent in summary table (default is FALSE)
+1. summaryavgspeed: Print Average Speed in summary table (default is FALSE)
+1. summarytotaltime: Print Total time in summary table (default is FALSE)
 
 = What happening if I've a very large gpx? =
 This plugin will print a small amout of points to speedup javascript and pageload.
@@ -153,14 +153,16 @@ Yes!
 1. Altitude & Speed & Hearth rate
 
 == Changelog ==
-= 1.6.06 = 
-* Added average values under the graph
-= 1.6.04 = 
+= 1.6.07 =
+* resolve admin error
+= 1.6.06 =
+* Added average values under the graph (thanks to cyclinggeorgian)
+= 1.6.04 =
 * NGG gallery is working
 * Getting HR, Cad and Temp working again (thanks to cyclinggeorgian)
-* Fix javascript errors 
+* Fix javascript errors
 * Fix multiple traks gpx
-= 1.6.03 = 
+= 1.6.03 =
 * Fix syntax error causing graph not to display (thanks to nickstabler)
 = 1.6.02 =
 * Resolved errors with start and end icons
@@ -186,8 +188,8 @@ Yes!
 = 1.5.00 =
 * replaced highcharts with chartjs. This is a forced choice due highcharts license issue, view:  https://devfarm.it/wordpress-plugin/wordpress-plugin-directory-notice-wp-gpx-maps-temporarily-disabled/
 = 1.3.16 =
-* Added Norwegian nb_NO translation (thanks to thordivel) 
-* Added Japanese ja_JP translation (thanks to dentos) 
+* Added Norwegian nb_NO translation (thanks to thordivel)
+* Added Japanese ja_JP translation (thanks to dentos)
 = 1.3.15 =
 * Switched to HTTPS where possible (thanks to delitestudio)
 = 1.3.14 =
@@ -243,7 +245,7 @@ Yes!
 = 1.2.2 =
 * Smaller map type selector
 * New map: MapToolKit - Terrain
-* Fix: Google maps exception for NextGen Gallery 
+* Fix: Google maps exception for NextGen Gallery
 = 1.2.1 =
 * Fix: NextGen Gallery 1.9 compatibility
 = 1.2.0 =
@@ -265,11 +267,11 @@ Yes!
 * qTranslate compatible
 = 1.1.41 =
 * Added Polish translation, thanks to Sebastian
-* Fix: Spanish translation 
+* Fix: Spanish translation
 * Minor javascript improvement
 = 1.1.40 =
 * Improved italian translation
-* Added grade chart (beta) 
+* Added grade chart (beta)
 = 1.1.39 =
 * Added French translation, thanks to Hervé
 * Added Nautical Miles per Hour (Knots) unit of measure
@@ -282,7 +284,7 @@ Yes!
 = 1.1.35 =
 * Fix: In the post list, sometime, the maps was not displaying correctly ( the php rand() function was not working?? )
 * Various improvements for multi track gpx. Thanks to GPSracks.tv
-* Summary table is now avaiable even without chart. Thanks to David 
+* Summary table is now avaiable even without chart. Thanks to David
 = 1.1.34 =
 * 2 decimals for unit of measure min/km and min/mi
 * translation file updated (a couple of phrases added)
@@ -290,7 +292,7 @@ Yes!
 * nggallery integration: division by zero fixed
 = 1.1.33 =
 * Decimals reducted to 1 for unit of measure min/km and min/mi
-* map zoom and center position is working with waypoints only files 
+* map zoom and center position is working with waypoints only files
 * automatic scale works again (thanks to MArkus)
 = 1.1.32 =
 * You can exclude cache (slower and not recommended)
@@ -326,12 +328,12 @@ Yes!
 * upgrade to google maps 3.9
 = 1.1.20 =
 * google maps images fixed in <a href="http://wordpress.org/extend/themes/yoko">Yoko theme</a>
-= 1.1.19 = 
+= 1.1.19 =
 * include jQuery if needed
-= 1.1.17 = 
+= 1.1.17 =
 * Remove zero values from cadence and heart rate charts
 * nextgen gallery improvement
-= 1.1.16 = 
+= 1.1.16 =
 * Cadence chart (where available)
 * minor bug fixes
 = 1.1.15 =
@@ -341,7 +343,7 @@ Yes!
 * added css to avoid map bars display issue
 = 1.1.13 =
 * added new types of maps: Open Street Map, Open Cycle Map, Hike & Bike.
-* fixed nextgen gallery caching problem 
+* fixed nextgen gallery caching problem
 = 1.1.12 =
 * nextgen gallery display bug fixes
 
