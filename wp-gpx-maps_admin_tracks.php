@@ -3,12 +3,17 @@
 	if ( !(is_admin()) )
 		return;
 	
-	$is_admin = current_user_can( 'manage_options' );
+	$is_admin = current_user_can( 'publish_posts' );
 	
 	if ( $is_admin != 1 )
 		return;
 	
 	$gpxRegEx = '/.gpx$/i';
+        if ( current_user_can('manage_options') ){
+            $menu_root = "options-general.php";
+        } else if ( current_user_can('publish_posts') ){
+            $menu_root = "admin.php";
+        }
 
 	if ( isset($_POST['clearcache']) )
 	{
@@ -29,7 +34,8 @@
 	?>
 
 		<div class="tablenav top">
-			<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="/wp-admin/options-general.php?page=WP-GPX-Maps">
+<?php
+            echo '<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="' . get_bloginfo('wpurl') . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">'; ?>
 				Choose a file to upload: <input name="uploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
 				<?php
 					if ( isset($_FILES['uploadedfile']) )									

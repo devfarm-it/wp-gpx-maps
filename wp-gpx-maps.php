@@ -40,8 +40,15 @@ function WP_GPX_Maps_action_links($links, $file) {
  
     // check to make sure we are on the correct plugin
     if ($file == $this_plugin) {
-        // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page
-        $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/options-general.php?page=WP-GPX-Maps">Settings</a>';
+        // the anchor tag and href to the URL we want. For a "Settings"
+        // link, this needs to be the url of your settings page. Authors
+        // access tracks via the admin page.
+        if ( current_user_can('manage_options') ) {
+            $menu_root = "options-general.php";
+        } else if ( current_user_can('publish_posts') ) {
+            $menu_root = "admin.php";
+        }
+        $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">Settings</a>';
         // add the link to the list
         array_unshift($links, $settings_link);
     }
