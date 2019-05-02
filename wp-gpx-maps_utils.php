@@ -7,7 +7,7 @@
 	function wpgpxmaps_getAttachedImages($dt, $lat, $lon, $dtoffset, &$error)
 	{
 		$result = array();
-			
+
 		try {
 			$attachments = get_children( array(
 				 'post_parent'    => get_the_ID(),
@@ -29,12 +29,12 @@
 				$item["data"] = wp_get_attachment_link( $attachment_id, array(105,105) );
 
 				if (is_callable('exif_read_data')) {
-					$exif = @exif_read_data($img_src[0]);	
+					$exif = @exif_read_data($img_src[0]);
 					if ($exif !== false)
 					{
 						$item["lon"] = getExifGps($exif["GPSLongitude"], $exif['GPSLongitudeRef']);
 						$item["lat"] = getExifGps($exif["GPSLatitude"], $exif['GPSLatitudeRef']);
-						if (($item["lat"] != 0) || ($item["lon"] != 0)) 
+						if (($item["lat"] != 0) || ($item["lon"] != 0))
 						{
 							$result[] = $item;
 						}
@@ -56,7 +56,7 @@
 					$error .= "Sorry, <a href='http://php.net/manual/en/function.exif-read-data.php' target='_blank' >exif_read_data</a> function not found! check your hosting..<br />";
 				}
 			}
-			
+
 		} catch (Exception $e) {
 			$error .= 'Error When Retrieving attached images: $e <br />';
 		}
@@ -73,29 +73,29 @@
 	function gpxFolderPath()
 	{
 		$upload_dir = wp_upload_dir();
-		$uploadsPath = $upload_dir['basedir'];	
-		
-		
+		$uploadsPath = $upload_dir['basedir'];
+
+
 		if ( current_user_can('manage_options') ){
 			$ret = $uploadsPath.DIRECTORY_SEPARATOR."gpx";
-		} 
-		else if ( current_user_can('publish_posts') ) {	
+		}
+		else if ( current_user_can('publish_posts') ) {
 			global $current_user;
 			get_currentuserinfo();
 			$ret = $uploadsPath.DIRECTORY_SEPARATOR."gpx".DIRECTORY_SEPARATOR.$current_user->user_login;
-		}		
-		
+		}
+
 		return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ret);
 	}
-	
+
 	function gpxCacheFolderPath()
 	{
 		$upload_dir = wp_upload_dir();
-		$uploadsPath = $upload_dir['basedir'];	
+		$uploadsPath = $upload_dir['basedir'];
 		$ret = $uploadsPath.DIRECTORY_SEPARATOR."gpx".DIRECTORY_SEPARATOR."~cache";
 		return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ret);
 	}
-	
+
 	function relativeGpxFolderPath()
 	{
 		$sitePath = wp_gpx_maps_sitePath();
@@ -121,7 +121,7 @@
 				if($item != '.' && $item != '..')
 				{
 					$path = $directory.'/'.$item;
-					if(is_dir($path)) 
+					if(is_dir($path))
 					{
 						wpgpxmaps_recursive_remove_directory($path);
 					}else{
@@ -146,21 +146,21 @@
 
 		$points = array();
 		$dist=0;
-		
+
 		$lastLat=0;
 		$lastLon=0;
 		$lastEle=0;
 		$lastOffset=0;
-				
+
 		if (file_exists($gpxPath))
 		{
-			$points = @wpgpxmaps_parseXml($gpxPath, $gpxOffset, $distancetype);			
+			$points = @wpgpxmaps_parseXml($gpxPath, $gpxOffset, $distancetype);
 		}
 		else
 		{
 			echo "WP GPX Maps Error: File $gpxPath not found!";
 		}
-		
+
 		// reduce the points to around 200 to speedup
 		if ( $donotreducegpx != true)
 		{
@@ -173,17 +173,17 @@
 						if ($i % $f != 0 && $points->lat[$i] != null)
 						{
 							unset($points->dt[$i]);
-							unset($points->lat[$i]);						
-							unset($points->lon[$i]);						
-							unset($points->ele[$i]);						
-							unset($points->dist[$i]);						
-							unset($points->speed[$i]);						
+							unset($points->lat[$i]);
+							unset($points->lon[$i]);
+							unset($points->ele[$i]);
+							unset($points->dist[$i]);
+							unset($points->speed[$i]);
 							unset($points->hr[$i]);
 							unset($points->atemp[$i]);
 							unset($points->cad[$i]);
 							unset($points->grade[$i]);
 						}
-			}		
+			}
 		}
 		return $points;
 	}
@@ -192,7 +192,7 @@
 	{
 
 		$points = null;
-		
+
 		$points->dt = array();
 		$points->lat = array();
 		$points->lon = array();
@@ -200,10 +200,10 @@
 		$points->dist = array();
 		$points->speed = array();
 		$points->hr = array();
-		$points->atemp = array();	
+		$points->atemp = array();
 		$points->cad = array();
 		$points->grade = array();
-		
+
 		$points->maxTime = 0;
 		$points->minTime = 0;
 		$points->maxEle = 0;
@@ -215,33 +215,33 @@
 		$points->avgHr = 0;
 		$points->avgTemp = 0;
 		$points->totalLength = 0;
-		
-		$gpx = simplexml_load_file($filePath);	
-		
-		if($gpx === FALSE) 
+
+		$gpx = simplexml_load_file($filePath);
+
+		if($gpx === FALSE)
 			return;
-		
+
 		$gpx->registerXPathNamespace('a', 'http://www.topografix.com/GPX/1/0');
 		$gpx->registerXPathNamespace('b', 'http://www.topografix.com/GPX/1/1');
 		$gpx->registerXPathNamespace('ns3', 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1');
-		
+
 		$nodes = $gpx->xpath('//trk | //a:trk | //b:trk');
 		//normal gpx
-		
-		if ( count($nodes) > 0 )	
+
+		if ( count($nodes) > 0 )
 		{
-		
+
 			foreach($nodes as $_trk)
 			{
-			
-				$trk = simplexml_load_string($_trk->asXML()); 
-				
+
+				$trk = simplexml_load_string($_trk->asXML());
+
 				$trk->registerXPathNamespace('a', 'http://www.topografix.com/GPX/1/0');
 				$trk->registerXPathNamespace('b', 'http://www.topografix.com/GPX/1/1');
 				$trk->registerXPathNamespace('ns3', 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1');
 
 				$trkpts = $trk->xpath('//trkpt | //a:trkpt | //b:trkpt');
-				
+
 				$lastLat = 0;
 				$lastLon = 0;
 				$lastEle = 0;
@@ -249,7 +249,7 @@
 				//$dist = 0;
 				$lastOffset = 0;
 				$speedBuffer = array();
-			
+
 				foreach($trkpts as $trkpt)
 				{
 
@@ -264,8 +264,8 @@
 					$grade = 0;
 
 					if (isset($trkpt->extensions))
-					{				
-						
+					{
+
 						$arr = json_decode( json_encode($trkpt->extensions) , 1);
 
 						if (isset($arr['ns3:TrackPointExtension']))
@@ -273,16 +273,16 @@
 							$tpe = $arr['ns3:TrackPointExtension'];
 							$hr =    @$tpe["ns3:hr"];
 							$atemp = @$tpe["ns3:atemp"];
-							$cad =   @$tpe["ns3:cad"];			
+							$cad =   @$tpe["ns3:cad"];
 						}
 						else if (isset($arr['TrackPointExtension']))
 						{
 							$tpe = $arr['TrackPointExtension'];
 							$hr =    @$tpe["hr"];
 							$atemp = @$tpe["atemp"];
-							$cad =   @$tpe["cad"];							
+							$cad =   @$tpe["cad"];
 						}
-						
+
 					}
 
 					if ($lastLat == 0 && $lastLon == 0)
@@ -299,10 +299,10 @@
 						array_push($points->atemp,    	(float)$atemp);
 						array_push($points->cad,   		(float)$cad);
 						array_push($points->grade,   	$grade);
-						
+
 						$lastLat=$lat;
 						$lastLon=$lon;
-						$lastEle=$ele;				
+						$lastEle=$ele;
 						$lastTime=$time;
 					}
 					else
@@ -310,9 +310,9 @@
 						//Normal Case
 						$offset = calculateDistance((float)$lat, (float)$lon, (float)$ele, (float)$lastLat, (float)$lastLon, (float)$lastEle, $distancetype);
 						$dist = $dist + $offset;
-						
+
 						$points->totalLength = $dist;
-						
+
 						if ($speed == 0)
 						{
 							$datediff = (float)my_date_diff($lastTime,$time);
@@ -321,12 +321,12 @@
 								$speed = $offset / $datediff;
 							}
 						}
-						
+
 						if ($ele != 0 && $lastEle != 0)
 						{
-						
+
 							$deltaEle = (float)($ele - $lastEle);
-						
+
 							if ((float)$ele > (float)$lastEle)
 							{
 								$points->totalEleUp += $deltaEle;
@@ -335,28 +335,28 @@
 							{
 								$points->totalEleDown += $deltaEle;
 							}
-							
+
 							$grade = $deltaEle / $offset * 100;
-							
+
 						}
-						
+
 						array_push($speedBuffer, $speed);
-						
+
 						if (((float) $offset + (float) $lastOffset) > $gpxOffset)
 						{
 							//Bigger Offset -> write coordinate
 							$avgSpeed = 0;
-							
+
 							foreach($speedBuffer as $s)
-							{ 
+							{
 								$avgSpeed += $s;
 							}
-							
+
 							$avgSpeed = $avgSpeed / count($speedBuffer);
 							$speedBuffer = array();
-							
+
 							$lastOffset=0;
-							
+
 							array_push($points->dt,    strtotime($time));
 							array_push($points->lat,   (float)$lat );
 							array_push($points->lon,   (float)$lon );
@@ -367,7 +367,7 @@
 							array_push($points->atemp,	$atemp);
 							array_push($points->cad,	$cad);
 							array_push($points->grade, (float)round($grade, 2) );
-							
+
 						}
 						else
 						{
@@ -381,7 +381,7 @@
 					$lastTime=$time;
 
 				}
-				
+
 				array_push($points->dt,  null);
 				array_push($points->lat,  null);
 				array_push($points->lon,  null);
@@ -392,15 +392,15 @@
 				array_push($points->atemp, null);
 				array_push($points->cad, null);
 				array_push($points->grade, null);
-				
-				unset($trkpts);				
-			
+
+				unset($trkpts);
+
 			}
 
 			unset($nodes);
-			
+
 			try {
-			
+
 				array_pop($points->dt,  null);
 				array_pop($points->lat,  null);
 				array_pop($points->lon,  null);
@@ -411,7 +411,7 @@
 				array_pop($points->atemp, null);
 				array_pop($points->cad, null);
 				array_pop($points->grade, null);
-			
+
 				$_time = array_filter($points->dt);
 				$_ele = array_filter($points->ele);
 				$_dist = array_filter($points->dist);
@@ -424,43 +424,43 @@
 				// Calculating Average Speed
 				$_speed = array_filter($points->speed);
 				$points->avgSpeed = array_sum($_speed) / count($_speed);
-				
+
 				// Calculating Average Cadence
                 $_cad = array_filter($points->cad);
 				$points->avgCad = (float)round(array_sum($_cad) / count($_cad), 0);
-				
+
 				// Calculating Average Heart Rate
                 $_hr = array_filter($points->hr);
 				$points->avgHr = (float)round(array_sum($_hr) / count($_hr), 0);
-				
+
 				// Calculating Average Temperature
                 $_temp = array_filter($points->atemp);
 				$points->avgTemp = (float)round(array_sum($_temp) / count($_temp), 1);
-				
+
 			} catch (Exception $e) { }
-		
+
 		}
 		else
 		{
-		
+
 			// gpx garmin case
 			$gpx->registerXPathNamespace('gpxx', 'http://www.garmin.com/xmlschemas/GpxExtensions/v3');
-			
+
 			$nodes = $gpx->xpath('//gpxx:rpt');
-		
-			if ( count($nodes) > 0 )	
+
+			if ( count($nodes) > 0 )
 			{
-			
+
 				$lastLat = 0;
 				$lastLon = 0;
 				$lastEle = 0;
 				$dist = 0;
 				$lastOffset = 0;
-			
+
 				// Garmin case
 				foreach($nodes as $rpt)
-				{ 
-				
+				{
+
 					$lat = $rpt['lat'];
 					$lon = $rpt['lon'];
 					if ($lastLat == 0 && $lastLon == 0)
@@ -491,7 +491,7 @@
 							array_push($points->lon,   (float)$lon );
 							array_push($points->ele,   0 );
 							array_push($points->dist,  0 );
-							array_push($points->speed, 0 );	
+							array_push($points->speed, 0 );
 							array_push($points->hr,    0 );
 							array_push($points->atemp, 0 );
 							array_push($points->cad,   0 );
@@ -507,27 +507,27 @@
 					$lastLon=$lon;
 				}
 				unset($nodes);
-			
+
 			}
 			else
 			{
-			
+
 				//gpx strange case
 
 				$nodes = $gpx->xpath('//rtept | //a:rtept | //b:rtept');
 				if ( count($nodes) > 0 )
 				{
-				
+
 					$lastLat = 0;
 					$lastLon = 0;
 					$lastEle = 0;
 					$dist = 0;
 					$lastOffset = 0;
-				
+
 					// Garmin case
 					foreach($nodes as $rtept)
-					{ 
-					
+					{
+
 						$lat = $rtept['lat'];
 						$lon = $rtept['lon'];
 						if ($lastLat == 0 && $lastLon == 0)
@@ -558,7 +558,7 @@
 								array_push($points->lon,   (float)$lon );
 								array_push($points->ele,   0 );
 								array_push($points->dist,  0 );
-								array_push($points->speed, 0 );	
+								array_push($points->speed, 0 );
 								array_push($points->hr,    0 );
 								array_push($points->atemp, 0 );
 								array_push($points->cad,   0 );
@@ -574,35 +574,35 @@
 						$lastLon=$lon;
 					}
 					unset($nodes);
-					
+
 				}
 
 			}
-		
+
 		}
-		
+
 		unset($gpx);
 		return $points;
-	}	
-	
+	}
+
 	function wpgpxmaps_getWayPoints($gpxPath)
 	{
 		$points = array();
 		if (file_exists($gpxPath))
 		{
 			try {
-				$gpx = simplexml_load_file($gpxPath);	    
+				$gpx = simplexml_load_file($gpxPath);
 			} catch (Exception $e) {
 				echo "WP GPX Maps Error: Cant parse xml file " . $gpxPath;
 				return $points;
 			}
-		
+
 			$gpx->registerXPathNamespace('a', 'http://www.topografix.com/GPX/1/0');
 			$gpx->registerXPathNamespace('b', 'http://www.topografix.com/GPX/1/1');
 			$nodes = $gpx->xpath('//wpt | //a:wpt | //b:wpt');
 			global $wpdb;
-			
-			if ( count($nodes) > 0 )	
+
+			if ( count($nodes) > 0 )
 			{
 				// normal case
 				foreach($nodes as $wpt)
@@ -616,7 +616,7 @@
 					$sym  = (string) $wpt->sym;
 					$type = (string) $wpt->type;
 					$img  = '';
-					
+
 					if ($sym)
 					{
 						$img_name = 'map-marker-' . $sym;
@@ -626,7 +626,7 @@
 							$img = wp_get_attachment_url($img_id);
 						}
 					}
-					
+
 					array_push($points, array(
 						"lat"  => (float)$lat,
 						"lon"  => (float)$lon,
@@ -643,15 +643,15 @@
 		}
 		return $points;
 	}
-	
+
 	function toRadians($degrees)
 	{
 		return (float)($degrees * 3.1415926535897932385 / 180);
 	}
-	
+
 	function calculateDistance($lat1,$lon1,$ele1,$lat2,$lon2,$ele2,$distancetype)
 	{
-	
+
 		if ($distancetype == '2') // climb
 		{
 			return (float)$ele1 - (float)$ele2;
@@ -663,7 +663,7 @@
 			//Distance in meters
 			$a = (float) ( (float)$alpha * (float)$alpha) +  (float) ( (float)cos( (float)toRadians($lat1)) * (float)cos( (float)toRadians($lat2)) * (float)$beta * (float)$beta );
 			$dist = 2 * 6369628.75 * (float)atan2((float)sqrt((float)$a), (float)sqrt(1 - (float) $a));
-			return (float)sqrt((float)pow((float)$dist, 2) + pow((float) $lat1 - (float)$lat2, 2));	
+			return (float)sqrt((float)pow((float)$dist, 2) + pow((float) $lat1 - (float)$lat2, 2));
 		}
 		else // normal
 		{
@@ -672,23 +672,23 @@
 			//Distance in meters
 			$a = (float) ( (float)$alpha * (float)$alpha) +  (float) ( (float)cos( (float)toRadians($lat1)) * (float)cos( (float)toRadians($lat2)) * (float)$beta * (float)$beta );
 			$dist = 2 * 6369628.75 * (float)atan2((float)sqrt((float)$a), (float)sqrt(1 - (float) $a));
-			$d = (float)sqrt((float)pow((float)$dist, 2) + pow((float) $lat1 - (float)$lat2, 2));	
+			$d = (float)sqrt((float)pow((float)$dist, 2) + pow((float) $lat1 - (float)$lat2, 2));
 			return sqrt((float)pow((float)$ele1-(float)$ele2,2)+(float)pow((float)$d,2));
 		}
 
 	}
-	
+
 	function my_date_diff($old_date, $new_date) {
-	
+
 		$t1 = strtotime($new_date);
 		$t2 = strtotime($old_date);
-		
+
 		// milliceconds fix
 		$t1 += date_getDecimals($new_date);
 		$t2 += date_getDecimals($old_date);
-	
+
 		$offset = (float)($t1 - $t2);
-	  	  
+
 	  return $offset;
 	}
 
@@ -705,5 +705,5 @@
 	}
 
 
-	
+
 ?>

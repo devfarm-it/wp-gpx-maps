@@ -16,7 +16,7 @@ function wpgpxmaps_admin_menu() {
 
 		add_options_page('WP GPX Maps', 'WP GPX Maps', 'manage_options', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
 
-	} 
+	}
 
 	else if ( current_user_can('publish_posts') ) {
 
@@ -36,14 +36,18 @@ function wpgpxmaps_ilc_admin_tabs( $current  ) {
 
 	{
 
-		$tabs = array( 'tracks' => 'Tracks', 'settings' => 'Settings', 'help' => "help" );	
-
+		$tabs = array(
+				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
+				'settings' => __( 'Settings', 'wp-gpx-maps' ),
+				'help' => __( 'Help', 'wp-gpx-maps' )
+				);
 	}
-
 	else if ( current_user_can('publish_posts') ) {
 
-		$tabs = array( 'tracks' => 'Tracks', 'help' => "help" );	
-
+		$tabs = array(
+				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
+				'help' => __( 'Help', 'wp-gpx-maps' )
+				);
 	}
 
 
@@ -74,27 +78,20 @@ function WP_GPX_Maps_html_page() {
 
 	$relativeGpxPath = str_replace("\\","/", $relativeGpxPath);
 
-	
-
 	$tab = $_GET['tab'];
 
-	
 
 	if ($tab == '')
 
 		$tab = 'tracks';
 
-	
-
 ?>
 
 	<div id="icon-themes" class="icon32"><br></div>
 
-		<h2>WP GPX Settings</h2>	
+		<h2><?php _e( 'Settings', 'wp-gpx-maps' ); ?></h2>
 
 <?php
-
-
 
 	if(file_exists($realGpxPath) && is_dir($realGpxPath))
 
@@ -109,20 +106,14 @@ function WP_GPX_Maps_html_page() {
 	{
 
 		if (!@mkdir($realGpxPath,0755,true)) {
-
-			echo '<div class="error" style="padding:10px">
-
-					Can\'t create <b>'.$realGpxPath.'</b> folder. Please create it and make it writable!<br />
-
-					If not, you will must update the file manually!
-
-				  </div>';
-
+			echo '<div class=" notice notice-error"><p>';
+			_e( 'Can\'t create', 'wp-gpx-maps' );
+			echo ''.$realGpxPath.'';
+			_e( 'folder. Please create it and make it writable! If not, you will must update the file manually!', 'wp-gpx-maps' );
+			echo '</p></div>';
 		}
 
 	}
-
-	
 
 	if(file_exists($cacheGpxPath) && is_dir($cacheGpxPath))
 
@@ -137,24 +128,18 @@ function WP_GPX_Maps_html_page() {
 	{
 
 		if (!@mkdir($cacheGpxPath,0755,true)) {
-
-			echo '<div class="error" style="padding:10px">
-
-					Can\'t create <b>'.$cacheGpxPath.'</b> folder. Please create it and make it writable!<br />
-
-					If not, cache will not created and your site could be slower!
-
-				  </div>';
-
+			echo '<div class=" notice notice-error"><p>';
+			_e( 'Can\'t create', 'wp-gpx-maps' );
+			echo ''.cacheGpxPath.'';
+			_e( 'folder. Please create it and make it writable! If not, you will must update the file manually!', 'wp-gpx-maps' );
+			echo '</p></div>';
 		}
 
 	}
 
 
 
-	wpgpxmaps_ilc_admin_tabs($tab);	
-
-	
+	wpgpxmaps_ilc_admin_tabs($tab);
 
 	if ($tab == "tracks")
 
@@ -296,7 +281,7 @@ function WP_GPX_Maps_html_page() {
 
 			</ul>
 
-		
+
 
 			<p>
 
@@ -304,7 +289,7 @@ function WP_GPX_Maps_html_page() {
 
 			</p>
 
-			
+
 
 		</p>
 
