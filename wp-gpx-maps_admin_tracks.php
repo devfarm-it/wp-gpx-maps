@@ -51,8 +51,8 @@
 							{
 								if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'][$i], $target_path)) {
 									echo '<div class="notice notice-success"><p>';
-									_e( 'The file', 'wp-gpx-maps' );
-									echo ''.$uploadingFileName.'';
+									_e( 'The file', 'wp-gpx-maps' ) ;
+									echo ' ' . '<strong>' . $uploadingFileName . '</strong>' . ' ';
 									_e( 'has been successfully uploaded.', 'wp-gpx-maps' );
 									echo '</p></div>';
 								} else{
