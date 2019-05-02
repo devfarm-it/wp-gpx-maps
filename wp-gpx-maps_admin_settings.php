@@ -248,50 +248,49 @@
 		<tr>
 			<th scope="row"><?php _e( 'Default map type:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM1" <?php if ($t == 'OSM1') echo 'checked'; ?>><?php _e( ' Open Street Map', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM2" <?php if ($t == 'OSM2') echo 'checked'; ?>><?php _e( ' Open Cycle Map', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM4" <?php if ($t == 'OSM4') echo 'checked'; ?>><?php _e( ' Open Cycle Map - Transport', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM5" <?php if ($t == 'OSM5') echo 'checked'; ?>><?php _e( ' Open Cycle Map - Landscape', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM3" <?php if ($t == 'OSM3') echo 'checked'; ?>><?php _e( ' Hike & Bike', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ($t == 'OSM6') echo 'checked'; ?>><?php _e( ' MapToolKit - Terrain', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM7" <?php if ($t == 'OSM7') echo 'checked'; ?>><?php _e( ' Open Street Map - Humanitarian map style', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM9" <?php if ($t == 'OSM9') echo 'checked'; ?>><?php _e( ' Hike & Bike', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM10" <?php if ($t == 'OSM10') echo 'checked'; ?>><?php _e( ' Open Sea Map', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM1" <?php if ($t == 'OSM1') echo 'checked'; ?>><?php _e( 'Open Street Map', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM2" <?php if ($t == 'OSM2') echo 'checked'; ?>><?php _e( 'Open Cycle Map', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM4" <?php if ($t == 'OSM4') echo 'checked'; ?>><?php _e( 'Open Cycle Map - Transport', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM5" <?php if ($t == 'OSM5') echo 'checked'; ?>><?php _e( 'Open Cycle Map - Landscape', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM3" <?php if ($t == 'OSM3') echo 'checked'; ?>><?php _e( 'Hike & Bike', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ($t == 'OSM6') echo 'checked'; ?>><?php _e( 'MapToolKit - Terrain', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM7" <?php if ($t == 'OSM7') echo 'checked'; ?>><?php _e( 'Open Street Map - Humanitarian map style', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM9" <?php if ($t == 'OSM9') echo 'checked'; ?>><?php _e( 'Hike & Bike', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM10" <?php if ($t == 'OSM10') echo 'checked'; ?>><?php _e( 'Open Sea Map', 'wp-gpx-maps' ); ?><br />
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Start track icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_map_start_icon" value="<?php echo get_option('wpgpxmaps_map_start_icon'); ?>" style="width:400px" /><em><?php _e( ' (URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
-			</td>
+				<input name="wpgpxmaps_map_start_icon" value="<?php echo get_option('wpgpxmaps_map_start_icon'); ?>" style="width:400px" /> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'End track icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_map_end_icon" value="<?php echo get_option('wpgpxmaps_map_end_icon'); ?>" style="width:400px" /><em><?php _e( ' (URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+				<input name="wpgpxmaps_map_end_icon" value="<?php echo get_option('wpgpxmaps_map_end_icon'); ?>" style="width:400px" /><em> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Current position icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_map_current_icon" value="<?php echo get_option('wpgpxmaps_map_current_icon'); ?>" style="width:400px" /><em><?php _e( ' (URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+				<input name="wpgpxmaps_map_current_icon" value="<?php echo get_option('wpgpxmaps_map_current_icon'); ?>" style="width:400px" /><em> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Current GPS position icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_currentpositioncon" value="<?php echo get_option('wpgpxmaps_currentpositioncon'); ?>" style="width:400px" /><em><?php _e( ' (URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+				<input name="wpgpxmaps_currentpositioncon" value="<?php echo get_option('wpgpxmaps_currentpositioncon'); ?>" style="width:400px" /> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Custom waypoint icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_map_waypoint_icon" value="<?php echo get_option('wpgpxmaps_map_waypoint_icon'); ?>" style="width:400px" /><em><?php _e( ' (URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+				<input name="wpgpxmaps_map_waypoint_icon" value="<?php echo get_option('wpgpxmaps_map_waypoint_icon'); ?>" style="width:400px" /> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
 			</td>
 		</tr>
 
@@ -472,7 +471,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Skip GPX points closer than:', 'wp-gpx-maps' ); ?></th>
 			<td>
-			<input name="wpgpxmaps_pointsoffset" type="text" id="wpgpxmaps_pointsoffset" value="<?php echo $po ?>" style="width:50px;" /><i><?php _e( ' meters', 'wp-gpx-maps' ); ?></i>
+			<input name="wpgpxmaps_pointsoffset" type="text" id="wpgpxmaps_pointsoffset" value="<?php echo $po ?>" style="width:50px;" /><i> &nbsp; <?php _e( 'meters', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 

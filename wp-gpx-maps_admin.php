@@ -108,7 +108,7 @@ function WP_GPX_Maps_html_page() {
 		if (!@mkdir($realGpxPath,0755,true)) {
 			echo '<div class=" notice notice-error"><p>';
 			_e( 'Can\'t create', 'wp-gpx-maps' );
-			echo ''.$realGpxPath.'';
+			echo ' ' . '<strong>' . $realGpxPath . '</strong>' . ' ';
 			_e( 'folder. Please create it and make it writable! If not, you will must update the file manually!', 'wp-gpx-maps' );
 			echo '</p></div>';
 		}
@@ -130,7 +130,7 @@ function WP_GPX_Maps_html_page() {
 		if (!@mkdir($cacheGpxPath,0755,true)) {
 			echo '<div class=" notice notice-error"><p>';
 			_e( 'Can\'t create', 'wp-gpx-maps' );
-			echo ''.cacheGpxPath.'';
+			echo ' ' . '<strong>' . cacheGpxPath . '</strong>' . ' ';
 			_e( 'folder. Please create it and make it writable! If not, you will must update the file manually!', 'wp-gpx-maps' );
 			echo '</p></div>';
 		}
