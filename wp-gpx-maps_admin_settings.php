@@ -86,21 +86,21 @@
 		<tr>
 			<th scope="row"><?php _e( 'Cache:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_skipcache" type="checkbox" value="true" <?php if($skipcache == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Do not use cache', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_skipcache" type="checkbox" value="true" <?php if($skipcache == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Do not use cache', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'GPX Download:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_download" type="checkbox" value="true" <?php if($download == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><?php _e( 'Allow users to download your GPX file', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_download" type="checkbox" value="true" <?php if($download == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><?php echo ' ' ; _e( 'Allow users to download your GPX file', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Use browser GPS position:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_usegpsposition" type="checkbox" value="true" <?php if($usegpsposition == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Allow users to use browser GPS in order to display their current position on map', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_usegpsposition" type="checkbox" value="true" <?php if($usegpsposition == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Allow users to use browser GPS in order to display their current position on map', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
@@ -108,7 +108,7 @@
 			<th scope="row"><?php _e( 'Thunderforest API Key (Open Cycle Map):', 'wp-gpx-maps' ); ?></th>
 			<td>
 				<input name="wpgpxmaps_openstreetmap_apikey" type="text" id="wpgpxmaps_openstreetmap_apikey" value="<?php echo get_option('wpgpxmaps_openstreetmap_apikey'); ?>" style="width:400px" />
-				<em><?php _e( 'Go to', 'wp-gpx-maps' ) ;?><?php echo ' ' ;?>'<a href="http://www.thunderforest.com/docs/apikeys/" target="_blank"><?php _e( 'Thunderforest API Keys', 'wp-gpx-maps' ); ?></a> <?php _e( 'and signing in to your Thunderforest account', 'wp-gpx-maps' ); ?> </em>
+				<em><?php _e( 'Go to', 'wp-gpx-maps' ) ; echo ' ' ;?>'<a href="http://www.thunderforest.com/docs/apikeys/" target="_blank"><?php _e( 'Thunderforest API Keys', 'wp-gpx-maps' ); ?></a> <?php _e( 'and signing in to your Thunderforest account', 'wp-gpx-maps' ); ?> </em>
 			</td>
 		</tr>
 
@@ -133,76 +133,76 @@
 		<tr>
 			<th scope="row"><?php _e( 'Summary table:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary" type="checkbox" value="true" <?php if($summary == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print summary table', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary" type="checkbox" value="true" <?php if($summary == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print summary table', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Total distance:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_tot_len" type="checkbox" value="true" <?php if($tot_len == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print total distance', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_tot_len" type="checkbox" value="true" <?php if($tot_len == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print total distance', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Max elevation:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_max_ele" type="checkbox" value="true" <?php if($max_ele == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print max elevation', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_max_ele" type="checkbox" value="true" <?php if($max_ele == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print max elevation', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Min elevation:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_min_ele" type="checkbox" value="true" <?php if($min_ele == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print min elevation', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_min_ele" type="checkbox" value="true" <?php if($min_ele == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print min elevation', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Total climbing:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_total_ele_up" type="checkbox" value="true" <?php if($total_ele_up == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print total climbing', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_total_ele_up" type="checkbox" value="true" <?php if($total_ele_up == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print total climbing', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Total descent:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_total_ele_down" type="checkbox" value="true" <?php if($total_ele_down == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print total descent', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_total_ele_down" type="checkbox" value="true" <?php if($total_ele_down == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print total descent', 'wp-gpx-maps' ); ?></i>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Average speed:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_avg_speed" type="checkbox" value="true" <?php if($avg_speed == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print average speed', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_avg_speed" type="checkbox" value="true" <?php if($avg_speed == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print average speed', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Average cadence:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_avg_cad" type="checkbox" value="true" <?php if($avg_cad == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print average cadence', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_avg_cad" type="checkbox" value="true" <?php if($avg_cad == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print average cadence', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Average heart rate:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_avg_hr" type="checkbox" value="true" <?php if($avg_hr == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print average heart rate', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_avg_hr" type="checkbox" value="true" <?php if($avg_hr == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print average heart rate', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Average temperature:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_avg_temp" type="checkbox" value="true" <?php if($avg_temp == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print average temperature', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_avg_temp" type="checkbox" value="true" <?php if($avg_temp == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print average temperature', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Total time:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary_total_time" type="checkbox" value="true" <?php if($total_time == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Print total time', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary_total_time" type="checkbox" value="true" <?php if($total_time == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print total time', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
@@ -228,14 +228,14 @@
 		<tr>
 			<th scope="row"><?php _e( 'On mouse scroll wheel:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_zoomonscrollwheel" type="checkbox" value="true" <?php if($zoomonscrollwheel == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Enable zoom', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_zoomonscrollwheel" type="checkbox" value="true" <?php if($zoomonscrollwheel == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Enable zoom', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Waypoints support:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_show_waypoint" type="checkbox" value="true" <?php if($showW == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Show waypoints', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_show_waypoint" type="checkbox" value="true" <?php if($showW == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Show waypoints', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
@@ -249,49 +249,55 @@
 		<tr>
 			<th scope="row"><?php _e( 'Default map type:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM1" <?php if ($t == 'OSM1') echo 'checked'; ?>><?php _e( 'Open Street Map', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM2" <?php if ($t == 'OSM2') echo 'checked'; ?>><?php _e( 'Open Cycle Map', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM4" <?php if ($t == 'OSM4') echo 'checked'; ?>><?php _e( 'Open Cycle Map - Transport', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM5" <?php if ($t == 'OSM5') echo 'checked'; ?>><?php _e( 'Open Cycle Map - Landscape', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM3" <?php if ($t == 'OSM3') echo 'checked'; ?>><?php _e( 'Hike & Bike', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ($t == 'OSM6') echo 'checked'; ?>><?php _e( 'MapToolKit - Terrain', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM7" <?php if ($t == 'OSM7') echo 'checked'; ?>><?php _e( 'Open Street Map - Humanitarian map style', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM9" <?php if ($t == 'OSM9') echo 'checked'; ?>><?php _e( 'Hike & Bike', 'wp-gpx-maps' ); ?><br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM10" <?php if ($t == 'OSM10') echo 'checked'; ?>><?php _e( 'Open Sea Map', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM1" <?php if ($t == 'OSM1') echo 'checked'; ?>><?php echo ' ' ; _e( 'Open Street Map', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM2" <?php if ($t == 'OSM2') echo 'checked'; ?>><?php echo ' ' ; _e( 'Open Cycle Map', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM4" <?php if ($t == 'OSM4') echo 'checked'; ?>><?php echo ' ' ; _e( 'Open Cycle Map - Transport', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM5" <?php if ($t == 'OSM5') echo 'checked'; ?>><?php echo ' ' ; _e( 'Open Cycle Map - Landscape', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM3" <?php if ($t == 'OSM3') echo 'checked'; ?>><?php echo ' ' ; _e( 'Hike & Bike', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ($t == 'OSM6') echo 'checked'; ?>><?php echo ' ' ; _e( 'MapToolKit - Terrain', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM7" <?php if ($t == 'OSM7') echo 'checked'; ?>><?php echo ' ' ; _e( 'Open Street Map - Humanitarian map style', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM9" <?php if ($t == 'OSM9') echo 'checked'; ?>><?php echo ' ' ; _e( 'Hike & Bike', 'wp-gpx-maps' ); ?><br />
+				<input type="radio" name="wpgpxmaps_map_type" value="OSM10" <?php if ($t == 'OSM10') echo 'checked'; ?>><?php echo ' ' ; _e( 'Open Sea Map', 'wp-gpx-maps' ); ?><br />
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Start track icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_map_start_icon" value="<?php echo get_option('wpgpxmaps_map_start_icon'); ?>" style="width:400px" /> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+				<input name="wpgpxmaps_map_start_icon" value="<?php echo get_option('wpgpxmaps_map_start_icon'); ?>" style="width:400px" />
+				<em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'End track icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_map_end_icon" value="<?php echo get_option('wpgpxmaps_map_end_icon'); ?>" style="width:400px" /><em> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+				<input name="wpgpxmaps_map_end_icon" value="<?php echo get_option('wpgpxmaps_map_end_icon'); ?>" style="width:400px" />
+				<em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Current position icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_map_current_icon" value="<?php echo get_option('wpgpxmaps_map_current_icon'); ?>" style="width:400px" /><em> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+				<input name="wpgpxmaps_map_current_icon" value="<?php echo get_option('wpgpxmaps_map_current_icon'); ?>" style="width:400px" />
+				<em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Current GPS position icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_currentpositioncon" value="<?php echo get_option('wpgpxmaps_currentpositioncon'); ?>" style="width:400px" /> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+				<input name="wpgpxmaps_currentpositioncon" value="<?php echo get_option('wpgpxmaps_currentpositioncon'); ?>" style="width:400px" />
+				<em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Custom waypoint icon:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_map_waypoint_icon" value="<?php echo get_option('wpgpxmaps_map_waypoint_icon'); ?>" style="width:400px" /> &nbsp; <em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
+				<input name="wpgpxmaps_map_waypoint_icon" value="<?php echo get_option('wpgpxmaps_map_waypoint_icon'); ?>" style="width:400px" />
+				<em><?php _e( '(URL to image) Leave empty to hide.', 'wp-gpx-maps' ); ?></em>
 			</td>
 		</tr>
 
@@ -316,7 +322,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Altitude', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input type="checkbox" <?php if($showEle == "true"){echo('checked');} ?> onchange="wpgpxmaps_show_elevation.value = this.checked" onload="wpgpxmaps_show_elevation.value = this.checked" /><i><?php _e( 'Show altitude', 'wp-gpx-maps' ); ?></i>
+				<input type="checkbox" <?php if($showEle == "true"){echo('checked');} ?> onchange="wpgpxmaps_show_elevation.value = this.checked" onload="wpgpxmaps_show_elevation.value = this.checked" /><i><?php echo ' ' ; _e( 'Show altitude', 'wp-gpx-maps' ); ?></i>
 				<input name="wpgpxmaps_show_elevation" type="hidden" value="<?php echo $showEle; ?>">
 			</td>
 		</tr>
@@ -356,7 +362,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Speed:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_show_speed" type="checkbox" value="true" <?php if($showSpeed == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Show speed', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_show_speed" type="checkbox" value="true" <?php if($showSpeed == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Show speed', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
@@ -396,7 +402,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Heart rate (where aviable):', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_show_hr" type="checkbox" value="true" <?php if($showHr == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Show heart rate', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_show_hr" type="checkbox" value="true" <?php if($showHr == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Show heart rate', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
@@ -410,7 +416,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Temperature (where aviable):', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_show_atemp" type="checkbox" value="true" <?php if($showAtemp == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Show temperature', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_show_atemp" type="checkbox" value="true" <?php if($showAtemp == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Show temperature', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
@@ -424,7 +430,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Cadence (where aviable):', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_show_cadence" type="checkbox" value="true" <?php if($showCad == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Show cadence', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_show_cadence" type="checkbox" value="true" <?php if($showCad == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Show cadence', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
@@ -438,7 +444,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Grade:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_show_grade" type="checkbox" value="true" <?php if($showGrade == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Show grade - BETA', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_show_grade" type="checkbox" value="true" <?php if($showGrade == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Show grade - BETA', 'wp-gpx-maps' ); ?></i>
 				<br />
 				<i><?php _e( '(Grade values depends on your GPS accuracy. If you have a poor GPS accuracy they might be totally wrong!)', 'wp-gpx-maps' ); ?></i>
 			</td>
@@ -465,21 +471,22 @@
 <form method="post" action="options.php">
 	<?php wp_nonce_field('update-options') ?>
 
-	<h3 class="title"><?php _e( 'Advanced Options <small>(Do not edit if you don\'t know what you are doing!)</small>', 'wp-gpx-maps' ); ?></h3>
+	<h3 class="title"><?php _e( 'Advanced Options', 'wp-gpx-maps' ); ?></h3>
+	<em><?php _e( '(Do not edit if you don\'t know what you are doing!)', 'wp-gpx-maps' ); ?></em>
 
 	<table class="form-table">
 
 		<tr>
 			<th scope="row"><?php _e( 'Skip GPX points closer than:', 'wp-gpx-maps' ); ?></th>
 			<td>
-			<input name="wpgpxmaps_pointsoffset" type="text" id="wpgpxmaps_pointsoffset" value="<?php echo $po ?>" style="width:50px;" /><i> &nbsp; <?php _e( 'meters', 'wp-gpx-maps' ); ?></i>
+			<input name="wpgpxmaps_pointsoffset" type="text" id="wpgpxmaps_pointsoffset" value="<?php echo $po ?>" style="width:50px;" /><i><?php echo ' ' ; _e( 'meters', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
 		<tr>
 			<th scope="row"><?php _e( 'Reduce GPX:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_donotreducegpx" type="checkbox" value="true" <?php if($donotreducegpx == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php _e( 'Do not reduce GPX', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_donotreducegpx" type="checkbox" value="true" <?php if($donotreducegpx == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Do not reduce GPX', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 
