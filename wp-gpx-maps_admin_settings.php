@@ -77,7 +77,7 @@
 			<td>
 				<select name='wpgpxmaps_distance_type'>
 					<option value="0" <?php if ($distanceType == '0' || $distanceType == '') echo 'selected'; ?>><?php _e( 'Normal (default)', 'wp-gpx-maps' ); ?></option>
-					<option value="1" <?php if ($distanceType == '1') echo 'selected'; ?>><?php _e( 'Flat &#8594; (Only flat distance, don`t take care of altitude)', 'wp-gpx-maps' ); ?></option>
+					<option value="1" <?php if ($distanceType == '1') echo 'selected'; ?>><?php _e( 'Flat &#8594; (Only flat distance, don&#8217;t take care of altitude)', 'wp-gpx-maps' ); ?></option>
 					<option value="2" <?php if ($distanceType == '2') echo 'selected'; ?>><?php _e( 'Climb &#8593; (Only climb distance)', 'wp-gpx-maps' ); ?></option>
 				</select>
 			</td>
@@ -472,7 +472,7 @@
 	<?php wp_nonce_field('update-options') ?>
 
 	<h3 class="title"><?php _e( 'Advanced Options', 'wp-gpx-maps' ); ?></h3>
-	<em><?php _e( '(Do not edit if you don\'t know what you are doing!)', 'wp-gpx-maps' ); ?></em>
+	<em><?php _e( '(Do not edit if you don&#8217;t know what you are doing!)', 'wp-gpx-maps' ); ?></em>
 
 	<table class="form-table">
 
