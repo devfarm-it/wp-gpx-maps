@@ -1,29 +1,15 @@
 <?php
 
 
+add_action('admin_menu', 'wpgpxmaps_admin_menu');
 
-if ( is_admin() ){
-
-	add_action('admin_menu', 'wpgpxmaps_admin_menu');
-
-}
-
-
-
-function wpgpxmaps_admin_menu() {
-
-	if ( current_user_can('manage_options') ){
-
-		add_options_page('WP GPX Maps', 'WP GPX Maps', 'manage_options', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
-
+function wpgpxmaps_admin_menu() {	
+	$ruolo = wp_get_current_user()->roles[0];
+	
+	if($ruolo != 'subscriber'){
+		add_menu_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
+		add_options_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
 	}
-
-	else if ( current_user_can('publish_posts') ) {
-
-		add_menu_page('WP GPX Maps', 'WP GPX Maps', 'publish_posts', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
-
-	}
-
 }
 
 
@@ -32,29 +18,36 @@ function wpgpxmaps_ilc_admin_tabs( $current  ) {
 
 
 
-	if (current_user_can('manage_options'))
+	//if (current_user_can('read'))
 
-	{
-
+	//{
+	$ruolo = wp_get_current_user()->roles[0];
+	if($ruolo == 'administrator'){
 		$tabs = array(
 				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
 				'settings' => __( 'Settings', 'wp-gpx-maps' ),
 				'help' => __( 'Help', 'wp-gpx-maps' )
 				);
-	}
-	else if ( current_user_can('publish_posts') ) {
-
+	}else{
 		$tabs = array(
 				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
 				'help' => __( 'Help', 'wp-gpx-maps' )
 				);
 	}
+	//}
+	/*
+	else if ( current_user_can('read') ) {
+
+		$tabs = array(
+				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
+				'help' => __( 'Help', 'wp-gpx-maps' )
+				);
+	}*/
 
 
 
     echo '<h2 class="nav-tab-wrapper">';
-
-    foreach( $tabs as $tab => $name ){
+		foreach( $tabs as $tab => $name ){
 
         $class = ( $tab == $current ) ? ' nav-tab-active' : '';
 
@@ -67,15 +60,30 @@ function wpgpxmaps_ilc_admin_tabs( $current  ) {
 }
 
 
+function getPathFilesContents($dir, &$results = array()){
+    $files = scandir($dir);
+    foreach($files as $key => $value){
+        $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+        if(!is_dir($path)) {
+            $results[] = $path;
+        } else if($value != "." && $value != "..") {
+            getPathFilesContents($path, $results);
+        }
+    }
+
+    return $results;
+}
+
+
 
 function WP_GPX_Maps_html_page() {
-
+	
 	$realGpxPath = gpxFolderPath();
 
 	$cacheGpxPath = gpxCacheFolderPath();
 
 	$relativeGpxPath = relativeGpxFolderPath();
-
+	//$relativeGpxPath = str_replace($current_user->name,"",$relativeGpxPath);
 	$relativeGpxPath = str_replace("\\","/", $relativeGpxPath);
 
 	$tab = $_GET['tab'];

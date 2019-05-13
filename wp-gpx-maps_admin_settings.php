@@ -1,8 +1,8 @@
 <?php
 
-	if ( !current_user_can('manage_options') )
-
+	if ( !current_user_can('read') )
 		return;
+	
 	$po = get_option('wpgpxmaps_pointsoffset');
 	$showW = get_option("wpgpxmaps_show_waypoint");
 	$donotreducegpx = get_option("wpgpxmaps_donotreducegpx");
@@ -31,7 +31,7 @@
 	$total_time = get_option("wpgpxmaps_summary_total_time");
 	$usegpsposition = get_option("wpgpxmaps_usegpsposition");
 	$distanceType = get_option("wpgpxmaps_distance_type");
-
+	$wpgpxmaps_allow_users_upload = get_option("wpgpxmaps_allow_users_upload");
 
 	if (empty($showEle))
 		$showEle = "true";
@@ -449,7 +449,13 @@
 				<input name="wpgpxmaps_graph_line_color_grade" type="color" data-hex="true" value="<?php echo get_option('wpgpxmaps_graph_line_color_grade'); ?>" />
 			</td>
 		</tr>
-
+		
+		<tr>
+			<th scope="row"><?php _e( 'Allow user uploads', 'wp-gpx-maps'); ?></th>
+			<td>
+				<input name="wpgpxmaps_allow_users_upload" type="checkbox" data-hex="true" value="false">
+			</td>
+		</tr>
 	</table>
 
 	<p class="submit">

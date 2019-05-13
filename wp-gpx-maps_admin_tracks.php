@@ -3,15 +3,15 @@
 	if ( !(is_admin()) )
 		return;
 
-	$is_admin = current_user_can( 'publish_posts' );
+	$is_admin = current_user_can( 'read' );
 
 	if ( $is_admin != 1 )
 		return;
 
 	$gpxRegEx = '/.gpx$/i';
-	if ( current_user_can('manage_options') ){
+	if ( current_user_can('read') ){
 		$menu_root = "options-general.php";
-	} else if ( current_user_can('publish_posts') ){
+	} else if ( current_user_can('read') ){
 		$menu_root = "admin.php";
 	}
 
@@ -43,6 +43,7 @@
 				<?php
 					if ( isset($_FILES['uploadedfile']) )
 					{
+						//Ordinamento
 						$total = count($_FILES['uploadedfile']['name']);
 						for($i=0; $i<$total; $i++) {
 							$uploadingFileName = basename( $_FILES['uploadedfile']['name'][$i]);
@@ -92,36 +93,55 @@
 
 		<?php
 	}
-
+	
 	$myGpxFileNames = array();
+	$current_user = wp_get_current_user();
+	if($current_user->roles[0] == 'editor' || $current_user->roles[0] == 'administrator'){
+		//cambia la directory dove guarda i file, poichè admin ed editor possono vederli tutti
+		$realGpxPath = str_replace('\\'.$current_user->user_login,'',$realGpxPath);
+		echo('SONO ADMIN, QUINDI IL PERCORSO DOVE VADO A GUARDARE è: '.$realGpxPath);
+	}
+	
 	if ( is_readable ( $realGpxPath ) && $handle = opendir($realGpxPath)) {
-		while (false !== ($entry = readdir($handle))) {
-			if (preg_match($gpxRegEx, $entry ))
+		$pathAllFiles = getPathFilesContents($realGpxPath, $results = array());
+		print_r($pathAllFiles);
+		//while (false !== ($entry = readdir($handle))) {
+		for($i = 0; $i < sizeof($pathAllFiles,0); $i++){
+			//if (preg_match($gpxRegEx, $entry ))
+			$file_name = basename($pathAllFiles[$i]);
+			if (preg_match($gpxRegEx, $pathAllFiles[$i] ))
 			{
 
 				if ( isset($_GET['_wpnonce'])
 					&&
-					wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry )
+					//wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry )
+					wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $pathAllFiles[$i] )
 					) {
 
-					if ( file_exists($realGpxPath ."/". $entry) )
+					//if ( file_exists($realGpxPath ."/". $entry) )
+					if ( file_exists($realGpxPath ."/". $pathAllFiles[$i]) )
 					{
-						unlink($realGpxPath ."/". $entry);
-						echo "<br/><b>$entry has been deleted.</b>";
+						//unlink($realGpxPath ."/". $entry);
+						unlink($realGpxPath ."/". $pathAllFiles[$i]);
+						//echo "<br/><b>$entry has been deleted.</b>";
+						echo "<br/><b>$pathAllFiles[$i] has been deleted.</b>";
 					}
 					else {
-						echo "<br/><b>Can't delete $entry.</b>";
-
+						//echo "<br/><b>Can't delete $entry.</b>";
+						echo "<br/><b>Can't delete $pathAllFiles[$i].</b>";
 					}
 				}
 				else
 				{
-					$myFile = $realGpxPath . "/" . $entry;
+					//$myFile = $realGpxPath . "/" . $entry;
+					$myFile = $pathAllFiles[$i];
 					$myGpxFileNames[] = array(
-											'name' => $entry,
+											//'name' => $entry,
+											'name' => $file_name,
 											'size' => filesize( $myFile ),
 											'lastedit' => filemtime( $myFile ),
-											'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
+											//'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
+											'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $pathAllFiles[$i] ),
 											);
 
 				}
@@ -130,12 +150,18 @@
 		}
 		closedir($handle);
 	}
-
+	
+	$relativeGpxPath = str_replace($current_user->name,"",$relativeGpxPath);
+	print_r($relativeGpxPath);
+	
 	if ( is_readable ( $realGpxPath ) && $handle = opendir($realGpxPath)) {
-			while (false !== ($entry = readdir($handle))) {
-				if (preg_match($gpxRegEx,$entry ))
+			for($i = 0; $i < sizeof($pathAllFiles,0); $i++){
+			//while (false !== ($entry = readdir($handle))) {
+				
+				//if (preg_match($gpxRegEx,$entry ))
+				if (preg_match($gpxRegEx,$pathAllFiles[$i] ))
 				{
-					$filenames[] = $realGpxPath . "/" . $entry;
+					$filenames[] = $realGpxPath . "/" . $pathAllFiles[$i];
 				}
 			}
 		closedir($handle);
@@ -148,7 +174,7 @@
 	<table id="table" class="wp-list-table widefat plugins"></table>
 
 <script type="text/javascript">
-
+	
 	function submitgpx(el)
 	{
 		 var newEl = document.createElement('span');
@@ -163,14 +189,14 @@
 			title: 'File',
 			sortable: true,
 			formatter: function(value, row, index) {
-
+				
 				return [
 					'<b>' + row.name + '</b><br />',
 					'<a class="delete_gpx_row" href="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=' + row.nonce + '" >Delete</a>',
 					' | ',
 					'<a href="<?php echo $wpgpxmaps_gpxRelativePath ?>' + row.name + '">Download</a>',
 					' | ',
-					'Shortcode: [sgpx gpx="<?php echo $relativeGpxPath ?>' + row.name + '"]',
+					'Shortcode: [sgpx gpx="<?php echo $pathAllFiles ?>' + row.name + '"]',
 				].join('')
 
 			}
