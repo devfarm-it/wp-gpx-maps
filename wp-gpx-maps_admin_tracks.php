@@ -64,7 +64,7 @@
 							else
 							{
 								echo '<div class="notice notice-warning"><p>';
-								_e( 'The file type not supported!', 'wp-gpx-maps' );
+								_e( 'The file type is not supported!', 'wp-gpx-maps' );
 								echo '</p></div>';
 							}
 						}
@@ -107,10 +107,18 @@
 					if ( file_exists($realGpxPath ."/". $entry) )
 					{
 						unlink($realGpxPath ."/". $entry);
-						echo "<br/><b>$entry has been deleted.</b>";
+						echo '<div class="notice notice-success"><p>';
+						_e( 'The file', 'wp-gpx-maps' ) ;
+						echo ' ' . '<strong>' . $entry . '</strong>' . ' ';
+						_e( 'has been successfully deleted.', 'wp-gpx-maps' ) ;
+						echo '</p></div>';
 					}
 					else {
-						echo "<br/><b>Can't delete $entry.</b>";
+						echo '<div class=" notice notice-error"><p>';
+						_e( 'The file', 'wp-gpx-maps' ) ;
+						echo ' ' . '<strong>' . $entry . '</strong>' . ' ';
+						_e( 'could not be deleted.', 'wp-gpx-maps' ) ;
+						echo '</p></div>';
 
 					}
 				}
@@ -166,11 +174,11 @@
 
 				return [
 					'<b>' + row.name + '</b><br />',
-					'<a class="delete_gpx_row" href="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=' + row.nonce + '" >Delete</a>',
+					'<a class="delete_gpx_row" href="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=' + row.nonce + '" ><?php _e( 'Delete', 'wp-gpx-maps' ); ?></a>',
 					' | ',
-					'<a href="<?php echo $wpgpxmaps_gpxRelativePath ?>' + row.name + '">Download</a>',
+					'<a href="<?php echo $wpgpxmaps_gpxRelativePath ?>' + row.name + '"><?php _e( 'Download', 'wp-gpx-maps' ); ?></a>',
 					' | ',
-					'Shortcode: [sgpx gpx="<?php echo $relativeGpxPath ?>' + row.name + '"]',
+					'<?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?> [sgpx gpx="<?php echo $relativeGpxPath ?>' + row.name + '"]',
 				].join('')
 
 			}
