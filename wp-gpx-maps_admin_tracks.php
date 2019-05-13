@@ -20,7 +20,7 @@
 
 		if ( isset($_GET['_wpnonce'])
 			&&
-			wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_clearcache_nonce' . $entry )
+			wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_clearcache_nonce' . basename($pathAllFiles) )
 			)
 		{
 			echo '<div class="notice notice-success"><p>';
@@ -73,7 +73,7 @@
 				?>
 			</form>
 
-			<form method="POST" style="float:left; margin:5px 20px 0 0" action="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=<?php echo wp_create_nonce( 'wpgpx_clearcache_nonce' ) ?>" >
+			<form method="POST" style="float:left; margin:5px 20px 0 0" action= "options-general.php?page=WP-GPX-Maps&_wpnonce=<?php echo wp_create_nonce( 'wpgpx_clearcache_nonce' ) ?> " >
 				<input type="submit" name="clearcache" value="<?php _e( 'Clear Cache', 'wp-gpx-maps' ); ?>" />
 			</form>
 
@@ -103,35 +103,34 @@
 	
 	if ( is_readable ( $realGpxPath ) && $handle = opendir($realGpxPath)) {
 		$pathAllFiles = getPathFilesContents($realGpxPath, $results = array());
-		//print_r($pathAllFiles);
 		//while (false !== ($entry = readdir($handle))) {
 		for($i = 0; $i < sizeof($pathAllFiles,0); $i++){
+			
 			//if (preg_match($gpxRegEx, $entry ))
-			$file_name = basename($pathAllFiles[$i]);
-			if (preg_match($gpxRegEx, $pathAllFiles[$i] ))
+			//$file_name = entry;
+			if (preg_match($gpxRegEx, basename($pathAllFiles[$i]) ))
 			{
-
 				if ( isset($_GET['_wpnonce'])
 					&&
-					//wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry )
-					wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $pathAllFiles[$i] )
-					) {
-
-					//if ( file_exists($realGpxPath ."/". $entry) )
-					if ( file_exists($realGpxPath ."/". $pathAllFiles[$i]) )
+					wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' .$pathAllFiles[$i] )
+					)
 					{
-
-						unlink($realGpxPath ."/". $pathAllFiles[$i]);
+					//wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry )
+					//if ( file_exists($realGpxPath ."/". $entry) )
+					if ( file_exists($pathAllFiles[$i] ))
+					{
+						unlink($pathAllFiles[$i]);
+						$pathAllFiles[$i] = null;
 						echo '<div class="notice notice-success"><p>';
 						_e( 'The file', 'wp-gpx-maps' ) ;
-						echo ' ' . '<strong>' . $pathAllFiles[$i] . '</strong>' . ' ';
+						echo ' ' . '<strong>' . basename($pathAllFiles[$i]) . '</strong>' . ' ';
 						_e( 'has been successfully deleted.', 'wp-gpx-maps' ) ;
 						echo '</p></div>';
 					}
 					else {
 						echo '<div class=" notice notice-error"><p>';
 						_e( 'The file', 'wp-gpx-maps' ) ;
-						echo ' ' . '<strong>' . $pathAllFiles[$i] . '</strong>' . ' ';
+						echo ' ' . '<strong>' . basename($pathAllFiles[$i]) . '</strong>' . ' ';
 						_e( 'could not be deleted.', 'wp-gpx-maps' ) ;
 						echo '</p></div>';
 
@@ -139,17 +138,18 @@
 				}
 				else
 				{
+					if(!$pathAllFiles[$i] == null){
 					//$myFile = $realGpxPath . "/" . $entry;
-					$myFile = $pathAllFiles[$i];
-					$myGpxFileNames[] = array(
+					
+					$ArrayFile[] = array(
 											//'name' => $entry,
-											'name' => $file_name,
-											'size' => filesize( $myFile ),
-											'lastedit' => filemtime( $myFile ),
+											'name' => basename($pathAllFiles[$i]),
+											'size' => filesize( $pathAllFiles[$i] ),
+											'lastedit' => filemtime( $pathAllFiles[$i] ),
 											//'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
 											'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $pathAllFiles[$i] ),
 											);
-
+					}
 				}
 
 			}
@@ -158,7 +158,7 @@
 	}
 	
 	$relativeGpxPath = str_replace($current_user->name,"",$relativeGpxPath);
-	
+	/*
 	if ( is_readable ( $realGpxPath ) && $handle = opendir($realGpxPath)) {
 			for($i = 0; $i < sizeof($pathAllFiles,0); $i++){
 			//while (false !== ($entry = readdir($handle))) {
@@ -170,60 +170,73 @@
 				}
 			}
 		closedir($handle);
-	}
+	}*/
 
 	$wpgpxmaps_gpxRelativePath = get_site_url(null, '/wp-content/uploads/gpx/');
 	
 	$pathCompleto = array();
+	$pathC = array();
 	
-	for($i = 0; $i < count($pathAllFiles); $i++){ 
-		//$pathAllFiles[$i] = "0";
+	for($i = 0; $i < count($pathAllFiles); $i++){
+		$pathC[$i] = $pathAllFiles[$i];
 		$pathCompleto[$i] = get_site_url(null, str_replace("C:\\xampp\\htdocs\\wordpress\\","",$pathAllFiles[$i]));
 		$pathCompleto[$i] = str_replace("\\", "/", $pathCompleto[$i]);
-		//$pathCompleto[$i] = $pathCompleto[$i].basename($pathAllFiles[$i]);
 		$pathAllFiles[$i] = str_replace('C:\xampp\htdocs\wordpress','',$pathAllFiles[$i]);
 		$pathAllFiles[$i] = str_replace('\\','/', $pathAllFiles[$i]);
 	}
-	
-	class RigaPerTabella{
-    public $name;
-    public $pathPerShortcode;
-	public $pathPerDownload;
-	public $date;
-	public $nonce;
-	public $size;
-	
-	public function __construct($name, $pathPerShortcode, $pathCompleto){
-			$this->name = $name;
-			$this->pathPerShortcode = $pathPerShortcode;
-			$this->date = "12";
-			$this->size = "1414MB";
-			$this->pathPerDownload = $pathCompleto;
-	}
-	public function __toString(){
-		try 
-        {
-            return (string) $this->name." ".$this-> pathPerShortcode;
-        } 
-        catch (Exception $exception) 
-        {
-            return '';
-        }
-	}
-	}
-	
+	/* QUELLO DI PRIMA
+	$myGpxFileNames[] = array(
+											'name' => $entry,
+											'size' => filesize( $pathC[$pos] ),
+											'lastedit' => filemtime( $myFile ),
+											//'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
+											'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
+											);
+	*/										
+											
 	//CREO L'ARRAY DI OGGETTI CHE POI VERRANNO MESSI SULLE RIGHE DELLA TABELLA CON GLI SHORTCODE
 	$ArrayPerStampaSuTabella = array();
 	for($i = 0; $i < count($pathAllFiles); $i++){
 		//tolgo i file temporanei che vengono creati
-		if(strpos($pathAllFiles[$i], ".tmp" ) == false)	$ArrayPerStampaSuTabella[$i] = new RigaPerTabella(basename($pathAllFiles[$i]), $pathAllFiles[$i], $pathCompleto[$i]);
+		if((strpos($pathAllFiles[$i], ".tmp" ) == false) && !($pathAllFiles[$i] == null)) $ArrayPerStampaSuTabella[] = array(
+											//'name' => $entry,
+											'index' => $i,
+											'nomeSito' => get_site_url(),
+											'pathPerDownload' => $pathCompleto[$i],
+											'pathPerShortcode' => $pathAllFiles[$i],
+											'name' => basename($pathAllFiles[$i]),
+											'size' => filesize( $pathC[$i] ),
+											'lastedit' => filemtime( $pathC[$i] ),
+											//'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
+											'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' .$pathC[$i] ),
+											);
 	}
-	//echo("DOWNLOAD PATH GIUSTO:".$wpgpxmaps_gpxRelativePath );
+	
+	//print_r($myGpxFileNames );
 ?>
 
 	<table id="table" class="wp-list-table widefat plugins"></table>
 
 <script type="text/javascript">
+	function copia(elementId){
+		  // Create an auxiliary hidden input
+		  var aux = document.createElement("input");
+
+		  // Get the text from the element passed into the input
+		  aux.setAttribute("value", document.getElementById(elementId).innerHTML);
+
+		  // Append the aux input to the body
+		  document.body.appendChild(aux);
+
+		  // Highlight the content
+		  aux.select();
+
+		  // Execute the copy command
+		  document.execCommand("copy");
+
+		  // Remove the input from the body
+		  document.body.removeChild(aux);
+	}
 	
 	function submitgpx(el)
 	{
@@ -242,11 +255,13 @@
 				
 				return [
 					'<b>' + row.name + '</b><br />',
-					'<a class="delete_gpx_row" href="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=' + row.nonce + '" ><?php _e( 'Delete', 'wp-gpx-maps' ); ?></a>',
+					'<a class="delete_gpx_row" href=' + row.nomeSito + '/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=' + row.nonce + ' ><?php _e( 'Delete', 'wp-gpx-maps' ); ?></a>',
 					' | ',
 					'<a href="' + row.pathPerDownload + '"><?php _e( 'Download', 'wp-gpx-maps' ); ?></a>',
 					' | ',
-					'<?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?> [sgpx gpx="' + row.pathPerShortcode + '"]',
+					'<?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?>' + '<p style="display: inline" id="' + row.index + '"> [sgpx gpx="' + row.pathPerShortcode + '"]</p> ',
+					' | ',
+					'<a onclick="copia(' + row.index + ')">copia</a>',
 				].join('')
 			}
 		}, {

@@ -95,8 +95,7 @@
 		$sitePath = wp_gpx_maps_sitePath();
 		$realGpxPath = gpxFolderPath();
 		$ret = str_replace($sitePath,'',$realGpxPath).DIRECTORY_SEPARATOR;
-		//ToDo CANCELLA L'ECHO DEL PATH DOPO AVERLO MESSO APPOSTO PER OGNI FILE
-		echo($ret);
+		//ret è il path giusto
 		return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ret);
 	}
 
