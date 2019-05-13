@@ -65,7 +65,7 @@
 							else
 							{
 								echo '<div class="notice notice-warning"><p>';
-								_e( 'The file type not supported!', 'wp-gpx-maps' );
+								_e( 'The file type is not supported!', 'wp-gpx-maps' );
 								echo '</p></div>';
 							}
 						}
@@ -99,12 +99,11 @@
 	if($current_user->roles[0] == 'editor' || $current_user->roles[0] == 'administrator'){
 		//cambia la directory dove guarda i file, poichè admin ed editor possono vederli tutti
 		$realGpxPath = str_replace('\\'.$current_user->user_login,'',$realGpxPath);
-		echo('SONO ADMIN, QUINDI IL PERCORSO DOVE VADO A GUARDARE è: '.$realGpxPath);
 	}
 	
 	if ( is_readable ( $realGpxPath ) && $handle = opendir($realGpxPath)) {
 		$pathAllFiles = getPathFilesContents($realGpxPath, $results = array());
-		print_r($pathAllFiles);
+		//print_r($pathAllFiles);
 		//while (false !== ($entry = readdir($handle))) {
 		for($i = 0; $i < sizeof($pathAllFiles,0); $i++){
 			//if (preg_match($gpxRegEx, $entry ))
@@ -121,14 +120,21 @@
 					//if ( file_exists($realGpxPath ."/". $entry) )
 					if ( file_exists($realGpxPath ."/". $pathAllFiles[$i]) )
 					{
-						//unlink($realGpxPath ."/". $entry);
+
 						unlink($realGpxPath ."/". $pathAllFiles[$i]);
-						//echo "<br/><b>$entry has been deleted.</b>";
-						echo "<br/><b>$pathAllFiles[$i] has been deleted.</b>";
+						echo '<div class="notice notice-success"><p>';
+						_e( 'The file', 'wp-gpx-maps' ) ;
+						echo ' ' . '<strong>' . $pathAllFiles[$i] . '</strong>' . ' ';
+						_e( 'has been successfully deleted.', 'wp-gpx-maps' ) ;
+						echo '</p></div>';
 					}
 					else {
-						//echo "<br/><b>Can't delete $entry.</b>";
-						echo "<br/><b>Can't delete $pathAllFiles[$i].</b>";
+						echo '<div class=" notice notice-error"><p>';
+						_e( 'The file', 'wp-gpx-maps' ) ;
+						echo ' ' . '<strong>' . $pathAllFiles[$i] . '</strong>' . ' ';
+						_e( 'could not be deleted.', 'wp-gpx-maps' ) ;
+						echo '</p></div>';
+
 					}
 				}
 				else
@@ -152,7 +158,6 @@
 	}
 	
 	$relativeGpxPath = str_replace($current_user->name,"",$relativeGpxPath);
-	print_r($relativeGpxPath);
 	
 	if ( is_readable ( $realGpxPath ) && $handle = opendir($realGpxPath)) {
 			for($i = 0; $i < sizeof($pathAllFiles,0); $i++){
@@ -168,7 +173,52 @@
 	}
 
 	$wpgpxmaps_gpxRelativePath = get_site_url(null, '/wp-content/uploads/gpx/');
-
+	
+	$pathCompleto = array();
+	
+	for($i = 0; $i < count($pathAllFiles); $i++){ 
+		//$pathAllFiles[$i] = "0";
+		$pathCompleto[$i] = get_site_url(null, str_replace("C:\\xampp\\htdocs\\wordpress\\","",$pathAllFiles[$i]));
+		$pathCompleto[$i] = str_replace("\\", "/", $pathCompleto[$i]);
+		//$pathCompleto[$i] = $pathCompleto[$i].basename($pathAllFiles[$i]);
+		$pathAllFiles[$i] = str_replace('C:\xampp\htdocs\wordpress','',$pathAllFiles[$i]);
+		$pathAllFiles[$i] = str_replace('\\','/', $pathAllFiles[$i]);
+	}
+	
+	class RigaPerTabella{
+    public $name;
+    public $pathPerShortcode;
+	public $pathPerDownload;
+	public $date;
+	public $nonce;
+	public $size;
+	
+	public function __construct($name, $pathPerShortcode, $pathCompleto){
+			$this->name = $name;
+			$this->pathPerShortcode = $pathPerShortcode;
+			$this->date = "12";
+			$this->size = "1414MB";
+			$this->pathPerDownload = $pathCompleto;
+	}
+	public function __toString(){
+		try 
+        {
+            return (string) $this->name." ".$this-> pathPerShortcode;
+        } 
+        catch (Exception $exception) 
+        {
+            return '';
+        }
+	}
+	}
+	
+	//CREO L'ARRAY DI OGGETTI CHE POI VERRANNO MESSI SULLE RIGHE DELLA TABELLA CON GLI SHORTCODE
+	$ArrayPerStampaSuTabella = array();
+	for($i = 0; $i < count($pathAllFiles); $i++){
+		//tolgo i file temporanei che vengono creati
+		if(strpos($pathAllFiles[$i], ".tmp" ) == false)	$ArrayPerStampaSuTabella[$i] = new RigaPerTabella(basename($pathAllFiles[$i]), $pathAllFiles[$i], $pathCompleto[$i]);
+	}
+	//echo("DOWNLOAD PATH GIUSTO:".$wpgpxmaps_gpxRelativePath );
 ?>
 
 	<table id="table" class="wp-list-table widefat plugins"></table>
@@ -192,13 +242,12 @@
 				
 				return [
 					'<b>' + row.name + '</b><br />',
-					'<a class="delete_gpx_row" href="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=' + row.nonce + '" >Delete</a>',
+					'<a class="delete_gpx_row" href="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=' + row.nonce + '" ><?php _e( 'Delete', 'wp-gpx-maps' ); ?></a>',
 					' | ',
-					'<a href="<?php echo $wpgpxmaps_gpxRelativePath ?>' + row.name + '">Download</a>',
+					'<a href="' + row.pathPerDownload + '"><?php _e( 'Download', 'wp-gpx-maps' ); ?></a>',
 					' | ',
-					'Shortcode: [sgpx gpx="<?php echo $pathAllFiles ?>' + row.name + '"]',
+					'<?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?> [sgpx gpx="' + row.pathPerShortcode + '"]',
 				].join('')
-
 			}
 		}, {
 			field: 'lastedit',
@@ -216,7 +265,7 @@
 		}],
 		sortName : 'lastedit',
 		sortOrder : 'desc',
-		data: <?php echo json_encode( $myGpxFileNames ) ?>
+		data: <?php echo json_encode( $ArrayPerStampaSuTabella ) ?>
 	});
 
 	jQuery('.delete_gpx_row').click(function(){

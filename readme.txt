@@ -114,7 +114,7 @@ The attributes are:
 1. glinecolorhr: heart rate line color (default is #ff77bd)
 1. glinecolorcad: cadence line color (default is #beecff)
 1. glinecolorgrade: grade line color (default is #beecff)
-1. uomspeed: unit of measure for speed are: 0, 1, 2, 3, 4, 5 (0 = m/s, 1 = km/h, 2 = miles/h, 3 = min/km, 4 = min/miles, 5 = Nautical Miles/Hour (Knots))
+1. uomspeed: unit of measure for speed are: 0, 1, 2, 3, 4, 5 (0 = m/s, 1 = km/h, 2 = miles/h, 3 = min/km, 4 = min/miles, 5 = Nautical Miles/Hour (Knots), 6 = min/100 meters)
 1. chartFrom1: minimun value for altitude chart
 1. chartTo1: maxumin value for altitude chart
 1. chartFrom2: minimun value for speed chart

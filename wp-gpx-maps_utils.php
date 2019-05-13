@@ -154,7 +154,7 @@
 		}
 		else
 		{
-			echo "WP GPX Maps Error: File $gpxPath not found!";
+			echo _e( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' ) . ' ' . $gpxPath;
 		}
 
 		// reduce the points to around 200 to speedup
@@ -589,7 +589,7 @@
 			try {
 				$gpx = simplexml_load_file($gpxPath);
 			} catch (Exception $e) {
-				echo "WP GPX Maps Error: Cant parse xml file " . $gpxPath;
+				echo _e( 'WP GPX Maps Error: Can&#8217;t parse xml file!', 'wp-gpx-maps' ) . ' ' . $gpxPath;
 				return $points;
 			}
 
