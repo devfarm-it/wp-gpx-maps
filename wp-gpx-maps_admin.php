@@ -4,9 +4,8 @@
 add_action('admin_menu', 'wpgpxmaps_admin_menu');
 
 function wpgpxmaps_admin_menu() {	
-	$ruolo = wp_get_current_user()->roles[0];
 	
-	if($ruolo != 'subscriber'){
+	if(current_user_can('edit_posts')){
 		add_menu_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
 		add_options_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
 	}
@@ -21,8 +20,7 @@ function wpgpxmaps_ilc_admin_tabs( $current  ) {
 	//if (current_user_can('read'))
 
 	//{
-	$ruolo = wp_get_current_user()->roles[0];
-	if($ruolo == 'administrator'){
+	if(current_user_can('edit_users')){
 		$tabs = array(
 				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
 				'settings' => __( 'Settings', 'wp-gpx-maps' ),

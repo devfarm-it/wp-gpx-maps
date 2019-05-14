@@ -280,6 +280,8 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 	$dtoffset =           wpgpxmaps_findValue($attr, "dtoffset",           "wpgpxmaps_dtoffset", 		     	 0);
 	$distanceType =       wpgpxmaps_findValue($attr, "distanceType",       "wpgpxmaps_distance_type", 		 0);
 
+	$allow_other_users_upload = wpgpxmaps_findValue($attr, "allow_other_users_upload", "wpgpxmaps_allow_users_upload", false);
+	
 	$skipcache =          wpgpxmaps_findValue($attr, "skipcache",          "wpgpxmaps_skipcache", 	     	 "");
 
 	$summary =            wpgpxmaps_findValue($attr, "summary",            "wpgpxmaps_summary", 		     	 "");
@@ -921,6 +923,7 @@ function WP_GPX_Maps_install() {
 	add_option('wpgpxmaps_download','','','yes');
 	add_option('wpgpxmaps_summary','','','yes');
 	add_option('wpgpxmaps_skipcache','','','yes');
+	add_option('wpgpxmaps_allow_users_upload','','','yes');
 }
 
 function WP_GPX_Maps_remove() {
@@ -956,6 +959,7 @@ function WP_GPX_Maps_remove() {
 	delete_option('wpgpxmaps_download');
 	delete_option('wpgpxmaps_summary');
 	delete_option('wpgpxmaps_skipcache');
+	delete_option('wpgpxmaps_allow_users_upload');
 }
 
 ?>

@@ -457,12 +457,6 @@
 			</td>
 		</tr>
 		
-		<tr>
-			<th scope="row"><?php _e( 'Allow user uploads', 'wp-gpx-maps'); ?></th>
-			<td>
-				<input name="wpgpxmaps_allow_users_upload" type="checkbox" data-hex="true" value="false">
-			</td>
-		</tr>
 	</table>
 
 	<p class="submit">
@@ -496,10 +490,17 @@
 			</td>
 		</tr>
 
+		<tr>
+			<th scope="row"><?php _e( 'Allow other users uploads', 'wp-gpx-maps'); ?></th>
+			<td>
+				<input name="wpgpxmaps_allow_users_upload" type="checkbox" data-hex="true" value="<?php echo get_option('wpgpxmaps_allow_users_upload'); ?>">
+			</td>
+		</tr>
+		
 	</table>
 
 	<input type="hidden" name="action" value="update" />
-	<input name="page_options" type="hidden" value="wpgpxmaps_pointsoffset,wpgpxmaps_donotreducegpx" />
+	<input name="page_options" type="hidden" value="wpgpxmaps_pointsoffset,wpgpxmaps_donotreducegpx,wpgpxmaps_allow_users_upload" />
 
 	<p class="submit">
 		<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'wp-gpx-maps' ) ?>" />

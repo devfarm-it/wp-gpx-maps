@@ -154,7 +154,11 @@ Yes!
 
 == Changelog ==
 = 1.7.00 =
-* added capabilities to add files for non-administrative users
+* added possibility (for Admins and Editors) to use and remove all files in every user own folder
+* removed settings tab for non-Admin users (Contributor, Author, Editor and Subscriber)
+* now, uploaded gpx files are created in a folder called as *your user name*, inside ../wordpressSiteFolder/wp-content/uploads/gpx/[*your user name*]
+* added different size logos for the plugin store (icon.svg, icon128x128.png and icon256x256.png) [Located inside ../wordpressSiteFolder/wp-content/plugins/wp-gpx-maps/assets]
+* added button to instant copy the shortcode of the selected gpx file
 = 1.6.07 =
 * resolve admin error
 = 1.6.06 =
