@@ -5,7 +5,8 @@ add_action('admin_menu', 'wpgpxmaps_admin_menu');
 
 function wpgpxmaps_admin_menu() {	
 	
-	if(current_user_can('edit_posts')){
+	$allow_other_users_upload = wpgpxmaps_findValue($attr, 'allow_other_users_upload', 'wpgpxmaps_allow_users_upload', false);
+	if(current_user_can('administrator') || (!current_user_can('administrator') && $allow_other_users_upload)){
 		add_menu_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
 		add_options_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
 	}
@@ -14,33 +15,20 @@ function wpgpxmaps_admin_menu() {
 
 
 function wpgpxmaps_ilc_admin_tabs( $current  ) {
-
-
-
-	//if (current_user_can('read'))
-
-	//{
+	
 	if(current_user_can('edit_users')){
 		$tabs = array(
 				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
 				'settings' => __( 'Settings', 'wp-gpx-maps' ),
 				'help' => __( 'Help', 'wp-gpx-maps' )
 				);
-	}else{
+	}
+	else{
 		$tabs = array(
 				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
 				'help' => __( 'Help', 'wp-gpx-maps' )
 				);
 	}
-	//}
-	/*
-	else if ( current_user_can('read') ) {
-
-		$tabs = array(
-				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
-				'help' => __( 'Help', 'wp-gpx-maps' )
-				);
-	}*/
 
 
 

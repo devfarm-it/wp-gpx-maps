@@ -31,10 +31,10 @@
 		}
 
 	}
-	//if admin, you can upload files; BUT if uploaded from other users is checked, even other users can
-	$allow_other_users_upload = wpgpxmaps_findValue($attr, "wpgpxmaps_allow_users_upload","wpgpxmaps_allow_users_upload",false);
-	echo("---------------------------------------------------------------".$allow_other_users_upload);
-	if((current_user_can('edit_users')) || ($wpgpxmaps_allow_users_upload == true)){
+	
+	//if admin, you can upload files; BUT if uploaded from other users is checked and you are a Contributor, even other users can
+	$allow_other_users_upload = wpgpxmaps_findValue($attr, 'allow_other_users_upload', 'wpgpxmaps_allow_users_upload', false);
+	if((current_user_can('administrator')) || (current_user_can('contributor')) && ($allow_other_users_upload == true)){
 		if ( is_writable ( $realGpxPath ) ){
 
 		?>
@@ -106,11 +106,8 @@
 	
 	if ( is_readable ( $realGpxPath ) && $handle = opendir($realGpxPath)) {
 		$pathAllFiles = getPathFilesContents($realGpxPath, $results = array());
-		//while (false !== ($entry = readdir($handle))) {
 		for($i = 0; $i < sizeof($pathAllFiles,0); $i++){
 			
-			//if (preg_match($gpxRegEx, $entry ))
-			//$file_name = entry;
 			if (preg_match($gpxRegEx, basename($pathAllFiles[$i]) ))
 			{
 				if ( isset($_GET['_wpnonce'])
@@ -118,8 +115,6 @@
 					wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' .$pathAllFiles[$i] )
 					)
 					{
-					//wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry )
-					//if ( file_exists($realGpxPath ."/". $entry) )
 					if ( file_exists($pathAllFiles[$i] ))
 					{
 						unlink($pathAllFiles[$i]);
@@ -142,14 +137,11 @@
 				else
 				{
 					if(!$pathAllFiles[$i] == null){
-					//$myFile = $realGpxPath . "/" . $entry;
 					
 					$ArrayFile[] = array(
-											//'name' => $entry,
 											'name' => basename($pathAllFiles[$i]),
 											'size' => filesize( $pathAllFiles[$i] ),
 											'lastedit' => filemtime( $pathAllFiles[$i] ),
-											//'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
 											'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $pathAllFiles[$i] ),
 											);
 					}
@@ -160,19 +152,6 @@
 		closedir($handle);
 	}
 	$relativeGpxPath = str_replace(wp_get_current_user()->user_login,"",$relativeGpxPath);
-	/*
-	if ( is_readable ( $realGpxPath ) && $handle = opendir($realGpxPath)) {
-			for($i = 0; $i < sizeof($pathAllFiles,0); $i++){
-			//while (false !== ($entry = readdir($handle))) {
-				
-				//if (preg_match($gpxRegEx,$entry ))
-				if (preg_match($gpxRegEx,$pathAllFiles[$i] ))
-				{
-					$filenames[] = $realGpxPath . "/" . $pathAllFiles[$i];
-				}
-			}
-		closedir($handle);
-	}*/
 
 	$wpgpxmaps_gpxRelativePath = get_site_url(null, '/wp-content/uploads/gpx/');
 	
@@ -185,23 +164,13 @@
 		$completePath[$i] = str_replace("\\", "/", $completePath[$i]);
 		$pathAllFiles[$i] = str_replace('C:\xampp\htdocs\wordpress','',$pathAllFiles[$i]);
 		$pathAllFiles[$i] = str_replace('\\','/', $pathAllFiles[$i]);
-	}
-	/* Version 1.6.xx
-	$myGpxFileNames[] = array(
-											'name' => $entry,
-											'size' => filesize( $localPath[$pos] ),
-											'lastedit' => filemtime( $myFile ),
-											//'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
-											'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
-											);
-	*/										
+	}									
 											
 	//objects array for rows on the table with shortcodes
 	$arrayForOutput = array();
 	for($i = 0; $i < count($pathAllFiles); $i++){
 		//do not output temporary files or null objects
 		if((strpos($pathAllFiles[$i], ".tmp" ) == false) && !($pathAllFiles[$i] == null)) $arrayForOutput[] = array(
-											//'name' => $entry,
 											'index' => $i,
 											'nomeSito' => get_site_url(),
 											'pathPerDownload' => $completePath[$i],
@@ -209,12 +178,10 @@
 											'name' => basename($pathAllFiles[$i]),
 											'size' => filesize( $localPath[$i] ),
 											'lastedit' => filemtime( $localPath[$i] ),
-											//'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
 											'nonce' => wp_create_nonce( 'wpgpx_deletefile_nonce_' .$localPath[$i] ),
 											);
 	}
 	
-	//print_r($myGpxFileNames );
 ?>
 
 	<table id="table" class="wp-list-table widefat plugins"></table>

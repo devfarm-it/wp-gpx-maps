@@ -31,7 +31,7 @@
 	$total_time = get_option("wpgpxmaps_summary_total_time");
 	$usegpsposition = get_option("wpgpxmaps_usegpsposition");
 	$distanceType = get_option("wpgpxmaps_distance_type");
-	$wpgpxmaps_allow_users_upload = get_option("wpgpxmaps_allow_users_upload");
+	$allow_other_users_upload = get_option("wpgpxmaps_allow_users_upload");
 
 	if (empty($showEle))
 		$showEle = "true";
@@ -493,7 +493,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Allow other users uploads', 'wp-gpx-maps'); ?></th>
 			<td>
-				<input name="wpgpxmaps_allow_users_upload" type="checkbox" data-hex="true" value="<?php echo get_option('wpgpxmaps_allow_users_upload'); ?>">
+				<input name="wpgpxmaps_allow_users_upload" type="checkbox" value="true" onchange="this.value = (this.checked)" <?php if(wpgpxmaps_findValue($attr, 'allow_other_users_upload', 'wpgpxmaps_allow_users_upload', false)){echo("checked");} ?>>
 			</td>
 		</tr>
 		

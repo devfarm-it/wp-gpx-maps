@@ -95,7 +95,6 @@
 		$sitePath = wp_gpx_maps_sitePath();
 		$realGpxPath = gpxFolderPath();
 		$ret = str_replace($sitePath,'',$realGpxPath).DIRECTORY_SEPARATOR;
-		//ret è il path giusto
 		return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ret);
 	}
 
