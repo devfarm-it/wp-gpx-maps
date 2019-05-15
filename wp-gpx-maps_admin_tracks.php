@@ -157,13 +157,18 @@
 	
 	$completePath = array();
 	$localPath = array();
+	//get path of the user own home folder of the wordpress site
+	$home_path_relative = str_replace("/","\\",get_home_path());
 	
 	for($i = 0; $i < count($pathAllFiles); $i++){
 		$localPath[$i] = $pathAllFiles[$i];
-		$completePath[$i] = get_site_url(null, str_replace("C:\\xampp\\htdocs\\wordpress\\","",$pathAllFiles[$i]));
+
+		$completePath[$i] = get_site_url(null, str_replace($home_path_relative,"",$pathAllFiles[$i]));
 		$completePath[$i] = str_replace("\\", "/", $completePath[$i]);
-		$pathAllFiles[$i] = str_replace('C:\xampp\htdocs\wordpress','',$pathAllFiles[$i]);
+		
+		$pathAllFiles[$i] = str_replace($home_path_relative,'',$pathAllFiles[$i]);
 		$pathAllFiles[$i] = str_replace('\\','/', $pathAllFiles[$i]);
+		$pathAllFiles[$i] = "/".$pathAllFiles[$i];
 	}									
 											
 	//objects array for rows on the table with shortcodes
