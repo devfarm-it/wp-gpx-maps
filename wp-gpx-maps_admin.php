@@ -1,29 +1,49 @@
 <?php
 
 
-add_action('admin_menu', 'wpgpxmaps_admin_menu');
 
-function wpgpxmaps_admin_menu() {	
-	
-	$allow_other_users_upload = wpgpxmaps_findValue($attr, 'allow_other_users_upload', 'wpgpxmaps_allow_users_upload', false);
-	if(current_user_can('administrator') || (!current_user_can('administrator') && $allow_other_users_upload)){
-		add_menu_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
-		add_options_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
+if ( is_admin() ){
+
+	add_action('admin_menu', 'wpgpxmaps_admin_menu');
+
+}
+
+
+
+function wpgpxmaps_admin_menu() {
+
+	if ( current_user_can('manage_options') ){
+
+		add_options_page('WP GPX Maps', 'WP GPX Maps', 'manage_options', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
+
 	}
+
+	else if ( current_user_can('publish_posts') ) {
+
+		add_menu_page('WP GPX Maps', 'WP GPX Maps', 'publish_posts', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
+
+	}
+
 }
 
 
 
 function wpgpxmaps_ilc_admin_tabs( $current  ) {
-	
-	if(current_user_can('edit_users')){
+
+
+
+	if (current_user_can('manage_options'))
+
+	{
+
 		$tabs = array(
 				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
 				'settings' => __( 'Settings', 'wp-gpx-maps' ),
 				'help' => __( 'Help', 'wp-gpx-maps' )
 				);
 	}
-	else{
+	else if ( current_user_can('publish_posts') ) {
+
 		$tabs = array(
 				'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
 				'help' => __( 'Help', 'wp-gpx-maps' )
@@ -33,7 +53,8 @@ function wpgpxmaps_ilc_admin_tabs( $current  ) {
 
 
     echo '<h2 class="nav-tab-wrapper">';
-		foreach( $tabs as $tab => $name ){
+
+    foreach( $tabs as $tab => $name ){
 
         $class = ( $tab == $current ) ? ' nav-tab-active' : '';
 
@@ -46,24 +67,9 @@ function wpgpxmaps_ilc_admin_tabs( $current  ) {
 }
 
 
-function getPathFilesContents($dir, &$results = array()){
-    $files = scandir($dir);
-    foreach($files as $key => $value){
-        $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
-        if(!is_dir($path)) {
-            $results[] = $path;
-        } else if($value != "." && $value != "..") {
-            getPathFilesContents($path, $results);
-        }
-    }
-
-    return $results;
-}
-
-
 
 function WP_GPX_Maps_html_page() {
-	
+
 	$realGpxPath = gpxFolderPath();
 
 	$cacheGpxPath = gpxCacheFolderPath();
@@ -71,6 +77,10 @@ function WP_GPX_Maps_html_page() {
 	$relativeGpxPath = relativeGpxFolderPath();
 
 	$relativeGpxPath = str_replace("\\","/", $relativeGpxPath);
+
+	$relativeGpxCachePath = relativeGpxCacheFolderPath();
+
+	$relativeGpxCachePath = str_replace("\\","/", $relativeGpxCachePath);
 
 	$tab = $_GET['tab'];
 
@@ -101,9 +111,11 @@ function WP_GPX_Maps_html_page() {
 
 		if (!@mkdir($realGpxPath,0755,true)) {
 			echo '<div class=" notice notice-error"><p>';
-			_e( 'Can not create the', 'wp-gpx-maps' );
-			echo ' ' . '<strong>' . $realGpxPath . '</strong>' . ' ';
-			_e( 'folder. Please create it and make it writable! If not, you will must update the file manually!', 'wp-gpx-maps' );
+			printf(
+				/* translators: %s: Relative path of the GPX folder */
+				__( 'Can not create the folder %s for GPX files. Please create the folder and make it writable! If not, you will must update the files manually!', 'wp-gpx-maps' ),
+				'<span class="code"><strong>' . esc_html ( $relativeGpxPath ) . '</strong></span>'
+				);
 			echo '</p></div>';
 		}
 
@@ -123,9 +135,11 @@ function WP_GPX_Maps_html_page() {
 
 		if (!@mkdir($cacheGpxPath,0755,true)) {
 			echo '<div class=" notice notice-error"><p>';
-			_e( 'Can not create the', 'wp-gpx-maps' );
-			echo ' ' . '<strong>' . $cacheGpxPath . '</strong>' . ' ';
-			_e( 'folder. Please create it and make it writable! If not, you will must update the file manually!', 'wp-gpx-maps' );
+			printf(
+				/* translators: %s: Relative path of the GPX cache folder */
+				__( 'Can not create the cache folder %s for the GPX files. Please create the folder and make it writable! If not, you will must update the files manually!', 'wp-gpx-maps' ),
+				'<span class="code"><strong>' . esc_html ( $relativeGpxCachePath ) . '</strong></span>'
+				);
 			echo '</p></div>';
 		}
 

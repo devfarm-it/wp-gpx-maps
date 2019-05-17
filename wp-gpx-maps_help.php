@@ -70,7 +70,7 @@
 	<tr>
 		<td>download</td>
 		<td><?php _e( 'Allow users to download your GPX file', 'wp-gpx-maps' ); ?></td>
-		<td></td>
+		<t<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
 	</tr>
 		<tr>
 		<td>skipcache</td>
@@ -102,7 +102,7 @@
 	<tr>
 		<td>zoomonscrollwheel</td>
 		<td><?php _e( 'Zoom on map when mouse scroll wheel', 'wp-gpx-maps' ); ?></td>
-		<td></td>
+		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
 	</tr>
 	<tr>
 		<td>waypoints</td>
