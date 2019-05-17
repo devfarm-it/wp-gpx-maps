@@ -41,7 +41,7 @@ This version is extended by Stephan Klein (https://klein-gedruckt.de/2015/03/wor
 
 = Translations =
 
-Translators are welcome to contribute to the plugin.  Please use the [WordPress translation website](https://translate.wordpress.org/projects/wp-plugins/wp-gpx-maps/).
+Translators are welcome to contribute to the plugin. Please use the [WordPress translation website](https://translate.wordpress.org/projects/wp-plugins/wp-gpx-maps/).
 
 The language files in the plugin contain 19 translatable texts for 14 languages:
 
@@ -68,10 +68,11 @@ The language files in the plugin contain 19 translatable texts for 14 languages:
 
 At the moment 225 texts are translatable in the plugin.
 
-With your help, the plugin can be translated into any language. For updating the language file you no longer need to wait for a new version of the plugin. 
-Are 95% WordPress generates a new language file for your language. 
+With your help, the plugin can be translated into any language. For updating the language file you no longer need to wait for a new version of the plugin.
+Are 95% WordPress generates a new language file for your language.
+When WordPress generates a language file for a language, in the next version of the plugin the language file is removed.
 Please also help with the translation of the readme. The more languages ​​that are available, the wider the spread of the plugin will be.
-When WordPress generates a language file for a language, the next time the plugin is removed, the language file is removed.
+
 
 - iphone/ipad/ipod Compatible
 
