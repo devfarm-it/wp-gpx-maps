@@ -68,6 +68,10 @@
 
 
 
+			// print_r ($pictures);
+
+
+
 			foreach ($pictures as $p) {
 
 

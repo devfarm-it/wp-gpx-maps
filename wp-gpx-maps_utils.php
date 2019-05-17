@@ -74,11 +74,17 @@
 	{
 		$upload_dir = wp_upload_dir();
 		$uploadsPath = $upload_dir['basedir'];
-		
-		global $current_user;
-		get_currentuserinfo();
-		$ret = $uploadsPath.DIRECTORY_SEPARATOR."gpx".DIRECTORY_SEPARATOR.$current_user->user_login;
-		
+
+
+		if ( current_user_can('manage_options') ){
+			$ret = $uploadsPath.DIRECTORY_SEPARATOR."gpx";
+		}
+		else if ( current_user_can('publish_posts') ) {
+			global $current_user;
+			get_currentuserinfo();
+			$ret = $uploadsPath.DIRECTORY_SEPARATOR."gpx".DIRECTORY_SEPARATOR.$current_user->user_login;
+		}
+
 		return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ret);
 	}
 
@@ -95,6 +101,14 @@
 		$sitePath = wp_gpx_maps_sitePath();
 		$realGpxPath = gpxFolderPath();
 		$ret = str_replace($sitePath,'',$realGpxPath).DIRECTORY_SEPARATOR;
+		return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ret);
+	}
+
+	function relativeGpxCacheFolderPath()
+	{
+		$sitePath = wp_gpx_maps_sitePath();
+		$realGpxCachePath = gpxCacheFolderPath();
+		$ret = str_replace($sitePath,'',$realGpxCachePath).DIRECTORY_SEPARATOR;
 		return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ret);
 	}
 

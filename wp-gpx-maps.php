@@ -3,7 +3,7 @@
  * Plugin Name: WP-GPX-Maps
  * Plugin URI: http://www.devfarm.it/
  * Description: Draws a GPX track with altitude chart
- * Version: 1.7.00
+ * Version: 1.6.07
  * Author: Bastianon Massimo
  * Author URI: http://www.devfarm.it/
  * Text Domain: wp-gpx-maps
@@ -43,9 +43,9 @@ function WP_GPX_Maps_action_links($links, $file) {
         // the anchor tag and href to the URL we want. For a "Settings"
         // link, this needs to be the url of your settings page. Authors
         // access tracks via the admin page.
-        if ( current_user_can('read') ) {
+        if ( current_user_can('manage_options') ) {
             $menu_root = "options-general.php";
-        } else if ( current_user_can('read') ) {
+        } else if ( current_user_can('publish_posts') ) {
             $menu_root = "admin.php";
         }
 		$settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">' . __( 'Settings', 'wp-gpx-maps' ) . '</a>';
@@ -280,8 +280,6 @@ function handle_WP_GPX_Maps_Shortcodes($attr, $content='')
 	$dtoffset =           wpgpxmaps_findValue($attr, "dtoffset",           "wpgpxmaps_dtoffset", 		     	 0);
 	$distanceType =       wpgpxmaps_findValue($attr, "distanceType",       "wpgpxmaps_distance_type", 		 0);
 
-	$allow_other_users_upload = wpgpxmaps_findValue($attr, "allow_other_users_upload", "wpgpxmaps_allow_users_upload", false);
-	
 	$skipcache =          wpgpxmaps_findValue($attr, "skipcache",          "wpgpxmaps_skipcache", 	     	 "");
 
 	$summary =            wpgpxmaps_findValue($attr, "summary",            "wpgpxmaps_summary", 		     	 "");
@@ -923,7 +921,6 @@ function WP_GPX_Maps_install() {
 	add_option('wpgpxmaps_download','','','yes');
 	add_option('wpgpxmaps_summary','','','yes');
 	add_option('wpgpxmaps_skipcache','','','yes');
-	add_option('wpgpxmaps_allow_users_upload','','','yes');
 }
 
 function WP_GPX_Maps_remove() {
@@ -959,7 +956,6 @@ function WP_GPX_Maps_remove() {
 	delete_option('wpgpxmaps_download');
 	delete_option('wpgpxmaps_summary');
 	delete_option('wpgpxmaps_skipcache');
-	delete_option('wpgpxmaps_allow_users_upload');
 }
 
 ?>
