@@ -4,7 +4,7 @@ Contributors: bastianonm, Stephan Klein, Michel Selerin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 2.0.0
-Tested up to: 4.9.8
+Tested up to: 5.2.0
 Stable tag: 1.7.00
 
 Draws a gpx track with altitude graph. You can also display your nextgen gallery images in the map.
@@ -126,8 +126,8 @@ The attributes are:
 1. nggalleries: NextGen Gallery id or a list of Galleries id separated by a comma
 1. ngimages: NextGen Image id or a list of Images id separated by a comma
 1. dtoffset: the difference (in seconds) between your gpx tool date and your camera date
-1. zoomonscrollwheel: zoom on map when mouse scroll wheel (default is FALSE)
-1. download: Allow users to download your GPX file (default is FALSE)
+1. zoomonscrollwheel: zoom on map when mouse scroll wheel
+1. download: Allow users to download your GPX file
 1. skipcache: Do not use cache. If TRUE might be very slow (default is FALSE)
 1. summary: Print summary details of your GPX (default is FALSE)
 1. summarytotlen: Print Total distance in summary table (default is FALSE)
@@ -153,6 +153,12 @@ Yes!
 1. Altitude & Speed & Hearth rate
 
 == Changelog ==
+= 1.7.00 =
+* added possibility (for Admins and Editors) to use and remove all files in every user own folder
+* removed settings tab for non-Admin users (Contributor, Author, Editor and Subscriber)
+* now, uploaded gpx files are created in a folder called as *your user name*, inside ../wordpressSiteFolder/wp-content/uploads/gpx/[*your user name*]
+* added different size logos for the plugin store (icon.svg, icon128x128.png and icon256x256.png) [Located inside ../wordpressSiteFolder/wp-content/plugins/wp-gpx-maps/assets]
+* added button to instant copy the shortcode of the selected gpx file
 = 1.6.07 =
 * resolve admin error
 = 1.6.06 =

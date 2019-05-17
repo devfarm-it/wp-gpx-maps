@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-gpx-maps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-17 15:28+0200\n"
-"PO-Revision-Date: 2019-05-17 15:28+0200\n"
+"POT-Creation-Date: 2019-05-12 11:49+0200\n"
+"PO-Revision-Date: 2019-05-12 22:40+0200\n"
 "Last-Translator: Kniebremser <kniebremser@fluchtsportler.de>\n"
 "Language-Team: Fluchtsportler.de <kniebremser@fluchtsportler.de>\n"
 "Language: de_DE\n"
@@ -12,13 +12,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 2.2.2\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ..\n"
 
 #: ../wp-gpx-maps.php:51 ../wp-gpx-maps_admin.php:41
-#: ../wp-gpx-maps_admin.php:96
+#: ../wp-gpx-maps_admin.php:92
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -110,7 +109,7 @@ msgstr "Durchschnittstemperatur"
 msgid "Total time"
 msgstr "Gesamtzeit"
 
-#: ../wp-gpx-maps.php:798 ../wp-gpx-maps_admin_tracks.php:194
+#: ../wp-gpx-maps.php:798 ../wp-gpx-maps_admin_tracks.php:179
 msgid "Download"
 msgstr "Herunterladen"
 
@@ -122,27 +121,17 @@ msgstr "Tracks"
 msgid "Help"
 msgstr "Hilfe"
 
-#. translators: %s: Relative path of the GPX folder
-#: ../wp-gpx-maps_admin.php:116
-#, php-format
-msgid ""
-"Can not create the folder %s for GPX files. Please create the folder and "
-"make it writable! If not, you will must update the files manually!"
-msgstr ""
-"Kann den Ordner %s für GPX-Dateien nicht erstellen. Bitte erstelle den "
-"Ordner und mache ihn beschreibbar! Wenn nicht, musst du die Dateien manuell "
-"aktualisieren!"
+#: ../wp-gpx-maps_admin.php:110 ../wp-gpx-maps_admin.php:132
+msgid "Can not create the"
+msgstr "Kann nicht kreieren den"
 
-#. translators: %s: Relative path of the GPX cache folder
-#: ../wp-gpx-maps_admin.php:140
-#, php-format
+#: ../wp-gpx-maps_admin.php:112 ../wp-gpx-maps_admin.php:134
 msgid ""
-"Can not create the cache folder %s for the GPX files. Please create the "
-"folder and make it writable! If not, you will must update the files manually!"
+"folder. Please create it and make it writable! If not, you will must update "
+"the file manually!"
 msgstr ""
-"Kann den Cache Ordner %s für GPX-Dateien nicht erstellen. Bitte erstelle den "
-"Ordner und mache ihn beschreibbar! Wenn nicht, musst du die Dateien manuell "
-"aktualisieren!"
+"Ordner. Bitte erstelle ihn und mache ihn beschreibbar! Wenn nicht, musst du "
+"die Datei manuell aktualisieren!"
 
 #: ../wp-gpx-maps_admin_settings.php:51 ../wp-gpx-maps_help.php:41
 msgid "General"
@@ -596,75 +585,44 @@ msgstr "Cache ist jetzt leer!"
 msgid "Choose a file to upload:"
 msgstr "Wähle eine Datei zum Hochladen:"
 
-#. translators: %s: GPX file name
-#: ../wp-gpx-maps_admin_tracks.php:56
-#, php-format
-msgid "The file %s has been successfully uploaded."
-msgstr "Die Datei %s wurde erfolgreich hochgeladen."
+#: ../wp-gpx-maps_admin_tracks.php:54 ../wp-gpx-maps_admin_tracks.php:111
+#: ../wp-gpx-maps_admin_tracks.php:118
+msgid "The file"
+msgstr "Die Datei"
 
-#: ../wp-gpx-maps_admin_tracks.php:62
+#: ../wp-gpx-maps_admin_tracks.php:56
+msgid "has been successfully uploaded."
+msgstr "wurde erfolgreich hochgeladen."
+
+#: ../wp-gpx-maps_admin_tracks.php:60
 msgid "There was an error uploading the file, please try again!"
 msgstr ""
 "Beim Hochladen der Datei ist ein Fehler aufgetreten. Bitte versuche es "
 "erneut!"
 
-#: ../wp-gpx-maps_admin_tracks.php:69
+#: ../wp-gpx-maps_admin_tracks.php:67
 msgid "The file type is not supported!"
 msgstr "Der Dateityp wird nicht unterstützt!"
 
-#: ../wp-gpx-maps_admin_tracks.php:78
+#: ../wp-gpx-maps_admin_tracks.php:76
 msgid "Clear Cache"
 msgstr "Cache leeren"
 
-#. translators: %s: Relative path of the GPX folder
-#: ../wp-gpx-maps_admin_tracks.php:96
-#, php-format
-msgid ""
-"Your folder for GPX files %s is not writable. Please change the folder "
-"permissions."
-msgstr ""
-"Dein Ordner für GPX-Dateien %s ist nicht beschreibbar. Bitte ändere die "
-"Ordnerberechtigungen."
+#: ../wp-gpx-maps_admin_tracks.php:113
+msgid "has been successfully deleted."
+msgstr "wurde erfolgreich gelöscht."
 
-#. translators: %s: GPX file name
-#: ../wp-gpx-maps_admin_tracks.php:124
-#, php-format
-msgid "The file %s has been successfully deleted."
-msgstr "Die Datei %s wurde erfolgreich gelöscht."
+#: ../wp-gpx-maps_admin_tracks.php:120
+msgid "could not be deleted."
+msgstr "konnte nicht gelöscht werden."
 
-#. translators: %s: GPX file name
-#: ../wp-gpx-maps_admin_tracks.php:133
-#, php-format
-msgid "The file %s could not be deleted."
-msgstr "Die Datei %s konnte nicht gelöscht werden."
-
-#: ../wp-gpx-maps_admin_tracks.php:178
-msgid "Uploading file..."
-msgstr "Datei wird hochgeladen..."
-
-#: ../wp-gpx-maps_admin_tracks.php:186
-msgid "File"
-msgstr "Datei"
-
-#: ../wp-gpx-maps_admin_tracks.php:192
+#: ../wp-gpx-maps_admin_tracks.php:177
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../wp-gpx-maps_admin_tracks.php:196
+#: ../wp-gpx-maps_admin_tracks.php:181
 msgid "Shortcode:"
 msgstr "Shortcode:"
-
-#: ../wp-gpx-maps_admin_tracks.php:202
-msgid "Last modified"
-msgstr "Zuletzt bearbeitet"
-
-#: ../wp-gpx-maps_admin_tracks.php:210
-msgid "File size"
-msgstr "Dateigröße"
-
-#: ../wp-gpx-maps_admin_tracks.php:220
-msgid "Are you sure you want to delete the file?"
-msgstr "Bist du sicher, dass du die Datei löschen möchtest?"
 
 #: ../wp-gpx-maps_help.php:3
 msgid "FAQ"
@@ -776,8 +734,11 @@ msgstr "Kartenhöhe"
 msgid "Graph height"
 msgstr "Diagrammhöhe"
 
-#: ../wp-gpx-maps_help.php:73 ../wp-gpx-maps_help.php:78
-#: ../wp-gpx-maps_help.php:100 ../wp-gpx-maps_help.php:105
+#: ../wp-gpx-maps_help.php:77
+msgid "Do not use cache. If TRUE might be very slow"
+msgstr "Keinen Cache verwenden. Wenn TRUE könnte es sehr langsam werden"
+
+#: ../wp-gpx-maps_help.php:78 ../wp-gpx-maps_help.php:100
 #: ../wp-gpx-maps_help.php:110 ../wp-gpx-maps_help.php:115
 #: ../wp-gpx-maps_help.php:120 ../wp-gpx-maps_help.php:157
 #: ../wp-gpx-maps_help.php:177 ../wp-gpx-maps_help.php:182
@@ -793,10 +754,6 @@ msgstr "Diagrammhöhe"
 #: ../wp-gpx-maps_help.php:331
 msgid "Default is:"
 msgstr "Standard ist:"
-
-#: ../wp-gpx-maps_help.php:77
-msgid "Do not use cache. If TRUE might be very slow"
-msgstr "Keinen Cache verwenden. Wenn TRUE könnte es sehr langsam werden"
 
 #: ../wp-gpx-maps_help.php:94
 msgid "Map type"
@@ -1000,10 +957,10 @@ msgstr "Gesamtzeit in der Übersichtstabelle drucken"
 msgid "Bugs, problems, thanks and anything else here!"
 msgstr "Bugs, Probleme, Danke und alles andere hier!"
 
-#: ../wp-gpx-maps_utils.php:169
+#: ../wp-gpx-maps_utils.php:161
 msgid "WP GPX Maps Error: GPX file not found!"
 msgstr "WP GPX Maps Fehler: GPX-Datei nicht gefunden!"
 
-#: ../wp-gpx-maps_utils.php:604
+#: ../wp-gpx-maps_utils.php:596
 msgid "WP GPX Maps Error: Can&#8217;t parse xml file!"
 msgstr "WP GPX Maps Fehler: Kann XML-Datei nicht parsen!"
