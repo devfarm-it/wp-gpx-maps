@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 2.0.0
 Tested up to: 5.2.0
-Stable tag: 1.7.00
+Stable tag: 1.7.01
 
 Draws a gpx track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -126,8 +126,8 @@ The attributes are:
 1. nggalleries: NextGen Gallery id or a list of Galleries id separated by a comma
 1. ngimages: NextGen Image id or a list of Images id separated by a comma
 1. dtoffset: the difference (in seconds) between your gpx tool date and your camera date
-1. zoomonscrollwheel: zoom on map when mouse scroll wheel
-1. download: Allow users to download your GPX file
+1. zoomonscrollwheel: zoom on map when mouse scroll wheel (default is FALSE)
+1. download: Allow users to download your GPX file (default is FALSE)
 1. skipcache: Do not use cache. If TRUE might be very slow (default is FALSE)
 1. summary: Print summary details of your GPX (default is FALSE)
 1. summarytotlen: Print Total distance in summary table (default is FALSE)
@@ -137,7 +137,7 @@ The attributes are:
 1. summaryeledown: Print Total descent in summary table (default is FALSE)
 1. summaryavgspeed: Print Average Speed in summary table (default is FALSE)
 1. summarytotaltime: Print Total time in summary table (default is FALSE)
-
+1. allow other users uploads: Allow others non-admin users to upload and see their own gpx files
 = What happening if I've a very large gpx? =
 This plugin will print a small amout of points to speedup javascript and pageload.
 

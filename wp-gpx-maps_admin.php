@@ -101,9 +101,11 @@ function WP_GPX_Maps_html_page() {
 
 		if (!@mkdir($realGpxPath,0755,true)) {
 			echo '<div class=" notice notice-error"><p>';
-			_e( 'Can not create the', 'wp-gpx-maps' );
-			echo ' ' . '<strong>' . $realGpxPath . '</strong>' . ' ';
-			_e( 'folder. Please create it and make it writable! If not, you will must update the file manually!', 'wp-gpx-maps' );
+			printf(
+				/* translators: %s: Relative path of the GPX folder */
+				__( 'Can not create the folder %s for GPX files. Please create the folder and make it writable! If not, you will must update the files manually!', 'wp-gpx-maps' ),
+				'<span class="code"><strong>' . esc_html ( $relativeGpxPath ) . '</strong></span>'
+				);
 			echo '</p></div>';
 		}
 
@@ -123,9 +125,11 @@ function WP_GPX_Maps_html_page() {
 
 		if (!@mkdir($cacheGpxPath,0755,true)) {
 			echo '<div class=" notice notice-error"><p>';
-			_e( 'Can not create the', 'wp-gpx-maps' );
-			echo ' ' . '<strong>' . $cacheGpxPath . '</strong>' . ' ';
-			_e( 'folder. Please create it and make it writable! If not, you will must update the file manually!', 'wp-gpx-maps' );
+			printf(
+				/* translators: %s: Relative path of the GPX cache folder */
+				__( 'Can not create the cache folder %s for the GPX files. Please create the folder and make it writable! If not, you will must update the files manually!', 'wp-gpx-maps' ),
+				'<span class="code"><strong>' . esc_html ( $relativeGpxCachePath ) . '</strong></span>'
+				);
 			echo '</p></div>';
 		}
 

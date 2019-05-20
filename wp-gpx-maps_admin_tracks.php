@@ -90,7 +90,11 @@
 			?>
 				<br />
 				<br />
-				<p style='font-size:2em;'>please make <b><?php echo $realGpxPath ?></b> folder writable. </p>
+				<p style='font-size:2em;'><?php printf(
+							/* translators: %s: Relative path of the GPX folder */
+							__( 'Your folder for GPX files %s is not writable. Please change the folder permissions.', 'wp-gpx-maps' ),
+							'<span class="code">' . esc_html ( $relativeGpxPath ) . '</span>'
+						);?></p>
 				<br />
 				<br />
 
@@ -120,16 +124,19 @@
 						unlink($pathAllFiles[$i]);
 						$pathAllFiles[$i] = null;
 						echo '<div class="notice notice-success"><p>';
-						_e( 'The file', 'wp-gpx-maps' ) ;
-						echo ' ' . '<strong>' . basename($pathAllFiles[$i]) . '</strong>' . ' ';
-						_e( 'has been successfully deleted.', 'wp-gpx-maps' ) ;
-						echo '</p></div>';
+						printf(
+							/* translators: %s: GPX file name */
+							__( 'The file %s has been successfully deleted.', 'wp-gpx-maps' ),
+							'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
+						);
 					}
 					else {
 						echo '<div class=" notice notice-error"><p>';
-						_e( 'The file', 'wp-gpx-maps' ) ;
-						echo ' ' . '<strong>' . basename($pathAllFiles[$i]) . '</strong>' . ' ';
-						_e( 'could not be deleted.', 'wp-gpx-maps' ) ;
+						printf(
+							/* translators: %s: GPX file name */
+							__( 'The file %s could not be deleted.', 'wp-gpx-maps' ),
+							'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
+						);
 						echo '</p></div>';
 
 					}
@@ -217,7 +224,7 @@
 	function submitgpx(el)
 	{
 		 var newEl = document.createElement('span');
-		 newEl.innerHTML = 'Uploading file...';
+		 newEl.innerHTML = '<?php _e( 'Uploading file...', 'wp-gpx-maps' )?>';
 		 el.parentNode.insertBefore(newEl,el.nextSibling);
 		 el.parentNode.submit()
 	}
@@ -225,7 +232,7 @@
 	jQuery('#table').bootstrapTable({
 		columns: [{
 			field: 'name',
-			title: 'File',
+			title: '<?php _e( 'File', 'wp-gpx-maps' )?>',
 			sortable: true,
 			formatter: function(value, row, index) {
 				
@@ -242,7 +249,7 @@
 			}
 		}, {
 			field: 'lastedit',
-			title: 'Last modified',
+			title: '<?php _e( 'Last modified', 'wp-gpx-maps' )?>',
 			sortable: true,
 			formatter: function(value, row, index) {
 					var d = new Date(value*1000);
@@ -250,7 +257,7 @@
 				}
 		}, {
 			field: 'size',
-			title: 'File size',
+			title: '<?php _e( 'File size', 'wp-gpx-maps' )?>',
 			sortable: true,
 			formatter: function(value, row, index) { return humanFileSize(value); }
 		}],
@@ -260,7 +267,7 @@
 	});
 
 	jQuery('.delete_gpx_row').click(function(){
-		return confirm("Are you sure you want to delete?");
+		return confirm("<?php _e( 'Are you sure you want to delete the file?', 'wp-gpx-maps' )?>");
 	})
 
 	function humanFileSize(bytes, si) {

@@ -3,7 +3,7 @@
  * Plugin Name: WP-GPX-Maps
  * Plugin URI: http://www.devfarm.it/
  * Description: Draws a GPX track with altitude chart
- * Version: 1.7.00
+ * Version: 1.7.01
  * Author: Bastianon Massimo
  * Author URI: http://www.devfarm.it/
  * Text Domain: wp-gpx-maps
@@ -43,9 +43,9 @@ function WP_GPX_Maps_action_links($links, $file) {
         // the anchor tag and href to the URL we want. For a "Settings"
         // link, this needs to be the url of your settings page. Authors
         // access tracks via the admin page.
-        if ( current_user_can('read') ) {
+        if ( current_user_can('manage_options') ) {
             $menu_root = "options-general.php";
-        } else if ( current_user_can('read') ) {
+        } else if ( current_user_can('publish_posts') ) {
             $menu_root = "admin.php";
         }
 		$settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">' . __( 'Settings', 'wp-gpx-maps' ) . '</a>';

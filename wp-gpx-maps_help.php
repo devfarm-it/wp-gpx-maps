@@ -47,7 +47,7 @@
 		<td><strong><?php _e( 'Description', 'wp-gpx-maps' ); ?></strong></td>
 		<td><strong><?php _e( 'Possible values', 'wp-gpx-maps' ); ?></strong></td>
 	</tr>
-		<tr>
+	<tr>
 		<td>gpx</td>
 		<td><?php _e( 'relative path to GPX file', 'wp-gpx-maps' ); ?></td>
 		<td> gpx="<?php echo $relativeGpxPath; ?>&lt; gpx file name &gt;</td>
@@ -70,12 +70,17 @@
 	<tr>
 		<td>download</td>
 		<td><?php _e( 'Allow users to download your GPX file', 'wp-gpx-maps' ); ?></td>
-		<td></td>
+		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
 	</tr>
 		<tr>
 		<td>skipcache</td>
 		<td><?php _e('Do not use cache. If TRUE might be very slow', 'wp-gpx-maps' ); ?></td>
 		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
+	</tr>
+	<tr>
+		<td>allow other users uploads</td>
+		<td><?php _e( 'Allow other non-admin users to uploads and see gpx files', 'wp-gpx-maps' ); ?></td>
+		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '?><strong>False</strong></td>
 	</tr>
 	</tbody>
 </table>
@@ -102,7 +107,7 @@
 	<tr>
 		<td>zoomonscrollwheel</td>
 		<td><?php _e( 'Zoom on map when mouse scroll wheel', 'wp-gpx-maps' ); ?></td>
-		<td></td>
+		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
 	</tr>
 	<tr>
 		<td>waypoints</td>
