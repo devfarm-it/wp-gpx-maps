@@ -52,8 +52,8 @@
 								if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'][$i], $target_path)) {
 									echo '<div class="notice notice-success"><p>';
 									printf(
-										/* translators: %s: GPX file name */
-										__( 'The file %s has been successfully uploaded.', 'wp-gpx-maps' ),
+										/* translators: 1: GPX file name */
+										__( 'The file %1s has been successfully uploaded.', 'wp-gpx-maps' ),
 										'<span class="code"><strong>' . esc_html ( $uploadingFileName ) . '</strong></span>'
 									);
 									echo '</p></div>';
@@ -92,8 +92,8 @@
 				<?php echo '<div class=" notice notice-error"><p>';?>
 				<p style='font-size:2em;'>
 					<?php printf(
-							/* translators: %s: Relative path of the GPX folder */
-							__( 'Your folder for GPX files %s is not writable. Please change the folder permissions.', 'wp-gpx-maps' ),
+							/* translators: 1: Relative path of the GPX folder */
+							__( 'Your folder for GPX files %1s is not writable. Please change the folder permissions.', 'wp-gpx-maps' ),
 							'<span class="code">' . esc_html ( $relativeGpxPath ) . '</span>'
 						);?>
 				</p>
@@ -120,8 +120,8 @@
 						unlink($realGpxPath ."/". $entry);
 						echo '<div class="notice notice-success"><p>';
 						printf(
-							/* translators: %s: GPX file name */
-							__( 'The file %s has been successfully deleted.', 'wp-gpx-maps' ),
+							/* translators: 1: GPX file name */
+							__( 'The file %1s has been successfully deleted.', 'wp-gpx-maps' ),
 							'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
 						);
 						echo '</p></div>';
@@ -129,8 +129,8 @@
 					else {
 						echo '<div class=" notice notice-error"><p>';
 						printf(
-							/* translators: %s: GPX file name */
-							__( 'The file %s could not be deleted.', 'wp-gpx-maps' ),
+							/* translators: 1: GPX file name */
+							__( 'The file %1s could not be deleted.', 'wp-gpx-maps' ),
 							'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
 						);
 						echo '</p></div>';
@@ -193,7 +193,7 @@
 					' | ',
 					'<a href="<?php echo $wpgpxmaps_gpxRelativePath ?>' + row.name + '"><?php _e( 'Download', 'wp-gpx-maps' ) ?></a>',
 					' | ',
-					'<?php _e( 'Shortcode:', 'wp-gpx-maps' ) ?> [sgpx gpx="<?php echo $relativeGpxPath ?>' + row.name + '"]',
+					'<?php _e( 'Shortcode:', 'wp-gpx-maps' ) ?> <span class="code"> [sgpx gpx="<?php echo $relativeGpxPath ?>' + row.name + '"]</span>',
 				].join('')
 
 			}

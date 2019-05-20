@@ -108,7 +108,15 @@
 			<th scope="row"><?php _e( 'Thunderforest API Key (Open Cycle Map):', 'wp-gpx-maps' ); ?></th>
 			<td>
 				<input name="wpgpxmaps_openstreetmap_apikey" type="text" id="wpgpxmaps_openstreetmap_apikey" value="<?php echo get_option('wpgpxmaps_openstreetmap_apikey'); ?>" style="width:400px" />
-				<em><?php _e( 'Go to', 'wp-gpx-maps' ) ; echo ' ' ;?>'<a href="http://www.thunderforest.com/docs/apikeys/" target="_blank"><?php _e( 'Thunderforest API Keys', 'wp-gpx-maps' ); ?></a> <?php _e( 'and signing in to your Thunderforest account', 'wp-gpx-maps' ); ?> </em>
+				<em>
+				<?php printf(
+					/* translators: 1: Link to documentation of Thunderforest API Key's 2: Additional link attribute */
+					__( 'Go to <a href="%1s" %2s>Thunderforest API Key</a> and signing in to your Thunderforest account.', 'wp-gpx-maps' ),
+					esc_url( 'http://www.thunderforest.com/docs/apikeys/' ),
+					'target="_blank" rel="noopener noreferrer"'
+				)
+				 ?>
+				</em>
 			</td>
 		</tr>
 
