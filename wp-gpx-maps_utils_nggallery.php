@@ -134,7 +134,7 @@
 
 				{
 
-					$error .= "Sorry, <a href='http://php.net/manual/en/function.exif-read-data.php' target='_blank' >exif_read_data</a> function not found! check your hosting..<br />";
+					$error .= "Sorry, <a href='https://php.net/manual/en/function.exif-read-data.php' target='_blank' rel='noopener noreferrer'>exif_read_data</a> function not found! check your hosting..<br />";
 
 				}
 

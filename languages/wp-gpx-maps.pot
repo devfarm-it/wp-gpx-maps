@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-gpx-maps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-20 17:25+0200\n"
+"POT-Creation-Date: 2019-05-21 19:33+0200\n"
 "PO-Revision-Date: 2012-10-30 14:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -121,11 +121,13 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+#. translators: 1: Relative path of the GPX folder
 #: ../wp-gpx-maps_admin.php:116
 #, php-format
 msgid "Can not create the folder %1s for GPX files. Please create the folder and make it writable! If not, you will must update the files manually!"
 msgstr ""
 
+#. translators: 1: Relative path of the GPX cache folder
 #: ../wp-gpx-maps_admin.php:140
 #, php-format
 msgid "Can not create the cache folder %1s for the GPX files. Please create the folder and make it writable! If not, you will must update the files manually!"
@@ -191,14 +193,15 @@ msgstr ""
 msgid "Thunderforest API Key (Open Cycle Map):"
 msgstr ""
 
+#. translators: 1: Link to documentation of Thunderforest API Key's 2: Additional link attribute
 #: ../wp-gpx-maps_admin_settings.php:114
 #, php-format
 msgid "Go to <a href=\"%1s\" %2s>Thunderforest API Key</a> and signing in to your Thunderforest account."
 msgstr ""
 
 #: ../wp-gpx-maps_admin_settings.php:128 ../wp-gpx-maps_admin_settings.php:222
-#: ../wp-gpx-maps_admin_settings.php:317 ../wp-gpx-maps_admin_settings.php:473
-#: ../wp-gpx-maps_admin_settings.php:507
+#: ../wp-gpx-maps_admin_settings.php:317 ../wp-gpx-maps_admin_settings.php:472
+#: ../wp-gpx-maps_admin_settings.php:506
 msgid "Save Changes"
 msgstr ""
 
@@ -528,35 +531,35 @@ msgstr ""
 msgid "Show grade - BETA"
 msgstr ""
 
-#: ../wp-gpx-maps_admin_settings.php:457
+#: ../wp-gpx-maps_admin_settings.php:456
 msgid "(Grade values depends on your GPS accuracy. If you have a poor GPS accuracy they might be totally wrong!)"
 msgstr ""
 
-#: ../wp-gpx-maps_admin_settings.php:462
+#: ../wp-gpx-maps_admin_settings.php:461
 msgid "Grade line color:"
 msgstr ""
 
-#: ../wp-gpx-maps_admin_settings.php:482
+#: ../wp-gpx-maps_admin_settings.php:481
 msgid "Advanced Options"
 msgstr ""
 
-#: ../wp-gpx-maps_admin_settings.php:483
+#: ../wp-gpx-maps_admin_settings.php:482
 msgid "(Do not edit if you don&#8217;t know what you are doing!)"
 msgstr ""
 
-#: ../wp-gpx-maps_admin_settings.php:488
+#: ../wp-gpx-maps_admin_settings.php:487
 msgid "Skip GPX points closer than:"
 msgstr ""
 
-#: ../wp-gpx-maps_admin_settings.php:490
+#: ../wp-gpx-maps_admin_settings.php:489
 msgid "meters"
 msgstr ""
 
-#: ../wp-gpx-maps_admin_settings.php:495
+#: ../wp-gpx-maps_admin_settings.php:494
 msgid "Reduce GPX:"
 msgstr ""
 
-#: ../wp-gpx-maps_admin_settings.php:497
+#: ../wp-gpx-maps_admin_settings.php:496
 msgid "Do not reduce GPX"
 msgstr ""
 
@@ -568,6 +571,7 @@ msgstr ""
 msgid "Choose a file to upload:"
 msgstr ""
 
+#. translators: 1: GPX file name
 #: ../wp-gpx-maps_admin_tracks.php:56
 #, php-format
 msgid "The file %1s has been successfully uploaded."
@@ -585,16 +589,19 @@ msgstr ""
 msgid "Clear Cache"
 msgstr ""
 
+#. translators: 1: Relative path of the GPX folder
 #: ../wp-gpx-maps_admin_tracks.php:96
 #, php-format
 msgid "Your folder for GPX files %1s is not writable. Please change the folder permissions."
 msgstr ""
 
+#. translators: 1: GPX file name
 #: ../wp-gpx-maps_admin_tracks.php:124
 #, php-format
 msgid "The file %1s has been successfully deleted."
 msgstr ""
 
+#. translators: 1: GPX file name
 #: ../wp-gpx-maps_admin_tracks.php:133
 #, php-format
 msgid "The file %1s could not be deleted."

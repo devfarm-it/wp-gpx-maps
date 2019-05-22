@@ -453,7 +453,6 @@
 			<th scope="row"><?php _e( 'Grade:', 'wp-gpx-maps' ); ?></th>
 			<td>
 				<input name="wpgpxmaps_show_grade" type="checkbox" value="true" <?php if($showGrade == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Show grade - BETA', 'wp-gpx-maps' ); ?></i>
-				<br />
 				<i><?php _e( '(Grade values depends on your GPS accuracy. If you have a poor GPS accuracy they might be totally wrong!)', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-gpx-maps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-20 17:25+0200\n"
-"PO-Revision-Date: 2019-05-20 17:26+0200\n"
+"POT-Creation-Date: 2019-05-21 19:33+0200\n"
+"PO-Revision-Date: 2019-05-21 19:33+0200\n"
 "Last-Translator: Kniebremser <kniebremser@fluchtsportler.de>\n"
 "Language-Team: Fluchtsportler.de <kniebremser@fluchtsportler.de>\n"
 "Language: de_DE\n"
@@ -219,8 +219,8 @@ msgstr ""
 "deinem Thunderforest Konto an."
 
 #: ../wp-gpx-maps_admin_settings.php:128 ../wp-gpx-maps_admin_settings.php:222
-#: ../wp-gpx-maps_admin_settings.php:317 ../wp-gpx-maps_admin_settings.php:473
-#: ../wp-gpx-maps_admin_settings.php:507
+#: ../wp-gpx-maps_admin_settings.php:317 ../wp-gpx-maps_admin_settings.php:472
+#: ../wp-gpx-maps_admin_settings.php:506
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
@@ -550,7 +550,7 @@ msgstr "Steigung:"
 msgid "Show grade - BETA"
 msgstr "Steigung zeigen - BETA"
 
-#: ../wp-gpx-maps_admin_settings.php:457
+#: ../wp-gpx-maps_admin_settings.php:456
 msgid ""
 "(Grade values depends on your GPS accuracy. If you have a poor GPS accuracy "
 "they might be totally wrong!)"
@@ -558,31 +558,31 @@ msgstr ""
 "(Steigungswerte hängen von deiner GPS-Genauigkeit ab. Wenn du eine schlechte "
 "GPS-Genauigkeit hast, können sie möglicherweise völlig falsch sein!)"
 
-#: ../wp-gpx-maps_admin_settings.php:462
+#: ../wp-gpx-maps_admin_settings.php:461
 msgid "Grade line color:"
 msgstr "Farbe der Steigungslinie:"
 
-#: ../wp-gpx-maps_admin_settings.php:482
+#: ../wp-gpx-maps_admin_settings.php:481
 msgid "Advanced Options"
 msgstr "Erweiterte Optionen"
 
-#: ../wp-gpx-maps_admin_settings.php:483
+#: ../wp-gpx-maps_admin_settings.php:482
 msgid "(Do not edit if you don&#8217;t know what you are doing!)"
 msgstr "(Nicht bearbeiten, wenn du nicht weißt, was du tust!)"
 
-#: ../wp-gpx-maps_admin_settings.php:488
+#: ../wp-gpx-maps_admin_settings.php:487
 msgid "Skip GPX points closer than:"
 msgstr "Überspringe GPX-Punkte die näher als XX Meter sind:"
 
-#: ../wp-gpx-maps_admin_settings.php:490
+#: ../wp-gpx-maps_admin_settings.php:489
 msgid "meters"
 msgstr "Meter"
 
-#: ../wp-gpx-maps_admin_settings.php:495
+#: ../wp-gpx-maps_admin_settings.php:494
 msgid "Reduce GPX:"
 msgstr "GPX reduzieren:"
 
-#: ../wp-gpx-maps_admin_settings.php:497
+#: ../wp-gpx-maps_admin_settings.php:496
 msgid "Do not reduce GPX"
 msgstr "GPX nicht reduzieren"
 
