@@ -18,7 +18,7 @@
 	&nbsp; <?php _e( 'Go to the tab "Tracks" and copy the shortcode from the list and paste it in the pages/posts.', 'wp-gpx-maps' ); ?>
 </p>
 <p>
-	&nbsp; <?php _e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' ); echo ' '; ?> <span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>somefile.gpx"]</strong></span>
+	&nbsp; <?php _e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' ); echo ' '; ?> <span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"]</strong></span>
 </p>
 <p>
 	<strong><?php _e( 'Can I also integrate GPX files from other sites?', 'wp-gpx-maps' ); ?></strong>
@@ -33,7 +33,7 @@
 	&nbsp; <?php _e( 'Yes, you can. These changes ignore the default settings for each attribute.', 'wp-gpx-maps' ); ?>
 </p>
 <p>
-	&nbsp; <?php _e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' ); echo ' '; ?> <span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>somefile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></span>
+	&nbsp; <?php _e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' ); echo ' '; ?> <span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></span>
 </p>
 
 <br />
@@ -50,7 +50,7 @@
 		<tr>
 		<td>gpx</td>
 		<td><?php _e( 'relative path to GPX file', 'wp-gpx-maps' ); ?></td>
-		<td><span class="code"><strong>gpx="<?php echo $relativeGpxPath; ?>somefile.gpx"</strong></span></td>
+		<td><span class="code"><strong>gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"</strong></span></td>
 	</tr>
 	<tr>
 		<td>width</td>

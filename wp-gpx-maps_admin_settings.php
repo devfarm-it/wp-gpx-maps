@@ -499,13 +499,11 @@
 
 	</table>
 
-	<input type="hidden" name="action" value="update" />
-	<input name="page_options" type="hidden" value="wpgpxmaps_pointsoffset,wpgpxmaps_donotreducegpx" />
-
 	<p class="submit">
+		<input type="hidden" name="action" value="update" />
+		<input name="page_options" type="hidden" value="wpgpxmaps_pointsoffset,wpgpxmaps_donotreducegpx" />
 		<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'wp-gpx-maps' ) ?>" />
 	</p>
 
 </form>
-
-<hr />
+	<hr />
