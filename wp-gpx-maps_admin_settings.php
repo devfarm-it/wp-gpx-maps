@@ -141,7 +141,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Summary table:', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input name="wpgpxmaps_summary" type="checkbox" value="true" <?php if($summary == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Print summary table', 'wp-gpx-maps' ); ?></i>
+				<input name="wpgpxmaps_summary" type="checkbox" value="true" <?php if($summary == true){echo('checked');} ?> onchange="this.value = (this.checked)"  /><i><?php echo ' ' ; _e( 'Show summary table of GPX track', 'wp-gpx-maps' ); ?></i>
 			</td>
 		</tr>
 

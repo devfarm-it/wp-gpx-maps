@@ -14,7 +14,7 @@ Draws a gpx track with altitude graph. You can also display your nextgen gallery
 This plugin has, as input, the GPX file with the track you've made and as output it shows the map of the track and an interactive altitude graph (where available).
 
 Now on github: https://github.com/devfarm-it/wp-gpx-maps
-On github you can contribuite easly with your code
+On github you can contribuite easly with your code.
 
 
 Fully configurable:
@@ -102,46 +102,46 @@ Thanks to: <a href="http://www.securcube.net/">www.securcube.net</a>, <a href="h
 
 == Frequently Asked Questions ==
 
-= what are all available shortcode attributes? =
+= Which shortcode attributes are available? =
 
 The attributes are:
 
-1. gpx: relative path to gpx
-1. width: width in pixels
-1. mheight: map height
-1. gheight: graph height
-1. mtype: map available types are: HYBRID, ROADMAP, SATELLITE, TERRAIN, OSM1 (Open Street Map), OSM2 (Open Cycle Map), OSM3 (Hike & Bike), OSM4 (Open Cycle Map - Transport), OSM5 (Open Cycle Map - Landscape), OSM6 (MapToolKit - Terrain)
-1. waypoints: print the gpx waypoints inside the map (default is FALSE)
-1. donotreducegpx: print all the point without reduce it (default is FALSE)
-1. pointsoffset: skip points closer than XX meters(default is 10)
-1. uom: distance/altitude possible unit of measure are: 0, 1, 2, 3, 4, 5 (0 = meters, 1 = feet/miles, 2 = meters/kilometers, 3 = meters/nautical miles, 4 = meters/miles, 5 = feet/nautical miles)
-1. mlinecolor: map line color (default is #3366cc)
-1. glinecolor: altitude line color (default is #3366cc)
-1. showspeed: show speed inside the chart (default is FALSE)
-1. showhr: show heart rate inside the chart (default is FALSE)
-1. showele: show elevation data inside the chart (default is TRUE)
-1. showcad: show cadence inside the chart (default is FALSE)
-1. showgrade: show grade inside the chart (default is FALSE)
-1. glinecolorspeed: speed line color (default is #ff0000)
-1. glinecolorhr: heart rate line color (default is #ff77bd)
-1. glinecolorcad: cadence line color (default is #beecff)
-1. glinecolorgrade: grade line color (default is #beecff)
-1. uomspeed: unit of measure for speed are: 0, 1, 2, 3, 4, 5 (0 = m/s, 1 = km/h, 2 = miles/h, 3 = min/km, 4 = min/miles, 5 = Nautical Miles/Hour (Knots), 6 = min/100 meters)
-1. chartFrom1: minimun value for altitude chart
-1. chartTo1: maxumin value for altitude chart
-1. chartFrom2: minimun value for speed chart
-1. chartTo2: maxumin value for speed chart
+1. gpx: Relative path to GPX file
+1. width: Width in pixels
+1. mheight: Map height
+1. gheight: Graph height
+1. mtype: Map available types are: HYBRID, ROADMAP, SATELLITE, TERRAIN, OSM1 (Open Street Map), OSM2 (Open Cycle Map), OSM3 (Hike & Bike), OSM4 (Open Cycle Map - Transport), OSM5 (Open Cycle Map - Landscape), OSM6 (MapToolKit - Terrain)
+1. waypoints: Print the gpx waypoints inside the map (default is FALSE)
+1. donotreducegpx: Print all the point without reduce it (default is FALSE)
+1. pointsoffset: Skip points closer than XX meters(default is 10)
+1. uom: Distance/altitude possible unit of measure are: 0, 1, 2, 3, 4, 5 (0 = meters, 1 = feet/miles, 2 = meters/kilometers, 3 = meters/nautical miles, 4 = meters/miles, 5 = feet/nautical miles)
+1. mlinecolor: Map line color (default is #3366cc)
+1. glinecolor: Altitude line color (default is #3366cc)
+1. showspeed: Show speed inside the chart (default is FALSE)
+1. showhr: Show heart rate inside the chart (default is FALSE)
+1. showele: Show elevation data inside the chart (default is TRUE)
+1. showcad: Show cadence inside the chart (default is FALSE)
+1. showgrade: Show grade inside the chart (default is FALSE)
+1. glinecolorspeed: Speed line color (default is #ff0000)
+1. glinecolorhr: Heart rate line color (default is #ff77bd)
+1. glinecolorcad: Cadence line color (default is #beecff)
+1. glinecolorgrade: Grade line color (default is #beecff)
+1. uomspeed: Unit of measure for speed are: 0, 1, 2, 3, 4, 5 (0 = m/s, 1 = km/h, 2 = miles/h, 3 = min/km, 4 = min/miles, 5 = Nautical Miles/Hour (Knots), 6 = min/100 meters)
+1. chartFrom1: Minimun value for altitude chart
+1. chartTo1: Maxumin value for altitude chart
+1. chartFrom2: Minimun value for speed chart
+1. chartTo2: Maxumin value for speed chart
 1. startIcon: Start track icon
 1. endIcon: End track icon
 1. currentIcon: Current position icon (when mouse hover)
-1. waypointicon: waypoint custom icon
+1. waypointicon: Waypoint custom icon
 1. nggalleries: NextGen Gallery id or a list of Galleries id separated by a comma
 1. ngimages: NextGen Image id or a list of Images id separated by a comma
-1. dtoffset: the difference (in seconds) between your gpx tool date and your camera date
-1. zoomonscrollwheel: zoom on map when mouse scroll wheel (default is FALSE)
+1. dtoffset: The difference (in seconds) between your gpx tool date and your camera date
+1. zoomonscrollwheel: Zoom on map when mouse scroll wheel (default is FALSE)
 1. download: Allow users to download your GPX file (default is FALSE)
 1. skipcache: Do not use cache. If TRUE might be very slow (default is FALSE)
-1. summary: Print summary details of your GPX (default is FALSE)
+1. summary: Show summary table of GPX track (default is FALSE)
 1. summarytotlen: Print Total distance in summary table (default is FALSE)
 1. summarymaxele: Print Max Elevation in summary table (default is FALSE)
 1. summaryminele: Print Min Elevation in summary table (default is FALSE)
@@ -150,7 +150,7 @@ The attributes are:
 1. summaryavgspeed: Print Average Speed in summary table (default is FALSE)
 1. summarytotaltime: Print Total time in summary table (default is FALSE)
 
-= What happening if I've a very large gpx? =
+= What happening if I've a very large GPX files? =
 This plugin will print a small amout of points to speedup javascript and pageload.
 
 = Is it free? =

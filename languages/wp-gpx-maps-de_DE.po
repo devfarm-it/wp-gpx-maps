@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-gpx-maps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-21 19:33+0200\n"
-"PO-Revision-Date: 2019-05-21 19:33+0200\n"
+"POT-Creation-Date: 2019-05-23 09:23+0200\n"
+"PO-Revision-Date: 2019-05-23 09:24+0200\n"
 "Last-Translator: Kniebremser <kniebremser@fluchtsportler.de>\n"
 "Language-Team: Fluchtsportler.de <kniebremser@fluchtsportler.de>\n"
 "Language: de_DE\n"
@@ -220,7 +220,7 @@ msgstr ""
 
 #: ../wp-gpx-maps_admin_settings.php:128 ../wp-gpx-maps_admin_settings.php:222
 #: ../wp-gpx-maps_admin_settings.php:317 ../wp-gpx-maps_admin_settings.php:472
-#: ../wp-gpx-maps_admin_settings.php:506
+#: ../wp-gpx-maps_admin_settings.php:505
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
@@ -232,9 +232,9 @@ msgstr "Übersichtstabelle"
 msgid "Summary table:"
 msgstr "Übersichtstabelle:"
 
-#: ../wp-gpx-maps_admin_settings.php:144
-msgid "Print summary table"
-msgstr "Übersichtstabelle drucken"
+#: ../wp-gpx-maps_admin_settings.php:144 ../wp-gpx-maps_help.php:280
+msgid "Show summary table of GPX track"
+msgstr "Zusammenfassende Details vom GPX Tracks zeigen"
 
 #: ../wp-gpx-maps_admin_settings.php:149
 msgid "Total distance:"
@@ -950,13 +950,9 @@ msgstr ""
 msgid "Value in seconds"
 msgstr "Wert in Sekunden"
 
-#: ../wp-gpx-maps_help.php:280
-msgid "Show summary details of your GPX track"
-msgstr "Zusammenfassende Details deines GPX Tracks zeigen"
-
 #: ../wp-gpx-maps_help.php:285
-msgid "Print summary details of your GPX file"
-msgstr "Zusammenfassende Details deiner GPX-Datei drucken"
+msgid "Print total distance in summary table"
+msgstr "Gesamtstrecke in der Übersichtstabelle drucken"
 
 #: ../wp-gpx-maps_help.php:290
 msgid "Print max. elevation in summary table"

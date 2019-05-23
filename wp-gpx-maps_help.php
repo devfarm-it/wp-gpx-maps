@@ -277,12 +277,12 @@
 </tr>
 	<tr>
 		<td>summary</td>
-		<td><?php _e( 'Show summary details of your GPX track', 'wp-gpx-maps' ); ?></td>
+		<td><?php _e( 'Show summary table of GPX track', 'wp-gpx-maps' ); ?></td>
 		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
 	</tr>
 	<tr>
 		<td>summarytotlen</td>
-		<td><?php _e( 'Print summary details of your GPX file', 'wp-gpx-maps' ); ?></td>
+		<td><?php _e( 'Print total distance in summary table', 'wp-gpx-maps' ); ?></td>
 		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
 	</tr>
 	<tr>
