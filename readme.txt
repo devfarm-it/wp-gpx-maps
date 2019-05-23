@@ -13,8 +13,8 @@ Draws a gpx track with altitude graph. You can also display your nextgen gallery
 
 This plugin has, as input, the GPX file with the track you've made and as output it shows the map of the track and an interactive altitude graph (where available).
 
-Now on github: https://github.com/devfarm-it/wp-gpx-maps
-On github you can contribuite easly with your code.
+Now on: <a href="https://github.com/devfarm-it/wp-gpx-maps" target="_blank" rel="noopener noreferrer">Github</a>.
+On Github you can contribuite easly with your code.
 
 
 Fully configurable:
@@ -37,11 +37,11 @@ Even if you don't have a gps camera, this plugin can retrive the image position 
 
 Post Attachments Integration:
 
-This version is extended by Stephan Klein (https://klein-gedruckt.de/2015/03/wordpress-plugin-wp-gpx-maps/) and supports displaying all images attached to a post without using NGG.
+This version is extended by: <a href="https://klein-gedruckt.de/2015/03/wordpress-plugin-wp-gpx-maps/" target="_blank" rel="noopener noreferrer">Stephan Klein</a> and supports displaying all images attached to a post without using NGG.
 
 = Translations =
 
-Translators are welcome to contribute to the plugin. Please use the [WordPress translation website](https://translate.wordpress.org/projects/wp-plugins/wp-gpx-maps/).
+Translators are welcome to contribute to the plugin. Please use the <a href="https://translate.wordpress.org/projects/wp-plugins/wp-gpx-maps/)" target="_blank" rel="noopener noreferrer">WordPress translation website</a>.
 
 The language files in the plugin contain 19 translatable texts for 14 languages:
 
@@ -76,21 +76,21 @@ Please also help with the translation of the readme. The more languages ​​th
 
 - iphone/ipad/ipod Compatible
 
-Try this plugin: <a href="https://devfarm.it/wp-gpx-maps-demo/">https://devfarm.it/wp-gpx-maps-demo/</a>
+Try this plugin: <a href="https://devfarm.it/wp-gpx-maps-demo/" target="_blank" rel="noopener noreferrer">https://devfarm.it/wp-gpx-maps-demo/</a>
 
-<a href="http://www.devfarm.it/forums/forum/wp-gpx-maps/">Support Forum</a>
+<a href="http://www.devfarm.it/forums/forum/wp-gpx-maps/" target="_blank" rel="noopener noreferrer">www.devfarm.it Support Forum</a>
 
 Supported gpx namespaces are:
 
 1. http://www.topografix.com/GPX/1/0
 
-1. http://www.topografix.com/GPX/1/1
+1. <a href="http://www.topografix.com/GPX/1/1" target="_blank" rel="noopener noreferrer">www.topografix.com/GPX/1/1</a>
 
 1. http://www.garmin.com/xmlschemas/GpxExtensions/v3
 
 1. http://www.garmin.com/xmlschemas/TrackPointExtension/v1
 
-Thanks to: <a href="http://www.securcube.net/">www.securcube.net</a>, <a href="http://www.devfarm.it/">www.devfarm.it</a>
+Thanks to: <a href="http://www.securcube.net/" target="_blank" rel="noopener noreferrer">www.securcube.net</a>, <a href="http://www.devfarm.it/" target="_blank" rel="noopener noreferrer">www.devfarm.it</a>
 
 == Installation ==
 
