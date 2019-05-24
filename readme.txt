@@ -7,7 +7,7 @@ Requires at least: 2.0.0
 Tested up to: 5.2.1
 Stable tag: 1.7.00
 
-Draws a gpx track with altitude graph. You can also display your nextgen gallery images in the map.
+Draws a GPX track with altitude graph. You can also display your nextgen gallery images in the map.
 
 == Description ==
 
