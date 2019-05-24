@@ -13,16 +13,14 @@ Draws a gpx track with altitude graph. You can also display your nextgen gallery
 
 This plugin has, as input, the GPX file with the track you've made and as output it shows the map of the track and an interactive altitude graph (where available).
 
-Now on: <a href="https://github.com/devfarm-it/wp-gpx-maps" target="_blank" rel="noopener noreferrer">Github</a>.
-On Github you can contribuite easly with your code.
-
-
 Fully configurable:
+
 - Custom colors
 - Custom icons
 - Multiple language support
 
 Supported charts:
+
 - Altitude
 - Speed
 - Heart Rate
@@ -33,13 +31,20 @@ Supported charts:
 NextGen Gallery Integration:
 
 Display your NextGen Gallery images inside the map!
-Even if you don't have a gps camera, this plugin can retrive the image position starting from the image date and you gpx file.
+Even if you don't have a GPS camera, this plugin can retrive the image position starting from the image date and your GPX file.
 
 Post Attachments Integration:
 
 This version is extended by: <a href="https://klein-gedruckt.de/2015/03/wordpress-plugin-wp-gpx-maps/" target="_blank" rel="noopener noreferrer">Stephan Klein</a> and supports displaying all images attached to a post without using NGG.
 
-= Translations =
+Try this plugin: <a href="https://devfarm.it/wp-gpx-maps-demo/" target="_blank" rel="noopener noreferrer">https://devfarm.it/wp-gpx-maps-demo/</a>
+
+Support:
+
+If you need help, please use: <a href="http://www.devfarm.it/forums/forum/wp-gpx-maps/" target="_blank" rel="noopener noreferrer">www.devfarm.it Support Forum</a>
+Would you like to help fix bugs or further develop the plugin? On <a href="https://github.com/devfarm-it/wp-gpx-maps" target="_blank" rel="noopener noreferrer">Github</a> you can contribuite easly with your code.
+
+Translations:
 
 Translators are welcome to contribute to the plugin. Please use the <a href="https://translate.wordpress.org/projects/wp-plugins/wp-gpx-maps/)" target="_blank" rel="noopener noreferrer">WordPress translation website</a>.
 
@@ -64,7 +69,7 @@ The language files in the plugin contain 19 translatable texts for 14 languages:
 - Norwegian nb_NO
 - Japanese ja_JP
 
-(many thanks to all guys who helped me with the translations)
+(Many thanks to all guys who helped me with the translations)
 
 At the moment 225 texts are translatable in the plugin.
 
@@ -73,14 +78,7 @@ Are 95% WordPress generates a new language file for your language.
 When WordPress generates a language file for a language, in the next version of the plugin the language file is removed.
 Please also help with the translation of the readme. The more languages ​​that are available, the wider the spread of the plugin will be.
 
-
-- iphone/ipad/ipod Compatible
-
-Try this plugin: <a href="https://devfarm.it/wp-gpx-maps-demo/" target="_blank" rel="noopener noreferrer">https://devfarm.it/wp-gpx-maps-demo/</a>
-
-<a href="http://www.devfarm.it/forums/forum/wp-gpx-maps/" target="_blank" rel="noopener noreferrer">www.devfarm.it Support Forum</a>
-
-Supported gpx namespaces are:
+Supported GPX namespaces are:
 
 1. http://www.topografix.com/GPX/1/0
 
