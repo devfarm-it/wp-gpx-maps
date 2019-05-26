@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-gpx-maps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-23 09:24+0200\n"
+"POT-Creation-Date: 2019-05-26 05:12+0200\n"
 "PO-Revision-Date: 2012-10-30 14:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -214,7 +214,7 @@ msgid "Summary table:"
 msgstr ""
 
 #: ../wp-gpx-maps_admin_settings.php:144 ../wp-gpx-maps_help.php:280
-msgid "Show summary table of GPX track"
+msgid "Print summary details of your GPX track"
 msgstr ""
 
 #: ../wp-gpx-maps_admin_settings.php:149
@@ -656,7 +656,7 @@ msgid "How can I use the GPX files?"
 msgstr ""
 
 #: ../wp-gpx-maps_help.php:18
-msgid "Go to the tab \"Tracks\" and copy the shortcode from the list and paste it in the pages/posts."
+msgid "Go to the tab \"Tracks\" and copy the shortcode from the list and paste it in the page or post."
 msgstr ""
 
 #: ../wp-gpx-maps_help.php:21
@@ -668,7 +668,7 @@ msgid "Can I also integrate GPX files from other sites?"
 msgstr ""
 
 #: ../wp-gpx-maps_help.php:27
-msgid "You can also use GPX file from other sites. Please use this scheme:"
+msgid "Yes, it&#8217s possible. Please use this scheme:"
 msgstr ""
 
 #: ../wp-gpx-maps_help.php:30
@@ -676,7 +676,7 @@ msgid "Can I change the attributes for each GPX shortcode?"
 msgstr ""
 
 #: ../wp-gpx-maps_help.php:33
-msgid "Yes, you can. These changes ignore the default settings for each attribute."
+msgid "Yes, it&#8217s possible. These changes ignore the default settings for each attribute."
 msgstr ""
 
 #: ../wp-gpx-maps_help.php:36
@@ -706,7 +706,7 @@ msgid "Possible values"
 msgstr ""
 
 #: ../wp-gpx-maps_help.php:52
-msgid "relative path to GPX file"
+msgid "relative path to the GPX file"
 msgstr ""
 
 #: ../wp-gpx-maps_help.php:57

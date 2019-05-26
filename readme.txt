@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 2.0.0
 Tested up to: 5.2.1
-Stable tag: 1.7.00
+Stable tag: 1.6.07
 
 Draws a GPX track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -23,7 +23,7 @@ Supported charts:
 
 - Altitude
 - Speed
-- Heart Rate
+- Heart rate
 - Temperature
 - Cadence
 - Grade
@@ -71,11 +71,11 @@ The language files in the plugin contain 19 translatable texts for 14 languages:
 
 (Many thanks to all guys who helped me with the translations)
 
-At the moment 225 texts are translatable in the plugin.
+Currently are 222 texts are translatable in the plugin.
 
 With your help, the plugin can be translated into any language. For updating the language file you no longer need to wait for a new version of the plugin.
 Are 95% WordPress generates a new language file for your language.
-When WordPress generates a language file for a language, in the next version of the plugin the language file is removed.
+If the translation is available via WP Translate, the language file will be deleted in the next version of the plugin.
 Please also help with the translation of the readme. The more languages ​​that are available, the wider the spread of the plugin will be.
 
 Supported GPX namespaces are:
@@ -102,9 +102,9 @@ Thanks to: <a href="http://www.securcube.net/" target="_blank" rel="noopener nor
 
 = Which shortcode attributes are available? =
 
-The attributes are:
+You can use the following shortcodes:
 
-1. gpx: Relative path to GPX file
+1. gpx: Relative path to the GPX file
 1. width: Width in pixels
 1. mheight: Map height
 1. gheight: Graph height
@@ -139,19 +139,21 @@ The attributes are:
 1. zoomonscrollwheel: Zoom on map when mouse scroll wheel (default is FALSE)
 1. download: Allow users to download your GPX file (default is FALSE)
 1. skipcache: Do not use cache. If TRUE might be very slow (default is FALSE)
-1. summary: Show summary table of GPX track (default is FALSE)
-1. summarytotlen: Print Total distance in summary table (default is FALSE)
-1. summarymaxele: Print Max Elevation in summary table (default is FALSE)
-1. summaryminele: Print Min Elevation in summary table (default is FALSE)
-1. summaryeleup: Print Total climbing in summary table (default is FALSE)
-1. summaryeledown: Print Total descent in summary table (default is FALSE)
-1. summaryavgspeed: Print Average Speed in summary table (default is FALSE)
-1. summarytotaltime: Print Total time in summary table (default is FALSE)
+1. summary: Print summary details of your GPX track (default is FALSE)
+1. summarytotlen: Print total distance in summary table (default is FALSE)
+1. summarymaxele: Print max elevation in summary table (default is FALSE)
+1. summaryminele: Print min Elevation in summary table (default is FALSE)
+1. summaryeleup: Print total climbing in summary table (default is FALSE)
+1. summaryeledown: Print total descent in summary table (default is FALSE)
+1. summaryavgspeed: Print average Speed in summary table (default is FALSE)
+1. summarytotaltime: Print total time in summary table (default is FALSE)
 
 = What happening if I've a very large GPX files? =
+
 This plugin will print a small amout of points to speedup javascript and pageload.
 
 = Is it free? =
+
 Yes!
 
 == Screenshots ==

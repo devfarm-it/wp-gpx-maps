@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-gpx-maps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-23 09:23+0200\n"
-"PO-Revision-Date: 2019-05-23 09:24+0200\n"
+"POT-Creation-Date: 2019-05-26 05:11+0200\n"
+"PO-Revision-Date: 2019-05-26 05:12+0200\n"
 "Last-Translator: Kniebremser <kniebremser@fluchtsportler.de>\n"
 "Language-Team: Fluchtsportler.de <kniebremser@fluchtsportler.de>\n"
 "Language: de_DE\n"
@@ -233,8 +233,8 @@ msgid "Summary table:"
 msgstr "Übersichtstabelle:"
 
 #: ../wp-gpx-maps_admin_settings.php:144 ../wp-gpx-maps_help.php:280
-msgid "Show summary table of GPX track"
-msgstr "Zusammenfassende Details vom GPX Tracks zeigen"
+msgid "Print summary details of your GPX track"
+msgstr "Zusammenfassende Details von deinem GPX-Track drucken"
 
 #: ../wp-gpx-maps_admin_settings.php:149
 msgid "Total distance:"
@@ -689,10 +689,10 @@ msgstr "Wie kann ich die GPX-Dateien verwenden?"
 #: ../wp-gpx-maps_help.php:18
 msgid ""
 "Go to the tab \"Tracks\" and copy the shortcode from the list and paste it "
-"in the pages/posts."
+"in the page or post."
 msgstr ""
 "Gehe zum Tab \"Tracks\" und kopiere den Shortcode aus der Liste und füge ihn "
-"in die Seiten / Beiträge ein."
+"in die Seite oder Beitrag ein."
 
 #: ../wp-gpx-maps_help.php:21
 msgid ""
@@ -704,13 +704,11 @@ msgstr ""
 
 #: ../wp-gpx-maps_help.php:24
 msgid "Can I also integrate GPX files from other sites?"
-msgstr "Kann ich auch GPX-Dateien von anderen Webiten einbinden?"
+msgstr "Kann ich auch GPX-Dateien von anderen Websiten einbinden?"
 
 #: ../wp-gpx-maps_help.php:27
-msgid "You can also use GPX file from other sites. Please use this scheme:"
-msgstr ""
-"Du kannst auch GPX-Dateien von anderen Websiten verwenden. Bitte verwende "
-"dieses Schema:"
+msgid "Yes, it&#8217s possible. Please use this scheme:"
+msgstr "Ja, es ist möglich. Bitte verwende dieses Schema:"
 
 #: ../wp-gpx-maps_help.php:30
 msgid "Can I change the attributes for each GPX shortcode?"
@@ -718,10 +716,11 @@ msgstr "Kann ich die Attribute für jeden GPX-Shortcode ändern?"
 
 #: ../wp-gpx-maps_help.php:33
 msgid ""
-"Yes, you can. These changes ignore the default settings for each attribute."
+"Yes, it&#8217s possible. These changes ignore the default settings for each "
+"attribute."
 msgstr ""
-"Ja, du kannst. Diese Änderungen ignorieren die Standardeinstellungen für "
-"jedes Attribut."
+"Ja, es ist möglich. Diese Änderungen ignorieren die Standardeinstellungen "
+"für jedes Attribut."
 
 #: ../wp-gpx-maps_help.php:36
 msgid ""
@@ -754,8 +753,8 @@ msgid "Possible values"
 msgstr "Mögliche Werte"
 
 #: ../wp-gpx-maps_help.php:52
-msgid "relative path to GPX file"
-msgstr "Relativer Pfad zu deiner GPX-Datei"
+msgid "relative path to the GPX file"
+msgstr "Relativer Pfad zu der GPX-Datei"
 
 #: ../wp-gpx-maps_help.php:57
 msgid "Map width"
