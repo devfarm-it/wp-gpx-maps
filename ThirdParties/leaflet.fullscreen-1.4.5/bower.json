@@ -1,7 +1,8 @@
 {
   "name": "leaflet.fullscreen",
-  "version": "1.1.4",
+  "version": "1.4.5",
   "homepage": "https://github.com/brunob/leaflet.fullscreen",
+  "license": "MIT",
   "authors": [
     "brunob <brunobergot@gmail.com>"
   ],
@@ -12,13 +13,15 @@
     "icon-fullscreen.png",
     "icon-fullscreen-2x.png"
   ],
+  "devDependencies": {
+    "eslint": "2.3.0"
+  },
   "keywords": [
     "leaflet",
     "plugins",
     "maps",
     "fullscreen"
   ],
-  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",

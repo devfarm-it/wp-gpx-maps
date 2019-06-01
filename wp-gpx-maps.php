@@ -61,8 +61,10 @@ function enqueue_WP_GPX_Maps_scripts_admin($hook)
 	if ( strpos($hook, 'WP-GPX-Maps') !== false ) {
 		wp_register_script('mColorPicker', plugins_url( '/js/mColorPicker_min.js', __FILE__ ), array(), "1.0 r39" );
 		wp_enqueue_script('mColorPicker');
+
 		wp_register_script('bootstrap-table', plugins_url( '/js/bootstrap-table.min.js', __FILE__ ), array(), "1.11.1" );
 		wp_enqueue_script('bootstrap-table');
+
 		wp_register_style('bootstrap-table', plugins_url( '/css/bootstrap-table.min.css', __FILE__ ), array(), "1.11.1" );
 		wp_enqueue_style('bootstrap-table');
 	}
@@ -71,14 +73,22 @@ function enqueue_WP_GPX_Maps_scripts_admin($hook)
 function enqueue_WP_GPX_Maps_scripts() {
 
 	/* leaflet */
-	wp_register_style( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.3.1/leaflet.css', __FILE__ ), array(), "1.3.1" );
-	wp_enqueue_style( 'leaflet' );	wp_register_style( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/MarkerCluster.css', __FILE__ ), array(), "0" );	wp_enqueue_style( 'leaflet.markercluster' );		wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), "0" );	wp_enqueue_style( 'leaflet.Photo' );
+	wp_register_style( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.css', __FILE__ ), array(), "1.5.1" );
+	wp_enqueue_style( 'leaflet' );
 
-	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.1.4/Control.FullScreen.css', __FILE__ ), array(), "1.3.1" );
+	wp_register_style( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/MarkerCluster.css', __FILE__ ), array(), "0" );
+	wp_enqueue_style( 'leaflet.markercluster' );
+
+	wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), "0" );
+	wp_enqueue_style( 'leaflet.Photo' );
+
+	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.css', __FILE__ ), array(), "1.5.1" );
 	wp_enqueue_style( 'leaflet.fullscreen' );
 
-	wp_register_script('leaflet', plugins_url( '/ThirdParties/Leaflet_1.3.1/leaflet.js', __FILE__ ), array(), "1.3.1" );	wp_register_script('leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/leaflet.markercluster.js', __FILE__ ), array('leaflet'), "0" );	wp_register_script('leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.js', __FILE__ ), array('leaflet','leaflet.markercluster'), "0" );
-	wp_register_script('leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.1.4/Control.FullScreen.js', __FILE__ ), array('leaflet'), "1.1.4" );
+	wp_register_script('leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.js', __FILE__ ), array(), "1.5.1" );
+	wp_register_script('leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/leaflet.markercluster.js', __FILE__ ), array('leaflet'), "0" );
+	wp_register_script('leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.js', __FILE__ ), array('leaflet','leaflet.markercluster'), "0" );
+	wp_register_script('leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.js', __FILE__ ), array('leaflet'), "1.4.5" );
 
 	/* chartjs */
 	wp_register_script('chartjs', plugins_url( '/js/Chart.min.js', __FILE__ ), array(), "2.7.2" );
@@ -99,16 +109,39 @@ function print_WP_GPX_Maps_styles() {
 ?>
 
 <style type="text/css">
-	.wpgpxmaps { clear:both; }
+	.wpgpxmaps {
+		clear:both;
+	}
 	#content .wpgpxmaps img,
 	.entry-content .wpgpxmaps img,
-	.wpgpxmaps img { max-width: none; width: none; padding:0; background:none; margin:0; border:none; }
-	.wpgpxmaps .ngimages { display:none; }
-	.wpgpxmaps .myngimages { border:1px solid #fff;position:absolute;cursor:pointer;margin:0;z-index:1; }
-	.wpgpxmaps_summary .summarylabel { }
-	.wpgpxmaps_summary .summaryvalue { font-weight: bold; }
-	.wpgpxmaps .report { line-height:120%; }
-	.wpgpxmaps .gmnoprint div:first-child {  }
+	.wpgpxmaps img {
+		max-width: none;
+		width: none;
+		padding:0;
+		background:none;
+		margin:0;
+		border:none;
+	}
+	.wpgpxmaps .ngimages {
+		display:none;
+	}
+	.wpgpxmaps .myngimages {
+		border:1px solid #fff;
+		position:absolute;
+		cursor:pointer;
+		margin:0;
+		z-index:1;
+	}
+	.wpgpxmaps_summary .summarylabel {
+	}
+	.wpgpxmaps_summary .summaryvalue {
+		font-weight: bold;
+	}
+	.wpgpxmaps .report {
+		line-height:120%;
+	}
+	.wpgpxmaps .gmnoprint div:first-child {
+	}
 	.wpgpxmaps .wpgpxmaps_osm_footer {
 		position: absolute;
 		left: 0;
