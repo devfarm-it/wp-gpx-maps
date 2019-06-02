@@ -9,7 +9,12 @@
 	&nbsp; <?php _e( '1. Method: Upload the GPX file using the uploader in the tab "Tracks".', 'wp-gpx-maps' ); ?>
 </p>
 <p>
-	&nbsp; <?php _e( '2. Method: Upload the GPX file via FTP to your upload folder:', 'wp-gpx-maps' ); echo ' '; ?> <span class="code"><strong> <?php echo $relativeGpxPath; ?> </strong></span>
+	&nbsp;
+	<?php
+		_e( '2. Method: Upload the GPX file via FTP to your upload folder:', 'wp-gpx-maps' );
+		echo ' ';
+	?>
+	<span class="code"><strong> <?php echo $relativeGpxPath; ?> </strong></span>
 </p>
 <p>
 	<strong><?php _e( 'How can I use the GPX files?', 'wp-gpx-maps' ); ?></strong>
@@ -18,13 +23,23 @@
 	&nbsp; <?php _e( 'Go to the tab "Tracks" and copy the shortcode from the list and paste it in the page or post.', 'wp-gpx-maps' ); ?>
 </p>
 <p>
-	&nbsp; <?php _e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' ); echo ' '; ?> <span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"]</strong></span>
+	&nbsp;
+	<?php
+		_e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' );
+		echo ' ';
+	?>
+		<span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"]</strong></span>
 </p>
 <p>
 	<strong><?php _e( 'Can I also integrate GPX files from other sites?', 'wp-gpx-maps' ); ?></strong>
 </p>
 <p>
-	&nbsp; <?php _e( 'Yes, it&#8217s possible. Please use this scheme:', 'wp-gpx-maps' ); echo ' '; ?> <span class="code"><strong>[sgpx gpx="http://www.someone.com/somewhere/somefile.gpx"]</strong></span>
+	&nbsp;
+	<?php
+		_e( 'Yes, it&#8217s possible. Please use this scheme:', 'wp-gpx-maps' );
+		echo ' ';
+	?>
+	<span class="code"><strong>[sgpx gpx="http://www.someone.com/somewhere/somefile.gpx"]</strong></span>
 </p>
 <p>
 	<strong><?php _e( 'Can I change the attributes for each GPX shortcode?', 'wp-gpx-maps' ); ?></strong>
@@ -33,7 +48,12 @@
 	&nbsp; <?php _e( 'Yes, it&#8217s possible. These changes ignore the default settings for each attribute.', 'wp-gpx-maps' ); ?>
 </p>
 <p>
-	&nbsp; <?php _e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' ); echo ' '; ?> <span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></span>
+	&nbsp;
+	<?php
+		_e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' );
+		echo ' ';
+	?>
+		<span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></span>
 </p>
 
 <br />
@@ -70,12 +90,24 @@
 	<tr>
 		<td>download</td>
 		<td><?php _e( 'Allow users to download your GPX file', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 		<tr>
 		<td>skipcache</td>
 		<td><?php _e('Do not use cache. If TRUE might be very slow', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	</tbody>
 </table>
@@ -97,27 +129,57 @@
 	<tr>
 		<td>mlinecolor</td>
 		<td><?php _e( 'Map line color', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>#3366cc</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>#3366cc</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>zoomonscrollwheel</td>
 		<td><?php _e( 'Zoom on map when mouse scroll wheel', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>waypoints</td>
 		<td><?php _e( 'Print the GPX waypoints inside the map', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>donotreducegpx</td>
 		<td><?php _e( 'Print all the GPX waypoints without reduce it', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>pointsoffset</td>
 		<td><?php _e( 'Skip GPX points closer than XX meters', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>10</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>10</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>startIcon</td>
@@ -154,7 +216,13 @@
 	<tr>
 		<td>glinecolor</td>
 		<td><?php _e( 'Altitude line color', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>#3366cc</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>#3366cc</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>uom</td>
@@ -174,12 +242,24 @@
 	<tr>
 		<td>showspeed</td>
 		<td><?php _e( 'Show speed inside the chart', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>glinecolorspeed</td>
 		<td><?php _e( 'Speed line color', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>#ff0000</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>#ff0000</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>uomspeed</td>
@@ -199,37 +279,79 @@
 	<tr>
 		<td>showhr</td>
 		<td><?php _e( 'Show heart rate inside the chart', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>glinecolorhr</td>
 		<td><?php _e( 'Heart rate line color', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>#ff77bd</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>#ff77bd</strong>
+		</td>
 	</tr>
 		<tr>
 		<td>showele</td>
 		<td><?php _e( 'Show elevation data inside the chart', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>TRUE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>TRUE</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>showcad</td>
 		<td><?php _e( 'Show cadence inside the chart', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>glinecolorcad</td>
 		<td><?php _e( 'Cadence line color', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>#beecff</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>#beecff</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>showgrade</td>
 		<td><?php _e( 'Show grade inside the chart', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>glinecolorgrade</td>
 		<td><?php _e( 'Grade line color', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>#beecff</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>#beecff</strong>
+		</td>
 	</tr>
 	</tbody>
 </table>
@@ -256,7 +378,13 @@
 	<tr>
 		<td>attachments</td>
 		<td><?php _e( 'Show all images that are attached to post', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>dtoffset</td>
@@ -278,57 +406,123 @@
 	<tr>
 		<td>summary</td>
 		<td><?php _e( 'Print summary details of your GPX track', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summarytotlen</td>
 		<td><?php _e( 'Print total distance in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summarymaxele</td>
 		<td><?php _e( 'Print max. elevation in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summaryminele</td>
 		<td><?php _e( 'Print min. elevation in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summaryeleup</td>
 		<td><?php _e( 'Print total climbing in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summaryeledown</td>
 		<td><?php _e( 'Print total descent in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summaryavgspeed</td>
 		<td><?php _e( 'Print average speed in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summaryavgcad</td>
 		<td><?php _e( 'Print average cadence in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summaryavghr</td>
 		<td><?php _e( 'Print average heart rate in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summaryavgtemp</td>
 		<td><?php _e( 'Print average temperature in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	<tr>
 		<td>summarytotaltime</td>
 		<td><?php _e( 'Print total time in summary table', 'wp-gpx-maps' ); ?></td>
-		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>FALSE</strong></td>
+		<td>
+			<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+			?>
+			<strong>False</strong>
+		</td>
 	</tr>
 	</tbody>
 </table>
