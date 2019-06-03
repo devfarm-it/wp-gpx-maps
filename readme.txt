@@ -165,6 +165,11 @@ Yes!
 1. Altitude & Speed & Hearth rate
 
 == Changelog ==
+
+= x.x.xx =
+* Added: Authors can upload GPS tracks (thanks to wildcomputations)
+* Fixed: Plugin is now complete translatable (Backend + Frontend)
+* Fixed: Wordpress coding standards
 = 1.6.07 =
 * resolve admin error
 = 1.6.06 =
