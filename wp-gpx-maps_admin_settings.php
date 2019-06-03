@@ -33,13 +33,13 @@
 	$distanceType      = get_option( 'wpgpxmaps_distance_type' );
 
 
-	if ( empty($showEle) )
+	if ( empty( $showEle ) )
 		$showEle = 'true';
 
-	if ( ! ($t) )
+	if ( ! ( $t ) )
 		$t = 'HYBRID';
 
-	if ( ! ($po) )
+	if ( ! ( $po ) )
 		$po = 10;
 ?>
 
