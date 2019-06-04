@@ -95,7 +95,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 		<tr>
@@ -106,7 +106,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	</tbody>
@@ -145,7 +145,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -156,7 +156,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -167,7 +167,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -247,7 +247,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -284,7 +284,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -306,7 +306,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>TRUE</strong>
+			<strong>true</strong>
 		</td>
 	</tr>
 	<tr>
@@ -317,7 +317,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -339,7 +339,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -383,7 +383,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -411,7 +411,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -422,7 +422,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -433,7 +433,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -444,7 +444,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -455,7 +455,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -466,7 +466,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -477,7 +477,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -488,7 +488,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -499,7 +499,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -510,7 +510,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	<tr>
@@ -521,7 +521,7 @@
 				_e( 'Default is:', 'wp-gpx-maps' );
 				echo ' ';
 			?>
-			<strong>False</strong>
+			<strong>false</strong>
 		</td>
 	</tr>
 	</tbody>

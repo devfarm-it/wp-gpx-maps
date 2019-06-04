@@ -58,7 +58,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			}
 		}
 		/* START FIX NEXT GEN GALLERY 2.x */
-		if ( class_exists( "C_Component_Registry " ) ) {
+		if ( class_exists( "C_Component_Registry" ) ) {
 			$renderer                  = C_Component_Registry::get_instance()->get_utility( 'I_Displayed_Gallery_Renderer' );
 			$params['gallery_ids']     = $ngGalleries;
 			$params['image_ids']       = $ngImages;
@@ -89,7 +89,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 
 function findItemCoordinate( $imgdt, $dt, $lat, $lon ) {
 
-	foreach( array_keys( $dt ) as $i ) {
+	foreach ( array_keys( $dt ) as $i ) {
 		if ( $i!=0 && $imgdt >= $dt[$i-1] && $imgdt <= $dt[$i] ) {
 			if ( $lat[$i] != 0 && $lon[$i] != 0 )
 		return array( "lat" => $lat[$i], "lon" => $lon[$i] );
