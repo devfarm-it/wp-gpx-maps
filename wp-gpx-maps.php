@@ -241,7 +241,7 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 
 					} elseif ($uom == '3') {
 						/* meters / kilometers / nautical miles */
-						$_dist = (float)($_dist / 1000 / 1.852 );
+						$_dist = (float) ( $_dist / 1000 / 1.852 );
 
 					} elseif ($uom == '4') {
 						/* meters / miles */
@@ -864,8 +864,7 @@ function convertSpeed( $speed, $uomspeed, $addUom = false ) {
 }
 
 function downloadRemoteFile( $remoteFile ) {
-	try
-	{
+	try {
 		$newfname = tempnam ( '/tmp', 'gpx' );
 
 		if ( function_exists ( 'file_put_contents' ) )
@@ -903,8 +902,9 @@ function downloadRemoteFile( $remoteFile ) {
 }
 
 function unescape( $value ) {
+
 	$value = str_replace( "'", "\'", $value );
-	$value = str_replace( array( "\n","\r" ), "", $value );
+	$value = str_replace( array( "\n", "\r" ), "", $value );
 	return $value;
 }
 
