@@ -2,7 +2,7 @@
 
 	require_once( ABSPATH . 'wp-admin/includes/file.php' );
 
-	require_once( "wp-gpx-maps_utils_nggallery.php" );
+	require_once( 'wp-gpx-maps_utils_nggallery.php' );
 
 function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 
@@ -69,12 +69,12 @@ function gpxFolderPath() {
 	$uploadsPath = $upload_dir['basedir'];
 
 	if ( current_user_can( 'manage_options' ) ){
-			$ret = $uploadsPath . DIRECTORY_SEPARATOR . "gpx";
+			$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx';
 		}
 	elseif ( current_user_can( 'publish_posts' ) ) {
 			global $current_user;
-			get_currentuserinfo();
-			$ret = $uploadsPath . DIRECTORY_SEPARATOR . "gpx" . DIRECTORY_SEPARATOR . $current_user->user_login;
+			wp_get_current_user();
+			$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx' . DIRECTORY_SEPARATOR . $current_user->user_login;
 	}
 
 	return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $ret );
@@ -84,7 +84,7 @@ function gpxCacheFolderPath() {
 
 	$upload_dir  = wp_upload_dir();
 	$uploadsPath = $upload_dir['basedir'];
-	$ret         = $uploadsPath . DIRECTORY_SEPARATOR . "gpx" . DIRECTORY_SEPARATOR . "~cache";
+	$ret         = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx' . DIRECTORY_SEPARATOR . '~cache';
 	return str_replace( array( '/', '\\'), DIRECTORY_SEPARATOR, $ret );
 }
 
@@ -332,7 +332,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 							array_push( $points->cad, $cad );
 							array_push( $points->grade, (float) round( $grade, 2 ) );
 
-						} else {
+					} else {
 							/* Smoller Offset -> continue.. */
 							$lastOffset = (float) $lastOffset + (float) $offset;
 					}
@@ -423,18 +423,18 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 				$lon = $rpt['lon'];
 				if ( $lastLat == 0 && $lastLon == 0 ) {
 
-				/* Base Case */
-				array_push( $points->lat, (float) $lat );
-				array_push( $points->lon, (float) $lon );
-				array_push( $points->ele, 0 );
-				array_push( $points->dist, 0 );
-				array_push( $points->speed, 0 );
-				array_push( $points->hr, 0 );
-				array_push( $points->atemp, 0 );
-				array_push( $points->cad, 0 );
-				array_push( $points->grade, 0 );
-				$lastLat = $lat;
-				$lastLon = $lon;
+					/* Base Case */
+					array_push( $points->lat, (float) $lat );
+					array_push( $points->lon, (float) $lon );
+					array_push( $points->ele, 0 );
+					array_push( $points->dist, 0 );
+					array_push( $points->speed, 0 );
+					array_push( $points->hr, 0 );
+					array_push( $points->atemp, 0 );
+					array_push( $points->cad, 0 );
+					array_push( $points->grade, 0 );
+					$lastLat = $lat;
+					$lastLon = $lon;
 				} else {
 
 					/* Base Case */

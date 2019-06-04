@@ -5,7 +5,7 @@ function wpgpxmaps_isNGGalleryActive() {
 	if ( ! function_exists( 'is_plugin_active' ) ) {
 		require_once( wp_gpx_maps_sitePath() . '/wp-admin/includes/plugin.php' );
 	}
-	return is_plugin_active( "nextgen-gallery/nggallery.php" );
+	return is_plugin_active( 'nextgen-gallery/nggallery.php' );
 }
 
 function wpgpxmaps_isNGGalleryProActive() {
@@ -13,7 +13,7 @@ function wpgpxmaps_isNGGalleryProActive() {
 	if ( ! function_exists( 'is_plugin_active' ) ) {
 		require_once( wp_gpx_maps_sitePath() . '/wp-admin/includes/plugin.php' );
 	}
-		return is_plugin_active( "nextgen-gallery-pro/nggallery-pro.php" );
+		return is_plugin_active( 'nextgen-gallery-pro/nggallery-pro.php' );
 }
 
 function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset, &$error ) {
@@ -35,20 +35,20 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 		}
 		foreach ( $pictures as $p ) {
 			$item         = array();
-			$item["data"] = $p->thumbHTML;
+			$item['data'] = $p->thumbHTML;
 			if ( is_callable( 'exif_read_data' ) ) {
 				$exif = @exif_read_data( $p->imagePath );
-					if ( $exif !== false ) {
-						$item["lon"] = getExifGps( $exif["GPSLongitude"], $exif['GPSLongitudeRef'] );
-						$item["lat"] = getExifGps( $exif["GPSLatitude"], $exif['GPSLatitudeRef'] );
-					if ( ( $item["lat"] != 0 ) || ( $item["lon"] != 0 ) ) {
+				if ( $exif !== false ) {
+					$item['lon'] = getExifGps( $exif['GPSLongitude'], $exif['GPSLongitudeRef'] );
+					$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );
+					if ( ( $item['lat'] != 0 ) || ( $item['lon'] != 0 ) ) {
 						$result[] = $item;
 					} elseif ( isset( $p->imagedate ) ) {
 						$_dt   = strtotime( $p->imagedate ) + $dtoffset;
 						$_item = findItemCoordinate( $_dt, $dt, $lat, $lon );
 						if ( $_item != null ) {
-							$item["lat"] = $_item["lat"];
-							$item["lon"] = $_item["lon"];
+							$item['lat'] = $_item['lat'];
+							$item['lon'] = $_item['lon'];
 							$result[] = $item;
 						}
 					}
@@ -58,7 +58,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			}
 		}
 		/* START FIX NEXT GEN GALLERY 2.x */
-		if ( class_exists( "C_Component_Registry" ) ) {
+		if ( class_exists( 'C_Component_Registry' ) ) {
 			$renderer                  = C_Component_Registry::get_instance()->get_utility( 'I_Displayed_Gallery_Renderer' );
 			$params['gallery_ids']     = $ngGalleries;
 			$params['image_ids']       = $ngImages;
@@ -73,7 +73,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 				$galid = $m[1];
 				if ( $galid ) {
 					for( $i = 0; $i < count( $result ); ++$i ) {
-						$result[$i]["data"] = str_replace( "%PRO_LIGHTBOX_GALLERY_ID%",  $galid, $result[$i]["data"] );
+						$result[$i]['data'] = str_replace( '%PRO_LIGHTBOX_GALLERY_ID%', $galid, $result[$i]['data'] );
 					}
 				}
 			}
@@ -92,7 +92,7 @@ function findItemCoordinate( $imgdt, $dt, $lat, $lon ) {
 	foreach ( array_keys( $dt ) as $i ) {
 		if ( $i!=0 && $imgdt >= $dt[$i-1] && $imgdt <= $dt[$i] ) {
 			if ( $lat[$i] != 0 && $lon[$i] != 0 )
-		return array( "lat" => $lat[$i], "lon" => $lon[$i] );
+		return array( 'lat' => $lat[$i], 'lon' => $lon[$i] );
 		}
 	}
 	return null;

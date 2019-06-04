@@ -76,9 +76,9 @@
 			<th scope="row"><?php _e( 'Distance type:', 'wp-gpx-maps' ); ?></th>
 			<td>
 				<select name='wpgpxmaps_distance_type'>
-					<option value="0" <?php if ($distanceType == '0' || $distanceType == '') echo 'selected'; ?>><?php _e( 'Normal (default)', 'wp-gpx-maps' ); ?></option>
-					<option value="1" <?php if ($distanceType == '1') echo 'selected'; ?>><?php _e( 'Flat &#8594; (Only flat distance, don&#8217;t take care of altitude)', 'wp-gpx-maps' ); ?></option>
-					<option value="2" <?php if ($distanceType == '2') echo 'selected'; ?>><?php _e( 'Climb &#8593; (Only climb distance)', 'wp-gpx-maps' ); ?></option>
+					<option value="0" <?php if ( $distanceType == '0' || $distanceType == '' ) echo 'selected'; ?>><?php _e( 'Normal (default)', 'wp-gpx-maps' ); ?></option>
+					<option value="1" <?php if ( $distanceType == '1' ) echo 'selected'; ?>><?php _e( 'Flat &#8594; (Only flat distance, don&#8217;t take care of altitude)', 'wp-gpx-maps' ); ?></option>
+					<option value="2" <?php if ( $distanceType == '2' ) echo 'selected'; ?>><?php _e( 'Climb &#8593; (Only climb distance)', 'wp-gpx-maps' ); ?></option>
 				</select>
 			</td>
 		</tr>
@@ -214,7 +214,8 @@
 			<td>
 				<input name="wpgpxmaps_summary_total_ele_up" type="checkbox" value="true" <?php if ( $total_ele_up == true ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
 				<i>
-					<?php echo ' ';
+					<?php
+					echo ' ';
 					_e( 'Print total climbing', 'wp-gpx-maps' );
 					?>
 				</i>
@@ -335,7 +336,8 @@
 			<td>
 				<input name="wpgpxmaps_show_waypoint" type="checkbox" value="true" <?php if ( $showW == true ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
 				<i>
-					<?php echo ' ';
+					<?php
+					echo ' ';
 					_e( 'Show waypoints', 'wp-gpx-maps' );
 					?>
 				</i>
@@ -470,7 +472,7 @@
 		<tr>
 			<th scope="row"><?php _e( 'Altitude', 'wp-gpx-maps' ); ?></th>
 			<td>
-				<input type="checkbox" <?php if( $showEle == true ){ echo( 'checked' ); } ?> onchange="wpgpxmaps_show_elevation.value = this.checked" onload="wpgpxmaps_show_elevation.value = this.checked" />
+				<input type="checkbox" <?php if ( $showEle == true ){ echo( 'checked' ); } ?> onchange="wpgpxmaps_show_elevation.value = this.checked" onload="wpgpxmaps_show_elevation.value = this.checked" />
 				<i>
 					<?php
 						echo ' ';

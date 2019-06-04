@@ -9,10 +9,10 @@
 		return;
 
 	$gpxRegEx = '/.gpx$/i';
-if ( current_user_can( 'manage_options' )  ) {
-		$menu_root = "options-general.php";
-} elseif ( current_user_can( 'publish_posts' )  ) {
-		$menu_root = "admin.php";
+if ( current_user_can( 'manage_options' ) ) {
+		$menu_root = 'options-general.php';
+} elseif ( current_user_can( 'publish_posts' ) ) {
+		$menu_root = 'admin.php';
 }
 
 if ( isset( $_POST['clearcache'] ) ) {
@@ -35,16 +35,16 @@ if ( is_writable( $realGpxPath ) ) {
 
 		<div class="tablenav top">
 		<?php
-            echo '<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="' . get_bloginfo( 'wpurl' ) . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">'; ?>
+				echo '<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="' . get_bloginfo( 'wpurl' ) . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">'; ?>
 				<?php _e( 'Choose a file to upload:', 'wp-gpx-maps' )?> <input name="uploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
 				<?php
 				if ( isset( $_FILES['uploadedfile'] ) ) {
 					$total = count( $_FILES['uploadedfile']['name'] );
 					for ( $i = 0; $i < $total; $i++ ) {
 							$uploadingFileName = basename( $_FILES['uploadedfile']['name'][$i] );
-							$target_path = $realGpxPath . "/" . $uploadingFileName;
+							$target_path       = $realGpxPath . "/" . $uploadingFileName;
 							if ( preg_match( $gpxRegEx, $target_path ) ) {
-								if ( move_uploaded_file( $_FILES['uploadedfile']['tmp_name'][$i], $target_path ) ) {
+							if ( move_uploaded_file( $_FILES['uploadedfile']['tmp_name'][$i], $target_path ) ) {
 									echo '<div class="notice notice-success"><p>';
 									printf(
 										/* translators: 1: GPX file name */
@@ -52,12 +52,12 @@ if ( is_writable( $realGpxPath ) ) {
 										'<span class="code"><strong>' . esc_html( $uploadingFileName ) . '</strong></span>'
 									);
 									echo '</p></div>';
-								} else{
+							} else {
 									echo '<div class=" notice notice-error"><p>';
 									_e( 'There was an error uploading the file, please try again!', 'wp-gpx-maps' );
 									echo '</p></div>';
 							}
-							} else {
+						} else {
 								echo '<div class="notice notice-warning"><p>';
 								_e( 'The file type is not supported!', 'wp-gpx-maps' );
 								echo '</p></div>';
@@ -67,7 +67,7 @@ if ( is_writable( $realGpxPath ) ) {
 				?>
 			</form>
 
-			<form method="POST" style="float:left; margin:5px 20px 0 0" action="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=<?php echo wp_create_nonce( 'wpgpx_clearcache_nonce' ) ?>" >
+			<form method="POST" style="float:left; margin:5px 20px 0 0" action="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=<?php echo wp_create_nonce( 'wpgpx_clearcache_nonce' ); ?>" >
 				<input type="submit" name="clearcache" value="<?php _e( 'Clear Cache', 'wp-gpx-maps' ); ?>" />
 			</form>
 
@@ -82,7 +82,8 @@ if ( is_writable( $realGpxPath ) ) {
 
 				<?php echo '<div class=" notice notice-error"><p>'; ?>
 				<p style='font-size:2em;'>
-					<?php printf(
+					<?php
+					printf(
 						/* translators: 1: Relative path of the GPX folder */
 						__( 'Your folder for GPX files %1s is not writable. Please change the folder permissions.', 'wp-gpx-maps' ),
 						'<span class="code">' . esc_html( $relativeGpxPath ) . '</span>'
@@ -99,7 +100,7 @@ if ( is_writable( $realGpxPath ) ) {
 	$myGpxFileNames = array();
 	if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 		while ( false !== ( $entry = readdir( $handle ) ) ) {
-			if (preg_match( $gpxRegEx, $entry ) ) {
+		if ( preg_match( $gpxRegEx, $entry ) ) {
 
 				if ( isset($_GET['_wpnonce'])
 					&&
@@ -141,7 +142,7 @@ if ( is_writable( $realGpxPath ) ) {
 
 if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 	while ( false !== ($entry = readdir( $handle ) ) ) {
-		if ( preg_match( $gpxRegEx,$entry ) ) {
+		if ( preg_match( $gpxRegEx, $entry ) ) {
 		$filenames[] = $realGpxPath . "/" . $entry;
 		}
 	}
@@ -158,10 +159,10 @@ $wpgpxmaps_gpxRelativePath = get_site_url( null, '/wp-content/uploads/gpx/' );
 
 	function submitgpx(el)
 	{
-		 var newEl = document.createElement('span');
-		 newEl.innerHTML = '<?php _e( 'Uploading file...', 'wp-gpx-maps' ); ?>';
-		 el.parentNode.insertBefore(newEl,el.nextSibling);
-		 el.parentNode.submit()
+		var newEl = document.createElement('span');
+		newEl.innerHTML = '<?php _e( 'Uploading file...', 'wp-gpx-maps' ); ?>';
+		el.parentNode.insertBefore(newEl,el.nextSibling);
+		el.parentNode.submit()
 	}
 
 	jQuery('#table').bootstrapTable({

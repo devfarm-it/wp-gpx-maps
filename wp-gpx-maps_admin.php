@@ -18,7 +18,7 @@ function wpgpxmaps_admin_menu() {
 
 	}
 
-	else if ( current_user_can( 'publish_posts' ) ) {
+	elseif ( current_user_can( 'publish_posts' ) ) {
 
 		add_menu_page( 'WP GPX Maps', 'WP GPX Maps', 'publish_posts', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page' );
 
@@ -92,7 +92,7 @@ function WP_GPX_Maps_html_page() {
 
 	if ( file_exists( $realGpxPath ) && is_dir( $realGpxPath ) ) {
 
-		//dir exsist!
+		/* Directory exist! */
 
 	} else {
 
@@ -109,7 +109,7 @@ function WP_GPX_Maps_html_page() {
 
 	if ( file_exists( $cacheGpxPath ) && is_dir( $cacheGpxPath ) ) {
 
-		//dir exsist!
+		/* Directory exist! */
 
 	} else {
 
@@ -126,13 +126,13 @@ function WP_GPX_Maps_html_page() {
 
 	wpgpxmaps_ilc_admin_tabs( $tab );
 
-	if ( $tab == "tracks" ) {
+	if ( $tab == 'tracks' ) {
 		include 'wp-gpx-maps_admin_tracks.php';
 
-	} elseif ( $tab == "settings" ) {
+	} elseif ( $tab == 'settings' ) {
 		include 'wp-gpx-maps_admin_settings.php';
 
-	} elseif ( $tab == "help" ) {
+	} elseif ( $tab == 'help' ) {
 		include 'wp-gpx-maps_help.php';
 	}
 }
