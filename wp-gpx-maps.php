@@ -12,8 +12,8 @@
 
 //error_reporting (E_ALL);
 
-include 'wp-gpx-maps_utils.php';
-include 'wp-gpx-maps_admin.php';
+require 'wp-gpx-maps_utils.php';
+require 'wp-gpx-maps_admin.php';
 
 add_shortcode( 'sgpx', 'handle_WP_GPX_Maps_Shortcodes' );
 add_shortcode( 'sgpxf', 'handle_WP_GPX_Maps_folder_Shortcodes' );
@@ -40,18 +40,18 @@ function WP_GPX_Maps_action_links( $links, $file ) {
 		$this_plugin = plugin_basename( __FILE__ );
 	}
 
-	// check to make sure we are on the correct plugin
+	// Check to make sure we are on the correct plugin.
 	if ( $file == $this_plugin ) {
 		// the anchor tag and href to the URL we want. For a "Settings"
 		// link, this needs to be the url of your settings page. Authors
 		// access tracks via the admin page.
 		if ( current_user_can( 'manage_options' ) ) {
-			$menu_root = "options-general.php";
+			$menu_root = 'options-general.php';
 		} elseif ( current_user_can( 'publish_posts' ) ) {
-			$menu_root = "admin.php";
+			$menu_root = 'admin.php';
 		}
-		$settings_link = '<a href="' . get_bloginfo( 'wpurl') . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">' . __( 'Settings', 'wp-gpx-maps' ) . '</a>';
-		// add the link to the list
+		$settings_link = '<a href="' . get_bloginfo( 'wpurl' ) . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">' . __( 'Settings', 'wp-gpx-maps' ) . '</a>';
+		// Add the link to the list.
 		array_unshift( $links, $settings_link );
 	}
 	return $links;
@@ -60,11 +60,11 @@ function WP_GPX_Maps_action_links( $links, $file ) {
 function enqueue_WP_GPX_Maps_scripts_admin( $hook ) {
 
 	if ( strpos( $hook, 'WP-GPX-Maps' ) !== false ) {
-		wp_register_script( 'mColorPicker', plugins_url( '/js/mColorPicker_min.js', __FILE__ ), array(), "1.0 r39" );
+		wp_register_script( 'mColorPicker', plugins_url( '/js/mColorPicker_min.js', __FILE__ ), array(), '1.0 r39' );
 		wp_enqueue_script( 'mColorPicker' );
-		wp_register_script( 'bootstrap-table', plugins_url( '/js/bootstrap-table.min.js', __FILE__ ), array(), "1.11.1" );
+		wp_register_script( 'bootstrap-table', plugins_url( '/js/bootstrap-table.min.js', __FILE__ ), array(), '1.11.1' );
 		wp_enqueue_script( 'bootstrap-table' );
-		wp_register_style( 'bootstrap-table', plugins_url( '/css/bootstrap-table.min.css', __FILE__ ), array(), "1.11.1" );
+		wp_register_style( 'bootstrap-table', plugins_url( '/css/bootstrap-table.min.css', __FILE__ ), array(), '1.11.1' );
 		wp_enqueue_style( 'bootstrap-table' );
 	}
 }
@@ -72,25 +72,25 @@ function enqueue_WP_GPX_Maps_scripts_admin( $hook ) {
 function enqueue_WP_GPX_Maps_scripts() {
 
 	/* leaflet */
-	wp_register_style( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.css', __FILE__ ), array(), "1.5.1" );
+	wp_register_style( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.css', __FILE__ ), array(), '1.5.1' );
 	wp_enqueue_style( 'leaflet' );
-	wp_register_style( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/MarkerCluster.css', __FILE__ ), array(), "0" );
+	wp_register_style( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/MarkerCluster.css', __FILE__ ), array(), '1.4.1,' );
 	wp_enqueue_style( 'leaflet.markercluster' );
-	wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), "0" );
+	wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), '0' );
 	wp_enqueue_style( 'leaflet.Photo' );
 
-	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.1.4/Control.FullScreen.css', __FILE__ ), array(), "1.5.1" );
+	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.1.4/Control.FullScreen.css', __FILE__ ), array(), '1.5.1' );
 	wp_enqueue_style( 'leaflet.fullscreen' );
 
-	wp_register_script( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.js', __FILE__ ), array(), "1.5.1" );
-	wp_register_script( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/leaflet.markercluster.js', __FILE__ ), array( 'leaflet' ), "0" );
-	wp_register_script( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.js', __FILE__ ), array( 'leaflet', 'leaflet.markercluster'), "0" );
-	wp_register_script( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.js', __FILE__ ), array( 'leaflet' ), "1.4.5" );
+	wp_register_script( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.js', __FILE__ ), array(), '1.5.1' );
+	wp_register_script( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/leaflet.markercluster.js', __FILE__ ), array( 'leaflet' ), '1.4.1' );
+	wp_register_script( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.js', __FILE__ ), array( 'leaflet', 'leaflet.markercluster' ), '0' );
+	wp_register_script( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.js', __FILE__ ), array( 'leaflet' ), '1.4.5' );
 
 	/* chartjs */
-	wp_register_script( 'chartjs', plugins_url( '/js/Chart.min.js', __FILE__ ), array(), "2.7.2" );
+	wp_register_script( 'chartjs', plugins_url( '/js/Chart.min.js', __FILE__ ), array(), '2.8.0' );
 
-	wp_register_script( 'WP-GPX-Maps', plugins_url( '/js/WP-GPX-Maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), "1.6.04" );
+	wp_register_script( 'WP-GPX-Maps', plugins_url( '/js/WP-GPX-Maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
 
 	wp_enqueue_script( 'leaflet' );
 	wp_enqueue_script( 'leaflet.markercluster' );
@@ -503,8 +503,8 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 					$_ele *= 3.2808399;
 				}
 
-				$points_graph_dist .= number_format ( $_dist, 2, '.', '' ) . ',';
-				$points_graph_ele  .= number_format ( $_ele, 2, '.', '' ) . ',';
+				$points_graph_dist .= number_format( $_dist, 2, '.', '' ) . ',';
+				$points_graph_ele  .= number_format( $_ele, 2, '.', '' ) . ',';
 
 				if ( $showSpeed == true ) {
 
@@ -513,20 +513,20 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 					$points_graph_speed .= convertSpeed( $_speed, $uomspeed ) . ',';
 				}
 
-				if ($showHr == true) {
-					$points_graph_hr .= number_format ( $points->hr[$i], 2, '.', '' ).',';
+				if ( $showHr == true ) {
+					$points_graph_hr .= number_format( $points->hr[$i], 2, '.', '' ).',';
 				}
 
-				if ($showAtemp == true) {
-					$points_graph_atemp .= number_format ( $points->atemp[$i], 1, '.', '' ).',';
+				if ( $showAtemp == true ) {
+					$points_graph_atemp .= number_format( $points->atemp[$i], 1, '.', '' ).',';
 				}
 
-				if ($showCad == true) {
-					$points_graph_cad .= number_format ( $points->cad[$i], 2, '.', '' ).',';
+				if ( $showCad == true ) {
+					$points_graph_cad .= number_format( $points->cad[$i], 2, '.', '' ).',';
 				}
 
-				if ($showGrade == true) {
-					$points_graph_grade .= number_format ( $points->grade[$i], 2, '.', '' ).',';
+				if ( $showGrade == true ) {
+					$points_graph_grade .= number_format( $points->grade[$i], 2, '.', '' ).',';
 				}
 			}
 		}
@@ -585,7 +585,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 
 		if ( $showW == true ) {
 			$wpoints   = wpgpxmaps_getWayPoints( $gpx );
-			$waypoints = json_encode( $wpoints );
+			$waypoints = wp_json_encode( $wpoints );
 		}
 
 		if ( $showEle == "false" )
@@ -639,7 +639,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 		foreach ( $ngimgs as $img ) {
 			$data         = $img['data'];
 			$data         = str_replace( "\n", "", $data );
-			$ngimgs_data .= '<span lat="' . $img['lat'] . '" lon="' . $img['lon'].'">' . $data . '</span>';
+			$ngimgs_data .= '<span lat="' . $img['lat'] . '" lon="' . $img['lon'] . '">' . $data . '</span>';
 		}
 	}
 

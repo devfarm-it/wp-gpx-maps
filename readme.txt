@@ -168,6 +168,9 @@ Yes!
 
 = x.x.xx =
 * Added: Authors can upload GPS tracks (thanks to wildcomputations)
+* Upgrade: Leaflet to 1.5.1
+* Upgrade: leaflet.fullscreen to 1.4.5
+* Upgrade: Chart.min.js to 2.8.0
 * Fixed: Plugin is now complete translatable (Backend + Frontend)
 * Fixed: Wordpress coding standards
 = 1.6.07 =
