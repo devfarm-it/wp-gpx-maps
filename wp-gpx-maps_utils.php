@@ -60,7 +60,7 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 function wp_gpx_maps_sitePath() {
 
 	return substr( substr( __FILE__, 0, strrpos( __FILE__, 'wp-content' ) ), 0, -1 );
-	//return substr(get_home_path(), 0, -1);
+	// return substr(get_home_path(), 0, -1);
 }
 
 function gpxFolderPath() {
@@ -85,7 +85,7 @@ function gpxCacheFolderPath() {
 	$upload_dir  = wp_upload_dir();
 	$uploadsPath = $upload_dir['basedir'];
 	$ret         = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx' . DIRECTORY_SEPARATOR . '~cache';
-	return str_replace( array( '/', '\\'), DIRECTORY_SEPARATOR, $ret );
+	return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $ret );
 }
 
 function relativeGpxFolderPath() {
@@ -104,11 +104,11 @@ function relativeGpxCacheFolderPath() {
 	return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $ret );
 }
 
-function wpgpxmaps_recursive_remove_directory( $directory, $empty = false )
-{
-	if ( substr( $directory,-1 ) == '/' )
+function wpgpxmaps_recursive_remove_directory( $directory, $empty = false ) {
+
+	if ( substr( $directory, -1 ) == '/' )
 	{
-		$directory = substr( $directory, 0, -1) ;
+		$directory = substr( $directory, 0, -1 );
 	}
 	if ( ! file_exists( $directory ) || ! is_dir( $directory ) ) {
 		return false;

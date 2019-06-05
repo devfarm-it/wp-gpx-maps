@@ -35,36 +35,37 @@ if ( is_writable( $realGpxPath ) ) {
 
 		<div class="tablenav top">
 		<?php
-				echo '<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="' . get_bloginfo( 'wpurl' ) . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">'; ?>
-				<?php _e( 'Choose a file to upload:', 'wp-gpx-maps' )?> <input name="uploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
-				<?php
-				if ( isset( $_FILES['uploadedfile'] ) ) {
-					$total = count( $_FILES['uploadedfile']['name'] );
-					for ( $i = 0; $i < $total; $i++ ) {
-							$uploadingFileName = basename( $_FILES['uploadedfile']['name'][$i] );
-							$target_path       = $realGpxPath . "/" . $uploadingFileName;
-							if ( preg_match( $gpxRegEx, $target_path ) ) {
-							if ( move_uploaded_file( $_FILES['uploadedfile']['tmp_name'][$i], $target_path ) ) {
-									echo '<div class="notice notice-success"><p>';
-									printf(
-										/* translators: 1: GPX file name */
-										__( 'The file %1s has been successfully uploaded.', 'wp-gpx-maps' ),
-										'<span class="code"><strong>' . esc_html( $uploadingFileName ) . '</strong></span>'
-									);
-									echo '</p></div>';
-							} else {
-									echo '<div class=" notice notice-error"><p>';
-									_e( 'There was an error uploading the file, please try again!', 'wp-gpx-maps' );
-									echo '</p></div>';
-							}
-						} else {
-								echo '<div class="notice notice-warning"><p>';
-								_e( 'The file type is not supported!', 'wp-gpx-maps' );
-								echo '</p></div>';
-						}
+			echo '<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="' . get_bloginfo( 'wpurl' ) . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">';
+		?>
+			<?php _e( 'Choose a file to upload:', 'wp-gpx-maps' ); ?> <input name="uploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
+			<?php
+			if ( isset( $_FILES['uploadedfile'] ) ) {
+				$total = count( $_FILES['uploadedfile']['name'] );
+				for ( $i = 0; $i < $total; $i++ ) {
+					$uploadingFileName = basename( $_FILES['uploadedfile']['name'][$i] );
+					$target_path       = $realGpxPath . "/" . $uploadingFileName;
+					if ( preg_match( $gpxRegEx, $target_path ) ) {
+						if ( move_uploaded_file( $_FILES['uploadedfile']['tmp_name'][$i], $target_path ) ) {
+							echo '<div class="notice notice-success"><p>';
+							printf(
+								/* translators: 1: GPX file name */
+								__( 'The file %1s has been successfully uploaded.', 'wp-gpx-maps' ),
+								'<span class="code"><strong>' . esc_html( $uploadingFileName ) . '</strong></span>'
+							);
+						echo '</p></div>';
+					} else {
+						echo '<div class=" notice notice-error"><p>';
+						_e( 'There was an error uploading the file, please try again!', 'wp-gpx-maps' );
+						echo '</p></div>';
 					}
+				} else {
+					echo '<div class="notice notice-warning"><p>';
+					_e( 'The file type is not supported!', 'wp-gpx-maps' );
+					echo '</p></div>';
 				}
-				?>
+			}
+			}
+			?>
 			</form>
 
 			<form method="POST" style="float:left; margin:5px 20px 0 0" action="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=<?php echo wp_create_nonce( 'wpgpx_clearcache_nonce' ); ?>" >

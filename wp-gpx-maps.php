@@ -218,8 +218,7 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 				$_lat = (float) $points_x_lat[$i];
 				$_lon = (float) $points_x_lon[$i];
 
-				if ( $_lat == 0 && $_lon == 0 )
-				{
+				if ( $_lat == 0 && $_lon == 0 ) {
 					$points_maps .= 'null,';
 					$points_graph_dist .= 'null,';
 					$points_graph_ele .= 'null,';
@@ -235,19 +234,19 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 						$_dist *= 0.000621371192;
 						$_ele  *= 3.2808399;
 
-					} elseif ($uom == '2'){
+					} elseif ( $uom == '2'){
 						/* meters / kilometers */
 						$_dist = (float) ( $_dist / 1000 );
 
-					} elseif ($uom == '3') {
+					} elseif ( $uom == '3') {
 						/* meters / kilometers / nautical miles */
 						$_dist = (float) ( $_dist / 1000 / 1.852 );
 
-					} elseif ($uom == '4') {
+					} elseif ( $uom == '4') {
 						/* meters / miles */
 						$_dist *= 0.000621371192;
 
-					} elseif ($uom == '5') {
+					} elseif ( $uom == '5') {
 						/* meters / kilometers / nautical miles and feet */
 						$_dist = (float) ( $_dist / 1000 / 1.852 );
 						$_ele *= 3.2808399;
@@ -345,7 +344,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$gpxcache .= DIRECTORY_SEPARATOR . $cacheFileName . '.tmp';
 
 	/* Try to load cache */
-	if ( file_exists( $gpxcache ) && !( $skipcache == true ) ) {
+	if ( file_exists( $gpxcache ) && ! ( $skipcache == true ) ) {
 
 		try {
 			$cache_str          = file_get_contents( $gpxcache );
@@ -403,7 +402,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 
 	$isGpxUrl = ( preg_match( '/^(http(s)?\:\/\/)/', trim( $gpx ) ) == 1);
 
-	if ( ( ! isset( $points_maps ) || $points_maps == '' ) && $gpx != '' )	{
+	if ( ( ! isset( $points_maps ) || $points_maps == '' ) && $gpx != '' ) {
 	//if (true)	{
 
 		$sitePath = wp_gpx_maps_sitePath();
@@ -543,7 +542,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 			/* meters / kilometers */
 			$tot_len        = round( $tot_len / 1000, 2 ) . ' km';
 			$max_ele        = round( $max_ele, 0 ) . ' m';
-			$min_ele        = round( $min_ele, 0 ) .' m';
+			$min_ele        = round( $min_ele, 0 ) . ' m';
 			$total_ele_up   = round( $total_ele_up, 0 ) . ' m';
 			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 
@@ -551,8 +550,8 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 			/* meters / kilometers / nautical miles */
 			$tot_len        = round( $tot_len / 1000/1.852, 2 ) . ' NM';
 			$max_ele        = round( $max_ele, 0 ) . ' m';
-			$min_ele        = round( $min_ele, 0 ) .' m';
-			$total_ele_up   = round( $total_ele_up, 0 ) .' m';
+			$min_ele        = round( $min_ele, 0 ) . ' m';
+			$total_ele_up   = round( $total_ele_up, 0 ) . ' m';
 			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 
 		} elseif ( $uom == '4' ) {
@@ -577,7 +576,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 			$max_ele        = round( $max_ele, 0 ) . ' m';
 			$min_ele        = round( $min_ele, 0 ) . ' m';
 			$total_ele_up   = round( $total_ele_up, 0 ) . ' m';
-			$total_ele_down = round( $total_ele_down, 0 ) .' m';
+			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 		}
 
 		$avg_speed = convertSpeed( $avg_speed, $uomspeed, true );
@@ -813,8 +812,8 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 function convertSeconds( $s ) {
 	if ( $s == 0 )
 	return 0;
-	$s      =  1.0 / $s;
-	$_sSecT = $s * 60; //sec/km
+	$s      = 1.0 / $s;
+	$_sSecT = $s * 60; // sec/km
 	$_sMin  = floor ( $_sSecT / 60 );
 	$_sSec  = $_sSecT - $_sMin * 60;
 	return $_sMin + $_sSec / 100;
@@ -865,10 +864,9 @@ function convertSpeed( $speed, $uomspeed, $addUom = false ) {
 
 function downloadRemoteFile( $remoteFile ) {
 	try {
-		$newfname = tempnam ( '/tmp', 'gpx' );
+		$newfname = tempnam( '/tmp', 'gpx' );
 
-		if ( function_exists ( 'file_put_contents' ) )
-		{
+		if ( function_exists ( 'file_put_contents' ) ) {
 			file_put_contents( $newfname, fopen( $remoteFile, 'r' ) );
 			return $newfname;
 		}
@@ -913,11 +911,11 @@ function WP_GPX_Maps_install() {
 	add_option( 'wpgpxmaps_width', '100%', '', 'yes' );
 	add_option( 'wpgpxmaps_graph_height', '200px', '', 'yes' );
 	add_option( 'wpgpxmaps_height', '450px', '', 'yes' );
-	add_option( 'wpgpxmaps_map_type','HYBRID','','yes' );
-	add_option( 'wpgpxmaps_show_waypoint','','','yes' );
-	add_option( 'wpgpxmaps_show_speed','','','yes' );
-	add_option( 'wpgpxmaps_pointsoffset','10','','yes' );
-	add_option( 'wpgpxmaps_donotreducegpx','true','','yes' );
+	add_option( 'wpgpxmaps_map_type', 'HYBRID', '', 'yes' );
+	add_option( 'wpgpxmaps_show_waypoint', '', '', 'yes' );
+	add_option( 'wpgpxmaps_show_speed', '', '', 'yes' );
+	add_option( 'wpgpxmaps_pointsoffset', '10', '', 'yes' );
+	add_option( 'wpgpxmaps_donotreducegpx', 'true', '', 'yes' );
 	add_option( 'wpgpxmaps_unit_of_measure', '0', '', 'yes' );
 	add_option( 'wpgpxmaps_unit_of_measure_speed', '0', '', 'yes' );
 	add_option( 'wpgpxmaps_graph_line_color', '#3366cc', '', 'yes' );
@@ -937,11 +935,11 @@ function WP_GPX_Maps_install() {
 	add_option( 'wpgpxmaps_show_atemp', '', '', 'yes' );
 	add_option( 'wpgpxmaps_graph_line_color_hr', '#ff77bd', '', 'yes' );
 	add_option( 'wpgpxmaps_graph_line_color_atemp', '#ff77bd', '', 'yes' );
-	add_option( 'wpgpxmaps_show_cadence','','','yes' );
-	add_option( 'wpgpxmaps_zoomonscrollwheel','','','yes' );
-	add_option( 'wpgpxmaps_download','','','yes' );
-	add_option( 'wpgpxmaps_summary','','','yes' );
-	add_option( 'wpgpxmaps_skipcache','','','yes' );
+	add_option( 'wpgpxmaps_show_cadence', '', '', 'yes' );
+	add_option( 'wpgpxmaps_zoomonscrollwheel', '', '', 'yes' );
+	add_option( 'wpgpxmaps_download', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary', '', '', 'yes' );
+	add_option( 'wpgpxmaps_skipcache', '', '', 'yes' );
 }
 
 function WP_GPX_Maps_remove() {
