@@ -137,7 +137,7 @@ The attributes are:
 1. summaryeledown: Print Total descent in summary table (default is FALSE)
 1. summaryavgspeed: Print Average Speed in summary table (default is FALSE)
 1. summarytotaltime: Print Total time in summary table (default is FALSE)
-1. allow other users uploads: Allow others non-admin users to upload and see their own gpx files
+1. allow other users to see files and the plugin: Allow others non-admin users to see their own gpx files
 = What happening if I've a very large gpx? =
 This plugin will print a small amout of points to speedup javascript and pageload.
 

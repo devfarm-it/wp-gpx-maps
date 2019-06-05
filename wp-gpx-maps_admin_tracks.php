@@ -1,5 +1,5 @@
 <?php
-
+	
 	if ( !(is_admin()) )
 		return;
 
@@ -9,11 +9,14 @@
 		return;
 
 	$gpxRegEx = '/.gpx$/i';
-	if ( current_user_can('read') ){
+
+	//era scritto cosi nella prima versione, lo lascio intatto	
+	$menu_root = "options-general.php";
+	/*if ( current_user_can('read') ){
 		$menu_root = "options-general.php";
 	} else if ( current_user_can('read') ){
 		$menu_root = "admin.php";
-	}
+	}*/
 
 	if ( isset($_POST['clearcache']) )
 	{
@@ -31,10 +34,10 @@
 		}
 
 	}
-	
-	//if admin, you can upload files; BUT if uploaded from other users is checked and you are a Contributor, even other users can
-	$allow_other_users_upload = wpgpxmaps_findValue($attr, 'allow_other_users_upload', 'wpgpxmaps_allow_users_upload', false);
-	if((current_user_can('administrator')) || (current_user_can('contributor')) && ($allow_other_users_upload == true)){
+	wp_normalize_path($relativeGpxPath);
+	//if admin, you can upload files; BUT if uploaded from other users is checked and you are a Contributor, even other users can view their own files
+	$allow_other_users_view = wpgpxmaps_findValue($attr, 'allow_other_users_view', 'wpgpxmaps_allow_users_view', false);
+	if((current_user_can('administrator')) || (current_user_can('contributor')) && ($allow_other_users_view == true)){
 		if ( is_writable ( $realGpxPath ) ){
 
 		?>
@@ -102,13 +105,18 @@
 		}
 	}
 	$myGpxFileNames = array();
-	
 	if(current_user_can('delete_others_pages')){// admins and editors
 		//change directory in which realgpxpath explore, because admins and editors can see everything
-		$realGpxPath = str_replace('\\'.wp_get_current_user()->user_login,'',$realGpxPath);
+		//echo($realGpxPath);
+		//echo(wp_get_current_user()->user_login);
+		//$realGpxPath = wp_normalize_path($realGpxPath);
+		//$realGpxPath = explode('/'.wp_get_current_user()->user_login,$realGpxPath);
+		
+		if(strtoupper(mb_substr(php_uname('s'), 0, 3)) == "WIN") $realGpxPath = str_replace('\\'.wp_get_current_user()->user_login,'',$realGpxPath);
+		else $realGpxPath = substr($realGpxPath,0,strrpos($realGpxPath,'/'));;
 	}
-	
-	if ( is_readable ( $realGpxPath ) && $handle = opendir($realGpxPath)) {
+	//echo($realGpxPath);
+	if ( is_readable ($realGpxPath) && $handle = opendir($realGpxPath)) {
 		$pathAllFiles = getPathFilesContents($realGpxPath, $results = array());
 		for($i = 0; $i < sizeof($pathAllFiles,0); $i++){
 			
@@ -127,7 +135,7 @@
 						printf(
 							/* translators: %s: GPX file name */
 							__( 'The file %s has been successfully deleted.', 'wp-gpx-maps' ),
-							'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
+							'<span class="code"><strong>' . esc_html ( basename($pathAllFiles[$i]) ) . '</strong></span>'
 						);
 					}
 					else {
@@ -135,11 +143,11 @@
 						printf(
 							/* translators: %s: GPX file name */
 							__( 'The file %s could not be deleted.', 'wp-gpx-maps' ),
-							'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
+							'<span class="code"><strong>' . esc_html ( basename($realGpxPath[$i]) ) . '</strong></span>'
 						);
 						echo '</p></div>';
-
 					}
+					echo("<script language='javascript' type='text/javascript'>location = self.location.href</script>");
 				}
 				else
 				{
@@ -160,24 +168,28 @@
 	}
 	$relativeGpxPath = str_replace(wp_get_current_user()->user_login,"",$relativeGpxPath);
 
-	$wpgpxmaps_gpxRelativePath = get_site_url(null, '/wp-content/uploads/gpx/');
+	//$wpgpxmaps_gpxRelativePath = get_site_url(null, '/wp-content/uploads/gpx/');
 	
 	$completePath = array();
 	$localPath = array();
 	//get path of the user own home folder of the wordpress site
-	$home_path_relative = str_replace("/","\\",get_home_path());
+	if(strtoupper(mb_substr(php_uname('s'), 0, 3)) == "WIN") $home_path_relative = str_replace("/","\\",get_home_path());
+	else $home_path_relative = wp_normalize_path(get_home_path());
+	//echo($home_path_relative);
 	
 	for($i = 0; $i < count($pathAllFiles); $i++){
 		$localPath[$i] = $pathAllFiles[$i];
 
 		$completePath[$i] = get_site_url(null, str_replace($home_path_relative,"",$pathAllFiles[$i]));
-		$completePath[$i] = str_replace("\\", "/", $completePath[$i]);
+		wp_normalize_path($completePath[$i]);
+		//$completePath[$i] = str_replace("\\", "/", $completePath[$i]);
 		
 		$pathAllFiles[$i] = str_replace($home_path_relative,'',$pathAllFiles[$i]);
+		//wp_normalize_path($pathAllFiles[$i]);
 		$pathAllFiles[$i] = str_replace('\\','/', $pathAllFiles[$i]);
 		$pathAllFiles[$i] = "/".$pathAllFiles[$i];
+		
 	}									
-											
 	//objects array for rows on the table with shortcodes
 	$arrayForOutput = array();
 	for($i = 0; $i < count($pathAllFiles); $i++){

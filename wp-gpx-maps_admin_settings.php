@@ -31,7 +31,7 @@
 	$total_time = get_option("wpgpxmaps_summary_total_time");
 	$usegpsposition = get_option("wpgpxmaps_usegpsposition");
 	$distanceType = get_option("wpgpxmaps_distance_type");
-	$allow_other_users_upload = get_option("wpgpxmaps_allow_users_upload");
+	$allow_other_users_view = get_option("wpgpxmaps_allow_users_view");
 
 	if (empty($showEle))
 		$showEle = "true";
@@ -491,16 +491,16 @@
 		</tr>
 
 		<tr>
-			<th scope="row"><?php _e( 'Allow other users uploads', 'wp-gpx-maps'); ?></th>
+			<th scope="row"><?php _e( 'Allow other users to see GPX files', 'wp-gpx-maps'); ?></th>
 			<td>
-				<input name="wpgpxmaps_allow_users_upload" type="checkbox" value="true" onchange="this.value = (this.checked)" <?php if(wpgpxmaps_findValue($attr, 'allow_other_users_upload', 'wpgpxmaps_allow_users_upload', false)){echo("checked");} ?>>
+				<input name="wpgpxmaps_allow_users_view" type="checkbox" value="true" onchange="this.value = (this.checked)" <?php if(wpgpxmaps_findValue($attr, 'allow_other_users_view', 'wpgpxmaps_allow_users_view', false)){echo("checked");} ?>>
 			</td>
 		</tr>
 		
 	</table>
 
 	<input type="hidden" name="action" value="update" />
-	<input name="page_options" type="hidden" value="wpgpxmaps_pointsoffset,wpgpxmaps_donotreducegpx,wpgpxmaps_allow_users_upload" />
+	<input name="page_options" type="hidden" value="wpgpxmaps_pointsoffset,wpgpxmaps_donotreducegpx,wpgpxmaps_allow_users_view" />
 
 	<p class="submit">
 		<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'wp-gpx-maps' ) ?>" />

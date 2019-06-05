@@ -78,8 +78,8 @@
 		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '; ?> <strong>False</strong></td>
 	</tr>
 	<tr>
-		<td>allow other users uploads</td>
-		<td><?php _e( 'Allow other non-admin users to uploads and see gpx files', 'wp-gpx-maps' ); ?></td>
+		<td>allow other users view</td>
+		<td><?php _e( 'Allow other non-admin users to see their own gpx files', 'wp-gpx-maps' ); ?></td>
 		<td><?php _e( 'Default is:', 'wp-gpx-maps' ); echo ' '?><strong>False</strong></td>
 	</tr>
 	</tbody>

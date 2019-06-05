@@ -5,8 +5,8 @@ add_action('admin_menu', 'wpgpxmaps_admin_menu');
 
 function wpgpxmaps_admin_menu() {	
 	
-	$allow_other_users_upload = wpgpxmaps_findValue($attr, 'allow_other_users_upload', 'wpgpxmaps_allow_users_upload', false);
-	if(current_user_can('administrator') || (!current_user_can('administrator') && $allow_other_users_upload)){
+	$allow_other_users_view = wpgpxmaps_findValue($attr, 'allow_other_users_view', 'wpgpxmaps_allow_users_view', false);
+	if(current_user_can('administrator') || (!current_user_can('administrator') && $allow_other_users_view)){
 		add_menu_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
 		add_options_page('WP GPX Maps', 'WP GPX Maps', 'read', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page');
 	}
