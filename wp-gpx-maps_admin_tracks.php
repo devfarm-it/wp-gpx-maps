@@ -1,14 +1,19 @@
 <?php
 
-	if ( ! ( is_admin() ) )
-		return;
+if ( ! ( is_admin() ) )
+	return;
 
-	$is_admin = current_user_can( 'publish_posts' );
+$is_admin = current_user_can( 'publish_posts' );
 
-	if ( $is_admin != 1 )
-		return;
+if ( $is_admin != 1 )
+	return;
 
-	$gpxRegEx = '/.gpx$/i';
+$allow_users_upload 	= get_option( 'wpgpxmaps_allow_users_view' ) === "true";
+
+$wpgpxmapsUrl = get_admin_url() . "admin.php?page=WP-GPX-Maps"; 
+
+$gpxRegEx = '/.gpx$/i';
+	
 if ( current_user_can( 'manage_options' ) ) {
 		$menu_root = 'options-general.php';
 } elseif ( current_user_can( 'publish_posts' ) ) {
@@ -68,7 +73,7 @@ if ( is_writable( $realGpxPath ) ) {
 			?>
 			</form>
 
-			<form method="POST" style="float:left; margin:5px 20px 0 0" action="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=<?php echo wp_create_nonce( 'wpgpx_clearcache_nonce' ); ?>" >
+			<form method="POST" style="float:left; margin:5px 20px 0 0" action="<?php echo $wpgpxmapsUrl; ?>&_wpnonce=<?php echo wp_create_nonce( 'wpgpx_clearcache_nonce' ); ?>" >
 				<input type="submit" name="clearcache" value="<?php _e( 'Clear Cache', 'wp-gpx-maps' ); ?>" />
 			</form>
 
@@ -150,8 +155,6 @@ if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 		closedir( $handle );
 }
 
-$wpgpxmaps_gpxRelativePath = get_site_url( null, '/wp-content/uploads/gpx/' );
-
 ?>
 
 	<table id="table" class="wp-list-table widefat plugins"></table>
@@ -175,11 +178,11 @@ $wpgpxmaps_gpxRelativePath = get_site_url( null, '/wp-content/uploads/gpx/' );
 
 				return [
 					'<b>' + row.name + '</b><br />',
-					'<a class="delete_gpx_row" href="/wp-admin/options-general.php?page=WP-GPX-Maps&_wpnonce=' + row.nonce + '" ><?php _e( 'Delete', 'wp-gpx-maps' ); ?></a>',
+					'<a class="delete_gpx_row" href="<?php echo $wpgpxmapsUrl; ?>&_wpnonce=' + row.nonce + '" ><?php _e( 'Delete', 'wp-gpx-maps' ); ?></a>',
 					' | ',
-					'<a href="<?php echo $wpgpxmaps_gpxRelativePath; ?>' + row.name + '"><?php _e( 'Download', 'wp-gpx-maps' ); ?></a>',
+					'<a href="<?php echo $relativeGpxPath; ?>' + row.name + '"><?php _e( 'Download', 'wp-gpx-maps' ); ?></a>',
 					' | ',
-					'<?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?> <span class="code"> [sgpx gpx="<?php echo $relativeGpxPath ?>' + row.name + '"]</span>',
+					'<a href="#" class="copy-shortcode" title="<?php _e( 'Copy shortcode', 'wp-gpx-maps' ); ?>"><?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?></a> <span class="code"> [sgpx gpx="<?php echo $relativeGpxPath ?>' + row.name + '"]</span>',
 				].join('')
 
 			}
@@ -222,7 +225,19 @@ $wpgpxmaps_gpxRelativePath = get_site_url( null, '/wp-content/uploads/gpx/' );
 		return bytes.toFixed(1)+' '+units[u];
 	}
 
+	jQuery('.copy-shortcode').click(function(e){
+		 var $temp = jQuery("<input>");
+		jQuery("body").append($temp);
+		var shortcode = jQuery(this).next().text().trim();
+		$temp.val(shortcode).select();
+		document.execCommand("copy");
+		$temp.remove();
+		
+		e.preventDefault();
+		
+	});
 
+	
 </script>
 
 <style>

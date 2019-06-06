@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 2.0.0
 Tested up to: 5.2.1
-Stable tag: 1.6.07
+Stable tag: 1.7.02
 
 Draws a GPX track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -90,6 +90,8 @@ Supported GPX namespaces are:
 
 Thanks to: <a href="http://www.securcube.net/" target="_blank" rel="noopener noreferrer">www.securcube.net</a>, <a href="http://www.devfarm.it/" target="_blank" rel="noopener noreferrer">www.devfarm.it</a>
 
+Icons made by <a href="https://www.freepik.com/?__hstc=57440181.104a2a973b6d66e5ac5f75fcf2d4ef9e.1559729255492.1559729255492.1559803759717.2&__hssc=57440181.7.1559803759717&__hsfp=1353452017" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+
 == Installation ==
 
 1. Use the classic wordpress plugin installer or copy the plugins folder to the `/wp-content/plugins/` directory
@@ -166,7 +168,12 @@ Yes!
 
 == Changelog ==
 
-= x.x.xx =
+= 1.7.00 =
+* Added possibility (for Admins and Editors) to use and remove all files in every user own folder
+* Removed settings tab for non-Admin users (Contributor, Author, Editor and Subscriber)
+* Now, uploaded gpx files are created in a folder called as *your user name*, inside ../wordpressSiteFolder/wp-content/uploads/gpx/[*your user name*]
+* Added different size logos for the plugin store (icon.svg, icon128x128.png and icon256x256.png) [Located inside ../wordpressSiteFolder/wp-content/plugins/wp-gpx-maps/assets]
+* Added button to instant copy the shortcode of the selected gpx file
 * Added: Authors can upload GPS tracks (thanks to wildcomputations)
 * Upgrade: Leaflet to 1.5.1
 * Upgrade: leaflet.fullscreen to 1.4.5

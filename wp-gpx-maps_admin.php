@@ -11,16 +11,29 @@ if ( is_admin() ) {
 
 
 function wpgpxmaps_admin_menu() {
+	
+	/*
+	
+	All roles/capabilities:
+	
+	https://wordpress.org/support/article/roles-and-capabilities/
+	
+	*/
 
 	if ( current_user_can( 'manage_options' ) ) {
-
+		/* Only Administrators and Super Administrators */
 		add_options_page( 'WP GPX Maps', 'WP GPX Maps', 'manage_options', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page' );
 
 	}
-
 	elseif ( current_user_can( 'publish_posts' ) ) {
+		/* Contributor Authors and */
 
-		add_menu_page( 'WP GPX Maps', 'WP GPX Maps', 'publish_posts', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page' );
+		$allow_users_upload 	= get_option( 'wpgpxmaps_allow_users_view' ) === "true";
+
+		if ($allow_users_upload == 1)
+		{
+			add_menu_page( 'WP GPX Maps', 'WP GPX Maps', 'publish_posts', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page' );			
+		}	
 
 	}
 
