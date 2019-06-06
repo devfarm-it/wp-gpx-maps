@@ -130,7 +130,7 @@
 					<?php
 					printf(
 						/* translators: 1: Link to documentation of Thunderforest API Key's 2: Additional link attribute */
-						__( 'Go to <a href="%1s" %2s>Thunderforest API Key</a> and signing in to your Thunderforest account.', 'wp-gpx-maps' ),
+						__( 'Go to <a href="%1$1s" %2$2s>Thunderforest API Key</a> and signing in to your Thunderforest account.', 'wp-gpx-maps' ),
 						esc_url( 'http://www.thunderforest.com/docs/apikeys/' ),
 						'target="_blank" rel="noopener noreferrer"'
 					)

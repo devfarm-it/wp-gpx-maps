@@ -79,7 +79,7 @@ function enqueue_WP_GPX_Maps_scripts() {
 	wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), '0' );
 	wp_enqueue_style( 'leaflet.Photo' );
 
-	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.1.4/Control.FullScreen.css', __FILE__ ), array(), '1.5.1' );
+	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.css', __FILE__ ), array(), '1.5.1' );
 	wp_enqueue_style( 'leaflet.fullscreen' );
 
 	wp_register_script( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.js', __FILE__ ), array(), '1.5.1' );
@@ -212,7 +212,7 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 			$points_graph_dist = '';
 			$points_graph_ele = '';
 
-			if ( is_array ( $points_x_lat ) )
+			if ( is_array( $points_x_lat ) )
 			foreach ( array_keys( $points_x_lat ) as $i ) {
 
 				$_lat = (float) $points_x_lat[$i];
@@ -318,8 +318,8 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$p_avg_temp       = wpgpxmaps_findValue( $attr, 'summaryavgtemp', 'wpgpxmaps_summary_avg_temp', false );
 	$p_total_time     = wpgpxmaps_findValue( $attr, 'summarytotaltime', 'wpgpxmaps_summary_total_time', false );
 
-	$usegpsposition     = wpgpxmaps_findValue($attr, 'usegpsposition', 'wpgpxmaps_usegpsposition', false );
-	$currentpositioncon = wpgpxmaps_findValue($attr, 'currentpositioncon', 'wpgpxmaps_currentpositioncon', '' );
+	$usegpsposition     = wpgpxmaps_findValue( $attr, 'usegpsposition', 'wpgpxmaps_usegpsposition', false );
+	$currentpositioncon = wpgpxmaps_findValue( $attr, 'currentpositioncon', 'wpgpxmaps_currentpositioncon', '' );
 
 	$colors_map = "\"" . implode( "\",\"",( explode( " ", $color_map ) ) ) . "\"";
 
@@ -403,7 +403,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$isGpxUrl = ( preg_match( '/^(http(s)?\:\/\/)/', trim( $gpx ) ) == 1);
 
 	if ( ( ! isset( $points_maps ) || $points_maps == '' ) && $gpx != '' ) {
-	//if (true)	{
+		// if ( true ) {
 
 		$sitePath = wp_gpx_maps_sitePath();
 
@@ -416,7 +416,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 			$gpx = $sitePath . $gpx;
 		}
 		if ( $gpx == '' ) {
-			return "No gpx found";
+			return __( 'No gpx file found', 'wp-gpx-maps' );
 		}
 
 		$points = wpgpxmaps_getPoints( $gpx, $pointsoffset, $donotreducegpx, $distanceType );
@@ -651,7 +651,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 		}
 	}
 
-	if ( !( $skipcache == true ) ) {
+	if ( ! ( $skipcache == true ) ) {
 
 		@file_put_contents( $gpxcache, serialize( array(
 			'points_maps'        => $points_maps,
@@ -866,7 +866,7 @@ function downloadRemoteFile( $remoteFile ) {
 	try {
 		$newfname = tempnam( '/tmp', 'gpx' );
 
-		if ( function_exists ( 'file_put_contents' ) ) {
+		if ( function_exists( 'file_put_contents' ) ) {
 			file_put_contents( $newfname, fopen( $remoteFile, 'r' ) );
 			return $newfname;
 		}

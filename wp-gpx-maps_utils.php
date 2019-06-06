@@ -26,7 +26,7 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			$img_thmb     = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
 			$img_metadata = wp_get_attachment_metadata( $attachment_id );
 
-			$item = array();
+			$item         = array();
 			$item["data"] = wp_get_attachment_link( $attachment_id, array( 105, 105 ) );
 
 			if ( is_callable( 'exif_read_data' ) ) {
@@ -60,7 +60,7 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 function wp_gpx_maps_sitePath() {
 
 	return substr( substr( __FILE__, 0, strrpos( __FILE__, 'wp-content' ) ), 0, -1 );
-	// return substr(get_home_path(), 0, -1);
+	// return substr( get_home_path(), 0, -1 );
 }
 
 function gpxFolderPath() {
@@ -68,7 +68,7 @@ function gpxFolderPath() {
 	$upload_dir  = wp_upload_dir();
 	$uploadsPath = $upload_dir['basedir'];
 
-	if ( current_user_can( 'manage_options' ) ){
+	if ( current_user_can( 'manage_options' ) ) {
 			$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx';
 		}
 	elseif ( current_user_can( 'publish_posts' ) ) {
@@ -316,7 +316,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 								$avgSpeed += $s;
 						}
 
-							$avgSpeed = $avgSpeed / count( $speedBuffer );
+							$avgSpeed    = $avgSpeed / count( $speedBuffer );
 							$speedBuffer = array();
 
 							$lastOffset = 0;
@@ -384,19 +384,19 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 				$points->minTime     = min( $_time );
 
 				/* Calculating Average Speed */
-				$_speed = array_filter( $points->speed );
+				$_speed           = array_filter( $points->speed );
 				$points->avgSpeed = array_sum( $_speed ) / count( $_speed );
 
 				/* Calculating Average Cadence */
-				$_cad = array_filter( $points->cad );
+				$_cad           = array_filter( $points->cad );
 				$points->avgCad = (float) round( array_sum( $_cad ) / count( $_cad ), 0 );
 
 				/* Calculating Average Heart Rate */
-				$_hr = array_filter( $points->hr );
+				$_hr           = array_filter( $points->hr );
 				$points->avgHr = (float) round( array_sum( $_hr ) / count( $_hr ), 0 );
 
 				/* Calculating Average Temperature */
-				$_temp = array_filter( $points->atemp );
+				$_temp           = array_filter( $points->atemp );
 				$points->avgTemp = (float) round( array_sum( $_temp ) / count( $_temp ), 1 );
 
 			} catch ( Exception $e ) {

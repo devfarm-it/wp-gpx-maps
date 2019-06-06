@@ -105,7 +105,7 @@ function getExifGps( $exifCoord, $hemi ) {
 	$seconds = count( $exifCoord ) > 2 ? gps2Num( $exifCoord[2] ) : 0;
 	$flip    = ( $hemi == 'W' or $hemi == 'S' ) ? -1 : 1;
 
-	return $flip * ( $degrees + $minutes / 60 + $seconds / 3600);
+	return $flip * ( $degrees + $minutes / 60 + $seconds / 3600 );
 }
 
 function gps2Num( $coordPart ) {
@@ -121,7 +121,7 @@ function gps2Num( $coordPart ) {
 		$lat = floatval( $parts[0] );
 		$lon = floatval( $parts[1] );
 
-	if  ($lon == 0 )
+	if ($lon == 0 )
 	return $lat;
 	return $lat / $lon;
 }

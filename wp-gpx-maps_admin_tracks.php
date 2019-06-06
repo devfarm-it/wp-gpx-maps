@@ -96,25 +96,23 @@ if ( is_writable( $realGpxPath ) ) {
 			<br />
 
 		<?php
-	}
+}
 
-	$myGpxFileNames = array();
-	if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
-		while ( false !== ( $entry = readdir( $handle ) ) ) {
+$myGpxFileNames = array();
+if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
+	while ( false !== ( $entry = readdir( $handle ) ) ) {
 		if ( preg_match( $gpxRegEx, $entry ) ) {
-
-				if ( isset($_GET['_wpnonce'])
-					&&
-					wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry )
-					) {
-
+			if ( isset( $_GET['_wpnonce'] )
+				&&
+				wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry )
+				) {
 				if ( file_exists( $realGpxPath . "/" . $entry ) ) {
 					unlink( $realGpxPath . "/" . $entry );
 					echo '<div class="notice notice-success"><p>';
 					printf(
 						/* translators: 1: GPX file name */
 						__( 'The file %1s has been successfully deleted.', 'wp-gpx-maps' ),
-						'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
+						'<span class="code"><strong>' . esc_html( $entry ) . '</strong></span>'
 					);
 					echo '</p></div>';
 				} else {
@@ -122,10 +120,9 @@ if ( is_writable( $realGpxPath ) ) {
 					printf(
 						/* translators: 1: GPX file name */
 						__( 'The file %1s could not be deleted.', 'wp-gpx-maps' ),
-						'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
+						'<span class="code"><strong>' . esc_html( $entry ) . '</strong></span>'
 					);
-						echo '</p></div>';
-
+					echo '</p></div>';
 				}
 			} else {
 				$myFile           = $realGpxPath . "/" . $entry;
@@ -141,13 +138,13 @@ if ( is_writable( $realGpxPath ) ) {
 	closedir( $handle );
 }
 
-if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
+if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 	while ( false !== ($entry = readdir( $handle ) ) ) {
 		if ( preg_match( $gpxRegEx, $entry ) ) {
-		$filenames[] = $realGpxPath . "/" . $entry;
+			$filenames[] = $realGpxPath . "/" . $entry;
 		}
 	}
-		closedir( $handle );
+	closedir( $handle );
 }
 
 $wpgpxmaps_gpxRelativePath = get_site_url( null, '/wp-content/uploads/gpx/' );
