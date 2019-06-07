@@ -474,7 +474,7 @@
 	<table class="form-table">
 
 		<tr>
-			<th scope="row"><?php _e( 'Altitude', 'wp-gpx-maps' ); ?></th>
+			<th scope="row"><?php _e( 'Altitude:', 'wp-gpx-maps' ); ?></th>
 			<td>
 				<input type="checkbox" <?php if ( $showEle == true ){ echo( 'checked' ); } ?> onchange="wpgpxmaps_show_elevation.value = this.checked" onload="wpgpxmaps_show_elevation.value = this.checked" />
 				<i>
@@ -683,9 +683,9 @@
 				</i>
 			</td>
 		</tr>
-		
+
 		<tr>
-			<th scope="row"><?php _e( 'User upload', 'wp-gpx-maps'); ?></th>
+			<th scope="row"><?php _e( 'User upload:', 'wp-gpx-maps' ); ?></th>
 			<td>
 				<input name="wpgpxmaps_allow_users_view" type="checkbox" value="true" onchange="this.value = (this.checked)" <?php if ( $allow_users_upload === "true" ) { echo( 'checked' ); } ?>>
 					<i>

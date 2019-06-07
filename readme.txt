@@ -90,7 +90,7 @@ Supported GPX namespaces are:
 
 Thanks to: <a href="http://www.securcube.net/" target="_blank" rel="noopener noreferrer">www.securcube.net</a>, <a href="http://www.devfarm.it/" target="_blank" rel="noopener noreferrer">www.devfarm.it</a>
 
-Icons made by <a href="https://www.freepik.com/?__hstc=57440181.104a2a973b6d66e5ac5f75fcf2d4ef9e.1559729255492.1559729255492.1559803759717.2&__hssc=57440181.7.1559803759717&__hsfp=1353452017" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+Icons made by <a href="https://www.freepik.com/" target="_blank" rel="noopener noreferrer">Freepik</a> from <a href="https://www.flaticon.com/" target="_blank" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">Creative Commons BY 3.0</a>
 
 == Installation ==
 
