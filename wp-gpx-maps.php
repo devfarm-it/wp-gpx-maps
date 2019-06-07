@@ -79,7 +79,7 @@ function enqueue_WP_GPX_Maps_scripts() {
 	wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), '0' );
 	wp_enqueue_style( 'leaflet.Photo' );
 
-	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.1.4/Control.FullScreen.css', __FILE__ ), array(), '1.5.1' );
+	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.css', __FILE__ ), array(), '1.5.1' );
 	wp_enqueue_style( 'leaflet.fullscreen' );
 
 	wp_register_script( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.js', __FILE__ ), array(), '1.5.1' );
