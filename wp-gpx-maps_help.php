@@ -14,7 +14,7 @@
 		_e( '2. Method: Upload the GPX file via FTP to your upload folder:', 'wp-gpx-maps' );
 		echo ' ';
 	?>
-	<span class="code"><strong> <?php echo $relativeGpxPath; ?> </strong></span>
+	<code><strong> <?php echo $relativeGpxPath; ?> </strong></code>
 </p>
 <p>
 	<strong><?php _e( 'How can I use the GPX files?', 'wp-gpx-maps' ); ?></strong>
@@ -28,7 +28,7 @@
 		_e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' );
 		echo ' ';
 	?>
-		<span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"]</strong></span>
+		<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"]</strong></code>
 </p>
 <p>
 	<strong><?php _e( 'Can I also integrate GPX files from other sites?', 'wp-gpx-maps' ); ?></strong>
@@ -39,7 +39,7 @@
 		_e( 'Yes, it&#8217s possible. Please use this scheme:', 'wp-gpx-maps' );
 		echo ' ';
 	?>
-	<span class="code"><strong>[sgpx gpx="http://www.someone.com/somewhere/somefile.gpx"]</strong></span>
+	<code><strong>[sgpx gpx="http://www.someone.com/somewhere/somefile.gpx"]</strong></code>
 </p>
 <p>
 	<strong><?php _e( 'Can I change the attributes for each GPX shortcode?', 'wp-gpx-maps' ); ?></strong>
@@ -53,7 +53,7 @@
 		_e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' );
 		echo ' ';
 	?>
-		<span class="code"><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></span>
+		<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></code>
 </p>
 
 <br />
@@ -70,7 +70,7 @@
 		<tr>
 		<td>gpx</td>
 		<td><?php _e( 'relative path to the GPX file', 'wp-gpx-maps' ); ?></td>
-		<td><span class="code"><strong>gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"</strong></span></td>
+		<td><code><strong>gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"</strong></code></td>
 	</tr>
 	<tr>
 		<td>width</td>
