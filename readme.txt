@@ -3,9 +3,9 @@
 Contributors: bastianonm, Stephan Klein, Michel Selerin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
-Requires at least: 2.0.0
+Requires at least: 4.6.0
 Tested up to: 5.2.1
-Stable tag: 1.7.02
+Stable tag: 1.7.00
 
 Draws a GPX track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -113,8 +113,8 @@ You can use the following shortcodes:
 1. mtype: Map available types are: HYBRID, ROADMAP, SATELLITE, TERRAIN, OSM1 (Open Street Map), OSM2 (Open Cycle Map), OSM3 (Hike & Bike), OSM4 (Open Cycle Map - Transport), OSM5 (Open Cycle Map - Landscape), OSM6 (MapToolKit - Terrain)
 1. waypoints: Print the gpx waypoints inside the map (default is false)
 1. donotreducegpx: Print all the point without reduce it (default is false)
-1. pointsoffset: Skip points closer than XX meters(default is 10)
-1. uom: Distance/altitude possible unit of measure are: 0, 1, 2, 3, 4, 5 (0 = meters, 1 = feet/miles, 2 = meters/kilometers, 3 = meters/nautical miles, 4 = meters/miles, 5 = feet/nautical miles)
+1. pointsoffset: Skip points closer than XX meters (default is 10)
+1. uom: Distance/altitude possible unit of measure (0 = meters, 1 = feet/miles, 2 = meters/kilometers, 3 = meters/nautical miles, 4 = meters/miles, 5 = feet/nautical miles)
 1. mlinecolor: Map line color (default is #3366cc)
 1. glinecolor: Altitude line color (default is #3366cc)
 1. showspeed: Show speed inside the chart (default is false)
@@ -126,7 +126,7 @@ You can use the following shortcodes:
 1. glinecolorhr: Heart rate line color (default is #ff77bd)
 1. glinecolorcad: Cadence line color (default is #beecff)
 1. glinecolorgrade: Grade line color (default is #beecff)
-1. uomspeed: Unit of measure for speed are: 0, 1, 2, 3, 4, 5 (0 = m/s, 1 = km/h, 2 = miles/h, 3 = min/km, 4 = min/miles, 5 = Nautical Miles/Hour (Knots), 6 = min/100 meters)
+1. uomspeed: Unit of measure for speed (0 = m/s, 1 = km/h, 2 = miles/h, 3 = min/km, 4 = min/miles, 5 = Nautical Miles/Hour (Knots), 6 = min/100 meters)
 1. chartFrom1: Minimun value for altitude chart
 1. chartTo1: Maxumin value for altitude chart
 1. chartFrom2: Minimun value for speed chart
@@ -171,8 +171,8 @@ Yes!
 = 1.7.00 =
 * Added possibility (for Admins and Editors) to use and remove all files in every user own folder
 * Removed settings tab for non-Admin users (Contributor, Author, Editor and Subscriber)
-* Now, uploaded gpx files are created in a folder called as *your user name*, inside ../wordpressSiteFolder/wp-content/uploads/gpx/[*your user name*]
-* Added different size logos for the plugin store (icon.svg, icon128x128.png and icon256x256.png) [Located inside ../wordpressSiteFolder/wp-content/plugins/wp-gpx-maps/assets]
+* Now, uploaded gpx files are created in a folder called as *your user name*, inside ../wordpressSiteFolder/wp-upload dir/gpx/[*your user name*]
+* Added different size logos for the plugin store (icon.svg, icon128x128.png and icon256x256.png) [Located inside ../plugins/wp-gpx-maps/assets]
 * Added button to instant copy the shortcode of the selected gpx file
 * Added: Authors can upload GPS tracks (thanks to wildcomputations)
 * Upgrade: Leaflet to 1.5.1
