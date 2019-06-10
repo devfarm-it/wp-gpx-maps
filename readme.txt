@@ -164,22 +164,20 @@ Yes!
 1. Admin area - List of tracks
 1. Admin area - Settings
 1. Altitude & Speed
-1. Altitude & Speed & Hearth rate
+1. Altitude & Speed & Heart rate
 
 == Changelog ==
 
 = 1.7.00 =
-* Added possibility (for Admins and Editors) to use and remove all files in every user own folder
-* Removed settings tab for non-Admin users (Contributor, Author, Editor and Subscriber)
-* Now, uploaded gpx files are created in a folder called as *your user name*, inside ../wordpressSiteFolder/wp-upload dir/gpx/[*your user name*]
-* Added different size logos for the plugin store (icon.svg, icon128x128.png and icon256x256.png) [Located inside ../plugins/wp-gpx-maps/assets]
-* Added button to instant copy the shortcode of the selected gpx file
-* Added: Authors can upload GPS tracks (thanks to wildcomputations)
+* Added: Authors can upload GPS tracks in a folder called as *your user name*, inside [../wp-upload dir/gpx/[*your user name*] (thanks to wildcomputations)
+* Added: Button to instant copy the shortcode of the selected gpx file in the tab track
+* Added: different size logos for the plugin store (icon.svg, icon128x128.png and icon256x256.png) [inside ../plugins/wp-gpx-maps/assets]
+* Changed: Settings tab is for non-Admin users is not more visible
+* Fixed: Plugin is now complete translatable (Backend + Frontend)
+* Fixed: WordPress coding standards
 * Upgrade: Leaflet to 1.5.1
 * Upgrade: leaflet.fullscreen to 1.4.5
 * Upgrade: Chart.min.js to 2.8.0
-* Fixed: Plugin is now complete translatable (Backend + Frontend)
-* Fixed: Wordpress coding standards
 = 1.6.07 =
 * resolve admin error
 = 1.6.06 =

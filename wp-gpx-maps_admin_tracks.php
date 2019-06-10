@@ -10,10 +10,10 @@ if ( $is_admin != 1 )
 
 $allow_users_upload 	= get_option( 'wpgpxmaps_allow_users_view' ) === "true";
 
-$wpgpxmapsUrl = get_admin_url() . "admin.php?page=WP-GPX-Maps"; 
+$wpgpxmapsUrl = get_admin_url() . "admin.php?page=WP-GPX-Maps";
 
 $gpxRegEx = '/.gpx$/i';
-	
+
 if ( current_user_can( 'manage_options' ) ) {
 		$menu_root = 'options-general.php';
 } elseif ( current_user_can( 'publish_posts' ) ) {
@@ -53,7 +53,7 @@ if ( is_writable( $realGpxPath ) ) {
 						if ( move_uploaded_file( $_FILES['uploadedfile']['tmp_name'][$i], $target_path ) ) {
 							echo '<div class="notice notice-success"><p>';
 							printf(
-								/* translators: 1: GPX file name */
+								/* translators: GPX file name */
 								__( 'The file %1s has been successfully uploaded.', 'wp-gpx-maps' ),
 								'<span class="code"><strong>' . esc_html( $uploadingFileName ) . '</strong></span>'
 							);
@@ -90,7 +90,7 @@ if ( is_writable( $realGpxPath ) ) {
 				<p style='font-size:2em;'>
 					<?php
 					printf(
-						/* translators: 1: Relative path of the GPX folder */
+						/* translators: Relative path of the GPX folder */
 						__( 'Your folder for GPX files %1s is not writable. Please change the folder permissions.', 'wp-gpx-maps' ),
 						'<span class="code">' . esc_html( $relativeGpxPath ) . '</span>'
 					);
@@ -117,7 +117,7 @@ if ( is_writable( $realGpxPath ) ) {
 					unlink( $realGpxPath . "/" . $entry );
 					echo '<div class="notice notice-success"><p>';
 					printf(
-						/* translators: 1: GPX file name */
+						/* translators: GPX file name */
 						__( 'The file %1s has been successfully deleted.', 'wp-gpx-maps' ),
 						'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
 					);
@@ -125,7 +125,7 @@ if ( is_writable( $realGpxPath ) ) {
 				} else {
 					echo '<div class=" notice notice-error"><p>';
 					printf(
-						/* translators: 1: GPX file name */
+						/* translators: GPX file name */
 						__( 'The file %1s could not be deleted.', 'wp-gpx-maps' ),
 						'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
 					);
@@ -232,12 +232,12 @@ if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 		$temp.val(shortcode).select();
 		document.execCommand("copy");
 		$temp.remove();
-		
+
 		e.preventDefault();
-		
+
 	});
 
-	
+
 </script>
 
 <style>
