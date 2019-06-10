@@ -11,13 +11,13 @@ if ( is_admin() ) {
 
 
 function wpgpxmaps_admin_menu() {
-	
+
 	/*
-	
+
 	All roles/capabilities:
-	
+
 	https://wordpress.org/support/article/roles-and-capabilities/
-	
+
 	*/
 
 	if ( current_user_can( 'manage_options' ) ) {
@@ -32,8 +32,8 @@ function wpgpxmaps_admin_menu() {
 
 		if ($allow_users_upload == 1)
 		{
-			add_menu_page( 'WP GPX Maps', 'WP GPX Maps', 'publish_posts', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page' );			
-		}	
+			add_menu_page( 'WP GPX Maps', 'WP GPX Maps', 'publish_posts', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page' );
+		}
 
 	}
 
@@ -112,7 +112,7 @@ function WP_GPX_Maps_html_page() {
 		if ( ! @mkdir( $realGpxPath, 0755, true ) ) {
 			echo '<div class=" notice notice-error"><p>';
 			printf(
-				/* translators: 1: Relative path of the GPX folder */
+				/* translators: Relative path of the GPX folder */
 				__( 'Can not create the folder %1s for GPX files. Please create the folder and make it writable! If not, you will must update the files manually!', 'wp-gpx-maps' ),
 				'<span class="code"><strong>' . esc_html( $relativeGpxPath ) . '</strong></span>'
 			);
@@ -129,7 +129,7 @@ function WP_GPX_Maps_html_page() {
 		if ( ! @mkdir( $cacheGpxPath, 0755, true ) ) {
 			echo '<div class=" notice notice-error"><p>';
 			printf(
-				/* translators: 1: Relative path of the GPX cache folder */
+				/* translators: Relative path of the GPX cache folder */
 				__( 'Can not create the cache folder %1s for the GPX files. Please create the folder and make it writable! If not, you will must update the files manually!', 'wp-gpx-maps' ),
 				'<span class="code"><strong>' . esc_html( $relativeGpxCachePath ) . '</strong></span>'
 			);
