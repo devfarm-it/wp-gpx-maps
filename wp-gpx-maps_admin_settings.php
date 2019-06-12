@@ -368,45 +368,6 @@
 
 		<tr>
 			<th scope="row">
-				<?php _e( 'On mouse scroll wheel:', 'wp-gpx-maps' ); ?>
-			</th>
-			<td>
-				<input name="wpgpxmaps_zoomonscrollwheel" type="checkbox" value="true" <?php if ( $zoomonscrollwheel == true ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
-				<i>
-					<?php
-						echo ' ';
-						_e( 'Enable zoom', 'wp-gpx-maps' );
-					?>
-				</i>
-			</td>
-		</tr>
-
-		<tr>
-			<th scope="row">
-				<?php _e( 'Waypoints support:', 'wp-gpx-maps' ); ?>
-			</th>
-			<td>
-				<input name="wpgpxmaps_show_waypoint" type="checkbox" value="true" <?php if ( $showW == true ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
-				<i>
-					<?php
-					echo ' ';
-					_e( 'Show waypoints', 'wp-gpx-maps' );
-					?>
-				</i>
-			</td>
-		</tr>
-
-		<tr>
-			<th scope="row">
-				<?php _e( 'Map line color:', 'wp-gpx-maps' ); ?>
-			</th>
-			<td>
-				<input name="wpgpxmaps_map_line_color" type="color" data-hex="true" value="<?php echo get_option( 'wpgpxmaps_map_line_color' ); ?>" />
-			</td>
-		</tr>
-
-		<tr>
-			<th scope="row">
 				<?php _e( 'Default map type:', 'wp-gpx-maps' ); ?>
 			</th>
 			<td>
@@ -434,12 +395,6 @@
 						_e( 'Open Cycle Map - Landscape', 'wp-gpx-maps' );
 					?>
 				<br />
-				<input type="radio" name="wpgpxmaps_map_type" value="OSM3" <?php if ( $t == 'OSM3' ) echo 'checked'; ?>>
-					<?php
-						echo ' ';
-						_e( 'Hike & Bike', 'wp-gpx-maps' );
-					?>
-				<br />
 				<input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ( $t == 'OSM6' ) echo 'checked'; ?>>
 					<?php
 						echo ' ';
@@ -464,6 +419,45 @@
 						_e( 'Open Sea Map', 'wp-gpx-maps' );
 					?>
 				<br />
+			</td>
+		</tr>
+
+		<tr>
+			<th scope="row">
+				<?php _e( 'Map line color:', 'wp-gpx-maps' ); ?>
+			</th>
+			<td>
+				<input name="wpgpxmaps_map_line_color" type="color" data-hex="true" value="<?php echo get_option( 'wpgpxmaps_map_line_color' ); ?>" />
+			</td>
+		</tr>
+
+		<tr>
+			<th scope="row">
+				<?php _e( 'On mouse scroll wheel:', 'wp-gpx-maps' ); ?>
+			</th>
+			<td>
+				<input name="wpgpxmaps_zoomonscrollwheel" type="checkbox" value="true" <?php if ( $zoomonscrollwheel == true ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
+				<i>
+					<?php
+						echo ' ';
+						_e( 'Enable zoom', 'wp-gpx-maps' );
+					?>
+				</i>
+			</td>
+		</tr>
+
+		<tr>
+			<th scope="row">
+				<?php _e( 'Waypoints support:', 'wp-gpx-maps' ); ?>
+			</th>
+			<td>
+				<input name="wpgpxmaps_show_waypoint" type="checkbox" value="true" <?php if ( $showW == true ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
+				<i>
+					<?php
+					echo ' ';
+					_e( 'Show waypoints', 'wp-gpx-maps' );
+					?>
+				</i>
 			</td>
 		</tr>
 
@@ -531,7 +525,7 @@
 
 	<p class="submit">
 		<input type="hidden" name="action" value="update" />
-		<input name="page_options" type="hidden" value="wpgpxmaps_show_waypoint,wpgpxmaps_map_line_color,wpgpxmaps_map_type,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_map_waypoint_icon,wpgpxmaps_currentpositioncon" />
+		<input name="page_options" type="hidden" value="wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
 		<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 	</p>
 
@@ -581,7 +575,7 @@
 					<option value="0" <?php if ( $uom == '0' ) echo 'selected'; ?>><?php _e( 'meters / meters', 'wp-gpx-maps' ); ?></option>
 					<option value="1" <?php if ( $uom == '1' ) echo 'selected'; ?>><?php _e( 'feet / miles', 'wp-gpx-maps' ); ?></option>
 					<option value="2" <?php if ( $uom == '2' ) echo 'selected'; ?>><?php _e( 'meters / kilometers', 'wp-gpx-maps' ); ?></option>
-					<option value="3" <?php if ( $uom == '3' ) echo 'selected'; ?>><?php _e( 'meters / nautical Miles', 'wp-gpx-maps' ); ?></option>
+					<option value="3" <?php if ( $uom == '3' ) echo 'selected'; ?>><?php _e( 'meters / nautical miles', 'wp-gpx-maps' ); ?></option>
 					<option value="4" <?php if ( $uom == '4' ) echo 'selected'; ?>><?php _e( 'meters / miles', 'wp-gpx-maps' ); ?></option>
 					<option value="5" <?php if ( $uom == '5' ) echo 'selected'; ?>><?php _e( 'feet / nautical miles', 'wp-gpx-maps' ); ?></option>
 				</select>
@@ -749,7 +743,7 @@
 
 	<p class="submit">
 		<input type="hidden" name="action" value="update" />
-		<input name="page_options" type="hidden" value="wpgpxmaps_unit_of_measure,wpgpxmaps_graph_line_color,wpgpxmaps_show_elevation,wpgpxmaps_show_speed,wpgpxmaps_graph_line_color_speed,wpgpxmaps_show_hr,wpgpxmaps_graph_line_color_hr,wpgpxmaps_unit_of_measure_speed,wpgpxmaps_graph_offset_from1,wpgpxmaps_graph_offset_to1,wpgpxmaps_graph_offset_from2,wpgpxmaps_graph_offset_to2,wpgpxmaps_graph_line_color_cad,wpgpxmaps_show_cadence,wpgpxmaps_show_grade,wpgpxmaps_graph_line_color_grade,wpgpxmaps_show_atemp,wpgpxmaps_graph_line_color_atemp" />
+		<input name="page_options" type="hidden" value="wpgpxmaps_show_elevation,wpgpxmaps_graph_line_color,wpgpxmaps_unit_of_measure,wpgpxmaps_show_speed,wpgpxmaps_graph_line_color_speed,wpgpxmaps_show_hr,wpgpxmaps_graph_line_color_hr,wpgpxmaps_unit_of_measure_speed,wpgpxmaps_graph_offset_from1,wpgpxmaps_graph_offset_to1,wpgpxmaps_graph_offset_from2,wpgpxmaps_graph_offset_to2,wpgpxmaps_graph_line_color_cad,wpgpxmaps_show_cadence,wpgpxmaps_show_grade,wpgpxmaps_graph_line_color_grade,wpgpxmaps_show_atemp,wpgpxmaps_graph_line_color_atemp" />
 		<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 	</p>
 
@@ -817,7 +811,7 @@
 
 	<p class="submit">
 		<input type="hidden" name="action" value="update" />
-		<input name="page_options" type="hidden" value="wpgpxmaps_pointsoffset,wpgpxmaps_donotreducegpx,wpgpxmaps_allow_users_view" />
+		<input name="page_options" type="hidden" value="wpgpxmaps_donotreducegpx,wpgpxmaps_pointsoffset,wpgpxmaps_allow_users_view" />
 		<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 	</p>
 

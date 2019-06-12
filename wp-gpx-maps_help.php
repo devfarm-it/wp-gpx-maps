@@ -64,7 +64,7 @@
 	<?php _e( 'General', 'wp-gpx-maps' ); ?>
 </h3>
 
-<table class="shortcodes"><colgroup> <col width="100px" /></colgroup>
+<table class="shortcodes"><colgroup> <col width="120px" /></colgroup>
 	<tbody>
 		<tr>
 			<td>
@@ -142,11 +142,13 @@
 	</tbody>
 </table>
 
+<hr />
+
 <h3 class="title">
 	<?php _e( 'Map', 'wp-gpx-maps' ); ?>
 </h3>
 
-<table class="shortcodes"><colgroup> <col width="100px" /></colgroup>
+<table class="shortcodes"><colgroup> <col width="120px" /></colgroup>
 	<tbody>
 		<tr>
 			<td>
@@ -165,7 +167,24 @@
 				<?php _e( 'Map type', 'wp-gpx-maps' ); ?>
 			</td>
 			<td>
-				<strong>HYBRID, ROADMAP, SATELLITE, TERRAIN, OSM1 (Open Street Map), OSM2 (Open Cycle Map), OSM3 (Hike & Bike), OSM4 (Open Cycle Map - Transport), OSM5 (Open Cycle Map - Landscape), OSM6 (MapToolKit - Terrain)</strong>
+				<strong>HYBRID, ROADMAP, SATELLITE, TERRAIN</strong>
+				<br />
+				<strong>OSM1</strong> =	<?php _e( 'Open Street Map', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>OSM2</strong> =	<?php _e( 'Open Cycle Map', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>OSM4</strong> =	<?php _e( 'Open Cycle Map - Transport', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>OSM5</strong> =	<?php _e( 'Open Cycle Map - Landscape', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>OSM6</strong> =	<?php _e( 'MapToolKit - Terrain', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>OSM7</strong> =	<?php _e( 'Open Street Map - Humanitarian map style', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>OSM9</strong> =	<?php _e( 'Hike & Bike', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>OSM10</strong> = <?php _e( 'Open Sea Map', 'wp-gpx-maps' ); ?>
+				<br />
 			</td>
 		</tr>
 		<tr>
@@ -208,32 +227,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td>donotreducegpx</td>
-			<td>
-				<?php _e( 'Print all the GPX waypoints without reduce it', 'wp-gpx-maps' ); ?>
-			</td>
-			<td>
-				<?php
-				_e( 'Default is:', 'wp-gpx-maps' );
-				echo ' ';
-				?>
-				<strong>false</strong>
-			</td>
-		</tr>
-		<tr>
-			<td>pointsoffset</td>
-			<td>
-				<?php _e( 'Skip GPX points closer than XX meters', 'wp-gpx-maps' ); ?>
-			</td>
-			<td>
-				<?php
-				_e( 'Default is:', 'wp-gpx-maps' );
-				echo ' ';
-				?>
-				<strong>10</strong>
-			</td>
-		</tr>
-		<tr>
 			<td>startIcon</td>
 			<td>
 				<?php _e( 'Start track icon', 'wp-gpx-maps' ); ?>
@@ -264,11 +257,13 @@
 	</tbody>
 </table>
 
+<hr />
+
 <h3 class="title">
 	<?php _e( 'Diagram', 'wp-gpx-maps' ); ?>
 </h3>
 
-<table class="shortcodes"><colgroup> <col width="100px" /></colgroup>
+<table class="shortcodes"><colgroup> <col width="120px" /></colgroup>
 	<tbody>
 		<tr>
 			<td>
@@ -279,6 +274,19 @@
 			</td>
 			<td>
 				<strong><?php _e( 'Possible values', 'wp-gpx-maps' ); ?></strong>
+			</td>
+		</tr>
+		<tr>
+			<td>showele</td>
+			<td>
+				<?php _e( 'Show elevation data inside the chart', 'wp-gpx-maps' ); ?>
+			</td>
+			<td>
+				<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+				?>
+				<strong>true</strong>
 			</td>
 		</tr>
 		<tr>
@@ -300,7 +308,18 @@
 				<?php _e( 'Distance / Altitude unit of measure', 'wp-gpx-maps' ); ?>
 			</td>
 			<td>
-				<?php _e( '<strong>0</strong> = meters/meters, <strong>1</strong> = feet/miles, <strong>2</strong> = meters/kilometers, <strong>3</strong> = meters/nautical miles, <strong>4</strong> = meters/miles, <strong>5</strong> = feet/nautical miles', 'wp-gpx-maps' ); ?>
+				<strong>0</strong> = <?php _e( 'meters / meters', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>1</strong> = <?php _e( 'feet / miles', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>2</strong> = <?php _e( 'meters / kilometers', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>3</strong> = <?php _e( 'meters / nautical miles', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>4</strong> = <?php _e( 'meters / miles', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>5</strong> = <?php _e( 'feet / nautical miles', 'wp-gpx-maps' ); ?>
+				<br />
 			</td>
 		</tr>
 		<tr>
@@ -349,7 +368,20 @@
 				<?php _e( 'Speed unit of measure', 'wp-gpx-maps' ); ?>
 			</td>
 			<td>
-				<strong>0</strong> = m/s, <strong>1</strong> = km/h, <strong>2</strong> = miles/h, <strong>3</strong> = min/km, <strong>4</strong> = min/miles, <strong>5</strong> = Nautical Miles/Hour (Knots), <strong>6</strong> = min/100 meters)
+				<strong>0</strong> = <?php _e( 'm/s', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>1</strong> = <?php _e( 'km/h', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>2</strong> = <?php _e( 'miles/h', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>3</strong> = <?php _e( 'min/km', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>4</strong> = <?php _e( 'min/miles', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>5</strong> = <?php _e( 'Knots (nautical miles / hour)', 'wp-gpx-maps' ); ?>
+				<br />
+				<strong>6</strong> = <?php _e( 'min/100 meters', 'wp-gpx-maps' ); ?>
+				<br />
 			</td>
 		</tr>
 		<tr>
@@ -390,19 +422,6 @@
 				echo ' ';
 				?>
 				<strong>#ff77bd</strong>
-			</td>
-		</tr>
-		<tr>
-			<td>showele</td>
-			<td>
-				<?php _e( 'Show elevation data inside the chart', 'wp-gpx-maps' ); ?>
-			</td>
-			<td>
-				<?php
-				_e( 'Default is:', 'wp-gpx-maps' );
-				echo ' ';
-				?>
-				<strong>true</strong>
 			</td>
 		</tr>
 		<tr>
@@ -460,11 +479,13 @@
 	</tbody>
 </table>
 
+<hr />
+
 <h3 class="title">
 	<?php _e( 'Pictures', 'wp-gpx-maps' ); ?>
 </h3>
 
-<table class="shortcodes"><colgroup> <col width="100px" /></colgroup>
+<table class="shortcodes"><colgroup> <col width="120px" /></colgroup>
 	<tbody>
 		<tr>
 			<td>
@@ -520,11 +541,13 @@
 	</tbody>
 </table>
 
+<hr />
+
 <h3 class="title">
 	<?php _e( 'Summary table', 'wp-gpx-maps' ); ?>
 </h3>
 
-<table class="shortcodes"><colgroup> <col width="100px" /></colgroup>
+<table class="shortcodes"><colgroup> <col width="120px" /></colgroup>
 	<tbody>
 		<tr>
 			<td>
@@ -682,6 +705,56 @@
 		</tr>
 	</tbody>
 </table>
+
+<hr />
+
+<h3 class="title">
+	<?php _e( 'Advanced', 'wp-gpx-maps' ); ?>
+</h3>
+
+<table class="shortcodes"><colgroup> <col width="120px" /></colgroup>
+	<tbody>
+		<tr>
+			<td>
+				<strong><?php _e( 'Shortcode', 'wp-gpx-maps' ); ?></strong>
+			</td>
+			<td>
+				<strong><?php _e( 'Description', 'wp-gpx-maps' ); ?></strong>
+			</td>
+			<td>
+				<strong><?php _e( 'Possible values', 'wp-gpx-maps' ); ?></strong>
+			</td>
+		</tr>
+		<tr>
+			<td>pointsoffset</td>
+			<td>
+				<?php _e( 'Skip GPX points closer than XX meters', 'wp-gpx-maps' ); ?>
+			</td>
+			<td>
+				<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+				?>
+				<strong>10</strong>
+			</td>
+		</tr>
+		<tr>
+			<td>donotreducegpx</td>
+			<td>
+				<?php _e( 'Print all the GPX waypoints without reduce it', 'wp-gpx-maps' ); ?>
+			</td>
+			<td>
+				<?php
+				_e( 'Default is:', 'wp-gpx-maps' );
+				echo ' ';
+				?>
+				<strong>false</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<hr />
 
 <p>
 	<a href="http://devfarm.it/forums/forum/wp-gpx-maps/" target="_blank" rel="noopener noreferrer"><?php _e( 'Bugs, problems, thanks and anything else here!', 'wp-gpx-maps' ); ?></a>
