@@ -70,7 +70,7 @@ function gpxFolderPath() {
 
 	if ( current_user_can( 'manage_options' ) ){
 			$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx';
-		}
+	}
 	elseif ( current_user_can( 'publish_posts' ) ) {
 			global $current_user;
 			wp_get_current_user();

@@ -110,7 +110,7 @@ You can use the following shortcodes:
 1. width: Width in pixels
 1. mheight: Map height
 1. gheight: Graph height
-1. mtype: Map available types are: HYBRID, ROADMAP, SATELLITE, TERRAIN, OSM1 (Open Street Map), OSM2 (Open Cycle Map), OSM3 (Hike & Bike), OSM4 (Open Cycle Map - Transport), OSM5 (Open Cycle Map - Landscape), OSM6 (MapToolKit - Terrain)
+1. mtype: Map available types are: HYBRID, ROADMAP, SATELLITE, TERRAIN, OSM1 (Open Street Map), OSM2 (Open Cycle Map), OSM4 (Open Cycle Map - Transport), OSM5 (Open Cycle Map - Landscape), OSM6 (MapToolKit - Terrain), OSM7 (Open Street Map - Humanitarian map style), OSM 9 (Hike & Bike), OSM10 (Open Sea Map)
 1. waypoints: Print the gpx waypoints inside the map (default is false)
 1. donotreducegpx: Print all the point without reduce it (default is false)
 1. pointsoffset: Skip points closer than XX meters (default is 10)
