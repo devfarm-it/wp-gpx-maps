@@ -169,12 +169,14 @@ Yes!
 == Changelog ==
 
 = 1.7.00 =
-* Added: Authors can upload GPS tracks in a folder called as *your user name*, inside [../wp-upload dir/gpx/[*your user name*] (thanks to wildcomputations)
-* Added: Button to instant copy the shortcode of the selected gpx file in the tab track
+* Added: Authors can upload GPX tracks in a folder called as *your user name*, inside [../wp-upload dir/gpx/[*your user name*] (thanks to wildcomputations)
+* Added: Authors an Admins can see the current values for shortcodes in help tab
+* Added: Button to instant copy the shortcode of the selected GPX file in the tab track
 * Added: different size logos for the plugin store (icon.svg, icon128x128.png and icon256x256.png) [inside ../plugins/wp-gpx-maps/assets]
 * Changed: Settings tab is for non-Admin users is not more visible
-* Fixed: Plugin is now complete translatable (Backend + Frontend)
-* Fixed: WordPress coding standards
+* Tweak: Help tab is easier to read
+* Tweak: Plugin is now complete translatable (Backend + Frontend)
+* Tweak: WordPress coding standards
 * Upgrade: Leaflet to 1.5.1
 * Upgrade: leaflet.fullscreen to 1.4.5
 * Upgrade: Chart.min.js to 2.8.0
