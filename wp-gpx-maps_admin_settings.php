@@ -2,35 +2,42 @@
 
 	if ( ! current_user_can( 'manage_options' ) )
 		return;
+	// General.
 
+
+	$distanceType   = get_option( 'wpgpxmaps_distance_type' );
+	$skipcache      = get_option( 'wpgpxmaps_skipcache' );
+	$download       = get_option( 'wpgpxmaps_download' );
+	$usegpsposition = get_option( 'wpgpxmaps_usegpsposition' );
+
+	// Print Summary Table.
+	$summary        = get_option( 'wpgpxmaps_summary' );
+	$tot_len        = get_option( 'wpgpxmaps_summary_tot_len' );
+	$max_ele        = get_option( 'wpgpxmaps_summary_max_ele' );
+	$min_ele        = get_option( 'wpgpxmaps_summary_min_ele' );
+	$total_ele_up   = get_option( 'wpgpxmaps_summary_total_ele_up' );
+	$total_ele_down = get_option( 'wpgpxmaps_summary_total_ele_down' );
+	$avg_speed      = get_option( 'wpgpxmaps_summary_avg_speed' );
+	$avg_cad        = get_option( 'wpgpxmaps_summary_avg_cad' );
+	$avg_hr         = get_option( 'wpgpxmaps_summary_avg_hr' );
+	$avg_temp       = get_option( 'wpgpxmaps_summary_avg_temp' );
+	$total_time     = get_option( 'wpgpxmaps_summary_total_time' );
+	// Map.
+	$t                 = get_option( 'wpgpxmaps_map_type' );
+	$zoomonscrollwheel = get_option( 'wpgpxmaps_zoomonscrollwheel' );
+	$showW             = get_option( 'wpgpxmaps_show_waypoint' );
+	// Diagram
+	$showEle   = get_option( 'wpgpxmaps_show_elevation' );
+	$uom       = get_option( 'wpgpxmaps_unit_of_measure' );
+	$showSpeed = get_option( 'wpgpxmaps_show_speed' );
+	$uomSpeed  = get_option( 'wpgpxmaps_unit_of_measure_speed' );
+	$showHr    = get_option( 'wpgpxmaps_show_hr' );
+	$showAtemp = get_option( 'wpgpxmaps_show_atemp' );
+	$showCad   = get_option( 'wpgpxmaps_show_cadence' );
+	$showGrade = get_option( 'wpgpxmaps_show_grade' );
+	// Advanced.
 	$po             	= get_option( 'wpgpxmaps_pointsoffset' );
-	$showW             	= get_option( 'wpgpxmaps_show_waypoint' );
 	$donotreducegpx    	= get_option( 'wpgpxmaps_donotreducegpx' );
-	$t                 	= get_option( 'wpgpxmaps_map_type' );
-	$uom               	= get_option( 'wpgpxmaps_unit_of_measure' );
-	$uomSpeed          	= get_option( 'wpgpxmaps_unit_of_measure_speed' );
-	$showEle           	= get_option( 'wpgpxmaps_show_elevation' );
-	$showSpeed         	= get_option( 'wpgpxmaps_show_speed' );
-	$showHr            	= get_option( 'wpgpxmaps_show_hr' );
-	$showAtemp         	= get_option( 'wpgpxmaps_show_atemp' );
-	$showCad           	= get_option( 'wpgpxmaps_show_cadence' );
-	$showGrade         	= get_option( 'wpgpxmaps_show_grade' );
-	$zoomonscrollwheel  = get_option( 'wpgpxmaps_zoomonscrollwheel' );
-	$download          	= get_option( 'wpgpxmaps_download' );
-	$skipcache         	= get_option( 'wpgpxmaps_skipcache' );
-	$summary           	= get_option( 'wpgpxmaps_summary' );
-	$tot_len           	= get_option( 'wpgpxmaps_summary_tot_len' );
-	$min_ele           	= get_option( 'wpgpxmaps_summary_min_ele' );
-	$max_ele           	= get_option( 'wpgpxmaps_summary_max_ele' );
-	$total_ele_up      	= get_option( 'wpgpxmaps_summary_total_ele_up' );
-	$total_ele_down    	= get_option( 'wpgpxmaps_summary_total_ele_down' );
-	$avg_speed         	= get_option( 'wpgpxmaps_summary_avg_speed' );
-	$avg_cad           	= get_option( 'wpgpxmaps_summary_avg_cad' );
-	$avg_hr            	= get_option( 'wpgpxmaps_summary_avg_hr' );
-	$avg_temp          	= get_option( 'wpgpxmaps_summary_avg_temp' );
-	$total_time        	= get_option( 'wpgpxmaps_summary_total_time' );
-	$usegpsposition    	= get_option( 'wpgpxmaps_usegpsposition' );
-	$distanceType       = get_option( 'wpgpxmaps_distance_type' );
 	$allow_users_upload = get_option( 'wpgpxmaps_allow_users_view' );
 
 	if ( empty( $allow_users_upload ) )
@@ -46,7 +53,6 @@
 		$po = 10;
 
 ?>
-
 
 
 <form method="post" action="options.php">

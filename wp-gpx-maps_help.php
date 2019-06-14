@@ -521,6 +521,37 @@
 						<?php echo get_option( 'wpgpxmaps_graph_line_color_hr' ); ?>
 					</td>
 				</tr>
+				<td>showatemp</td>
+					<td>
+						<?php _e( 'Show temperature inside the chart', 'wp-gpx-maps' ); ?>
+					</td>
+					<td>
+						<?php
+						_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>false</strong>
+					</td>
+					<td>
+						<?php echo get_option( 'wpgpxmaps_show_atemp' ); ?>
+					</td>
+				</tr>
+				<tr>
+					<td>glinecoloratemp</td>
+					<td>
+						<?php _e( 'Temperature line color', 'wp-gpx-maps' ); ?>
+					</td>
+					<td>
+						<?php
+						_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>#ff77bd</strong>
+					</td>
+					<td>
+						<?php echo get_option( 'wpgpxmaps_graph_line_color_atemp' ); ?>
+					</td>
+				</tr>
 				<tr>
 					<td>showcad</td>
 					<td>
