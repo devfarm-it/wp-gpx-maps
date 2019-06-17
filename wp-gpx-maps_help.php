@@ -1,64 +1,66 @@
-<div id="wpgpxmaps-faq">
+<div id="wpgpxmaps-tab-faq">
 
-	<div class="wpgpxmaps-tab-container">
+	<div class="wpgpxmaps-container-tab-faq">
 
-		<h3 class="title"><?php _e( 'FAQ', 'wp-gpx-maps' ); ?></h3>
+		<div class="wpgpxmaps-tab-faq">
 
-		<p>
+			<h3 class="title"><?php _e( 'FAQ', 'wp-gpx-maps' ); ?></h3>
+
+			<p>
 			<strong><?php _e( 'How can I upload the GPX files?', 'wp-gpx-maps' ); ?></strong>
-		</p>
-		<p>
-			&nbsp; <?php _e( '1. Method: Upload the GPX file using the uploader in the tab "Tracks".', 'wp-gpx-maps' ); ?>
-		</p>
-		<p>
-			&nbsp;
-			<?php
-				_e( '2. Method: Upload the GPX file via FTP to your upload folder:', 'wp-gpx-maps' );
-				echo ' ';
-				?>
-				<code><strong> <?php echo $relativeGpxPath; ?> </strong></code>
 			</p>
+				<p>
+					&nbsp; <?php _e( '1. Method: Upload the GPX file using the uploader in the tab "Tracks".', 'wp-gpx-maps' ); ?>
+				</p>
+				<p>
+					&nbsp;
+					<?php
+					_e( '2. Method: Upload the GPX file via FTP to your upload folder:', 'wp-gpx-maps' );
+					echo ' ';
+					?>
+					<code><strong> <?php echo $relativeGpxPath; ?> </strong></code>
+				</p>
 			<p>
 			<strong><?php _e( 'How can I use the GPX files?', 'wp-gpx-maps' ); ?></strong>
-		</p>
-		<p>
-			&nbsp; <?php _e( 'Go to the tab "Tracks" and copy the shortcode from the list and paste it in the page or post.', 'wp-gpx-maps' ); ?>
-		</p>
-		<p>
-			&nbsp;
-		<?php
-			_e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' );
-			echo ' ';
-			?>
-			<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"]</strong></code>
-		</p>
-		<p>
+			</p>
+				<p>
+					&nbsp; <?php _e( 'Go to the tab "Tracks" and copy the shortcode from the list and paste it in the page or post.', 'wp-gpx-maps' ); ?>
+				</p>
+				<p>
+					&nbsp;
+					<?php
+					_e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' );
+					echo ' ';
+					?>
+					<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"]</strong></code>
+				</p>
+			<p>
 			<strong><?php _e( 'Can I also integrate GPX files from other sites?', 'wp-gpx-maps' ); ?></strong>
-		</p>
-		<p>
-			&nbsp;
-			<?php
-			_e( 'Yes, it&#8217s possible. Please use this scheme:', 'wp-gpx-maps' );
-			echo ' ';
-			?>
-			<code><strong>[sgpx gpx="http://www.someone.com/somewhere/somefile.gpx"]</strong></code>
-		</p>
-		<p>
+			</p>
+				<p>
+					&nbsp;
+					<?php
+					_e( 'Yes, it&#8217s possible. Please use this scheme:', 'wp-gpx-maps' );
+					echo ' ';
+					?>
+					<code><strong>[sgpx gpx="http://www.someone.com/somewhere/somefile.gpx"]</strong></code>
+				</p>
+			<p>
 			<strong><?php _e( 'Can I change the attributes for each GPX shortcode?', 'wp-gpx-maps' ); ?></strong>
-		</p>
-		<p>
-			&nbsp; <?php _e( 'Yes, it&#8217s possible. These changes ignore the default settings for each attribute.', 'wp-gpx-maps' ); ?>
-		</p>
-		<p>
-			&nbsp;
-			<?php
-			_e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' );
-			echo ' ';
-			?>
-			<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></code>
-		</p>
+			</p>
+				<p>
+					&nbsp; <?php _e( 'Yes, it&#8217s possible. These changes ignore the default settings for each attribute.', 'wp-gpx-maps' ); ?>
+				</p>
+				<p>
+					&nbsp;
+					<?php
+					_e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' );
+					echo ' ';
+					?>
+					<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></code>
+				</p>
 
-		<br />
+		</div>
 
 		<table class="widefat">
 			<thead>
@@ -161,7 +163,6 @@
 					</td>
 					<td>
 						<?php echo get_option( 'wpgpxmaps_skipcache' ); ?>
-						<?php _e( 'Currently not available', 'wp-gpx-maps' ); ?>
 					</td>
 				</tr>
 				</tbody>
@@ -266,7 +267,6 @@
 					</td>
 					<td>
 						<?php echo get_option( 'wpgpxmaps_show_waypoint' ); ?>
-						<?php _e( 'Currently not available', 'wp-gpx-maps' ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -649,7 +649,6 @@
 					<td>
 						<?php _e( 'Gallery ID or a list of Galleries ID separated by a comma', 'wp-gpx-maps' ); ?>
 					</td>
-					<td></td>
 				</tr>
 				<tr>
 					<td>ngimages</td>
@@ -659,7 +658,6 @@
 					<td>
 						<?php _e( 'Image ID or a list of Images ID separated by a comma', 'wp-gpx-maps' ); ?>
 					</td>
-					<td></td>
 				</tr>
 				<tr>
 					<td>attachments</td>

@@ -62,8 +62,14 @@ function WP_GPX_Maps_action_links( $links, $file ) {
 function enqueue_WP_GPX_Maps_scripts_admin( $hook ) {
 
 	if ( strpos( $hook, 'WP-GPX-Maps' ) !== false ) {
+
+		/* Admin Style CSS */
+		wp_register_style( 'admin-stye', plugins_url( 'css/admin-style.css', __FILE__ ), array(), '1.0.0' );
+		wp_enqueue_style( 'admin-stye' );
+		/* mColorPicker */
 		wp_register_script( 'mColorPicker', plugins_url( '/js/mColorPicker_min.js', __FILE__ ), array(), '1.0 r39' );
 		wp_enqueue_script( 'mColorPicker' );
+		/* bootstrap-table */
 		wp_register_script( 'bootstrap-table', plugins_url( '/js/bootstrap-table.min.js', __FILE__ ), array(), '1.11.1' );
 		wp_enqueue_script( 'bootstrap-table' );
 		wp_register_style( 'bootstrap-table', plugins_url( '/css/bootstrap-table.min.css', __FILE__ ), array(), '1.11.1' );
@@ -236,19 +242,19 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 						$_dist *= 0.000621371192;
 						$_ele  *= 3.2808399;
 
-					} elseif ( $uom == '2') {
+					} elseif ( $uom == '2' ) {
 						/* meters / kilometers */
 						$_dist = (float) ( $_dist / 1000 );
 
-					} elseif ( $uom == '3') {
+					} elseif ( $uom == '3' ) {
 						/* meters / kilometers / nautical miles */
 						$_dist = (float) ( $_dist / 1000 / 1.852 );
 
-					} elseif ( $uom == '4') {
+					} elseif ( $uom == '4' ) {
 						/* meters / miles */
 						$_dist *= 0.000621371192;
 
-					} elseif ( $uom == '5') {
+					} elseif ( $uom == '5' ) {
 						/* meters / kilometers / nautical miles and feet */
 						$_dist = (float) ( $_dist / 1000 / 1.852 );
 						$_ele *= 3.2808399;
@@ -914,8 +920,8 @@ function WP_GPX_Maps_install() {
 
 	/* General */
 	add_option( 'wpgpxmaps_width', '100%', '', 'yes' );
-	add_option( 'wpgpxmaps_graph_height', '200px', '', 'yes' );
 	add_option( 'wpgpxmaps_height', '450px', '', 'yes' );
+	add_option( 'wpgpxmaps_graph_height', '200px', '', 'yes' );
 	add_option( 'wpgpxmaps_skipcache', '', '', 'yes' );
 	add_option( 'wpgpxmaps_download', '', '', 'yes' );
 	/* Print Summary Table */
@@ -949,6 +955,8 @@ function WP_GPX_Maps_install() {
 	/* Diagram - Cadence */
 	add_option( 'wpgpxmaps_show_cadence', '', '', 'yes' );
 	add_option( 'wpgpxmaps_graph_line_color_cad', '#beecff', '', 'yes' );
+	/* Diagram - Grade */
+
 	/* Pictures */
 	add_option( 'wpgpxmaps_map_nggallery', '', '', 'yes' );
 	/* Advanced */
@@ -995,6 +1003,8 @@ function WP_GPX_Maps_remove() {
 	/* Diagram - Cadence */
 	delete_option( 'wpgpxmaps_show_cadence' );
 	delete_option( 'wpgpxmaps_graph_line_color_cad' );
+	/* Diagram - Grade */
+
 	/* Pictures */
 	delete_option( 'wpgpxmaps_map_nggallery' );
 	/* Advanced */
