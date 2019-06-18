@@ -226,7 +226,7 @@ if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 	}
 
 	jQuery('.copy-shortcode').click(function(e){
-		 var $temp = jQuery("<input>");
+		var $temp = jQuery("<input>");
 		jQuery("body").append($temp);
 		var shortcode = jQuery(this).next().text().trim();
 		$temp.val(shortcode).select();

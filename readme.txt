@@ -110,37 +110,8 @@ You can use the following shortcodes:
 1. width: Width in pixels
 1. mheight: Map height
 1. gheight: Graph height
-1. mtype: Map available types are: HYBRID, ROADMAP, SATELLITE, TERRAIN, OSM1 (Open Street Map), OSM2 (Open Cycle Map), OSM4 (Open Cycle Map - Transport), OSM5 (Open Cycle Map - Landscape), OSM6 (MapToolKit - Terrain), OSM7 (Open Street Map - Humanitarian map style), OSM 9 (Hike & Bike), OSM10 (Open Sea Map)
-1. waypoints: Print the gpx waypoints inside the map (default is false)
-1. donotreducegpx: Print all the point without reduce it (default is false)
-1. pointsoffset: Skip points closer than XX meters (default is 10)
-1. uom: Distance/altitude possible unit of measure (0 = meters, 1 = feet/miles, 2 = meters/kilometers, 3 = meters/nautical miles, 4 = meters/miles, 5 = feet/nautical miles)
-1. mlinecolor: Map line color (default is #3366cc)
-1. glinecolor: Altitude line color (default is #3366cc)
-1. showspeed: Show speed inside the chart (default is false)
-1. showhr: Show heart rate inside the chart (default is false)
-1. showele: Show elevation data inside the chart (default is true)
-1. showcad: Show cadence inside the chart (default is false)
-1. showgrade: Show grade inside the chart (default is false)
-1. glinecolorspeed: Speed line color (default is #ff0000)
-1. glinecolorhr: Heart rate line color (default is #ff77bd)
-1. glinecolorcad: Cadence line color (default is #beecff)
-1. glinecolorgrade: Grade line color (default is #beecff)
-1. uomspeed: Unit of measure for speed (0 = m/s, 1 = km/h, 2 = miles/h, 3 = min/km, 4 = min/miles, 5 = Nautical Miles/Hour (Knots), 6 = min/100 meters)
-1. chartFrom1: Minimun value for altitude chart
-1. chartTo1: Maxumin value for altitude chart
-1. chartFrom2: Minimun value for speed chart
-1. chartTo2: Maxumin value for speed chart
-1. startIcon: Start track icon
-1. endIcon: End track icon
-1. currentIcon: Current position icon (when mouse hover)
-1. waypointicon: Waypoint custom icon
-1. nggalleries: NextGen Gallery id or a list of Galleries id separated by a comma
-1. ngimages: NextGen Image id or a list of Images id separated by a comma
-1. dtoffset: The difference (in seconds) between your gpx tool date and your camera date
-1. zoomonscrollwheel: Zoom on map when mouse scroll wheel (default is false)
-1. download: Allow users to download your GPX file (default is false)
 1. skipcache: Do not use cache. If TRUE might be very slow (default is false)
+1. download: Allow users to download your GPX file (default is false)
 1. summary: Print summary details of your GPX track (default is false)
 1. summarytotlen: Print total distance in summary table (default is false)
 1. summarymaxele: Print max elevation in summary table (default is false)
@@ -149,6 +120,38 @@ You can use the following shortcodes:
 1. summaryeledown: Print total descent in summary table (default is false)
 1. summaryavgspeed: Print average Speed in summary table (default is false)
 1. summarytotaltime: Print total time in summary table (default is false)
+1. mtype: Map available types are: HYBRID, ROADMAP, SATELLITE, TERRAIN, OSM1 (Open Street Map), OSM2 (Open Cycle Map), OSM4 (Open Cycle Map - Transport), OSM5 (Open Cycle Map - Landscape), OSM6 (MapToolKit - Terrain), OSM7 (Open Street Map - Humanitarian map style), OSM 9 (Hike & Bike), OSM10 (Open Sea Map)
+1. mlinecolor: Map line color (default is #3366cc)
+1. zoomonscrollwheel: Zoom on map when mouse scroll wheel (default is false)
+1. waypoints: Print the gpx waypoints inside the map (default is false)
+1. startIcon: Start track icon
+1. endIcon: End track icon
+1. currentIcon: Current position icon (when mouse hover)
+1. waypointicon: Waypoint custom icon
+1. showele: Show elevation data inside the chart (default is true)
+1. uom: Distance/altitude possible unit of measure (0 = meters, 1 = feet/miles, 2 = meters/kilometers, 3 = meters/nautical miles, 4 = meters/miles, 5 = feet/nautical miles)
+1. glinecolor: Altitude line color (default is #3366cc)
+1. chartFrom1: Minimun value for altitude chart
+1. chartTo1: Maxumin value for altitude chart
+1. showspeed: Show speed inside the chart (default is false)
+1. glinecolorspeed: Speed line color (default is #ff0000)
+1. uomspeed: Unit of measure for speed (0 = m/s, 1 = km/h, 2 = miles/h, 3 = min/km, 4 = min/miles, 5 = Nautical Miles/Hour (Knots), 6 = min/100 meters)
+1. chartFrom2: Minimun value for speed chart
+1. chartTo2: Maxumin value for speed chart
+1. showhr: Show heart rate inside the chart (default is false)
+1. glinecolorhr: Heart rate line color (default is #ff77bd)
+1. showatemp: Show temperature inside the chart (default is false)
+1. glinecoloratemp: Temperature line color (default is #ff77bd)
+1. showcad: Show cadence inside the chart (default is false)
+1. glinecolorcad: Cadence line color (default is #beecff)
+1. showgrade: Show grade inside the chart (default is false)
+1. glinecolorgrade: Grade line color (default is #beecff)
+1. nggalleries: NextGen Gallery id or a list of Galleries id separated by a comma
+1. ngimages: NextGen Image id or a list of Images id separated by a comma
+1. attachments: Show all images that are attached to post (default is false)
+1. dtoffset: The difference (in seconds) between your gpx tool date and your camera date
+1. pointsoffset: Skip points closer than XX meters (default is 10)
+1. donotreducegpx: Print all the point without reduce it (default is false)
 
 = What happening if I've a very large GPX files? =
 

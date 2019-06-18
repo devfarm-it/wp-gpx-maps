@@ -1,0 +1,62 @@
+/**
+ * This file contains the style definitions for the admin area
+ *
+ * Content:
+ * --------
+ * 1. Over the Tabs
+ * 2. Tab: Tracks
+ * 3. Tab: Settings
+ * 4. Tab: Help
+ */
+
+/**
+ * 1.0 Over the Tabs
+ */
+
+/**
+ * 2.0 Tab: Tracks
+ */
+
+/**
+ * 3.0 Tab: Settings
+ */
+ .wpgpxmaps-container-tab-settings {
+	display: block;
+	padding: 5px 20px 1px 20px;
+}
+
+/**
+ * 4.0 Tab: Tracks
+ */
+.wpgpxmaps-container-tab-faq {
+	display: block;
+	padding: 5px 20px 1px 20px;
+}
+
+.wpgpxmaps-tab-faq {
+	display: block;
+	padding: 5px 20px 10px 20px;
+}
+
+.wpgpxmaps-container-tab-faq table.widefat {
+	margin-bottom: 10px;
+	border-bottom: none;
+	border-radius: 6px;
+}
+
+.wpgpxmaps-container-tab-faq table.widefat tbody tr:hover {
+	background:#eeeeee;
+}
+
+.wpgpxmaps-container-tab-faq table.widefat th,
+.wpgpxmaps-container-tab-faq table.widefat td {
+	padding: 4px 10px;
+}
+
+.wpgpxmaps-container-tab-faq table.widefat thead tr th {
+	font-size: 14px;
+}
+
+.wpgpxmaps-container-tab-faq table.widefat td {
+	width: 200px;
+}
