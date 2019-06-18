@@ -1,6 +1,6 @@
 ﻿=== WP GPX Maps ===
 
-Contributors: bastianonm, Stephan Klein, Michel Selerin
+Contributors: bastianonm, Stephan Klein, Michel Selerin, TosattoSimonePio, Kniebremser 
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 4.6.0
