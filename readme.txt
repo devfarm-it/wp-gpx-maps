@@ -1,6 +1,6 @@
 ﻿=== WP GPX Maps ===
 
-Contributors: bastianonm, Stephan Klein, Michel Selerin, TosattoSimonePio, Kniebremser 
+Contributors: bastianonm, Stephan Klein, Michel Selerin, TosattoSimonePio, Kniebremser
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 4.6.0
@@ -48,13 +48,12 @@ Translations:
 
 Translators are welcome to contribute to the plugin. Please use the <a href="https://translate.wordpress.org/projects/wp-plugins/wp-gpx-maps/)" target="_blank" rel="noopener noreferrer">WordPress translation website</a>.
 
-The language files in the plugin contain 19 translatable texts for 14 languages:
+The language files in the plugin contain 18 translatable texts for 13 languages:
 
 - Catalan ca
 - Dutch nl_NL
 - English (default)
 - French fr_FR
-- German de_DE
 - Hungarian hu_HU
 - Italian it_IT
 - Norwegian nb_NO
@@ -71,7 +70,7 @@ The language files in the plugin contain 19 translatable texts for 14 languages:
 
 (Many thanks to all guys who helped me with the translations)
 
-Currently are 222 texts are translatable in the plugin.
+Currently are 230 texts are translatable in the plugin.
 
 With your help, the plugin can be translated into any language. For updating the language file you no longer need to wait for a new version of the plugin.
 Are 95% WordPress generates a new language file for your language.
@@ -162,8 +161,8 @@ This plugin will print a small amout of points to speedup javascript and pageloa
 Yes!
 
 == Screenshots ==
-1. Simple Gpx
-1. Gpx with waypoints
+1. Simple GPX
+1. GPX with waypoints
 1. Admin area - List of tracks
 1. Admin area - Settings
 1. Altitude & Speed
@@ -171,6 +170,8 @@ Yes!
 
 == Changelog ==
 
+= X.X.XX
+* Removed: german language file (now over translate.wordpress.org)
 = 1.7.00 =
 * Added: Authors can upload GPX tracks in a folder called as *your user name*, inside [../wp-upload dir/gpx/[*your user name*] (thanks to wildcomputations)
 * Added: Authors an Admins can see the current values for shortcodes in help tab

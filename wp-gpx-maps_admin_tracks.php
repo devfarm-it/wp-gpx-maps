@@ -119,7 +119,7 @@ if ( is_writable( $realGpxPath ) ) {
 					printf(
 						/* translators: GPX file name */
 						__( 'The file %1s has been successfully deleted.', 'wp-gpx-maps' ),
-						'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
+						'<span class="code"><strong>' . esc_html( $entry ) . '</strong></span>'
 					);
 					echo '</p></div>';
 				} else {
@@ -127,7 +127,7 @@ if ( is_writable( $realGpxPath ) ) {
 					printf(
 						/* translators: GPX file name */
 						__( 'The file %1s could not be deleted.', 'wp-gpx-maps' ),
-						'<span class="code"><strong>' . esc_html ( $entry ) . '</strong></span>'
+						'<span class="code"><strong>' . esc_html( $entry ) . '</strong></span>'
 					);
 						echo '</p></div>';
 
