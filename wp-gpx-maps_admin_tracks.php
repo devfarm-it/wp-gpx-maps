@@ -8,11 +8,11 @@ $is_admin = current_user_can( 'publish_posts' );
 if ( $is_admin != 1 )
 	return;
 
-$allow_users_upload 	= get_option( 'wpgpxmaps_allow_users_view' ) === "true";
+$allow_users_upload = get_option( 'wpgpxmaps_allow_users_view' ) === 'true';
 
-$wpgpxmapsUrl = get_admin_url() . "admin.php?page=WP-GPX-Maps";
+$wpgpxmapsUrl       = get_admin_url() . 'admin.php?page=WP-GPX-Maps';
 
-$gpxRegEx = '/.gpx$/i';
+$gpxRegEx           = '/.gpx$/i';
 
 if ( current_user_can( 'manage_options' ) ) {
 		$menu_root = 'options-general.php';
@@ -39,9 +39,9 @@ if ( is_writable( $realGpxPath ) ) {
 	?>
 
 		<div class="tablenav top">
-		<?php
+			<?php
 			echo '<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="' . get_bloginfo( 'wpurl' ) . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">';
-		?>
+			?>
 			<?php _e( 'Choose a file to upload:', 'wp-gpx-maps' ); ?> <input name="uploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
 			<?php
 			if ( isset( $_FILES['uploadedfile'] ) ) {
@@ -58,17 +58,17 @@ if ( is_writable( $realGpxPath ) ) {
 								'<span class="code"><strong>' . esc_html( $uploadingFileName ) . '</strong></span>'
 							);
 						echo '</p></div>';
+						} else {
+							echo '<div class=" notice notice-error"><p>';
+							_e( 'There was an error uploading the file, please try again!', 'wp-gpx-maps' );
+							echo '</p></div>';
+						}
 					} else {
-						echo '<div class=" notice notice-error"><p>';
-						_e( 'There was an error uploading the file, please try again!', 'wp-gpx-maps' );
+						echo '<div class="notice notice-warning"><p>';
+						_e( 'The file type is not supported!', 'wp-gpx-maps' );
 						echo '</p></div>';
 					}
-				} else {
-					echo '<div class="notice notice-warning"><p>';
-					_e( 'The file type is not supported!', 'wp-gpx-maps' );
-					echo '</p></div>';
 				}
-			}
 			}
 			?>
 			</form>
@@ -237,11 +237,10 @@ if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 
 	});
 
-
 </script>
 
 <style>
-	#table tr:hover {
-		background:#eeeeee;
+	#table tbody tr:hover {
+		background: #eee;
 	}
 </style>
