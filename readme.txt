@@ -42,6 +42,7 @@ Try this plugin: <a href="https://devfarm.it/wp-gpx-maps-demo/" target="_blank" 
 Support:
 
 If you need help, please use: <a href="http://www.devfarm.it/forums/forum/wp-gpx-maps/" target="_blank" rel="noopener noreferrer">www.devfarm.it Support Forum</a>
+
 Would you like to help fix bugs or further develop the plugin? On <a href="https://github.com/devfarm-it/wp-gpx-maps" target="_blank" rel="noopener noreferrer">Github</a> you can contribuite easly with your code.
 
 Translations:
@@ -106,9 +107,9 @@ Icons made by <a href="https://www.freepik.com/" target="_blank" rel="noopener n
 You can use the following shortcodes:
 
 1. gpx: Relative path to the GPX file
-1. width: Width in pixels
-1. mheight: Map height
-1. gheight: Graph height
+1. width: Map width (value in percent)
+1. mheight: Map height (value in pixeln)
+1. gheight: Graph height (value in pixeln)
 1. skipcache: Do not use cache. If TRUE might be very slow (default is false)
 1. download: Allow users to download your GPX file (default is false)
 1. summary: Print summary details of your GPX track (default is false)
@@ -126,7 +127,7 @@ You can use the following shortcodes:
 1. startIcon: Start track icon
 1. endIcon: End track icon
 1. currentIcon: Current position icon (when mouse hover)
-1. waypointicon: Waypoint custom icon
+1. waypointicon: Custom waypoint icon
 1. showele: Show elevation data inside the chart (default is true)
 1. uom: Distance/altitude possible unit of measure (0 = meters, 1 = feet/miles, 2 = meters/kilometers, 3 = meters/nautical miles, 4 = meters/miles, 5 = feet/nautical miles)
 1. glinecolor: Altitude line color (default is #3366cc)
@@ -171,6 +172,7 @@ Yes!
 == Changelog ==
 
 = X.X.XX
+* Tweak: small optimizations in the design of the admin area
 * Removed: german language file (now over translate.wordpress.org)
 = 1.7.00 =
 * Added: Authors can upload GPX tracks in a folder called as *your user name*, inside [../wp-upload dir/gpx/[*your user name*] (thanks to wildcomputations)

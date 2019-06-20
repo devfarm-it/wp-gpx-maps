@@ -65,8 +65,8 @@
 		<table class="widefat">
 			<thead>
 				<tr>
-					<th colspan="4">
-						<strong><?php _e( 'General', 'wp-gpx-maps' ); ?></strong>
+					<th class="title" colspan="4">
+						<?php _e( 'General', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
@@ -173,8 +173,8 @@
 		<table class="widefat">
 			<thead>
 				<tr>
-					<th colspan="4">
-						<strong><?php _e( 'Map', 'wp-gpx-maps' ); ?></strong>
+					<th class="title" colspan="4">
+						<?php _e( 'Map', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
@@ -317,8 +317,8 @@
 		<table class="widefat">
 			<thead>
 				<tr>
-					<th colspan="4">
-						<strong><?php _e( 'Diagram', 'wp-gpx-maps' ); ?></strong>
+					<th class="title" colspan="4">
+						<?php _e( 'Diagram', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
@@ -624,8 +624,8 @@
 		<table class="widefat">
 			<thead>
 				<tr>
-					<th colspan="3">
-						<strong><?php _e( 'Pictures', 'wp-gpx-maps' ); ?></strong>
+					<th class="title" colspan="3">
+						<?php _e( 'Pictures', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
@@ -689,8 +689,8 @@
 		<table class="widefat">
 			<thead>
 				<tr>
-					<th colspan="4">
-						<strong><?php _e( 'Summary table', 'wp-gpx-maps' ); ?></strong>
+					<th class="title" colspan="4">
+						<?php _e( 'Summary table', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
@@ -893,8 +893,8 @@
 		<table class="widefat">
 			<thead>
 				<tr>
-					<th colspan="4">
-						<strong><?php _e( 'Advanced', 'wp-gpx-maps' ); ?></strong>
+					<th class="title" colspan="4">
+						<?php _e( 'Advanced', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
