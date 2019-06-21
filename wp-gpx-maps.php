@@ -69,9 +69,9 @@ function enqueue_WP_GPX_Maps_scripts_admin( $hook ) {
 		wp_register_script( 'mColorPicker', plugins_url( '/js/mColorPicker_min.js', __FILE__ ), array(), '1.0 r39' );
 		wp_enqueue_script( 'mColorPicker' );
 		/* bootstrap-table */
-		wp_register_script( 'bootstrap-table', plugins_url( '/js/bootstrap-table.min.js', __FILE__ ), array(), '1.11.1' );
+		wp_register_script( 'bootstrap-table', plugins_url( '/js/bootstrap-table.js', __FILE__ ), array(), '1.13.2' );
 		wp_enqueue_script( 'bootstrap-table' );
-		wp_register_style( 'bootstrap-table', plugins_url( '/css/bootstrap-table.min.css', __FILE__ ), array(), '1.11.1' );
+		wp_register_style( 'bootstrap-table', plugins_url( '/css/bootstrap-table.css', __FILE__ ), array(), '1.13.2' );
 		wp_enqueue_style( 'bootstrap-table' );
 	}
 }
@@ -818,31 +818,23 @@ function downloadRemoteFile( $remoteFile ) {
 			file_put_contents( $newfname, fopen( $remoteFile, 'r' ) );
 			return $newfname;
 		}
-
 		$file = fopen ( $remoteFile, 'rb' );
 		if ( $file ) {
 			$newf = fopen ( $newfname, 'wb' );
-
 			if ( $newf )
 			while ( ! feof( $file ) ) {
 				fwrite( $newf, fread( $file, 1024 * 8 ), 1024 * 8 );
 			}
 		}
-
 		if ( $file ) {
 			fclose( $file );
 		}
-
 		if ( $newf ) {
 			fclose( $newf );
 		}
-
 		return $newfname;
-
 	} catch ( Exception $e ) {
-
 		print_r( $e );
-
 		return '';
 	}
 }
@@ -979,5 +971,4 @@ function WP_GPX_Maps_remove() {
 	delete_option( 'wpgpxmaps_pointsoffset' );
 	delete_option( 'wpgpxmaps_donotreducegpx' );
 }
-
 ?>

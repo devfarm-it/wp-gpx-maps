@@ -172,7 +172,10 @@ Yes!
 == Changelog ==
 
 = X.X.XX
+* Added: Missing entries for add and delete options
+* Changed: Style for output moved in a seperate file
 * Tweak: small optimizations in the design of the admin area
+* Upgrade: bootstrap-table to 1.13.2
 * Removed: german language file (now over translate.wordpress.org)
 = 1.7.00 =
 * Added: Authors can upload GPX tracks in a folder called as *your user name*, inside [../wp-upload dir/gpx/[*your user name*] (thanks to wildcomputations)
