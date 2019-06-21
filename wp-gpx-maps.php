@@ -928,6 +928,16 @@ function WP_GPX_Maps_install() {
 	add_option( 'wpgpxmaps_usegpsposition', '', '', 'yes' );
 	/* Print Summary Table */
 	add_option( 'wpgpxmaps_summary', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_tot_len', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_max_ele', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_min_ele', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_total_ele_up', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_total_ele_down', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_avg_speed', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_avg_cad', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_avg_hr', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_avg_temp', '', '', 'yes' );
+	add_option( 'wpgpxmaps_summary_total_time', '', '', 'yes' );
 	/* Map */
 	add_option( 'wpgpxmaps_map_type', 'HYBRID', '', 'yes' );
 	add_option( 'wpgpxmaps_map_line_color', '#3366cc', '', 'yes' );
@@ -935,6 +945,7 @@ function WP_GPX_Maps_install() {
 	add_option( 'wpgpxmaps_show_waypoint', '', '', 'yes' );
 	add_option( 'wpgpxmaps_map_start_icon', '', '', 'yes' );
 	add_option( 'wpgpxmaps_map_end_icon', '', '', 'yes' );
+	add_option( 'wpgpxmaps_currentpositioncon', '', '', 'yes' );
 	add_option( 'wpgpxmaps_map_current_icon', '', '', 'yes' );
 	add_option( 'wpgpxmaps_map_waypoint_icon', '', '', 'yes' );
 	/* Diagram - Elevation */
@@ -980,6 +991,16 @@ function WP_GPX_Maps_remove() {
 	delete_option( 'wpgpxmaps_usegpsposition' );
 	/* Print Summary Table */
 	delete_option( 'wpgpxmaps_summary' );
+	delete_option( 'wpgpxmaps_summary_tot_len' );
+	delete_option( 'wpgpxmaps_summary_max_ele' );
+	delete_option( 'wpgpxmaps_summary_min_ele' );
+	delete_option( 'wpgpxmaps_summary_total_ele_up' );
+	delete_option( 'wpgpxmaps_summary_total_ele_down' );
+	delete_option( 'wpgpxmaps_summary_avg_speed' );
+	delete_option( 'wpgpxmaps_summary_avg_cad' );
+	delete_option( 'wpgpxmaps_summary_avg_hr' );
+	delete_option( 'wpgpxmaps_summary_avg_temp' );
+	delete_option( 'wpgpxmaps_summary_total_time' );
 	/* Map */
 	delete_option( 'wpgpxmaps_map_type' );
 	delete_option( 'wpgpxmaps_map_line_color' );
@@ -987,6 +1008,7 @@ function WP_GPX_Maps_remove() {
 	delete_option( 'wpgpxmaps_show_waypoint' );
 	delete_option( 'wpgpxmaps_map_start_icon' );
 	delete_option( 'wpgpxmaps_map_end_icon' );
+	delete_option( 'wpgpxmaps_currentpositioncon' );
 	delete_option( 'wpgpxmaps_map_current_icon' );
 	delete_option( 'wpgpxmaps_map_waypoint_icon' );
 	/* Diagram - Elevation */
