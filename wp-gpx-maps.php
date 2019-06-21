@@ -22,7 +22,6 @@ add_shortcode( 'sgpxf', 'handle_WP_GPX_Maps_folder_Shortcodes' );
 register_activation_hook( __FILE__, 'WP_GPX_Maps_install' );
 register_deactivation_hook( __FILE__, 'WP_GPX_Maps_remove' );
 add_filter( 'plugin_action_links', 'WP_GPX_Maps_action_links', 10, 2 );
-add_action( 'wp_print_styles', 'print_WP_GPX_Maps_styles' );
 add_action( 'wp_enqueue_scripts', 'enqueue_WP_GPX_Maps_scripts' );
 add_action( 'admin_enqueue_scripts', 'enqueue_WP_GPX_Maps_scripts_admin' );
 add_action( 'plugins_loaded', 'WP_GPX_Maps_lang_init' );
@@ -79,6 +78,10 @@ function enqueue_WP_GPX_Maps_scripts_admin( $hook ) {
 
 function enqueue_WP_GPX_Maps_scripts() {
 
+	/* Output Style CSS */
+	wp_register_style( 'output-stye', plugins_url( 'css/output-style.css', __FILE__ ), array(), '1.0.0' );
+	wp_enqueue_style( 'output-stye' );
+
 	/* leaflet */
 	wp_register_style( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.css', __FILE__ ), array(), '1.5.1' );
 	wp_enqueue_style( 'leaflet' );
@@ -100,6 +103,7 @@ function enqueue_WP_GPX_Maps_scripts() {
 
 	wp_register_script( 'WP-GPX-Maps', plugins_url( '/js/WP-GPX-Maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
 
+	wp_enqueue_script( 'output-stye' );
 	wp_enqueue_script( 'leaflet' );
 	wp_enqueue_script( 'leaflet.markercluster' );
 	wp_enqueue_script( 'leaflet.Photo' );
@@ -107,72 +111,6 @@ function enqueue_WP_GPX_Maps_scripts() {
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'chartjs' );
 	wp_enqueue_script( 'WP-GPX-Maps' );
-}
-
-function print_WP_GPX_Maps_styles() {
-	?>
-
-<style type="text/css">
-	.wpgpxmaps {
-	clear: both;
-	}
-
-	#content .wpgpxmaps img,
-	.entry-content .wpgpxmaps img,
-	.wpgpxmaps img {
-		max-width: none;
-		width: none;
-		padding: 0;
-		background: none;
-		margin: 0;
-		border: none;
-	}
-
-	.wpgpxmaps .ngimages {
-		display: none;
-	}
-
-	.wpgpxmaps .myngimages {
-		border: 1px solid #fff;
-		position: absolute;
-		cursor: pointer;
-		margin:0;
-		z-index :1;
-	}
-
-	.wpgpxmaps_summary .summarylabel { }
-	.wpgpxmaps_summary .summaryvalue {
-		font-weight: bold;
-	}
-
-	.wpgpxmaps .report {
-		line-height :120%;
-	}
-
-	.wpgpxmaps .gmnoprint div:first-child {  }
-	.wpgpxmaps .wpgpxmaps_osm_footer {
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		width: 100%;
-		height: 13px;
-		margin: 0;
-		z-index: 999;
-		background: WHITE;
-		font-size: 12px;
-	}
-
-	.wpgpxmaps .wpgpxmaps_osm_footer span {
-		background: WHITE;
-		padding: 0 6px 6px 6px;
-		vertical-align: baseline;
-		position: absolute;
-		bottom: 0;
-	}
-
-</style>
-	<?php
 }
 
 function wpgpxmaps_findValue( $attr, $attributeName, $optionName, $defaultValue ) {
