@@ -54,7 +54,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 					}
 				}
 			} else {
-				$error .= "Sorry, <a href='https://php.net/manual/en/function.exif-read-data.php' target='_blank' rel='noopener noreferrer'>exif_read_data</a> function not found! check your hosting..<br />";
+				$error .= "Sorry, <a href='https://php.net/manual/en/function.exif-read-data.php' target='_blank' rel='noopener noreferrer'>exif_read_data</a> function not found! check your hosting.<br />";
 			}
 		}
 		/* START FIX NEXT GEN GALLERY 2.x */
@@ -72,7 +72,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			if ( preg_match( "/data-nplmodal-gallery-id=[\"'](.*?)[\"']/", $dummy, $m ) ) {
 				$galid = $m[1];
 				if ( $galid ) {
-					for( $i = 0; $i < count( $result ); ++$i ) {
+					for ( $i = 0; $i < count( $result ); ++$i ) {
 						$result[$i]['data'] = str_replace( '%PRO_LIGHTBOX_GALLERY_ID%', $galid, $result[$i]['data'] );
 					}
 				}
@@ -90,9 +90,12 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 function findItemCoordinate( $imgdt, $dt, $lat, $lon ) {
 
 	foreach ( array_keys( $dt ) as $i ) {
-		if ( $i!=0 && $imgdt >= $dt[$i-1] && $imgdt <= $dt[$i] ) {
+		if ( $i != 0 && $imgdt >= $dt[$i - 1] && $imgdt <= $dt[$i] ) {
 			if ( $lat[$i] != 0 && $lon[$i] != 0 )
-		return array( 'lat' => $lat[$i], 'lon' => $lon[$i] );
+			return array(
+				'lat' => $lat[$i],
+				'lon' => $lon[$i],
+			);
 		}
 	}
 	return null;
@@ -105,7 +108,7 @@ function getExifGps( $exifCoord, $hemi ) {
 	$seconds = count( $exifCoord ) > 2 ? gps2Num( $exifCoord[2] ) : 0;
 	$flip    = ( $hemi == 'W' or $hemi == 'S' ) ? -1 : 1;
 
-	return $flip * ( $degrees + $minutes / 60 + $seconds / 3600);
+	return $flip * ( $degrees + $minutes / 60 + $seconds / 3600 );
 }
 
 function gps2Num( $coordPart ) {
@@ -121,8 +124,7 @@ function gps2Num( $coordPart ) {
 		$lat = floatval( $parts[0] );
 		$lon = floatval( $parts[1] );
 
-	if  ($lon == 0 )
+	if ($lon == 0 )
 	return $lat;
 	return $lat / $lon;
 }
-?>

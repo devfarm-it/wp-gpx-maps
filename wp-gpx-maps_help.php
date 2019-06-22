@@ -104,6 +104,12 @@
 					</td>
 					<td>
 						<?php _e( 'Value in percent', 'wp-gpx-maps' ); ?>
+						<br />
+						<?php
+						_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>100%</strong>
 					</td>
 					<td>
 						<?php echo get_option( 'wpgpxmaps_width' ); ?>
@@ -116,6 +122,12 @@
 					</td>
 					<td>
 						<?php _e( 'Value in pixels', 'wp-gpx-maps' ); ?>
+						<br />
+						<?php
+						_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>450px</strong>
 					</td>
 					<td>
 						<?php echo get_option( 'wpgpxmaps_height' ); ?>
@@ -128,6 +140,12 @@
 					</td>
 					<td>
 						<?php _e( 'Value in pixels', 'wp-gpx-maps' ); ?>
+						<br />
+						<?php
+						_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>200px</strong>
 					</td>
 					<td>
 						<?php echo get_option( 'wpgpxmaps_graph_height' ); ?>
@@ -199,23 +217,29 @@
 						<?php _e( 'Map type', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<strong>HYBRID, ROADMAP, SATELLITE, TERRAIN</strong>
+						<?php _e( 'HYBRID, ROADMAP, SATELLITE, TERRAIN', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>OSM1</strong> =	<?php _e( 'Open Street Map', 'wp-gpx-maps' ); ?>
+						<?php _e( 'OSM1 = Open Street Map', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>OSM2</strong> =	<?php _e( 'Open Cycle Map', 'wp-gpx-maps' ); ?>
+						<?php _e( 'OSM2 = Open Cycle Map', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>OSM4</strong> =	<?php _e( 'Open Cycle Map - Transport', 'wp-gpx-maps' ); ?>
+						<?php _e( 'OSM4 = Open Cycle Map - Transport', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>OSM5</strong> =	<?php _e( 'Open Cycle Map - Landscape', 'wp-gpx-maps' ); ?>
+						<?php _e( 'OSM5 = Open Cycle Map - Landscape', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>OSM6</strong> =	<?php _e( 'MapToolKit - Terrain', 'wp-gpx-maps' ); ?>
+						<?php _e( 'OSM6 = MapToolKit - Terrain', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>OSM7</strong> =	<?php _e( 'Open Street Map - Humanitarian map style', 'wp-gpx-maps' ); ?>
+						<?php _e( 'OSM7 = Open Street Map - Humanitarian map style', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>OSM9</strong> =	<?php _e( 'Hike & Bike', 'wp-gpx-maps' ); ?>
+						<?php _e( 'OSM9 = Hike & Bike', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>OSM10</strong> = <?php _e( 'Open Sea Map', 'wp-gpx-maps' ); ?>
+						<?php _e( 'OSM10 = Open Sea Map', 'wp-gpx-maps' ); ?>
+						<br />
+						<?php
+						_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>HYBRID</strong>
 					</td>
 					<td>
 						<?php echo get_option( 'wpgpxmaps_map_type' ); ?>
@@ -375,18 +399,23 @@
 						<?php _e( 'Distance / Altitude unit of measure', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<strong>0</strong> = <?php _e( 'meters / meters', 'wp-gpx-maps' ); ?>
+						<?php _e( '0 = meters / meters', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>1</strong> = <?php _e( 'feet / miles', 'wp-gpx-maps' ); ?>
+						<?php _e( '1 = feet / miles', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>2</strong> = <?php _e( 'meters / kilometers', 'wp-gpx-maps' ); ?>
+						<?php _e( '2 = meters / kilometers', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>3</strong> = <?php _e( 'meters / nautical miles', 'wp-gpx-maps' ); ?>
+						<?php _e( '3 = meters / nautical miles', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>4</strong> = <?php _e( 'meters / miles', 'wp-gpx-maps' ); ?>
+						<?php _e( '4 = meters / miles', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>5</strong> = <?php _e( 'feet / nautical miles', 'wp-gpx-maps' ); ?>
+						<?php _e( '5 = feet / nautical miles', 'wp-gpx-maps' ); ?>
 						<br />
+						<?php
+						_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>0</strong>
 					</td>
 					<td>
 						<?php echo get_option( 'wpgpxmaps_unit_of_measure' ); ?>
@@ -450,20 +479,25 @@
 						<?php _e( 'Speed unit of measure', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<strong>0</strong> = <?php _e( 'm/s', 'wp-gpx-maps' ); ?>
+						<?php _e( '0 = m/s', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>1</strong> = <?php _e( 'km/h', 'wp-gpx-maps' ); ?>
+						<?php _e( '1 = km/h', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>2</strong> = <?php _e( 'miles/h', 'wp-gpx-maps' ); ?>
+						<?php _e( '2 = miles/h', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>3</strong> = <?php _e( 'min/km', 'wp-gpx-maps' ); ?>
+						<?php _e( '3 = min/km', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>4</strong> = <?php _e( 'min/miles', 'wp-gpx-maps' ); ?>
+						<?php _e( '4 = min/miles', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>5</strong> = <?php _e( 'Knots (nautical miles / hour)', 'wp-gpx-maps' ); ?>
+						<?php _e( '5 = Knots (nautical miles / hour)', 'wp-gpx-maps' ); ?>
 						<br />
-						<strong>6</strong> = <?php _e( 'min/100 meters', 'wp-gpx-maps' ); ?>
+						<?php _e( '6 = min/100 meters', 'wp-gpx-maps' ); ?>
 						<br />
+						<?php
+						_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>0</strong>
 					</td>
 					<td>
 						<?php echo get_option( 'wpgpxmaps_unit_of_measure_speed' ); ?>

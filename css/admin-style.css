@@ -17,6 +17,9 @@
 /**
  * 2.0 Tab: Tracks
  */
+ #table tbody tr:hover {
+	background: #eee;
+}
 
 /**
  * 3.0 Tab: Settings

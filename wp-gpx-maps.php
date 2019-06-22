@@ -158,16 +158,16 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 			$points_graph_dist = '';
 			$points_graph_ele = '';
 
-			if ( is_array ( $points_x_lat ) )
+			if ( is_array( $points_x_lat ) )
 			foreach ( array_keys( $points_x_lat ) as $i ) {
 
 				$_lat = (float) $points_x_lat[$i];
 				$_lon = (float) $points_x_lon[$i];
 
 				if ( $_lat == 0 && $_lon == 0 ) {
-					$points_maps .= 'null,';
+					$points_maps       .= 'null,';
 					$points_graph_dist .= 'null,';
-					$points_graph_ele .= 'null,';
+					$points_graph_ele  .= 'null,';
 
 				} else {
 					$points_maps .= '[' . number_format( (float) $points_x_lat[$i], 7, '.', '' ) . ',' . number_format( (float) $points_x_lon[$i], 7, '.', '' ) . '],';
@@ -216,12 +216,11 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$w              = wpgpxmaps_findValue( $attr, 'width', 'wpgpxmaps_width', '100%' );
 	$mh             = wpgpxmaps_findValue( $attr, 'mheight', 'wpgpxmaps_height', '450px' );
 	$gh             = wpgpxmaps_findValue( $attr, 'gheight', 'wpgpxmaps_graph_height', '200px' );
-	$distanceType   = wpgpxmaps_findValue( $attr, 'distanceType', 'wpgpxmaps_distance_type', 0 );
-	$skipcache      = wpgpxmaps_findValue( $attr, 'skipcache', 'wpgpxmaps_skipcache', '' );
-	$download       = wpgpxmaps_findValue( $attr, 'download', 'wpgpxmaps_download', '' );
+	$skipcache      = wpgpxmaps_findValue( $attr, 'skipcache', 'wpgpxmaps_skipcache', false );
+	$download       = wpgpxmaps_findValue( $attr, 'download', 'wpgpxmaps_download', false );
 	$usegpsposition = wpgpxmaps_findValue( $attr, 'usegpsposition', 'wpgpxmaps_usegpsposition', false );
 	/* Print Summary Table */
-	$summary          = wpgpxmaps_findValue( $attr, 'summary', 'wpgpxmaps_summary', '' );
+	$summary          = wpgpxmaps_findValue( $attr, 'summary', 'wpgpxmaps_summary', false );
 	$p_tot_len        = wpgpxmaps_findValue( $attr, 'summarytotlen', 'wpgpxmaps_summary_tot_len', false );
 	$p_max_ele        = wpgpxmaps_findValue( $attr, 'summarymaxele', 'wpgpxmaps_summary_max_ele', false );
 	$p_min_ele        = wpgpxmaps_findValue( $attr, 'summaryminele', 'wpgpxmaps_summary_min_ele', false );
@@ -243,9 +242,8 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$currentIcon        = wpgpxmaps_findValue( $attr, 'currenticon', 'wpgpxmaps_map_current_icon', '' );
 	$waypointIcon       = wpgpxmaps_findValue( $attr, 'waypointicon', 'wpgpxmaps_map_waypoint_icon', '' );
 	/* Diagram - Elevation */
-	$showEle     = wpgpxmaps_findValue( $attr, 'showele', 'wpgpxmaps_show_elevation', 'true' );
+	$showEle     = wpgpxmaps_findValue( $attr, 'showele', 'wpgpxmaps_show_elevation', true );
 	$color_graph = wpgpxmaps_findValue( $attr, 'glinecolor', 'wpgpxmaps_graph_line_color', '#3366cc' );
-	$uom         = wpgpxmaps_findValue( $attr, 'uom', 'wpgpxmaps_unit_of_measure', '0' );
 	$chartFrom1  = wpgpxmaps_findValue( $attr, 'chartfrom1', 'wpgpxmaps_graph_offset_from1', '' );
 	$chartTo1    = wpgpxmaps_findValue( $attr, 'chartto1', 'wpgpxmaps_graph_offset_to1', '' );
 	/* Diagram - Speed */
@@ -272,11 +270,9 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$attachments = wpgpxmaps_findValue( $attr, 'attachments', 'wpgpxmaps_map_attachments', false );
 	$dtoffset    = wpgpxmaps_findValue( $attr, 'dtoffset', 'wpgpxmaps_dtoffset', 0 );
 	/* Advanced */
-	$pointsoffset       = wpgpxmaps_findValue( $attr, 'pointsoffset', 'wpgpxmaps_pointsoffset', 10 );
-	$donotreducegpx     = wpgpxmaps_findValue( $attr, 'donotreducegpx', 'wpgpxmaps_donotreducegpx', false );
 	$allow_users_upload = wpgpxmaps_findValue( $attr, 'wpgpxmaps_allow_users_upload', 'wpgpxmaps_allow_users_view', false );
 
-	$colors_map = "\"" . implode( "\",\"", ( explode( " ", $color_map ) ) ) . "\"";
+	$colors_map = "\"" . implode( "\",\"", ( explode( ' ', $color_map ) ) ) . "\"";
 
 	$gpxurl = $gpx;
 
@@ -464,19 +460,19 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 				}
 
 				if ( $showHr == true ) {
-					$points_graph_hr .= number_format( $points->hr[$i], 2, '.', '' ).',';
+					$points_graph_hr .= number_format( $points->hr[$i], 2, '.', '' ) . ',';
 				}
 
 				if ( $showAtemp == true ) {
-					$points_graph_atemp .= number_format( $points->atemp[$i], 1, '.', '' ).',';
+					$points_graph_atemp .= number_format( $points->atemp[$i], 1, '.', '' ) . ',';
 				}
 
 				if ( $showCad == true ) {
-					$points_graph_cad .= number_format( $points->cad[$i], 2, '.', '' ).',';
+					$points_graph_cad .= number_format( $points->cad[$i], 2, '.', '' ) . ',';
 				}
 
 				if ( $showGrade == true ) {
-					$points_graph_grade .= number_format( $points->grade[$i], 2, '.', '' ).',';
+					$points_graph_grade .= number_format( $points->grade[$i], 2, '.', '' ) . ',';
 				}
 			}
 		}
@@ -537,11 +533,11 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 			$wpoints   = wpgpxmaps_getWayPoints( $gpx );
 			$waypoints = wp_json_encode( $wpoints );
 		}
-		if ( $showEle == 'false' ) {
-			$points_graph_ele = "";
+		if ( $showEle == false ) {
+			$points_graph_ele = '';
 		}
 
-		$p = "/(,|,null,)$/";
+		$p = '/(,|,null,)$/';
 
 		$points_maps = preg_replace( $p, '', $points_maps );
 
@@ -585,7 +581,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 
 		foreach ( $ngimgs as $img ) {
 			$data         = $img['data'];
-			$data         = str_replace( "\n", "", $data );
+			$data         = str_replace( '\n', '', $data );
 			$ngimgs_data .= '<span lat="' . $img['lat'] . '" lon="' . $img['lon'] . '">' . $data . '</span>';
 		}
 	}
@@ -594,7 +590,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 		$attimgs = wpgpxmaps_getAttachedImages( $points_x_time, $points_x_lat, $points_x_lon, $dtoffset, $error );
 		foreach ( $attimgs as $img ) {
 			$data         = $img['data'];
-			$data         = str_replace( "\n", "", $data );
+			$data         = str_replace( '\n', '', $data );
 			$ngimgs_data .= '<span lat="' . $img['lat'] . '" lon="' . $img['lon'] . '">' . $data . '</span>';
 		}
 	}
@@ -743,7 +739,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	}
 
 	/* Print download link */
-	if ( $download == 'true' && $gpxurl != '' ) {
+	if ( $download == true && $gpxurl != '' ) {
 		if ( $isGpxUrl == true ) {
 
 		} else {
@@ -769,7 +765,8 @@ function convertSeconds( $s ) {
 
 function convertSpeed( $speed, $uomspeed, $addUom = false ) {
 	$uom = '';
-	if ( $uomspeed == '6' )	{
+
+	if ( $uomspeed == '6' ) {
 		/* min/100 meters */
 		$speed = 1 / $speed * 100 / 60;
 		$uom   = ' min/100m';
@@ -842,7 +839,7 @@ function downloadRemoteFile( $remoteFile ) {
 function unescape( $value ) {
 
 	$value = str_replace( "'", "\'", $value );
-	$value = str_replace( array( "\n", "\r" ), "", $value );
+	$value = str_replace( array( '\n', '\r' ), '', $value );
 	return $value;
 }
 
@@ -879,7 +876,7 @@ function WP_GPX_Maps_install() {
 	add_option( 'wpgpxmaps_map_current_icon', '', '', 'yes' );
 	add_option( 'wpgpxmaps_map_waypoint_icon', '', '', 'yes' );
 	/* Diagram - Elevation */
-	add_option( 'wpgpxmaps_show_elevation', '', '', 'yes' );
+	add_option( 'wpgpxmaps_show_elevation', 'true', '', 'yes' );
 	add_option( 'wpgpxmaps_graph_line_color', '#3366cc', '', 'yes' );
 	add_option( 'wpgpxmaps_unit_of_measure', '0', '', 'yes' );
 	add_option( 'wpgpxmaps_graph_offset_from1', '', '', 'yes' );
@@ -971,4 +968,3 @@ function WP_GPX_Maps_remove() {
 	delete_option( 'wpgpxmaps_pointsoffset' );
 	delete_option( 'wpgpxmaps_donotreducegpx' );
 }
-?>
