@@ -19,7 +19,7 @@ function wpgpxmaps_admin_menu() {
 	} elseif ( current_user_can( 'publish_posts' ) ) {
 
 		/* Contributor Authors and */
-		$allow_users_upload = get_option( 'wpgpxmaps_allow_users_view' ) === "true";
+		$allow_users_upload = get_option( 'wpgpxmaps_allow_users_view' ) === 'true';
 
 		if ( $allow_users_upload == 1 ) {
 			add_menu_page( 'WP GPX Maps', 'WP GPX Maps', 'publish_posts', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page' );

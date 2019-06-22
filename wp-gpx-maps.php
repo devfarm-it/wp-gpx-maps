@@ -703,37 +703,37 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 		</script>';
 
 	/* Print summary */
-	if ( $summary == 'true' && ( $points_graph_speed != '' || $points_graph_ele != '' || $points_graph_dist != '') ) {
+	if ( $summary == true && ( $points_graph_speed != '' || $points_graph_ele != '' || $points_graph_dist != '') ) {
 
 		$output .= "<div id='wpgpxmaps_summary_" . $r . "' class='wpgpxmaps_summary'>";
-		if ( $points_graph_dist != '' && $p_tot_len == 'true' ) {
-			$output .= "<span class='totlen'><span class='summarylabel'>" . __( 'Total distance', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $tot_len</span></span><br />";
+		if ( $points_graph_dist != '' && $p_tot_len == true ) {
+			$output .= "<span class='totlen'><span class='summarylabel'>" . __( 'Total distance:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $tot_len</span></span><br />";
 		}
 		if ( $points_graph_ele != ' ' ) {
-			if ( $p_max_ele == 'true' )
-				$output .= "<span class='maxele'><span class='summarylabel'>" . __( 'Max elevation', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $max_ele</span></span><br />";
-			if ( $p_min_ele == 'true' )
-				$output .= "<span class='minele'><span class='summarylabel'>" . __( 'Min elevation', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $min_ele</span></span><br />";
-			if ( $p_total_ele_up == 'true' )
-				$output .= "<span class='totaleleup'><span class='summarylabel'>" . __( 'Total climbing', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $total_ele_up</span></span><br />";
-			if ( $p_total_ele_down == 'true' )
-				$output .= "<span class='totaleledown'><span class='summarylabel'>" . __( 'Total descent', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $total_ele_down</span></span><br />";
+			if ( $p_max_ele == true )
+				$output .= "<span class='maxele'><span class='summarylabel'>" . __( 'Max elevation:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $max_ele</span></span><br />";
+			if ( $p_min_ele == true )
+				$output .= "<span class='minele'><span class='summarylabel'>" . __( 'Min elevation:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $min_ele</span></span><br />";
+			if ( $p_total_ele_up == true )
+				$output .= "<span class='totaleleup'><span class='summarylabel'>" . __( 'Total climbing:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $total_ele_up</span></span><br />";
+			if ( $p_total_ele_down == true )
+				$output .= "<span class='totaleledown'><span class='summarylabel'>" . __( 'Total descent:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $total_ele_down</span></span><br />";
 		}
-		if ( $points_graph_speed != '' && $p_avg_speed == 'true' ) {
-			$output .= "<span class='avgspeed'><span class='summarylabel'>" . __( 'Average speed', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $avg_speed</span></span><br />";
+		if ( $points_graph_speed != '' && $p_avg_speed == true ) {
+			$output .= "<span class='avgspeed'><span class='summarylabel'>" . __( 'Average speed:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $avg_speed</span></span><br />";
 		}
-		if ( $points_graph_cad != '' && $p_avg_cad == 'true' ) {
-			$output .= "<span class='avgcad'><span class='summarylabel'>" . __( 'Average cadence', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $avg_cad</span></span><br />";
+		if ( $points_graph_cad != '' && $p_avg_cad == true ) {
+			$output .= "<span class='avgcad'><span class='summarylabel'>" . __( 'Average cadence:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $avg_cad</span></span><br />";
 		}
-		if ( $points_graph_hr != '' && $p_avg_hr == 'true' ) {
-			$output .= "<span class='avghr'><span class='summarylabel'>" . __( 'Average heart rate', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $avg_hr</span></span><br />";
+		if ( $points_graph_hr != '' && $p_avg_hr == true ) {
+			$output .= "<span class='avghr'><span class='summarylabel'>" . __( 'Average heart rate:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $avg_hr</span></span><br />";
 		}
-		if ( $points_graph_atemp != '' && $p_avg_temp == 'true' ) {
-			$output .= "<span class='avgtemp'><span class='summarylabel'>" . __( 'Average temperature', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $avg_temp</span></span><br />";
+		if ( $points_graph_atemp != '' && $p_avg_temp == true ) {
+			$output .= "<span class='avgtemp'><span class='summarylabel'>" . __( 'Average temperature:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $avg_temp</span></span><br />";
 		}
-		if ( $p_total_time == 'true' && $max_time > 0 ) {
-			$time_diff = date( "H:i:s", ( $max_time - $min_time ) );
-			$output .= "<span class='totaltime'><span class='summarylabel'>" . __( 'Total time', 'wp-gpx-maps' ) . ":</span><span class='summaryvalue'> $time_diff</span></span><br />";
+		if ( $p_total_time == true && $max_time > 0 ) {
+			$time_diff = date( 'H:i:s', ( $max_time - $min_time ) );
+			$output .= "<span class='totaltime'><span class='summarylabel'>" . __( 'Total time:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $time_diff</span></span><br />";
 		}
 		$output .= "</div>";
 	}

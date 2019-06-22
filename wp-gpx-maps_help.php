@@ -59,6 +59,7 @@
 					?>
 					<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></code>
 				</p>
+				<strong><?php _e( 'Note: If no value is displayed in the "Current value" column, the value is "false".', 'wp-gpx-maps' ); ?></strong>
 
 		</div>
 
