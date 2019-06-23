@@ -63,8 +63,8 @@ function enqueue_WP_GPX_Maps_scripts_admin( $hook ) {
 	if ( strpos( $hook, 'WP-GPX-Maps' ) !== false ) {
 
 		/* Admin Style CSS */
-		wp_register_style( 'admin-stye', plugins_url( 'css/admin-style.css', __FILE__ ), array(), '1.0.0' );
-		wp_enqueue_style( 'admin-stye' );
+		wp_register_style( 'admin-style', plugins_url( 'css/admin-style.css', __FILE__ ), array(), '1.0.0' );
+		wp_enqueue_style( 'admin-style' );
 		/* mColorPicker */
 		wp_register_script( 'mColorPicker', plugins_url( '/js/mColorPicker_min.js', __FILE__ ), array(), '1.0 r39' );
 		wp_enqueue_script( 'mColorPicker' );
@@ -79,17 +79,22 @@ function enqueue_WP_GPX_Maps_scripts_admin( $hook ) {
 function enqueue_WP_GPX_Maps_scripts() {
 
 	/* Output Style CSS */
-	wp_register_style( 'output-stye', plugins_url( 'css/output-style.css', __FILE__ ), array(), '1.0.0' );
-	wp_enqueue_style( 'output-stye' );
+	wp_register_style( 'output-style', plugins_url( 'css/output-style.css', __FILE__ ), array(), '1.0.0' );
+	wp_enqueue_style( 'output-style' );
 
-	/* leaflet */
+	/* Leaflet */
 	wp_register_style( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.css', __FILE__ ), array(), '1.5.1' );
 	wp_enqueue_style( 'leaflet' );
+
+	/* Leaflet.markercluster */
 	wp_register_style( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/MarkerCluster.css', __FILE__ ), array(), '1.4.1,' );
 	wp_enqueue_style( 'leaflet.markercluster' );
+
+	/* Leaflet.Photo */
 	wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), '0' );
 	wp_enqueue_style( 'leaflet.Photo' );
 
+	/* Leaflet.fullscreen */
 	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.css', __FILE__ ), array(), '1.5.1' );
 	wp_enqueue_style( 'leaflet.fullscreen' );
 
@@ -98,12 +103,12 @@ function enqueue_WP_GPX_Maps_scripts() {
 	wp_register_script( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.js', __FILE__ ), array( 'leaflet', 'leaflet.markercluster' ), '0' );
 	wp_register_script( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.js', __FILE__ ), array( 'leaflet' ), '1.4.5' );
 
-	/* chartjs */
+	/* Chartjs */
 	wp_register_script( 'chartjs', plugins_url( '/js/Chart.min.js', __FILE__ ), array(), '2.8.0' );
 
 	wp_register_script( 'WP-GPX-Maps', plugins_url( '/js/WP-GPX-Maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
 
-	wp_enqueue_script( 'output-stye' );
+	wp_enqueue_script( 'output-style' );
 	wp_enqueue_script( 'leaflet' );
 	wp_enqueue_script( 'leaflet.markercluster' );
 	wp_enqueue_script( 'leaflet.Photo' );
@@ -154,9 +159,9 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 			$gpx = $folder . DIRECTORY_SEPARATOR . $file;
 			$points = wpgpxmaps_getPoints( $gpx, $pointsoffset, $donotreducegpx, $distanceType );
 
-			$points_maps = '';
+			$points_maps       = '';
 			$points_graph_dist = '';
-			$points_graph_ele = '';
+			$points_graph_ele  = '';
 
 			if ( is_array( $points_x_lat ) )
 			foreach ( array_keys( $points_x_lat ) as $i ) {
@@ -647,55 +652,56 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 
 			jQuery(document).ready(function() {
 
-				jQuery("#wpgpxmaps_' . $r . '").wpgpxmaps({
-					targetId    : "' . $r . '",
-					mapType     : "' . $mt . '",
-					mapData     : [' . $points_maps . '],
-					graphDist   : [' . ( $hideGraph ? '' : $points_graph_dist ) . '],
-					graphEle    : [' . ( $hideGraph ? '' : $points_graph_ele ) . '],
-					graphSpeed  : [' . ( $hideGraph ? '' : $points_graph_speed ) . '],
-					graphHr     : [' . ( $hideGraph ? '' : $points_graph_hr ) . '],
-					graphAtemp  : [' . ( $hideGraph ? '' : $points_graph_atemp ) . '],
-					graphCad    : [' . ( $hideGraph ? '' : $points_graph_cad ) . '],
-					graphGrade  : [' . ( $hideGraph ? '' : $points_graph_grade ) . '],
-					waypoints   : ' . $waypoints . ',
-					unit        : "' . $uom . '",
-					unitspeed   : "' . $uomspeed . '",
-					color1      : [' . $colors_map . '],
-					color2      : "' . $color_graph . '",
-					color3      : "' . $color_graph_speed . '",
-					color4      : "' . $color_graph_hr . '",
-					color5      : "' . $color_graph_cad . '",
-					color6      : "' . $color_graph_grade . '",
-					color7      : "' . $color_graph_atemp . '",
-					chartFrom1  : "' . $chartFrom1 . '",
-					chartTo1    : "' . $chartTo1 . '",
-					chartFrom2  : "' . $chartFrom2 . '",
-					chartTo2    : "' . $chartTo2 . '",
-					startIcon   : "' . $startIcon . '",
-					endIcon     : "' . $endIcon . '",
-					currentIcon : "' . $currentIcon . '",
-					waypointIcon : "' . $waypointIcon . '",
+				jQuery( "#wpgpxmaps_' . $r . '" ).wpgpxmaps( {
+					targetId           : "' . $r . '",
+					mapType            : "' . $mt . '",
+					mapData            : [' . $points_maps . '],
+					graphDist          : [' . ( $hideGraph ? '' : $points_graph_dist ) . '],
+					graphEle           : [' . ( $hideGraph ? '' : $points_graph_ele ) . '],
+					graphSpeed         : [' . ( $hideGraph ? '' : $points_graph_speed ) . '],
+					graphHr            : [' . ( $hideGraph ? '' : $points_graph_hr ) . '],
+					graphAtemp         : [' . ( $hideGraph ? '' : $points_graph_atemp ) . '],
+					graphCad           : [' . ( $hideGraph ? '' : $points_graph_cad ) . '],
+					graphGrade         : [' . ( $hideGraph ? '' : $points_graph_grade ) . '],
+					waypoints          : ' . $waypoints . ',
+					unit               : "' . $uom . '",
+					unitspeed          : "' . $uomspeed . '",
+					color1             : [' . $colors_map . '],
+					color2             : "' . $color_graph . '",
+					color3             : "' . $color_graph_speed . '",
+					color4             : "' . $color_graph_hr . '",
+					color5             : "' . $color_graph_cad . '",
+					color6             : "' . $color_graph_grade . '",
+					color7             : "' . $color_graph_atemp . '",
+					chartFrom1         : "' . $chartFrom1 . '",
+					chartTo1           : "' . $chartTo1 . '",
+					chartFrom2         : "' . $chartFrom2 . '",
+					chartTo2           : "' . $chartTo2 . '",
+					startIcon          : "' . $startIcon . '",
+					endIcon            : "' . $endIcon . '",
+					currentIcon        : "' . $currentIcon . '",
+					waypointIcon       : "' . $waypointIcon . '",
 					currentpositioncon : "' . $currentpositioncon . '",
-					usegpsposition : "' . $usegpsposition . '",
-					zoomOnScrollWheel : "' . $zoomOnScrollWheel . '",
-					ngGalleries : [' . $ngGalleries . '],
-					ngImages : [' . $ngImages . '],
-					pluginUrl : "' . plugins_url() . '",
-					TFApiKey : "' . get_option( 'wpgpxmaps_openstreetmap_apikey' ) . '",
-					langs : { altitude              : "' . __( 'Altitude', 'wp-gpx-maps' ) . '",
-							  currentPosition       : "' . __( 'Current position', 'wp-gpx-maps' ) . '",
-							  speed                 : "' . __( 'Speed', 'wp-gpx-maps' ) . '",
-							  grade                 : "' . __( 'Grade', 'wp-gpx-maps' ) . '",
-							  heartRate             : "' . __( 'Heart rate', 'wp-gpx-maps' ) . '",
-							  atemp             	: "' . __( 'Temperature', 'wp-gpx-maps' ) . '",
-							  cadence               : "' . __( 'Cadence', 'wp-gpx-maps' ) . '",
-							  goFullScreen          : "' . __( 'Go full screen', 'wp-gpx-maps' ) . '",
-							  exitFullFcreen        : "' . __( 'Exit full screen', 'wp-gpx-maps' ) . '",
-							  hideImages            : "' . __( 'Hide images', 'wp-gpx-maps' ) . '",
-							  showImages            : "' . __( 'Show images', 'wp-gpx-maps' ) . '",
-							  backToCenter		    : "' . __( 'Back to center', 'wp-gpx-maps' ) . '"
-							}
+					usegpsposition     : "' . $usegpsposition . '",
+					zoomOnScrollWheel  : "' . $zoomOnScrollWheel . '",
+					ngGalleries        : [' . $ngGalleries . '],
+					ngImages           : [' . $ngImages . '],
+					pluginUrl          : "' . plugins_url() . '",
+					TFApiKey           : "' . get_option( 'wpgpxmaps_openstreetmap_apikey' ) . '",
+					langs              : {
+						altitude        : "' . __( 'Altitude', 'wp-gpx-maps' ) . '",
+						currentPosition : "' . __( 'Current position', 'wp-gpx-maps' ) . '",
+						speed           : "' . __( 'Speed', 'wp-gpx-maps' ) . '",
+						grade           : "' . __( 'Grade', 'wp-gpx-maps' ) . '",
+						heartRate       : "' . __( 'Heart rate', 'wp-gpx-maps' ) . '",
+						atemp           : "' . __( 'Temperature', 'wp-gpx-maps' ) . '",
+						cadence         : "' . __( 'Cadence', 'wp-gpx-maps' ) . '",
+						goFullScreen    : "' . __( 'Go full screen', 'wp-gpx-maps' ) . '",
+						exitFullFcreen  : "' . __( 'Exit full screen', 'wp-gpx-maps' ) . '",
+						hideImages      : "' . __( 'Hide images', 'wp-gpx-maps' ) . '",
+						showImages      : "' . __( 'Show images', 'wp-gpx-maps' ) . '",
+						backToCenter	: "' . __( 'Back to center', 'wp-gpx-maps' ) . '"
+					}
 				});
 
 			});
@@ -703,7 +709,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 		</script>';
 
 	/* Print summary */
-	if ( $summary == true && ( $points_graph_speed != '' || $points_graph_ele != '' || $points_graph_dist != '') ) {
+	if ( $summary == true && ( $points_graph_speed != '' || $points_graph_ele != '' || $points_graph_dist != '' ) ) {
 
 		$output .= "<div id='wpgpxmaps_summary_" . $r . "' class='wpgpxmaps_summary'>";
 		if ( $points_graph_dist != '' && $p_tot_len == true ) {
@@ -735,7 +741,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 			$time_diff = date( 'H:i:s', ( $max_time - $min_time ) );
 			$output .= "<span class='totaltime'><span class='summarylabel'>" . __( 'Total time:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $time_diff</span></span><br />";
 		}
-		$output .= "</div>";
+		$output .= '</div>';
 	}
 
 	/* Print download link */
@@ -747,23 +753,25 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 			$dummy  = ( defined( 'WP_SITEURL' ) ) ? WP_SITEURL : get_bloginfo( 'url' );
 			$gpxurl = $dummy . $gpxurl;
 		}
-		$output .= "<a href='$gpxurl' target='_new' download>" . __( 'Download', 'wp-gpx-maps' ) . "</a>";
+		$output .= "<a href='$gpxurl' target='_new' download>" . __( 'Download', 'wp-gpx-maps' ) . '</a>';
 	}
 
 	return $output;
 }
 
 function convertSeconds( $s ) {
+
 	if ( $s == 0 )
 	return 0;
 	$s      = 1.0 / $s;
 	$_sSecT = $s * 60; // sec/km
-	$_sMin  = floor ( $_sSecT / 60 );
+	$_sMin  = floor( $_sSecT / 60 );
 	$_sSec  = $_sSecT - $_sMin * 60;
 	return $_sMin + $_sSec / 100;
 }
 
 function convertSpeed( $speed, $uomspeed, $addUom = false ) {
+
 	$uom = '';
 
 	if ( $uomspeed == '6' ) {
@@ -795,6 +803,7 @@ function convertSpeed( $speed, $uomspeed, $addUom = false ) {
 		/* km/h */
 		$speed *= 3.6;
 		$uom    = ' km/h';
+
 	} else {
 		/* dafault m/s */
 		$uom = ' m/s';
@@ -808,16 +817,17 @@ function convertSpeed( $speed, $uomspeed, $addUom = false ) {
 }
 
 function downloadRemoteFile( $remoteFile ) {
+
 	try {
 		$newfname = tempnam( '/tmp', 'gpx' );
 
-		if ( function_exists ( 'file_put_contents' ) ) {
+		if ( function_exists( 'file_put_contents' ) ) {
 			file_put_contents( $newfname, fopen( $remoteFile, 'r' ) );
 			return $newfname;
 		}
-		$file = fopen ( $remoteFile, 'rb' );
+		$file = fopen( $remoteFile, 'rb' );
 		if ( $file ) {
-			$newf = fopen ( $newfname, 'wb' );
+			$newf = fopen( $newfname, 'wb' );
 			if ( $newf )
 			while ( ! feof( $file ) ) {
 				fwrite( $newf, fread( $file, 1024 * 8 ), 1024 * 8 );
