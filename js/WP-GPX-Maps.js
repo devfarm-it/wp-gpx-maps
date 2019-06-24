@@ -48,7 +48,7 @@ var WPGPXMAPS = {
 
 	MapEngines: {
 
-		/* NOT WORKING AND TESTED! old code copy&pate */
+		/* NOT WORKING AND TESTED! old code copy&paste */
 		GoogleMaps: function() {
 			this.map = null,
 			this.EventSelectChart = null,

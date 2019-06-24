@@ -4,7 +4,8 @@ Contributors: bastianonm, Stephan Klein, Michel Selerin, TosattoSimonePio, Knieb
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
 Requires at least: 4.6.0
-Tested up to: 5.2.1
+Tested up to: 5.2.2
+Requires PHP: 5.6.20
 Stable tag: 1.7.00
 
 Draws a GPX track with altitude graph. You can also display your nextgen gallery images in the map.
@@ -172,9 +173,11 @@ Yes!
 == Changelog ==
 
 = X.X.XX
+* Added: PHP version notices, WordPress 5.3 requires PHP 5.6.20
 * Added: Missing entries for add and delete options
 * Changed: Style for output moved in a seperate file
-* Tweak: small optimizations in the design of the admin area
+* Tweak: Small design optimizations in the admin area
+* Tweak: Small code adjustments (WPCS)
 * Upgrade: bootstrap-table to 1.13.2
 * Removed: german language file (now over translate.wordpress.org)
 = 1.7.00 =

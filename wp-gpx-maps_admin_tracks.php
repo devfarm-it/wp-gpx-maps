@@ -9,33 +9,25 @@ if ( $is_admin != 1 )
 	return;
 
 $allow_users_upload = get_option( 'wpgpxmaps_allow_users_view' ) === 'true';
-
 $wpgpxmapsUrl       = get_admin_url() . 'admin.php?page=WP-GPX-Maps';
-
 $gpxRegEx           = '/.gpx$/i';
 
 if ( current_user_can( 'manage_options' ) ) {
-		$menu_root = 'options-general.php';
+	$menu_root = 'options-general.php';
 } elseif ( current_user_can( 'publish_posts' ) ) {
-		$menu_root = 'admin.php';
+	$menu_root = 'admin.php';
 }
 
 if ( isset( $_POST['clearcache'] ) ) {
-
-	if ( isset( $_GET['_wpnonce'] )
-		&&
-		wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_clearcache_nonce' . $entry )
-		) {
+	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_clearcache_nonce' . $entry ) ) {
 		echo '<div class="notice notice-success"><p>';
 		_e( 'Cache is now empty!', 'wp-gpx-maps' );
 		echo '</p></div>';
-
 		wpgpxmaps_recursive_remove_directory( $cacheGpxPath, true );
 	}
 }
 
 if ( is_writable( $realGpxPath ) ) {
-
 	?>
 
 		<div class="tablenav top">
@@ -48,7 +40,7 @@ if ( is_writable( $realGpxPath ) ) {
 				$total = count( $_FILES['uploadedfile']['name'] );
 				for ( $i = 0; $i < $total; $i++ ) {
 					$uploadingFileName = basename( $_FILES['uploadedfile']['name'][$i] );
-					$target_path       = $realGpxPath . "/" . $uploadingFileName;
+					$target_path       = $realGpxPath . '/' . $uploadingFileName;
 					if ( preg_match( $gpxRegEx, $target_path ) ) {
 						if ( move_uploaded_file( $_FILES['uploadedfile']['tmp_name'][$i], $target_path ) ) {
 							echo '<div class="notice notice-success"><p>';
@@ -57,7 +49,7 @@ if ( is_writable( $realGpxPath ) ) {
 								__( 'The file %1s has been successfully uploaded.', 'wp-gpx-maps' ),
 								'<span class="code"><strong>' . esc_html( $uploadingFileName ) . '</strong></span>'
 							);
-						echo '</p></div>';
+							echo '</p></div>';
 						} else {
 							echo '<div class=" notice notice-error"><p>';
 							_e( 'There was an error uploading the file, please try again!', 'wp-gpx-maps' );
@@ -105,16 +97,11 @@ if ( is_writable( $realGpxPath ) ) {
 
 	$myGpxFileNames = array();
 	if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
-		while ( false !== ( $entry = readdir( $handle ) ) ) {
+	while ( false !== ( $entry = readdir( $handle ) ) ) {
 		if ( preg_match( $gpxRegEx, $entry ) ) {
-
-				if ( isset($_GET['_wpnonce'])
-					&&
-					wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry )
-					) {
-
-				if ( file_exists( $realGpxPath . "/" . $entry ) ) {
-					unlink( $realGpxPath . "/" . $entry );
+			if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry ) ) {
+				if ( file_exists( $realGpxPath . '/' . $entry ) ) {
+					unlink( $realGpxPath . '/' . $entry );
 					echo '<div class="notice notice-success"><p>';
 					printf(
 						/* translators: GPX file name */
@@ -129,11 +116,10 @@ if ( is_writable( $realGpxPath ) ) {
 						__( 'The file %1s could not be deleted.', 'wp-gpx-maps' ),
 						'<span class="code"><strong>' . esc_html( $entry ) . '</strong></span>'
 					);
-						echo '</p></div>';
-
+					echo '</p></div>';
 				}
 			} else {
-				$myFile           = $realGpxPath . "/" . $entry;
+				$myFile           = $realGpxPath . '/' . $entry;
 				$myGpxFileNames[] = array(
 					'name'     => $entry,
 					'size'     => filesize( $myFile ),
@@ -146,13 +132,13 @@ if ( is_writable( $realGpxPath ) ) {
 	closedir( $handle );
 }
 
-if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
-	while ( false !== ($entry = readdir( $handle ) ) ) {
+if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
+	while ( false !== ( $entry = readdir( $handle ) ) ) {
 		if ( preg_match( $gpxRegEx, $entry ) ) {
-		$filenames[] = $realGpxPath . "/" . $entry;
+			$filenames[] = $realGpxPath . '/' . $entry;
 		}
 	}
-		closedir( $handle );
+	closedir( $handle );
 }
 
 ?>
@@ -238,9 +224,3 @@ if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 	});
 
 </script>
-
-<style>
-	#table tbody tr:hover {
-		background: #eee;
-	}
-</style>
