@@ -7,16 +7,25 @@ if ( is_admin() ) {
 /**
  * Roles and capabilities
  *
- * For  roles and capabilities see:
- * https://wordpress.org/support/article/roles-and-capabilities/
+ * Capabilities for each user role that are relevant to this plugin:
+ *
+ * Super Admin: can manage settings; can publish, edit and delete all posts; can upload and delete all GPX files
+ * Admin:       can manage settings; can publish, edit and delete all posts; can upload and delete all GPX files
+ * Editor:      can not manage settings; can publish, edit and delete all posts; can upload and delete all GPX files
+ * Author:      can not manage settings; can publish, edit and delete his own posts; can upload and delete his own files
+ * Contributor: can not manage settings; can edit and delete his own posts; can not manage GPX files
+ * Subscriber:  can not manage settings; can not manage posts; can not manage GPX files (has read status everywhere)
+ *
+ * @see https://wordpress.org/support/article/roles-and-capabilities/
  */
 function wpgpxmaps_admin_menu() {
 
 	if ( current_user_can( 'manage_options' ) ) {
-		/* Only Administrators and Super Administrators */
+		/* Access only for Super Administrators and Administrators */
 		add_options_page( 'WP GPX Maps', 'WP GPX Maps', 'manage_options', 'WP-GPX-Maps', 'WP_GPX_Maps_html_page' );
 
 	} elseif ( current_user_can( 'publish_posts' ) ) {
+		/* Access for Editors and Authors */
 
 		/* Contributor Authors and */
 		$allow_users_upload = get_option( 'wpgpxmaps_allow_users_view' ) === 'true';
@@ -27,16 +36,18 @@ function wpgpxmaps_admin_menu() {
 	}
 }
 
-function wpgpxmaps_ilc_admin_tabs( $current  ) {
+function wpgpxmaps_ilc_admin_tabs( $current ) {
 
 	if ( current_user_can( 'manage_options' ) ) {
+		/* Access for Super Administrators and Administrators */
 		$tabs = array(
 			'tracks'   => __( 'Tracks', 'wp-gpx-maps' ),
 			'settings' => __( 'Settings', 'wp-gpx-maps' ),
 			'help'     => __( 'Help', 'wp-gpx-maps' ),
 		);
-	} elseif ( current_user_can( 'publish_posts' ) ) {
 
+	} elseif ( current_user_can( 'publish_posts' ) ) {
+		/* Access for Editors and Authors */
 		$tabs = array(
 			'tracks' => __( 'Tracks', 'wp-gpx-maps' ),
 			'help'   => __( 'Help', 'wp-gpx-maps' ),
@@ -46,12 +57,10 @@ function wpgpxmaps_ilc_admin_tabs( $current  ) {
 	echo '<h2 class="nav-tab-wrapper">';
 
 	foreach ( $tabs as $tab => $name ) {
-
-	$class = ( $tab == $current ) ? ' nav-tab-active' : '';
-
+		$class = ( $tab == $current ) ? ' nav-tab-active' : '';
 		echo "<a class='nav-tab$class' href='?page=WP-GPX-Maps&tab=$tab'>$name</a>";
-
 	}
+
 	echo '</h2>';
 }
 
@@ -72,7 +81,10 @@ function WP_GPX_Maps_html_page() {
 
 	<div id="icon-themes" class="icon32"><br></div>
 
-		<h2><?php _e( 'Settings', 'wp-gpx-maps' ); ?></h2>
+		<h2>
+			<?php _e( 'Settings', 'wp-gpx-maps' ); ?>
+		</h2>
+
 	<?php
 	if ( file_exists( $realGpxPath ) && is_dir( $realGpxPath ) ) {
 
