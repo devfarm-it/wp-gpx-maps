@@ -221,8 +221,9 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$w              = wpgpxmaps_findValue( $attr, 'width', 'wpgpxmaps_width', '100%' );
 	$mh             = wpgpxmaps_findValue( $attr, 'mheight', 'wpgpxmaps_height', '450px' );
 	$gh             = wpgpxmaps_findValue( $attr, 'gheight', 'wpgpxmaps_graph_height', '200px' );
-	$skipcache      = wpgpxmaps_findValue( $attr, 'skipcache', 'wpgpxmaps_skipcache', false );
-	$download       = wpgpxmaps_findValue( $attr, 'download', 'wpgpxmaps_download', false );
+	$distanceType   = wpgpxmaps_findValue( $attr, 'distanceType', 'wpgpxmaps_distance_type', 0 );
+	$skipcache      = wpgpxmaps_findValue( $attr, 'skipcache', 'wpgpxmaps_skipcache', '' );
+	$download       = wpgpxmaps_findValue( $attr, 'download', 'wpgpxmaps_download', '' );
 	$usegpsposition = wpgpxmaps_findValue( $attr, 'usegpsposition', 'wpgpxmaps_usegpsposition', false );
 	/* Print Summary Table */
 	$summary          = wpgpxmaps_findValue( $attr, 'summary', 'wpgpxmaps_summary', false );
@@ -249,6 +250,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	/* Diagram - Elevation */
 	$showEle     = wpgpxmaps_findValue( $attr, 'showele', 'wpgpxmaps_show_elevation', true );
 	$color_graph = wpgpxmaps_findValue( $attr, 'glinecolor', 'wpgpxmaps_graph_line_color', '#3366cc' );
+	$uom         = wpgpxmaps_findValue( $attr, 'uom', 'wpgpxmaps_unit_of_measure', '0' );
 	$chartFrom1  = wpgpxmaps_findValue( $attr, 'chartfrom1', 'wpgpxmaps_graph_offset_from1', '' );
 	$chartTo1    = wpgpxmaps_findValue( $attr, 'chartto1', 'wpgpxmaps_graph_offset_to1', '' );
 	/* Diagram - Speed */
@@ -275,6 +277,8 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$attachments = wpgpxmaps_findValue( $attr, 'attachments', 'wpgpxmaps_map_attachments', false );
 	$dtoffset    = wpgpxmaps_findValue( $attr, 'dtoffset', 'wpgpxmaps_dtoffset', 0 );
 	/* Advanced */
+	$pointsoffset       = wpgpxmaps_findValue( $attr, 'pointsoffset', 'wpgpxmaps_pointsoffset', 10 );
+	$donotreducegpx     = wpgpxmaps_findValue( $attr, 'donotreducegpx', 'wpgpxmaps_donotreducegpx', false );
 	$allow_users_upload = wpgpxmaps_findValue( $attr, 'wpgpxmaps_allow_users_upload', 'wpgpxmaps_allow_users_view', false );
 
 	$colors_map = "\"" . implode( "\",\"", ( explode( ' ', $color_map ) ) ) . "\"";
