@@ -218,23 +218,50 @@
 						<?php _e( 'Map type', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<?php _e( 'HYBRID, ROADMAP, SATELLITE, TERRAIN', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: map type */
+						_e( 'HYBRID, ROADMAP, SATELLITE, TERRAIN', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( 'OSM1 = Open Street Map', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = map provider / map type */
+						_e( 'OSM1 = Open Street Map', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( 'OSM2 = Open Cycle Map', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = map provider / map type */
+						_e( 'OSM2 = Open Cycle Map', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( 'OSM4 = Open Cycle Map - Transport', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = map provider / map type */
+						_e( 'OSM4 = Open Cycle Map - Transport', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( 'OSM5 = Open Cycle Map - Landscape', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = map provider / map type */
+						_e( 'OSM5 = Open Cycle Map - Landscape', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( 'OSM6 = MapToolKit - Terrain', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = map provider / map type */
+						_e( 'OSM6 = MapToolKit - Terrain', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( 'OSM7 = Open Street Map - Humanitarian map style', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = map provider / map type */
+						_e( 'OSM7 = Open Street Map - Humanitarian map style', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( 'OSM9 = Hike & Bike', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = map provider / map type */
+						_e( 'OSM9 = Hike & Bike', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( 'OSM10 = Open Sea Map', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = map provider / map type */
+						_e( 'OSM10 = Open Sea Map', 'wp-gpx-maps' );
+						?>
 						<br />
 						<?php
 						_e( 'Default is:', 'wp-gpx-maps' );
@@ -400,17 +427,35 @@
 						<?php _e( 'Distance / Altitude unit of measure', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<?php _e( '0 = meters / meters', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = chart axis labels */
+						_e( '0 = meters / meters', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '1 = feet / miles', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = chart axis labels */
+						_e( '1 = feet / miles', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '2 = meters / kilometers', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = chart axis labels */
+						_e( '2 = meters / kilometers', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '3 = meters / nautical miles', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = chart axis labels */
+						_e( '3 = meters / nautical miles', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '4 = meters / miles', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = chart axis labels */
+						_e( '4 = meters / miles', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '5 = feet / nautical miles', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = chart axis labels */
+						_e( '5 = feet / nautical miles', 'wp-gpx-maps' );
+						?>
 						<br />
 						<?php
 						_e( 'Default is:', 'wp-gpx-maps' );
@@ -480,19 +525,40 @@
 						<?php _e( 'Speed unit of measure', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<?php _e( '0 = m/s', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = speed unit of measure */
+						_e( '0 = m/s', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '1 = km/h', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = speed unit of measure */
+						_e( '1 = km/h', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '2 = miles/h', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = speed unit of measure */
+						_e( '2 = miles/h', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '3 = min/km', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = speed unit of measure */
+						_e( '3 = min/km', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '4 = min/miles', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = speed unit of measure */
+						_e( '4 = min/miles', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '5 = Knots (nautical miles / hour)', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = speed unit of measure */
+						_e( '5 = Knots (nautical miles / hour)', 'wp-gpx-maps' );
+						?>
 						<br />
-						<?php _e( '6 = min/100 meters', 'wp-gpx-maps' ); ?>
+						<?php
+						/* translators: selection = speed unit of measure */
+						_e( '6 = min/100 meters', 'wp-gpx-maps' );
+						?>
 						<br />
 						<?php
 						_e( 'Default is:', 'wp-gpx-maps' );

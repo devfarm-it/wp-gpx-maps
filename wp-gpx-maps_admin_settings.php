@@ -342,28 +342,52 @@
 					</th>
 					<td>
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM1" <?php if ( $t == 'OSM1' ) echo 'checked'; ?>>
-							<?php _e( 'Open Street Map', 'wp-gpx-maps' );?>
+							<?php
+							/* translators: map type */
+							_e( 'Open Street Map', 'wp-gpx-maps' );
+							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM2" <?php if ( $t == 'OSM2' ) echo 'checked'; ?>>
-							<?php _e( 'Open Cycle Map', 'wp-gpx-maps' ); ?>
+							<?php
+							/* translators: map provider / map type */
+							_e( 'Open Cycle Map', 'wp-gpx-maps' );
+							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM4" <?php if ( $t == 'OSM4' ) echo 'checked'; ?>>
-							<?php _e( 'Open Cycle Map - Transport', 'wp-gpx-maps' ); ?>
+							<?php
+							/* translators: map provider / map type */
+							_e( 'Open Cycle Map - Transport', 'wp-gpx-maps' );
+							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM5" <?php if ( $t == 'OSM5' ) echo 'checked'; ?>>
-							<?php _e( 'Open Cycle Map - Landscape', 'wp-gpx-maps' ); ?>
+							<?php
+							/* translators: map provider / map type */
+							_e( 'Open Cycle Map - Landscape', 'wp-gpx-maps' );
+							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ( $t == 'OSM6' ) echo 'checked'; ?>>
-							<?php _e( 'MapToolKit - Terrain', 'wp-gpx-maps' ); ?>
+							<?php
+							/* translators: map provider / map type */
+							_e( 'MapToolKit - Terrain', 'wp-gpx-maps' );
+							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM7" <?php if ( $t == 'OSM7' ) echo 'checked'; ?>>
-							<?php _e( 'Open Street Map - Humanitarian map style', 'wp-gpx-maps' ); ?>
+							<?php
+							/* translators: map provider / map type */
+							_e( 'Open Street Map - Humanitarian map style', 'wp-gpx-maps' );
+							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM9" <?php if ( $t == 'OSM9' ) echo 'checked'; ?>>
-							<?php _e( 'Hike & Bike', 'wp-gpx-maps' ); ?>
+							<?php
+							/* translators: map provider / map type */
+							_e( 'Hike & Bike', 'wp-gpx-maps' );
+							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM10" <?php if ( $t == 'OSM10' ) echo 'checked'; ?>>
-							<?php _e( 'Open Sea Map', 'wp-gpx-maps' ); ?>
+							<?php
+							/* translators: map provider / map type */
+							_e( 'Open Sea Map', 'wp-gpx-maps' );
+							?>
 						<br />
 					</td>
 				</tr>
@@ -511,22 +535,40 @@
 					<td>
 						<select name='wpgpxmaps_unit_of_measure'>
 							<option value="0" <?php if ( $uom == '0' ) echo 'selected'; ?>>
-								<?php _e( 'meters / meters', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: chart axis labels */
+								_e( 'meters / meters', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="1" <?php if ( $uom == '1' ) echo 'selected'; ?>>
-								<?php _e( 'feet / miles', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: chart axis labels */
+								_e( 'feet / miles', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="2" <?php if ( $uom == '2' ) echo 'selected'; ?>>
-								<?php _e( 'meters / kilometers', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: chart axis labels */
+								_e( 'meters / kilometers', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="3" <?php if ( $uom == '3' ) echo 'selected'; ?>>
-								<?php _e( 'meters / nautical miles', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: chart axis labels */
+								_e( 'meters / nautical miles', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="4" <?php if ( $uom == '4' ) echo 'selected'; ?>>
-								<?php _e( 'meters / miles', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: chart axis labels */
+								_e( 'meters / miles', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="5" <?php if ( $uom == '5' ) echo 'selected'; ?>>
-								<?php _e( 'feet / nautical miles', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: chart axis labels */
+								_e( 'feet / nautical miles', 'wp-gpx-maps' );
+								?>
 							</option>
 						</select>
 					</td>
@@ -575,25 +617,46 @@
 					<td>
 						<select name='wpgpxmaps_unit_of_measure_speed'>
 							<option value="0" <?php if ( $uomSpeed == '0' ) echo 'selected'; ?>>
-								<?php _e( 'm/s', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: speed unit of measure */
+								_e( 'm/s', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="1" <?php if ( $uomSpeed == '1' ) echo 'selected'; ?>>
-								<?php _e( 'km/h', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: speed unit of measure */
+								_e( 'km/h', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="2" <?php if ( $uomSpeed == '2' ) echo 'selected'; ?>>
-								<?php _e( 'miles/h', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: speed unit of measure */
+								_e( 'miles/h', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="3" <?php if ( $uomSpeed == '3' ) echo 'selected'; ?>>
-								<?php _e( 'min/km', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: speed unit of measure */
+								_e( 'min/km', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="4" <?php if ( $uomSpeed == '4' ) echo 'selected'; ?>>
-								<?php _e( 'min/miles', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: speed unit of measure */
+								_e( 'min/miles', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="5" <?php if ( $uomSpeed == '5' ) echo 'selected'; ?>>
-								<?php _e( 'Knots (nautical miles / hour)', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: speed unit of measure */
+								_e( 'Knots (nautical miles / hour)', 'wp-gpx-maps' );
+								?>
 							</option>
 							<option value="6" <?php if ( $uomSpeed == '6' ) echo 'selected'; ?>>
-								<?php _e( 'min/100 meters', 'wp-gpx-maps' ); ?>
+								<?php
+								/* translators: speed unit of measure */
+								_e( 'min/100 meters', 'wp-gpx-maps' );
+								?>
 							</option>
 						</select>
 					</td>

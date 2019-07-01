@@ -181,7 +181,7 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 					$_dist = (float) $points->dist[$i];
 
 					if ( $uom == '1' ) {
-						/* miles and feet */
+						/* feet / miles */
 						$_dist *= 0.000621371192;
 						$_ele  *= 3.2808399;
 
@@ -190,7 +190,7 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 						$_dist = (float) ( $_dist / 1000 );
 
 					} elseif ( $uom == '3' ) {
-						/* meters / kilometers / nautical miles */
+						/* meters / nautical miles */
 						$_dist = (float) ( $_dist / 1000 / 1.852 );
 
 					} elseif ( $uom == '4' ) {
@@ -198,7 +198,7 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 						$_dist *= 0.000621371192;
 
 					} elseif ( $uom == '5' ) {
-						/* meters / kilometers / nautical miles and feet */
+						/* feet / nautical miles */
 						$_dist = (float) ( $_dist / 1000 / 1.852 );
 						$_ele *= 3.2808399;
 					}
@@ -438,7 +438,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 				$_dist = (float) $points->dist[$i];
 
 				if ( $uom == '1') {
-					/* miles and feet */
+					/* feet / miles */
 					$_dist *= 0.000621371192;
 					$_ele *= 3.2808399;
 
@@ -447,7 +447,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 					$_dist = (float) ( $_dist / 1000 );
 
 				} elseif ( $uom == '3') {
-					/* meters / kilometers / nautical miles */
+					/* meters / nautical miles */
 					$_dist = (float) ( $_dist / 1000 / 1.852 );
 
 				} elseif ( $uom == '4' ) {
@@ -455,7 +455,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 					$_dist *= 0.000621371192;
 
 				} elseif ( $uom == '5' ) {
-					/* meters / kilometers / nautical miles and feet */
+					/* feet / nautical miles */
 					$_dist = (float) ( $_dist / 1000 / 1.852 );
 					$_ele *= 3.2808399;
 				}
@@ -487,7 +487,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 		}
 
 		if ( $uom == '1' ) {
-			/* miles and feet */
+			/* feet / miles */
 			$tot_len        = round( $tot_len * 0.000621371192, 2 ) . ' mi';
 			$max_ele        = round( $max_ele * 3.2808399, 0 ) . ' ft';
 			$min_ele        = round( $min_ele * 3.2808399, 0 ) . ' ft';
@@ -503,15 +503,15 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 
 		} elseif ( $uom == '3' ) {
-			/* meters / kilometers / nautical miles */
-			$tot_len        = round( $tot_len / 1000/1.852, 2 ) . ' NM';
+			/* meters / nautical miles */
+			$tot_len        = round( $tot_len / 1000 / 1.852, 2 ) . ' NM';
 			$max_ele        = round( $max_ele, 0 ) . ' m';
 			$min_ele        = round( $min_ele, 0 ) . ' m';
 			$total_ele_up   = round( $total_ele_up, 0 ) . ' m';
 			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 
 		} elseif ( $uom == '4' ) {
-			/* meters / kilometers / nautical miles */
+			/* meters / miles */
 			$tot_len        = round( $tot_len * 0.000621371192, 2 ) . ' mi';
 			$max_ele        = round( $max_ele, 0 ) . ' m';
 			$min_ele        = round( $min_ele, 0 ) . ' m';
@@ -519,8 +519,8 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 
 		} elseif ( $uom == '5' ) {
-			/* meters / kilometers / nautical miles and feet */
-			$tot_len        = round( $tot_len / 1000/1.852, 2 ) . ' NM';
+			/* feet / nautical miles */
+			$tot_len        = round( $tot_len / 1000 / 1.852, 2 ) . ' NM';
 			$max_ele        = round( $max_ele * 3.2808399, 0 ) . ' ft';
 			$min_ele        = round( $min_ele * 3.2808399, 0 ) . ' ft';
 			$total_ele_up   = round( $total_ele_up * 3.2808399, 0 ) . ' ft';
@@ -586,7 +586,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$ngimgs_data = '';
 	if ( $ngGalleries != '' || $ngImages != '' ) {
 		$ngimgs      = getNGGalleryImages( $ngGalleries, $ngImages, $points_x_time, $points_x_lat, $points_x_lon, $dtoffset, $error );
-		$ngimgs_data ='';
+		$ngimgs_data = '';
 
 		foreach ( $ngimgs as $img ) {
 			$data         = $img['data'];
