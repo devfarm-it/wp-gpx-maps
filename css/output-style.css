@@ -41,8 +41,6 @@
 	line-height :120;
 }
 
-.wpgpxmaps .gmnoprint div:first-child { }
-
 .wpgpxmaps .wpgpxmaps_osm_footer {
 	position: absolute;
 	z-index: 999;

@@ -12,7 +12,7 @@
  * @package WP-GPX-Maps
  */
 
-//error_reporting (E_ALL);
+// error_reporting (E_ALL);
 
 require 'wp-gpx-maps_utils.php';
 require 'wp-gpx-maps_admin.php';
@@ -156,7 +156,7 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 
 		if ( strtolower( substr( $file, - 4 ) ) == '.gpx' ) {
 
-			$gpx = $folder . DIRECTORY_SEPARATOR . $file;
+			$gpx    = $folder . DIRECTORY_SEPARATOR . $file;
 			$points = wpgpxmaps_getPoints( $gpx, $pointsoffset, $donotreducegpx, $distanceType );
 
 			$points_maps       = '';
@@ -440,7 +440,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 				if ( $uom == '1') {
 					/* feet / miles */
 					$_dist *= 0.000621371192;
-					$_ele *= 3.2808399;
+					$_ele  *= 3.2808399;
 
 				} elseif ( $uom == '2') {
 					/* meters / kilometers */
@@ -743,7 +743,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 		}
 		if ( $p_total_time == true && $max_time > 0 ) {
 			$time_diff = date( 'H:i:s', ( $max_time - $min_time ) );
-			$output .= "<span class='totaltime'><span class='summarylabel'>" . __( 'Total time:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $time_diff</span></span><br />";
+			$output   .= "<span class='totaltime'><span class='summarylabel'>" . __( 'Total time:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $time_diff</span></span><br />";
 		}
 		$output .= '</div>';
 	}

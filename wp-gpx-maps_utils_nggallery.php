@@ -49,7 +49,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 						if ( $_item != null ) {
 							$item['lat'] = $_item['lat'];
 							$item['lon'] = $_item['lon'];
-							$result[] = $item;
+							$result[]    = $item;
 						}
 					}
 				}
