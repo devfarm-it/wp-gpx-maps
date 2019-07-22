@@ -121,7 +121,16 @@ You can use the following shortcodes:
 1. summaryeledown: Print total descent in summary table (default is false)
 1. summaryavgspeed: Print average Speed in summary table (default is false)
 1. summarytotaltime: Print total time in summary table (default is false)
-1. mtype: Map available types are: HYBRID, ROADMAP, SATELLITE, TERRAIN, OSM1 (Open Street Map), OSM2 (Thunderforest - Open Cycle Map), OSM4 (Thunderforest - Transport), OSM5 (Thunderforest - Landscape), OSM6 (MapToolKit - Terrain), OSM7 (Open Street Map - Humanitarian map style), OSM 9 (Hike & Bike), OSM10 (Open Sea Map)
+1. mtype: Map available types are:
+1. OSM1 = Open Street Map
+1. OSM2 = Thunderforest - Open Cycle Map (API Key required)
+1. OSM3 = Thunderforest - Outdoors (API Key required)
+1. OSM4 = Thunderforest - Transport (API Key required)
+1. OSM5 = Thunderforest - Landscape (API Key required)
+1. OSM6 = MapToolKit - Terrain
+1. OSM7 = Open Street Map - Humanitarian map style)
+1. OSM9 =  Hike & Bike
+1. OSM10 = Open Sea Map
 1. mlinecolor: Map line color (default is #3366cc)
 1. zoomonscrollwheel: Zoom on map when mouse scroll wheel (default is false)
 1. waypoints: Print the gpx waypoints inside the map (default is false)

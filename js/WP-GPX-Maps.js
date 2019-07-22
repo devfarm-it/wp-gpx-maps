@@ -123,7 +123,18 @@ var WPGPXMAPS = {
 					maxZoom: 18
 				}) );
 
-				/* Map type: Thunderforst - Transport with API key or Open Cycle Map - Transport */
+				/* Map type: Thunderforst - Transport with API key */
+				this.map.mapTypes.set( 'OSM3', new google.maps.ImageMapType({
+					getTileUrl: function( coord, zoom ) {
+						return 'https://a.tile.thunderforest.com/outdoors/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
+					},
+					tileSize: new google.maps.Size( 256, 256 ),
+					name: 'TF-Outd',
+					alt: 'Thunderforst - Outdoors',
+					maxZoom: 18
+				}) );
+
+				/* Map type: Thunderforst - Transport with API key */
 				this.map.mapTypes.set( 'OSM4', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
 						return 'https://a.tile.thunderforest.com/transport/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
@@ -134,7 +145,7 @@ var WPGPXMAPS = {
 					maxZoom: 18
 				}) );
 
-				/* Map type: Thunderforst - Landscape with API key or Open Cycle Map - Landscape */
+				/* Map type: Thunderforst - Landscape with API key */
 				this.map.mapTypes.set( 'OSM5', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
 						return 'https://a.tile.thunderforest.com/landscape/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
@@ -346,6 +357,14 @@ var WPGPXMAPS = {
 
 				}
 
+				/* Map type: Thunderforst - Outdoors with API key */
+				baseMaps['Thunderforst - Outdoors'] = L.tileLayer( 'https://a.tile.thunderforest.com/outddors/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+					maxZoom: 18,
+					attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
+						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+				});
+
 				/* Map type: Thunderforst - Transport with API key */
 				baseMaps['Thunderforst - Transport'] = L.tileLayer( 'https://a.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
 					maxZoom: 18,
@@ -423,6 +442,12 @@ var WPGPXMAPS = {
 					/* Map type: Thunderforst - Open Cycle Maps with API key */
 					case 'OSM2': {
 						baseMaps['Thunderforst - Cycle'].addTo( this.map );
+						break;
+					}
+
+					/* Map type: Thunderforst - Outdoors with API key */
+					case 'OSM3': {
+						baseMaps['Thunderforst - Outdoors'].addTo( this.map );
 						break;
 					}
 

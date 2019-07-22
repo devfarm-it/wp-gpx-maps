@@ -353,6 +353,12 @@
 							_e( 'Thunderforest - Open Cycle Map (API Key required)', 'wp-gpx-maps' );
 							?>
 						<br />
+						<input type="radio" name="wpgpxmaps_map_type" value="OSM3" <?php if ( $t == 'OSM3' ) echo 'checked'; ?>>
+							<?php
+							/* translators: map provider / map type */
+							_e( 'Thunderforest - Outdoors (API Key required)', 'wp-gpx-maps' );
+							?>
+						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM4" <?php if ( $t == 'OSM4' ) echo 'checked'; ?>>
 							<?php
 							/* translators: map provider / map type */

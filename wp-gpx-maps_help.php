@@ -219,11 +219,6 @@
 					</td>
 					<td>
 						<?php
-						/* translators: map type */
-						_e( 'HYBRID, ROADMAP, SATELLITE, TERRAIN', 'wp-gpx-maps' );
-						?>
-						<br />
-						<?php
 						/* translators: selection = map provider / map type */
 						_e( 'OSM1 = Open Street Map', 'wp-gpx-maps' );
 						?>
@@ -231,6 +226,11 @@
 						<?php
 						/* translators: selection = map provider / map type */
 						_e( 'OSM2 = Thunderforest - Open Cycle Map (API Key required)', 'wp-gpx-maps' );
+						?>
+						<br />
+						<?php
+						/* translators: selection = map provider / map type */
+						_e( 'OSM3 = Thunderforest - Outdoors (API Key required)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
