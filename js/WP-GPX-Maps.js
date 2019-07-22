@@ -118,38 +118,30 @@ var WPGPXMAPS = {
 						}
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
-					name: 'OCM-Cycl',
-					alt: 'Open Cycle Map - Cycle',
+					name: 'TF-OCM',
+					alt: 'Thunderforst - Open Cycle Map',
 					maxZoom: 18
 				}) );
 
 				/* Map type: Thunderforst - Transport with API key or Open Cycle Map - Transport */
 				this.map.mapTypes.set( 'OSM4', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
-						if ( hasThunderforestApiKey ) {
-							return 'https://a.tile.thunderforest.com/transport/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
-						} else {
-							return 'http://a.tile2.opencyclemap.org/transport/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
-						}
+						return 'https://a.tile.thunderforest.com/transport/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
-					name: 'OCM-Tran',
-					alt: 'Open Cycle Map - Transport',
+					name: 'TF-Tran',
+					alt: 'Thunderforst - Transport',
 					maxZoom: 18
 				}) );
 
 				/* Map type: Thunderforst - Landscape with API key or Open Cycle Map - Landscape */
 				this.map.mapTypes.set( 'OSM5', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
-						if ( hasThunderforestApiKey ) {
-							return 'https://a.tile.thunderforest.com/landscape/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
-						} else {
-							return 'http://a.tile3.opencyclemap.org/landscape/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
-						}
+						return 'https://a.tile.thunderforest.com/landscape/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
-					name: 'OCM-Land',
-					alt: 'Open Cycle Map - Landscape',
+					name: 'TF-Land',
+					alt: 'Thunderforst - Landscape',
 					maxZoom: 18
 				}) );
 
@@ -342,22 +334,6 @@ var WPGPXMAPS = {
 							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 					});
 
-					/* Map type: Thunderforst - Transport with API key */
-					baseMaps['Thunderforst - Transport'] = L.tileLayer( 'https://a.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
-						maxZoom: 18,
-						attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
-							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-					});
-
-					/* Map type: Thunderforst - Landscape with API key */
-					baseMaps['Thunderforst - Landscape'] = L.tileLayer( 'https://a.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
-						maxZoom: 18,
-						attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
-							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-						});
-
 				} else {
 
 					/* Map type: Open Cycle Map - Cycle */
@@ -368,23 +344,23 @@ var WPGPXMAPS = {
 							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 					});
 
-					/* Map type: Open Cycle Map - Transport */
-					baseMaps['Open Cycle Map - Transport'] = L.tileLayer( 'https://a.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png', {
-						maxZoom: 18,
-						attribution: 'Maps &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-					});
-
-					/* Map type: Open Cycle Map - Landscape */
-					baseMaps['Open Cycle Map - Landscape'] = L.tileLayer( 'https://a.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png', {
-						maxZoom: 18,
-						attribution: 'Maps &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-					});
-
 				}
+
+				/* Map type: Thunderforst - Transport with API key */
+				baseMaps['Thunderforst - Transport'] = L.tileLayer( 'https://a.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+					maxZoom: 18,
+					attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
+						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+				});
+
+				/* Map type: Thunderforst - Landscape with API key */
+				baseMaps['Thunderforst - Landscape'] = L.tileLayer( 'https://a.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+					maxZoom: 18,
+					attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
+						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+				});
 
 				/* Map type: Open Street Map */
 				baseMaps['Open Street Map'] = L.tileLayer( 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -444,21 +420,21 @@ var WPGPXMAPS = {
 						break;
 					}
 
-					/* Map type: Thunderforst - Open Cycle Maps with API key or Open Cycle Map - Cycle */
+					/* Map type: Thunderforst - Open Cycle Maps with API key */
 					case 'OSM2': {
-						baseMaps['Open Cycle Map - Cycle'].addTo( this.map );
+						baseMaps['Thunderforst - Cycle'].addTo( this.map );
 						break;
 					}
 
-					/* Map type: Thunderforst - Landscape with API key or Open Cycle Map - Landscape */
+					/* Map type: Thunderforst - Landscape with API key */
 					case 'OSM4': {
-						baseMaps['Open Cycle Map - Transport'].addTo( this.map );
+						baseMaps['Thunderforst - Transport'].addTo( this.map );
 						break;
 					}
 
-					/* Map type: Thunderforst - Landscape with API key or Open Cycle Map - Landscape */
+					/* Map type: Thunderforst - Landscape with API key */
 					case 'OSM5': {
-						baseMaps['Open Cycle Map - Landscape'].addTo( this.map );
+						baseMaps['Thunderforst - Landscape'].addTo( this.map );
 						break;
 					}
 
