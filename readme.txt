@@ -128,7 +128,7 @@ You can use the following shortcodes:
 1. OSM4 = Thunderforest - Transport (API Key required)
 1. OSM5 = Thunderforest - Landscape (API Key required)
 1. OSM6 = MapToolKit - Terrain
-1. OSM7 = Open Street Map - Humanitarian map style)
+1. OSM7 = Open Street Map - Humanitarian map style
 1. OSM9 =  Hike & Bike
 1. OSM10 = Open Sea Map
 1. mlinecolor: Map line color (default is #3366cc)
@@ -182,9 +182,10 @@ Yes!
 == Changelog ==
 
 = X.X.XX =
-* Fixed: In Settings and Help the maps provider changed from open cycle map to Thunderforest
-* Fixed: If Thunderforest API key is entered, Thunderforest maps can be selected in the output instead of Open Cycle Map maps
-* Fixed: in map footer is now the correct URL from the map provider
+* Added: new map type Thunderforest - Outddors (OSM3)
+* Fixed: In Settings and Help changed to the correct maps provider from open cycle map to Thunderforest
+* Fixed: In the output map changed to the correct maps provider from open cycle map to Thunderforest
+* Fixed: in map footer for each map, the corresponding map provider is displayed with URL
 * Added: PHP version notices, WordPress 5.3 requires PHP 5.6.20
 * Added: Missing entries for add and delete options
 * Changed: Style for output moved in a seperate file
