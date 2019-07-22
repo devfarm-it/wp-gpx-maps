@@ -348,7 +348,7 @@ var WPGPXMAPS = {
 				} else {
 
 					/* Map type: Open Cycle Map - Cycle */
-					baseMaps['Open Cycle Map - Cycle'] = L.tileLayer( 'http://a.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
+					baseMaps['Open Cycle Map'] = L.tileLayer( 'http://a.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
 						maxZoom: 18,
 						attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
 							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +

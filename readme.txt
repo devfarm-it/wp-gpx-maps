@@ -121,9 +121,9 @@ You can use the following shortcodes:
 1. summaryeledown: Print total descent in summary table (default is false)
 1. summaryavgspeed: Print average Speed in summary table (default is false)
 1. summarytotaltime: Print total time in summary table (default is false)
-1. mtype: Map available types are:
+1. mtype: Map available types are
 1. OSM1 = Open Street Map
-1. OSM2 = Thunderforest - Open Cycle Map (API Key required)
+1. OSM2 = Open Cycle Map / Thunderforest - Open Cycle Map (API Key required)
 1. OSM3 = Thunderforest - Outdoors (API Key required)
 1. OSM4 = Thunderforest - Transport (API Key required)
 1. OSM5 = Thunderforest - Landscape (API Key required)

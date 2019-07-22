@@ -119,13 +119,13 @@ function WP_GPX_Maps_html_page() {
 
 	wpgpxmaps_ilc_admin_tabs( $tab );
 
-	if ( $tab == 'tracks' ) {
+	if ( 'tracks' == $tab ) {
 		include 'wp-gpx-maps_admin_tracks.php';
 
-	} elseif ( $tab == 'settings' ) {
+	} elseif ( 'settings' == $tab  ) {
 		include 'wp-gpx-maps_admin_settings.php';
 
-	} elseif ( $tab == 'help' ) {
+	} elseif ( 'help' == $tab ) {
 		include 'wp-gpx-maps_help.php';
 	}
 }
