@@ -350,19 +350,19 @@
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM2" <?php if ( $t == 'OSM2' ) echo 'checked'; ?>>
 							<?php
 							/* translators: map provider / map type */
-							_e( 'Open Cycle Map', 'wp-gpx-maps' );
+							_e( 'Thunderforest - Open Cycle Map (API Key required)', 'wp-gpx-maps' );
 							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM4" <?php if ( $t == 'OSM4' ) echo 'checked'; ?>>
 							<?php
 							/* translators: map provider / map type */
-							_e( 'Open Cycle Map - Transport', 'wp-gpx-maps' );
+							_e( 'Thunderforest - Transport (API Key required)', 'wp-gpx-maps' );
 							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM5" <?php if ( $t == 'OSM5' ) echo 'checked'; ?>>
 							<?php
 							/* translators: map provider / map type */
-							_e( 'Open Cycle Map - Landscape', 'wp-gpx-maps' );
+							_e( 'Thunderforest - Landscape (API Key required)', 'wp-gpx-maps' );
 							?>
 						<br />
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ( $t == 'OSM6' ) echo 'checked'; ?>>

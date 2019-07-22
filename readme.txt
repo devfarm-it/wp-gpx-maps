@@ -172,7 +172,10 @@ Yes!
 
 == Changelog ==
 
-= X.X.XX
+= X.X.XX =
+* Fixed: In Settings and Help the maps provider changed from open cycle map to Thunderforest
+* Fixed: If Thunderforest API key is entered, Thunderforest maps can be selected in the output instead of Open Cycle Map maps
+* Fixed: in map footer is now the correct URL from the map provider
 * Added: PHP version notices, WordPress 5.3 requires PHP 5.6.20
 * Added: Missing entries for add and delete options
 * Changed: Style for output moved in a seperate file

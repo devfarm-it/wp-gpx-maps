@@ -789,7 +789,7 @@ function convertSpeed( $speed, $uomspeed, $addUom = false ) {
 		$uom    = ' knots';
 
 	} elseif ( $uomspeed == '4' ) {
-		/* min/mi */
+		/* min/miles*/
 		$speed = convertSeconds( $speed * 0.037282272 );
 		$uom   = ' min/mi';
 

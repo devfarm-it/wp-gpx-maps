@@ -11,26 +11,22 @@ var WPGPXMAPS = {
 
 	Utils: {
 
-		// In case of multiple polylines this function divide the points of each polyline.
+		/* In case of multiple polylines this function divide the points of each polyline. */
 		DividePolylinesPoints: function( mapData ) {
 
 			var lastCut = 0;
-
 			var result = [];
-
 			var _len = mapData.length;
 
 			for ( i = 0; i < _len; i++ ) {
-				if ( mapData[i] == null ) {
+				if ( null == mapData[i]) {
 					result.push( mapData.slice( lastCut == 0 ? 0 : lastCut + 1, i ) );
 					lastCut = i;
 				}
 			}
-
 			if ( ( _len - 1 ) != lastCut ) {
 				result.push( mapData.slice( lastCut ) );
 			}
-
 			return result;
 
 		},
@@ -43,30 +39,30 @@ var WPGPXMAPS = {
 			}
 		}
 
-
 	},
 
 	MapEngines: {
 
 		/* NOT WORKING AND TESTED! old code copy&paste */
 		GoogleMaps: function() {
+
+			var ngImageMarkers = [];
+
 			this.map = null,
 			this.EventSelectChart = null,
 			this.Polylines = [],
 			this.init = function( targetElement, mapType, scrollWheelZoom, ThunderforestApiKey ) {
-
 				var mapTypeIds = [];
 				for ( var type in google.maps.MapTypeId ) {
 					mapTypeIds.push( google.maps.MapTypeId[type]);
 				}
+
 				mapTypeIds.push( 'OSM1' );
 				mapTypeIds.push( 'OSM2' );
 				mapTypeIds.push( 'OSM3' );
 				mapTypeIds.push( 'OSM4' );
 				mapTypeIds.push( 'OSM5' );
 				mapTypeIds.push( 'OSM6' );
-
-				var ngImageMarkers = [];
 
 				switch ( mapType ) {
 					case 'TERRAIN': { mapType = google.maps.MapTypeId.TERRAIN; break;}
@@ -81,28 +77,30 @@ var WPGPXMAPS = {
 					default: { mapType = google.maps.MapTypeId.HYBRID; break;}
 				}
 
-				if ( mapType == 'TERRAIN' || mapType == 'SATELLITE' || mapType == 'ROADMAP' ) {
+				if ( 'TERRAIN' == mapType || 'SATELLITE' == mapType || 'ROADMAP' == mapType ) {
 
-					// google maps
+					// Google maps.
+
 				} else {
 
-					// Show OpenStreetMaps credits
+					// Show OpenStreetMaps credits.
+
 					$( el_osm_credits ).show();
 				}
 
 				this.map = new google.maps.Map( el_map, {
 					mapTypeId: mapType,
-					scrollwheel: ( zoomOnScrollWheel == 'true' ),
+					scrollwheel: ( 'true' == zoomOnScrollWheel ),
 					mapTypeControlOptions: {
 						style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
 						mapTypeIds: mapTypeIds
 					}
 				});
 
-
+				/* Map type: Open Street Mao */
 				this.map.mapTypes.set( 'OSM1', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
-						return "https://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + '.png';
+						return 'https://tile.openstreetmap.org/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
 					name: 'OSM',
@@ -110,27 +108,28 @@ var WPGPXMAPS = {
 					maxZoom: 18
 				}) );
 
-
+				/* Map type: Thunderforst - Open Cycle Map with API key or Open Cycle Map - Cycle */
 				this.map.mapTypes.set( 'OSM2', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
 						if ( hasThunderforestApiKey ) {
-							return "https://a.tile.thunderforest.com/cycle/" + zoom + "/" + coord.x + "/" + coord.y + ".png?apikey=" + ThunderforestApiKey;
+							return 'https://a.tile.thunderforest.com/cycle/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
 						} else {
-							return "http://a.tile.opencyclemap.org/cycle/" + zoom + "/" + coord.x + "/" + coord.y + '.png';
+							return 'http://a.tile.opencyclemap.org/cycle/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
 						}
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
-					name: 'OCM',
-					alt: 'Open Cycle Map',
+					name: 'OCM-Cycl',
+					alt: 'Open Cycle Map - Cycle',
 					maxZoom: 18
 				}) );
 
+				/* Map type: Thunderforst - Transport with API key or Open Cycle Map - Transport */
 				this.map.mapTypes.set( 'OSM4', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
 						if ( hasThunderforestApiKey ) {
-							return "https://a.tile.thunderforest.com/transport/" + zoom + "/" + coord.x + "/" + coord.y + ".png?apikey=" + ThunderforestApiKey;
+							return 'https://a.tile.thunderforest.com/transport/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
 						} else {
-							return "http://a.tile2.opencyclemap.org/transport/" + zoom + "/" + coord.x + "/" + coord.y + '.png';
+							return 'http://a.tile2.opencyclemap.org/transport/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
 						}
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
@@ -139,12 +138,13 @@ var WPGPXMAPS = {
 					maxZoom: 18
 				}) );
 
+				/* Map type: Thunderforst - Landscape with API key or Open Cycle Map - Landscape */
 				this.map.mapTypes.set( 'OSM5', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
 						if ( hasThunderforestApiKey ) {
-							return "https://a.tile.thunderforest.com/landscape/" + zoom + "/" + coord.x + "/" + coord.y + ".png?apikey=" + ThunderforestApiKey;
+							return 'https://a.tile.thunderforest.com/landscape/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
 						} else {
-							return "http://a.tile3.opencyclemap.org/landscape/" + zoom + "/" + coord.x + "/" + coord.y + '.png';
+							return 'http://a.tile3.opencyclemap.org/landscape/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
 						}
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
@@ -153,9 +153,10 @@ var WPGPXMAPS = {
 					maxZoom: 18
 				}) );
 
+				/* Map type: MapToolKit - Terrain */
 				this.map.mapTypes.set( 'OSM6', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
-						return "https://tile2.maptoolkit.net/terrain/" + zoom + "/" + coord.x + "/" + coord.y + '.png';
+						return 'https://tile2.maptoolkit.net/terrain/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
 					name: 'MTK-Terr',
@@ -173,7 +174,6 @@ var WPGPXMAPS = {
 				var color = 0;
 				for ( i = 0; i < mapData.length; i++ ) {
 					if ( mapData[i] == null ) {
-
 						var poly = new google.maps.Polyline({
 							path: points.slice( lastCut, i ),
 							strokeColor: color,
@@ -185,9 +185,10 @@ var WPGPXMAPS = {
 						lastCut = i;
 						polyline_number = polyline_number + 1;
 
-						//var p = new google.maps.LatLng(mapData[i-1][0], mapData[i-1][1]);
-						//points.push(p);
-						//bounds.extend(p);
+						// var p = new google.maps.LatLng(mapData[i-1][0], mapData[i-1][1]);
+						// points.push(p);
+						// bounds.extend(p);
+
 					} else {
 						var p = new google.maps.LatLng( mapData[i][0], mapData[i][1]);
 						points.push( p );
@@ -208,7 +209,6 @@ var WPGPXMAPS = {
 						strokeWeight: 4,
 						map: this.map
 					});
-
 					polylinenes.push( poly );
 					currentPoints = [];
 					polyline_number = polyline_number + 1;
@@ -219,7 +219,7 @@ var WPGPXMAPS = {
 					var startMarker = new google.maps.Marker({
 						position: points[0],
 						map: this.map,
-						title: "Start",
+						title: 'Start',
 						animation: google.maps.Animation.DROP,
 						icon: startIconImage,
 						zIndex: 10
@@ -232,7 +232,7 @@ var WPGPXMAPS = {
 					var startMarker = new google.maps.Marker({
 						position: points[ points.length -1 ],
 						map: this.map,
-						title: "Start",
+						title: 'End',
 						animation: google.maps.Animation.DROP,
 						icon: endIconImage,
 						zIndex: 10
@@ -240,10 +240,10 @@ var WPGPXMAPS = {
 
 				}
 
-				var first = WPGPXMAPS.Utils.GetItemFromArray( mapData, 0 )
+				var first = WPGPXMAPS.Utils.GetItemFromArray( mapData, 0 );
 
 				if ( currentIcon == '' ) {
-					currentIcon = "https://maps.google.com/mapfiles/kml/pal4/icon25.png";
+					currentIcon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
 				}
 
 				var current = new google.maps.MarkerImage( currentIcon,
@@ -254,14 +254,13 @@ var WPGPXMAPS = {
 
 				var marker = new google.maps.Marker({
 					position: new google.maps.LatLng( first[0], first[1]),
-					title: "Start",
+					title: 'Current',
 					icon: current,
 					map: this.map,
 					zIndex: 10
 				});
 
 				for ( i = 0; i < polylinenes.length; i++ ) {
-
 					google.maps.event.addListener( polylinenes[i], 'mouseover', function( event ) {
 						if ( marker ) {
 							marker.setPosition( event.latLng );
@@ -292,15 +291,11 @@ var WPGPXMAPS = {
 						}
 					});
 				}
-
-
 			},
 			this.AddWaypoints = function( waypoints, waypointIcon ) {
-
 			},
 			this.MoveMarkerToPosition = function( LatLon, updateChart ) {
-
-			}
+			};
 		},
 
 		Leaflet: function() {
@@ -319,14 +314,14 @@ var WPGPXMAPS = {
 					}
 				);
 
-				// create fullscreen control
+				/* create fullscreen control. */
 				var fsControl = new L.Control.FullScreen();
 
-				// add fullscreen control to the map
+				/* Add fullscreen control to the map. */
 				this.map.addControl( fsControl );
 
 				L.tileLayer( 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+					attribution: 'Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 				}).addTo( this.map );
 
 				var hasThunderforestApiKey = ( ThunderforestApiKey + '' ).length > 0;
@@ -338,74 +333,85 @@ var WPGPXMAPS = {
 				var defaultMpaLayer = null;
 
 				if ( hasThunderforestApiKey ) {
-					baseMaps['Open Cycle Map'] = L.tileLayer( 'https://a.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+
+					/* Map type: Thunderforst - OpenCycleMap with API key */
+					baseMaps['Thunderforest - Cycle'] = L.tileLayer( 'https://a.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
 						maxZoom: 18,
-						attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+						attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
 							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 					});
 
-					baseMaps['Open Cycle Map - Transport'] = L.tileLayer( 'https://a.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+					/* Map type: Thunderforst - Transport with API key */
+					baseMaps['Thunderforst - Transport'] = L.tileLayer( 'https://a.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
 						maxZoom: 18,
-						attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+						attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
 							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 					});
 
-					baseMaps['Open Cycle Map - Landscape'] = L.tileLayer( 'https://a.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+					/* Map type: Thunderforst - Landscape with API key */
+					baseMaps['Thunderforst - Landscape'] = L.tileLayer( 'https://a.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
 						maxZoom: 18,
-						attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+						attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
 							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 						});
 
 				} else {
 
-					baseMaps['Open Cycle Map'] = L.tileLayer( 'http://a.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
+					/* Map type: Open Cycle Map - Cycle */
+					baseMaps['Open Cycle Map - Cycle'] = L.tileLayer( 'http://a.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
 						maxZoom: 18,
-						attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+						attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
 							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 					});
 
+					/* Map type: Open Cycle Map - Transport */
 					baseMaps['Open Cycle Map - Transport'] = L.tileLayer( 'https://a.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png', {
 						maxZoom: 18,
-						attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+						attribution: 'Maps &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
 							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 					});
 
+					/* Map type: Open Cycle Map - Landscape */
 					baseMaps['Open Cycle Map - Landscape'] = L.tileLayer( 'https://a.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png', {
 						maxZoom: 18,
-						attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+						attribution: 'Maps &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
 							'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 							'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 					});
 
 				}
 
+				/* Map type: Open Street Map */
 				baseMaps['Open Street Map'] = L.tileLayer( 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					maxZoom: 18,
-					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+					attribution: 'Maps &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
 						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
 
-
+				/* Map type: MapToolKit - Terrain */
 				baseMaps['MapToolKit - Terrain'] = L.tileLayer( 'https://tile2.maptoolkit.net/terrain/{z}/{x}/{y}.png', {
 					maxZoom: 18,
-					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+					attribution: 'Maps &copy; <a href="https://www.maptoolkit.net/">Maptoolkit</a> contributors, ' +
 						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
 
+				/* Map type: Open Street Map - Humanitarian Map Style */
 				baseMaps['Humanitarian Map Style'] = L.tileLayer( 'https://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 					maxZoom: 18,
-					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+					attribution: 'Maps &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
 						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
+
 				/*
+				Map type: Open Ski Map
 				baseMaps['Open Ski Map'] = L.tileLayer( 'http://tiles.skimap.org/openskimap/{z}/{x}/{y}.png', {
 					maxZoom: 18,
 					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -414,62 +420,85 @@ var WPGPXMAPS = {
 				});
 				*/
 
+				/* Map type: Hike & Bike */
 				baseMaps['Hike & Bike'] = L.tileLayer( 'http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png', {
 					maxZoom: 18,
-					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+					attribution: 'Maps &copy; <a href="https://hikebikemap.org/">Hike & Bike Map</a> contributors, ' +
 						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
 
+				/* Map type: Open Sea Map */
 				baseMaps['Open Sea Map'] = L.tileLayer( 'http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
 					maxZoom: 18,
-					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+					attribution: 'Maps &copy; <a href="https://www.openseamap.org/">OpenSeaMap</a> contributors, ' +
 						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
 
-
 				switch ( mapType ) {
+
+					/* Map type: Open Street Map */
 					case 'OSM1': {
 						baseMaps['Open Street Map'].addTo( this.map );
 						break;
 					}
+
+					/* Map type: Thunderforst - Open Cycle Maps with API key or Open Cycle Map - Cycle */
 					case 'OSM2': {
-						baseMaps['Open Cycle Map'].addTo( this.map );
+						baseMaps['Open Cycle Map - Cycle'].addTo( this.map );
 						break;
 					}
+
+					/* Map type: Thunderforst - Landscape with API key or Open Cycle Map - Landscape */
 					case 'OSM4': {
 						baseMaps['Open Cycle Map - Transport'].addTo( this.map );
 						break;
 					}
+
+					/* Map type: Thunderforst - Landscape with API key or Open Cycle Map - Landscape */
 					case 'OSM5': {
 						baseMaps['Open Cycle Map - Landscape'].addTo( this.map );
 						break;
 					}
+
+					/* Map type: MapToolKit - Terrain */
 					case 'OSM6': {
 						baseMaps['MapToolKit - Terrain'].addTo( this.map );
 						break;
 					}
+
+					/* Map type: Open Street Map - Humanitarian Map Style*/
 					case 'OSM7': {
 						baseMaps['Humanitarian Map Style'].addTo( this.map );
 						break;
 					}
+
+					/*
+					Map type: Open Ski Map
 					case 'OSM8': {
 						baseMaps['Open Ski Map'].addTo( this.map );
 						break;
 					}
+					*/
+
+					/* Map type: Hike & Bike */
 					case 'OSM9': {
 						baseMaps['Hike & Bike'].addTo( this.map );
 						break;
 					}
+
+					/* Map type: Open Sea Map */
 					case 'OSM10': {
 						baseMaps['Open Sea Map'].addTo( this.map );
 						break;
 					}
 
+					/* Map type: Open Street Map */
 					default: {
 						baseMaps['Open Street Map'].addTo( this.map );
 					}
+
 				}
 
 				L.control.layers( baseMaps, overlayMaps ).addTo( this.map );
@@ -481,17 +510,17 @@ var WPGPXMAPS = {
 				var first = WPGPXMAPS.Utils.GetItemFromArray( mapData, 0 );
 
 				if ( currentIcon == '' ) {
-					currentIcon = "https://maps.google.com/mapfiles/kml/pal4/icon25.png";
+					currentIcon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
 				}
 
 				var CurrentPositionMarker = L.marker( first, { icon: L.icon ({
 					iconUrl: currentIcon,
-					iconSize: [ 32, 32 ], // size of the icon
-					iconAnchor: [ 16, 16 ] // point of the icon which will correspond to marker's location
+					iconSize: [ 32, 32 ], // Size of the icon.
+					iconAnchor: [ 16, 16 ] // Point of the icon which will correspond to marker's location.
 				})
 				});
 				CurrentPositionMarker.addTo( this.map );
-				CurrentPositionMarker.title = 'Start';
+				CurrentPositionMarker.title = 'Current';
 
 				this.CurrentPositionMarker = CurrentPositionMarker;
 
@@ -505,7 +534,6 @@ var WPGPXMAPS = {
 				this.CenterMap();
 
 				for ( i = 0; i < pointsArray.length; i++ ) {
-
 					if ( i < color1.length ) {
 						color = color1[i];
 					} else {
@@ -522,21 +550,19 @@ var WPGPXMAPS = {
 						});
 					} catch ( err ) {
 					}
-
 				}
 
 				if ( startIcon != '' ) {
 
 					var startMarker = L.marker( mapData[0], {icon: L.icon({
 						iconUrl: startIcon,
-						iconSize: [ 32, 32 ], // size of the icon
-						iconAnchor: [ 16, 16 ] // point of the icon which will correspond to marker's location
+						iconSize: [ 32, 32 ], // Size of the icon.
+						iconAnchor: [ 16, 16 ] // Point of the icon which will correspond to marker's location.
 					})
 					});
+
 					startMarker.addTo( this.map );
 					startMarker.title = 'Start';
-
-
 				}
 
 				if ( endIcon != '' ) {
@@ -547,13 +573,12 @@ var WPGPXMAPS = {
 						iconAnchor: [ 16, 16 ] // point of the icon which will correspond to marker's location
 					})
 					});
+
 					endMarker.addTo( this.map );
 					endMarker.title = 'End';
-
 				}
 
-
-	/*
+				/*
 				var current = new google.maps.MarkerImage(currentIcon,
 					new google.maps.Size(32, 32),
 					new google.maps.Point(0,0),
@@ -606,8 +631,7 @@ var WPGPXMAPS = {
 						}
 					});
 				}
-
-		*/
+				*/
 
 			},
 
@@ -615,15 +639,15 @@ var WPGPXMAPS = {
 
 				var icon = L.icon({
 					iconUrl: 'https://maps.google.com/mapfiles/ms/micons/flag.png',
-					iconSize: [ 32, 32 ], // size of the icon
-					iconAnchor: [ 16, 16 ] // point of the icon which will correspond to marker's location
+					iconSize: [ 32, 32 ], // Size of the icon.
+					iconAnchor: [ 16, 16 ] // Point of the icon which will correspond to marker's location.
 				});
 
 				if ( waypointIcon != '' ) {
 					icon = L.icon({
 						iconUrl: 'waypointIcon',
-						iconSize: [ 32, 32 ], // size of the icon
-						iconAnchor: [ 16, 16 ] // point of the icon which will correspond to marker's location
+						iconSize: [ 32, 32 ], // Size of the icon.
+						iconAnchor: [ 16, 16 ] // Point of the icon which will correspond to marker's location.
 					});
 				}
 
@@ -641,9 +665,7 @@ var WPGPXMAPS = {
 						icon.iconUrl = wpt.img;
 						wsh = '';
 					}
-
 					var marker = L.marker([ lat, lon ], {icon: icon });
-
 					var cnt = '';
 
 					if ( wpt.name == '' ) {
@@ -651,15 +673,10 @@ var WPGPXMAPS = {
 					} else {
 						cnt = "<div><b>" + wpt.name + "</b><br />" + unescape( wpt.desc ) + "</div>";
 					}
-
 					cnt += "<br /><p><a href='https://maps.google.com?daddr=" + lat + "," + lon + "' target='_blank'>Itin&eacute;raire</a></p>";
-
 					marker.addTo( this.map ).bindPopup( cnt );
-
 				}
-
 				this.CenterMap();
-
 			},
 
 			this.MoveMarkerToPosition = function( LatLon, updateChart ) {
@@ -678,11 +695,8 @@ var WPGPXMAPS = {
 			this.CenterMap = function() {
 				this.map.fitBounds( this.Bounds );
 			};
-
 		}
-
 	}
-
 };
 
 (function( $ ) {
@@ -728,13 +742,13 @@ var WPGPXMAPS = {
 
 		var _formats = [];
 
-		// Unit of measure settings
+		/* Unit of measure settings. */
 		var l_s;
 		var l_x;
 		var l_y;
-		var l_grade = { suf: "%", dec: 1 };
-		var l_hr = { suf: "", dec: 0 };
-		var l_cad = { suf: "", dec: 0 };
+		var l_grade = { suf: '%', dec: 1 };
+		var l_hr = { suf: '', dec: 0 };
+		var l_cad = { suf: '', dec: 0 };
 
 		var el = document.getElementById( 'wpgpxmaps_' + targetId );
 		var el_map = document.getElementById( 'map_' + targetId );
@@ -746,10 +760,12 @@ var WPGPXMAPS = {
 
 		var map = new WPGPXMAPS.MapEngines.Leaflet();
 		map.lng = lng;
-		map.init( 'map_' + targetId,
-						mapType,
-						( zoomOnScrollWheel == 'true' ),
-						ThunderforestApiKey );
+		map.init(
+			'map_' + targetId,
+			mapType,
+			( 'true' == zoomOnScrollWheel ),
+			ThunderforestApiKey
+		);
 
 		map.EventSelectChart = function( LatLon ) {
 
@@ -774,36 +790,31 @@ var WPGPXMAPS = {
 					myChart.tooltip.update( true );
 					myChart.draw();
 				}
-
 			}
-		}
+		};
 
-		//var bounds = new google.maps.LatLngBounds();
+		// var bounds = new google.maps.LatLngBounds();
 
+		if ( 'true' == usegpsposition ) {
 
-		if ( usegpsposition == 'true'  ) {
-
-			// Try HTML5 geolocation
+			/* Try HTML5 geolocation. */
 			if ( navigator.geolocation ) {
-
 				var context = map;
-
 				navigator.geolocation.watchPosition( function( position ) {
-
 					var radius = position.coords.accuracy / 2;
 
-					// user position
+					/* User position. */
 					var pos = [ position.coords.latitude, position.coords.longitude ];
 
 					if ( context.CurrentGPSPositionMarker == null ) {
 						if ( currentpositioncon == '' ) {
-							currentpositioncon = "https://maps.google.com/mapfiles/kml/pal4/icon25.png";
+							currentpositioncon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
 						}
 
 						context.CurrentGPSPositionMarker = L.marker( pos, {icon: L.icon({
 							iconUrl: currentpositioncon,
-							iconSize: [ 32, 32 ], // size of the icon
-							iconAnchor: [ 16, 16 ] // point of the icon which will correspond to marker's location
+							iconSize: [ 32, 32 ], // Size of the icon.
+							iconAnchor: [ 16, 16 ] // Point of the icon which will correspond to marker's location.
 						})
 						})
 						.addTo( context.map )
@@ -813,15 +824,13 @@ var WPGPXMAPS = {
 					} else {
 						context.CurrentGPSPositionMarker.setLatLng( pos );
 					}
-
 					context.Bounds.push( pos );
-
 					context.CenterMap();
-
 				},
 				function( e ) {
 
-					// some errors
+					// Some errors.
+
 				},
 				{
 				enableHighAccuracy: false,
@@ -829,17 +838,14 @@ var WPGPXMAPS = {
 				maximumAge: 0
 				});
 			}
-
 		}
 
-
-		// Print WayPoints
+		/* Print WayPoints. */
 		if ( ! jQuery.isEmptyObject( waypoints ) && waypoints.length > 0 ) {
 			map.AddWaypoints( waypoints, waypointIcon );
 		}
 
-		// Print Images
-
+		/* Print Images. */
 		jQuery( "#ngimages_" + targetId ).attr( "style", "display:block;position:absolute;left:-50000px" );
 
 		var nggImages = jQuery( "#ngimages_" + targetId + " span" ).toArray();
@@ -853,18 +859,18 @@ var WPGPXMAPS = {
 				var ngg_span_a = ngg_span.children[0];
 
 				var pos = [
-					Number( ngg_span.getAttribute( "lat" ) ),
-					Number( ngg_span.getAttribute( "lon" ) )
+					Number( ngg_span.getAttribute( 'lat' ) ),
+					Number( ngg_span.getAttribute( 'lon' ) )
 				];
 
 				map.Bounds.push( pos );
 
 				photos.push({
-					"lat": pos[0],
-					"lng": pos[1],
-					"name": ngg_span_a.getAttribute( "data-title" ),
-					"url": ngg_span_a.getAttribute( "data-src" ),
-					"thumbnail": ngg_span_a.getAttribute( "data-thumbnail" )
+					'lat': pos[0],
+					'lng': pos[1],
+					'name': ngg_span_a.getAttribute( 'data-title' ),
+					'url': ngg_span_a.getAttribute( 'data-src' ),
+					'thumbnail': ngg_span_a.getAttribute( 'data-thumbnail' )
 				});
 
 			}
@@ -881,7 +887,6 @@ var WPGPXMAPS = {
 				photoLayer.add( photos ).addTo( map.map );
 
 				map.CenterMap();
-
 
 				/*
 				var showHideImagesCustomControl = L.Control.extend({
@@ -976,8 +981,7 @@ var WPGPXMAPS = {
 		}
 		*/
 
-
-		// Print Track
+		/* Print Track. */
 		if ( mapData != '' ) {
 			map.AppPolylines( mapData, color1, currentIcon, startIcon, endIcon );
 		}
@@ -987,19 +991,20 @@ var WPGPXMAPS = {
 		map.fitBounds(bounds);
 		*/
 
-		// FIX post tabs
+		// Fix post tabs. */
 		var $_tab = $( el ).closest( ".wordpress-post-tabs, .tab-pane" ).eq( 0 );
 		if ( $_tab ) {
 			var contextMap = map;
 
 			var FixMapSize = function( e ) {
 				setTimeout( function( e ) {
-					//google.maps.event.trigger(map, 'resize');
+
+					// google.maps.event.trigger(map, 'resize');
 					contextMap.map.invalidateSize();
 					contextMap.CenterMap();
 					tabResized = true;
 				}, 300 );
-			}
+			};
 
 			$( ".wpsm_nav-tabs a" ).click( FixMapSize );
 
@@ -1009,29 +1014,47 @@ var WPGPXMAPS = {
 
 		var graphh = jQuery( '#myChart_' + params.targetId ).css( "height" );
 
-		if ( graphDist != '' && ( graphEle != '' || graphSpeed != '' || graphHr != '' || graphAtemp != '' || graphCad != '' ) && graphh != "0px" ) {
+		if ( graphDist != '' && ( graphEle != '' || graphSpeed != '' || graphHr != '' || graphAtemp != '' || graphCad != '' ) && graphh != '0px' ) {
 
 			var valLen = graphDist.length;
 
 
-			if ( unit == "1" ) {
-				l_x = { suf: "mi", dec: 1 };
-				l_y = { suf: "ft", dec: 0 };
-			} else if ( unit == "2" ) {
-				l_x = { suf: "km", dec: 1 };
-				l_y = { suf: "m", dec: 0 };
-			} else if ( unit == "3" ) {
-				l_x = { suf: "NM", dec: 1 };
-				l_y = { suf: "m", dec: 0 };
-			} else if ( unit == "4" ) {
-				l_x = { suf: "mi", dec: 1 };
-				l_y = { suf: "m", dec: 0 };
-			} else if ( unit == "5" ) {
-				l_x = { suf: "NM", dec: 1 };
-				l_y = { suf: "ft", dec: 0 };
+			if ( '1' == unit ) {
+
+				/* feet / miles */
+				l_x = { suf: 'mi', dec: 1 };
+				l_y = { suf: 'ft', dec: 0 };
+
+			} else if ( '2' == unit ) {
+
+				/* meters / kilometers */
+				l_x = { suf: 'km', dec: 1 };
+				l_y = { suf: 'm', dec: 0 };
+
+			} else if ( '3' == unit ) {
+
+				/* meters / nautical miles */
+				l_x = { suf: 'NM', dec: 1 };
+				l_y = { suf: 'm', dec: 0 };
+
+			} else if ( '4' == unit ) {
+
+				/* meters / miles */
+				l_x = { suf: 'mi', dec: 1 };
+				l_y = { suf: 'm', dec: 0 };
+
+			} else if ( '5' == unit ) {
+
+				/* feet / nautical miles */
+				l_x = { suf: 'NM', dec: 1 };
+				l_y = { suf: 'ft', dec: 0 };
+
 			} else {
-				l_x = { suf: "m", dec: 0 };
-				l_y = { suf: "m", dec: 0 };
+
+				/* meters / meters */
+				l_x = { suf: 'm', dec: 0 };
+				l_y = { suf: 'm', dec: 0 };
+
 			}
 
 			var nn = 1111.1;
@@ -1040,13 +1063,13 @@ var WPGPXMAPS = {
 			var decPoint = _nn.substring( _nnLen - 2, _nnLen - 1 );
 			var thousandsSep = _nn.substring( 1, 2 );
 
-			if ( decPoint == "1" )
-				decPoint = ".";
+			if ( '1' == decPoint )
+				decPoint = '.';
 
-			if ( thousandsSep == "1" )
-				thousandsSep = "";
+			if ( '1' == thousandsSep )
+				thousandsSep = '';
 
-			// define the options
+			/* Define the options. */
 			var hoptions = {
 				type: 'line',
 				data: {
@@ -1055,12 +1078,18 @@ var WPGPXMAPS = {
 				borderWidth: 1,
 				options: {
 					animation: {
-						//duration: 0, // general animation time
+
+						// duration: 0,
+						// general animation time
 					},
 					hover: {
-						//animationDuration: 0, // duration of animations when hovering an item
+
+						// animationDuration: 0,
+						// duration of animations when hovering an item
 					},
-					//responsiveAnimationDuration: 0, // animation duration after a resize
+
+					// responsiveAnimationDuration: 0,
+					// animation duration after a resize
 					customLine: {
 						color: 'gray'
 					},
@@ -1071,7 +1100,8 @@ var WPGPXMAPS = {
 							ticks: {
 								suggestedMin: 0,
 								max: graphDist[graphDist.length - 1],
-								// Include a dollar sign in the ticks
+
+								/* Include a dollar sign in the ticks. */
 								callback: function( value, index, values ) {
 									return Math.round( value, l_x.dec ) + l_x.suf;
 								}
@@ -1084,12 +1114,14 @@ var WPGPXMAPS = {
 						intersect: false,
 						callbacks: {
 							title: function( tooltipItems, data ) {
-								//Return value for title
+
+								/* Return value for title: */
 								var fpt = _formats[0];
 								return Math.round( tooltipItems[0].xLabel, fpt.dec ) + fpt.suf;;
 							},
 							label: function( tooltipItem, data ) {
-								// format list values
+
+								/* Format list values: */
 								var label = data.datasets[tooltipItem.datasetIndex].label || '';
 								var fpt = _formats[tooltipItem.datasetIndex];
 								if ( label ) {
@@ -1099,11 +1131,11 @@ var WPGPXMAPS = {
 								return label;
 							},
 							footer: function( tooltipItem ) {
-								// move the point in map
-								var i = tooltipItem[0].index;
-								var point = WPGPXMAPS.Utils.GetItemFromArray( mapData, i )
-								map.MoveMarkerToPosition( point, false );
 
+								/* Move the point in map. */
+								var i = tooltipItem[0].index;
+								var point = WPGPXMAPS.Utils.GetItemFromArray( mapData, i );
+								map.MoveMarkerToPosition( point, false );
 							}
 						}
 					}
@@ -1136,80 +1168,114 @@ var WPGPXMAPS = {
 			};
 
 			if ( graphEle != '' ) {
-
 				var myData = mergeArrayForChart( graphDist, graphEle );
-
 				var yaxe = {
 					type: 'linear',
 					ticks: {
-						// Include a dollar sign in the ticks
+
+						/* Include a dollar sign in the ticks. */
 						callback: function( value, index, values ) {
 							return Math.round( value, l_y.dec ) + l_y.suf;
 						}
 					},
-					id: "y-axis-" + ( hoptions.options.scales.yAxes.length + 1 )
+					id: 'y-axis-' + ( hoptions.options.scales.yAxes.length + 1 )
 				};
 
 				if ( chartFrom1 != '' )	{
+
 					yaxe.min = chartFrom1;
 					yaxe.startOnTick = false;
+
 				} else {
+
 					yaxe.min = myData.Min;
+
 				}
+
 				if ( chartTo1 != '' ) {
+
 					yaxe.max = chartTo1;
 					yaxe.endOnTick = false;
+
 				} else {
+
 					yaxe.max = myData.Max;
 				}
-				_formats.push( l_y )
+
+				_formats.push( l_y );
 				hoptions.options.scales.yAxes.push( yaxe );
 				hoptions.data.datasets.push( wpgpxmapsGetDataset( lng.altitude, myData.Items, color2, yaxe.id ) );
 
 			}
 
 			if ( graphSpeed != '' ) {
-				if ( unitspeed == '6' ) /* min/100m */ {
-					l_s = { suf: "min/100m", dec: 2 };
-				} else if ( unitspeed == '5' ) /* knots */ {
-					l_s = { suf: "knots", dec: 2 };
-				} else if ( unitspeed == '4' ) /* min/miles */ {
-					l_s = { suf: "min/mi", dec: 2 };
-				} else if ( unitspeed == '3' ) /* min/km */ {
-					l_s = { suf: "min/km", dec: 2 };
-				} else if ( unitspeed == '2' ) /* miles/h */ {
-					l_s = { suf: "mi/h", dec: 0 };
-				} else if ( unitspeed == '1' ) /* km/h */ {
-					l_s = { suf: "km/h", dec: 0 };
+
+				if ( '6' == unitspeed ) {
+
+					/* min/100 meters */
+					l_s = { suf: 'min/100m', dec: 2 };
+
+				} else if ( '5' == unitspeed ) {
+
+					/* knots */
+					l_s = { suf: 'knots', dec: 2 };
+
+				} else if ( '4' == unitspeed ) {
+
+					/* min/miles */
+					l_s = { suf: 'min/mi', dec: 2 };
+
+				} else if ( '3' == unitspeed ) {
+
+					/* min/km */
+					l_s = { suf: 'min/km', dec: 2 };
+
+				} else if ( '2' == unitspeed ) {
+
+					/* miles/h */
+					l_s = { suf: 'mi/h', dec: 0 };
+
+				} else if ( '1' == unitspeed ) {
+
+					/* km/h */
+					l_s = { suf: 'km/h', dec: 0 };
+
 				} else {
-					l_s = { suf: "m/s", dec: 0 };
+
+					/* dafault m/s */
+					l_s = { suf: 'm/s', dec: 0 };
+
 				}
 
 				var myData = mergeArrayForChart( graphDist, graphSpeed );
-
 				var yaxe = {
 					type: 'linear',
 					ticks: {
-						// Include a dollar sign in the ticks
+
+						/* Include a dollar sign in the ticks. */
 						callback: function( value, index, values ) {
 							return Math.round( value, l_s.dec ) + l_s.suf;
 						}
 					},
 					position: 'right',
 					scalePositionLeft: false,
-					id: "y-axis-" + ( hoptions.options.scales.yAxes.length + 1 )
+					id: 'y-axis-' + ( hoptions.options.scales.yAxes.length + 1 )
 				};
 
 				if ( chartFrom2 != '' ) {
+
 					yaxe.min = chartFrom2;
 					yaxe.startOnTick = false;
+
 				} else {
 					yaxe.min = myData.Min;
 				}
 
 				if ( chartTo2 != '' ) {
+
 					yaxe.max = chartTo2;
 					yaxe.endOnTick = false;
+
 				} else {
 					yaxe.max = myData.Max;
 				}
@@ -1217,71 +1283,64 @@ var WPGPXMAPS = {
 				_formats.push ( l_s );
 				hoptions.options.scales.yAxes.push( yaxe );
 				hoptions.data.datasets.push( wpgpxmapsGetDataset( lng.speed, myData.Items, color3, yaxe.id ) );
-
 			}
 
 			if ( graphHr != '' ) {
-
 				var myData = mergeArrayForChart( graphDist, graphHr );
-
 				var yaxe = {
 					type: 'linear',
 					ticks: {
-						// Include a dollar sign in the ticks
+
+						/* Include a dollar sign in the ticks. */
 						callback: function( value, index, values ) {
 							return Math.round( value, l_hr.dec ) + l_hr.suf;
 						}
 					},
 					position: 'right',
 					scalePositionLeft: false,
-					id: "y-axis-" + ( hoptions.options.scales.yAxes.length + 1 )
+					id: 'y-axis-' + ( hoptions.options.scales.yAxes.length + 1 )
 				};
-
 				hoptions.options.scales.yAxes.push( yaxe );
 				hoptions.data.datasets.push( wpgpxmapsGetDataset( lng.heartRate, myData.Items, color4, yaxe.id ) );
 				_formats.push( l_hr );
 			}
 
-
 			if ( graphAtemp != '' ) {
-
 				var myData = mergeArrayForChart( graphDist, graphAtemp );
-
 				var yaxe = {
 					type: 'linear',
 					ticks: {
-						// Include a dollar sign in the ticks
+
+						/* Include a dollar sign in the ticks. */
 						callback: function( value, index, values ) {
 							return Math.round( value, 1 ) + "°C";
 						}
 					},
 					position: 'right',
 					scalePositionLeft: false,
-					id: "y-axis-" + ( hoptions.options.scales.yAxes.length + 1 )
+					id: 'y-axis-' + ( hoptions.options.scales.yAxes.length + 1 )
 				};
-
 				hoptions.options.scales.yAxes.push( yaxe );
 				hoptions.data.datasets.push( wpgpxmapsGetDataset( lng.atemp, myData.Items, color7, yaxe.id ) );
-				_formats.push({ suf: "°C", dec: 1 });
-
+				_formats.push({ suf: '°C', dec: 1 });
 			}
 
 
 			if ( graphCad != '' ) {
 
 				var myData = mergeArrayForChart( graphDist, graphCad, true );
-
 				var yaxe = {
 					type: 'linear',
 					ticks: {
-						// Include a dollar sign in the ticks
+
+						// Include a dollar sign in the ticks.
 						callback: function( value, index, values ) {
 							return Math.round( value, l_cad.dec ) + l_cad.suf;
 						}
 					},
 					position: 'right',
 					scalePositionLeft: false,
-					id: "y-axis-" + ( hoptions.options.scales.yAxes.length + 1 )
+					id: 'y-axis-' + ( hoptions.options.scales.yAxes.length + 1 )
 				};
 
 				hoptions.options.scales.yAxes.push( yaxe );
@@ -1293,11 +1352,11 @@ var WPGPXMAPS = {
 			if ( graphGrade != '' ) {
 
 				var myData = mergeArrayForChart( graphDist, graphGrade );
-
 				var yaxe = {
 					type: 'linear',
 					ticks: {
-						// Include a dollar sign in the ticks
+
+						// Include a dollar sign in the ticks.
 						callback: function( value, index, values ) {
 							return Math.round( value, l_grade.dec ) + l_grade.suf;
 						}
@@ -1310,14 +1369,13 @@ var WPGPXMAPS = {
 				_formats.push( l_grade );
 				hoptions.options.scales.yAxes.push( yaxe );
 				hoptions.data.datasets.push( wpgpxmapsGetDataset( lng.grade, myData.Items, color6, yaxe.id ) );
-
 			}
 
-			var ctx = document.getElementById( "myChart_" + params.targetId ).getContext( '2d' );
+			var ctx = document.getElementById( 'myChart_' + params.targetId ).getContext( '2d' );
 			var myChart = new Chart( ctx, hoptions );
 
 		} else  {
-			jQuery( "#myChart_" + params.targetId ).css( "display", "none" );
+			jQuery( '#myChart_' + params.targetId ).css( "display", "none" );
 		}
 
         return this;
@@ -1352,7 +1410,7 @@ var WPGPXMAPS = {
 			Items: items,
 			Min: min,
 			Max: max
-		}
+		};
 	}
 
 	function wpgpxmapsGetDataset( name, data, color, id ) {
@@ -1365,7 +1423,7 @@ var WPGPXMAPS = {
 			borderWidth: 1,
 			pointHoverRadius: 1,
 			yAxisID: id
-		}
+		};
 	}
 
 	function hexToRgbA( hex, a ) {
@@ -1376,7 +1434,7 @@ var WPGPXMAPS = {
 				c = [ c[0], c[0], c[1], c[1], c[2], c[2] ];
 			}
 			c = '0x' + c.join( '' );
-			return 'rgba(' + [ ( c>>16 )&255, ( c>>8)&255, c&255 ].join( ',' ) + ',' + a + ' )';
+			return 'rgba(' + [ ( c>>16 )&255, ( c>>8 )&255, c&255 ].join( ',' ) + ',' + a + ' )';
 		}
 		throw new Error( 'Bad Hex' );
 	}
@@ -1413,8 +1471,8 @@ var WPGPXMAPS = {
 		var divImages = document.getElementById( "ngimages_" + targetId );
 		var img_spans = divImages.getElementsByTagName( "span" );
 		for ( var i = 0; i < img_spans.length; i++ ) {
-			var imageLat = img_spans[i].getAttribute( "lat" );
-			var imageLon = img_spans[i].getAttribute( "lon" );
+			var imageLat = img_spans[i].getAttribute( 'lat' );
+			var imageLon = img_spans[i].getAttribute( 'lon' );
 
 			imageLat = imageLat.replace( ",", "." );
 			imageLon = imageLon.replace( ",", "." );
@@ -1434,7 +1492,8 @@ var WPGPXMAPS = {
 	}
 
 	function wpgpxmapsDist( lat1, lon1, lat2, lon2 ) {
-		// mathematically not correct but fast
+
+		// Mathematically not correct but fast.
 		var dLat = ( lat2 - lat1 );
 		var dLon = ( lon2 - lon1 );
 		return Math.sqrt( dLat * dLat + dLon * dLon );
