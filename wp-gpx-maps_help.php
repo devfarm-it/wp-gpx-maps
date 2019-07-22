@@ -230,17 +230,17 @@
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM2 = Open Cycle Map', 'wp-gpx-maps' );
+						_e( 'OSM2 = Thunderforest - Open Cycle Map (API Key required)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM4 = Open Cycle Map - Transport', 'wp-gpx-maps' );
+						_e( 'OSM4 = Thunderforest - Transport (API Key required)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM5 = Open Cycle Map - Landscape', 'wp-gpx-maps' );
+						_e( 'OSM5 = Thunderforest - Landscape (API Key required)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php

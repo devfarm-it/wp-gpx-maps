@@ -18,8 +18,7 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			'post_mime_type' => 'image',
 			'order'          => 'ASC',
 			'orderby'        => 'menu_order ASC',
-			)
-		);
+		) );
 
 		foreach ( $attachments as $attachment_id => $attachment ) {
 
@@ -27,7 +26,7 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			$img_thmb     = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
 			$img_metadata = wp_get_attachment_metadata( $attachment_id );
 
-			$item = array();
+			$item         = array();
 			$item['data'] = wp_get_attachment_link( $attachment_id, array( 105, 105 ) );
 
 			if ( is_callable( 'exif_read_data' ) ) {
@@ -43,7 +42,7 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 						if ( $_item != null ) {
 							$item['lat'] = $_item['lat'];
 							$item['lon'] = $_item['lon'];
-							$result[] = $item;
+							$result[]    = $item;
 						}
 					}
 				}
@@ -69,10 +68,9 @@ function gpxFolderPath() {
 	$upload_dir  = wp_upload_dir();
 	$uploadsPath = $upload_dir['basedir'];
 
-	if ( current_user_can( 'manage_options' ) ){
+	if ( current_user_can( 'manage_options' ) ) {
 			$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx';
-	}
-	elseif ( current_user_can( 'publish_posts' ) ) {
+	} elseif ( current_user_can( 'publish_posts' ) ) {
 			global $current_user;
 			wp_get_current_user();
 			$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx' . DIRECTORY_SEPARATOR . $current_user->user_login;
@@ -225,11 +223,11 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 			$trkpts = $trk->xpath( '//trkpt | //a:trkpt | //b:trkpt' );
 
-			$lastLat     = 0;
-			$lastLon     = 0;
-			$lastEle     = 0;
-			$lastTime    = 0;
-			//$dist      = 0;
+			$lastLat  = 0;
+			$lastLon  = 0;
+			$lastEle  = 0;
+			$lastTime = 0;
+			// $dist = 0;
 			$lastOffset  = 0;
 			$speedBuffer = array();
 
@@ -251,14 +249,15 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 					if ( isset( $arr['ns3:TrackPointExtension'] ) ) {
 						$tpe   = $arr['ns3:TrackPointExtension'];
-						$hr    = @$tpe["ns3:hr"];
-						$atemp = @$tpe["ns3:atemp"];
-						$cad   = @$tpe["ns3:cad"];
+						$hr    = @$tpe['ns3:hr'];
+						$atemp = @$tpe['ns3:atemp'];
+						$cad   = @$tpe['ns3:cad'];
+
 					} elseif ( isset( $arr['TrackPointExtension'] ) ) {
 						$tpe   = $arr['TrackPointExtension'];
-						$hr    = @$tpe["hr"];
-						$atemp = @$tpe["atemp"];
-						$cad   = @$tpe["cad"];
+						$hr    = @$tpe['hr'];
+						$atemp = @$tpe['atemp'];
+						$cad   = @$tpe['cad'];
 					}
 				}
 
@@ -284,7 +283,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 					/* Normal Case  */
 					$offset = calculateDistance( (float) $lat, (float) $lon, (float) $ele, (float) $lastLat, (float) $lastLon, (float) $lastEle, $distancetype );
-					$dist = $dist + $offset;
+					$dist   = $dist + $offset;
 
 					$points->totalLength = $dist;
 
@@ -393,7 +392,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 			$_temp           = array_filter( $points->atemp );
 			$points->avgTemp = (float) round( array_sum( $_temp ) / count( $_temp ), 1 );
 
-			} catch ( Exception $e ) {
+		} catch ( Exception $e ) {
 		}
 	} else {
 
@@ -493,7 +492,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 						/* Normal Case */
 						$offset = calculateDistance( $lat, $lon, 0, $lastLat, $lastLon, 0, $distancetype );
-						$dist = $dist + $offset;
+						$dist   = $dist + $offset;
 						if ( ( (float) $offset + (float) $lastOffset ) > $gpxOffset ) {
 
 							/* Bigger Offset -> write coordinate */
@@ -510,7 +509,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 						} else {
 
 							/* Smoller Offset -> continue.. */
-							$lastOffset= (float) $lastOffset + (float) $offset;
+							$lastOffset = (float) $lastOffset + (float) $offset;
 						}
 					}
 					$lastLat = $lat;
@@ -583,7 +582,7 @@ function toRadians( $degrees ) {
 		return (float) ( $degrees * 3.1415926535897932385 / 180 );
 }
 
-function calculateDistance ( $lat1, $lon1, $ele1, $lat2, $lon2, $ele2, $distancetype ) {
+function calculateDistance( $lat1, $lon1, $ele1, $lat2, $lon2, $ele2, $distancetype ) {
 
 		/* Distance typ: Climb */
 	if ( $distancetype == '2' ) {
