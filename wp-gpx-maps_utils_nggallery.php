@@ -124,7 +124,7 @@ function gps2Num( $coordPart ) {
 		$lat = floatval( $parts[0] );
 		$lon = floatval( $parts[1] );
 
-	if ($lon == 0 )
+	if ( 0 == $lon )
 	return $lat;
 	return $lat / $lon;
 }

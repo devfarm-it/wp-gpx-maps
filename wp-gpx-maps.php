@@ -362,7 +362,7 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$isGpxUrl = ( preg_match( '/^(http(s)?\:\/\/)/', trim( $gpx ) ) == 1 );
 
 	if ( ( ! isset( $points_maps ) || $points_maps == '' ) && $gpx != '' ) {
-	// if (true)	{
+	// if (true) {
 
 		$sitePath = wp_gpx_maps_sitePath();
 

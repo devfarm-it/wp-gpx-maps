@@ -76,27 +76,29 @@ if ( is_writable( $realGpxPath ) ) {
 } else {
 
 	?>
-			<br />
+		<br />
 
-				<?php echo '<div class=" notice notice-error"><p>'; ?>
-				<p style='font-size:2em;'>
-					<?php
-					printf(
-						/* translators: Relative path of the GPX folder */
-						__( 'Your folder for GPX files %1s is not writable. Please change the folder permissions.', 'wp-gpx-maps' ),
-						'<span class="code">' . esc_html( $relativeGpxPath ) . '</span>'
-					);
-					?>
-				</p>
-				<?php echo '</p></div>'; ?>
+			<?php echo '<div class=" notice notice-error"><p>'; ?>
+
+			<p style='font-size:2em;'>
+				<?php
+				printf(
+					/* translators: Relative path of the GPX folder */
+					__( 'Your folder for GPX files %1s is not writable. Please change the folder permissions.', 'wp-gpx-maps' ),
+					'<span class="code">' . esc_html( $relativeGpxPath ) . '</span>'
+				);
+				?>
+			</p>
+
+			<?php echo '</p></div>'; ?>
 
 			<br />
 
 		<?php
-	}
+}
 
-	$myGpxFileNames = array();
-	if ( is_readable ( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
+$myGpxFileNames = array();
+if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 	while ( false !== ( $entry = readdir( $handle ) ) ) {
 		if ( preg_match( $gpxRegEx, $entry ) ) {
 			if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry ) ) {
@@ -168,7 +170,7 @@ if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 					' | ',
 					'<a href="<?php echo $relativeGpxPath; ?>' + row.name + '"><?php _e( 'Download', 'wp-gpx-maps' ); ?></a>',
 					' | ',
-					'<a href="#" class="copy-shortcode" title="<?php _e( 'Copy shortcode', 'wp-gpx-maps' ); ?>"><?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?></a> <span class="code"> [sgpx gpx="<?php echo $relativeGpxPath ?>' + row.name + '"]</span>',
+					'<a href="#" class="copy-shortcode" title="<?php _e( 'Copy shortcode', 'wp-gpx-maps' ); ?>"><?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?></a> <span class="code"> [sgpx gpx="<?php echo $relativeGpxPath; ?>' + row.name + '"]</span>',
 				].join('')
 
 			}
