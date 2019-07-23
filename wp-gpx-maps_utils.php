@@ -123,7 +123,7 @@ function wpgpxmaps_recursive_remove_directory( $directory, $empty = false ) {
 			}
 		}
 		closedir( $handle );
-		if ( $empty == false ) {
+		if ( false == $empty ) {
 			if ( ! rmdir( $directory ) ) {
 				return false;
 			}
@@ -201,7 +201,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 	$gpx = simplexml_load_file( $filePath );
 
-	if ( $gpx === false )
+	if ( false === $gpx )
 		return;
 
 		$gpx->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
@@ -261,7 +261,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 					}
 				}
 
-				if ( $lastLat == 0 && $lastLon == 0 ) {
+				if ( 0 == $lastLat && 0 == $lastLon ) {
 
 					/* Base Case  */
 					array_push( $points->dt, strtotime( $time ) );
@@ -414,7 +414,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 				$lat = $rpt['lat'];
 				$lon = $rpt['lon'];
-				if ( $lastLat == 0 && $lastLon == 0 ) {
+				if ( 0 == $lastLat && 0 == $lastLon ) {
 
 					/* Base Case */
 					array_push( $points->lat, (float) $lat );
@@ -474,7 +474,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 					$lat = $rtept['lat'];
 					$lon = $rtept['lon'];
-					if ( $lastLat == 0 && $lastLon == 0 ) {
+					if ( 0 == $lastLat && 0 == $lastLon ) {
 
 						/* Base Case */
 						array_push( $points->lat, (float) $lat );
@@ -585,11 +585,11 @@ function toRadians( $degrees ) {
 function calculateDistance( $lat1, $lon1, $ele1, $lat2, $lon2, $ele2, $distancetype ) {
 
 		/* Distance typ: Climb */
-	if ( $distancetype == '2' ) {
+	if ( '2' == $distancetype ) {
 		return (float) $ele1 - (float) $ele2;
 
 		/* Distance typ: Flat */
-	} elseif ( $distancetype == '1' ) {
+	} elseif ( '1' == $distancetype ) {
 		$alpha = (float) sin( (float) toRadians( (float) $lat2 - (float) $lat1 ) / 2 );
 		$beta  = (float) sin( (float) toRadians( (float) $lon2 - (float) $lon1 ) / 2 );
 		/* Distance in meters */
