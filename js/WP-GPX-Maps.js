@@ -176,7 +176,7 @@ var WPGPXMAPS = {
 				var polyline_number = 0;
 				var color = 0;
 				for ( i = 0; i < mapData.length; i++ ) {
-					if ( mapData[i] == null ) {
+					if ( null == mapData[i]) {
 						var poly = new google.maps.Polyline({
 							path: points.slice( lastCut, i ),
 							strokeColor: color,
@@ -510,7 +510,7 @@ var WPGPXMAPS = {
 
 				var first = WPGPXMAPS.Utils.GetItemFromArray( mapData, 0 );
 
-				if ( currentIcon == '' ) {
+				if ( '' == currentIcon ) {
 					currentIcon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
 				}
 
@@ -681,7 +681,7 @@ var WPGPXMAPS = {
 			},
 
 			this.MoveMarkerToPosition = function( LatLon, updateChart ) {
-				if ( this.CurrentPositionMarker == null )
+				if ( null == this.CurrentPositionMarker )
 					return;
 
 				this.CurrentPositionMarker.setLatLng( LatLon );
@@ -689,7 +689,7 @@ var WPGPXMAPS = {
 				if ( this.lng )
 					this.CurrentPositionMarker.title = this.lng.currentPosition;
 
-				if ( updateChart == true && this.EventSelectChart )
+				if ( true == updateChart && this.EventSelectChart )
 					this.EventSelectChart( LatLon );
 
 			},
@@ -700,7 +700,7 @@ var WPGPXMAPS = {
 	}
 };
 
-(function( $ ) {
+( function( $ ) {
 
     $.fn.wpgpxmaps = function( params ) {
 
@@ -807,8 +807,8 @@ var WPGPXMAPS = {
 					/* User position. */
 					var pos = [ position.coords.latitude, position.coords.longitude ];
 
-					if ( context.CurrentGPSPositionMarker == null ) {
-						if ( currentpositioncon == '' ) {
+					if ( null == context.CurrentGPSPositionMarker ) {
+						if ( '' == currentpositioncon  ) {
 							currentpositioncon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
 						}
 
@@ -1454,7 +1454,7 @@ var WPGPXMAPS = {
 		var dd = 10000;
 		var ii = 0;
 		for ( i = 0; i < points.length; i++ ) {
-			if ( points[i] == null )
+			if ( null == points[i])
 				continue;
 
 			var d = wpgpxmapsDist( points[i][0], points[i][1], lat, lon );
