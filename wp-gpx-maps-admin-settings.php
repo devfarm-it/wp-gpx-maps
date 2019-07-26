@@ -1,53 +1,50 @@
 <?php
 
-	if ( ! current_user_can( 'manage_options' ) )
-		return;
-	/* General */
-	$distanceType   = get_option( 'wpgpxmaps_distance_type' );
-	$skipcache      = get_option( 'wpgpxmaps_skipcache' );
-	$download       = get_option( 'wpgpxmaps_download' );
-	$usegpsposition = get_option( 'wpgpxmaps_usegpsposition' );
-	/* Print Summary Table */
-	$summary        = get_option( 'wpgpxmaps_summary' );
-	$tot_len        = get_option( 'wpgpxmaps_summary_tot_len' );
-	$max_ele        = get_option( 'wpgpxmaps_summary_max_ele' );
-	$min_ele        = get_option( 'wpgpxmaps_summary_min_ele' );
-	$total_ele_up   = get_option( 'wpgpxmaps_summary_total_ele_up' );
-	$total_ele_down = get_option( 'wpgpxmaps_summary_total_ele_down' );
-	$avg_speed      = get_option( 'wpgpxmaps_summary_avg_speed' );
-	$avg_cad        = get_option( 'wpgpxmaps_summary_avg_cad' );
-	$avg_hr         = get_option( 'wpgpxmaps_summary_avg_hr' );
-	$avg_temp       = get_option( 'wpgpxmaps_summary_avg_temp' );
-	$total_time     = get_option( 'wpgpxmaps_summary_total_time' );
-	/* Map */
-	$t                 = get_option( 'wpgpxmaps_map_type' );
-	$zoomonscrollwheel = get_option( 'wpgpxmaps_zoomonscrollwheel' );
-	$showW             = get_option( 'wpgpxmaps_show_waypoint' );
-	/* Diagram */
-	$showEle   = get_option( 'wpgpxmaps_show_elevation' );
-	$uom       = get_option( 'wpgpxmaps_unit_of_measure' );
-	$showSpeed = get_option( 'wpgpxmaps_show_speed' );
-	$uomSpeed  = get_option( 'wpgpxmaps_unit_of_measure_speed' );
-	$showHr    = get_option( 'wpgpxmaps_show_hr' );
-	$showAtemp = get_option( 'wpgpxmaps_show_atemp' );
-	$showCad   = get_option( 'wpgpxmaps_show_cadence' );
-	$showGrade = get_option( 'wpgpxmaps_show_grade' );
-	/* Advanced */
-	$po                 = get_option( 'wpgpxmaps_pointsoffset' );
-	$donotreducegpx     = get_option( 'wpgpxmaps_donotreducegpx' );
-	$allow_users_upload = get_option( 'wpgpxmaps_allow_users_view' );
+if ( ! current_user_can( 'manage_options' ) )
+	return;
 
-	if ( empty( $allow_users_upload ) )
-		$allow_users_upload = 'false';
+/* General */
+$distanceType   = get_option( 'wpgpxmaps_distance_type' );
+$skipcache      = get_option( 'wpgpxmaps_skipcache' );
+$download       = get_option( 'wpgpxmaps_download' );
+$usegpsposition = get_option( 'wpgpxmaps_usegpsposition' );
+/* Print Summary Table */
+$summary        = get_option( 'wpgpxmaps_summary' );
+$tot_len        = get_option( 'wpgpxmaps_summary_tot_len' );
+$max_ele        = get_option( 'wpgpxmaps_summary_max_ele' );
+$min_ele        = get_option( 'wpgpxmaps_summary_min_ele' );
+$total_ele_up   = get_option( 'wpgpxmaps_summary_total_ele_up' );
+$total_ele_down = get_option( 'wpgpxmaps_summary_total_ele_down' );
+$avg_speed      = get_option( 'wpgpxmaps_summary_avg_speed' );
+$avg_cad        = get_option( 'wpgpxmaps_summary_avg_cad' );
+$avg_hr         = get_option( 'wpgpxmaps_summary_avg_hr' );
+$avg_temp       = get_option( 'wpgpxmaps_summary_avg_temp' );
+$total_time     = get_option( 'wpgpxmaps_summary_total_time' );
+/* Map */
+$t                 = get_option( 'wpgpxmaps_map_type' );
+$zoomonscrollwheel = get_option( 'wpgpxmaps_zoomonscrollwheel' );
+$showW             = get_option( 'wpgpxmaps_show_waypoint' );
+/* Diagram */
+$showEle   = get_option( 'wpgpxmaps_show_elevation' );
+$uom       = get_option( 'wpgpxmaps_unit_of_measure' );
+$showSpeed = get_option( 'wpgpxmaps_show_speed' );
+$uomSpeed  = get_option( 'wpgpxmaps_unit_of_measure_speed' );
+$showHr    = get_option( 'wpgpxmaps_show_hr' );
+$showAtemp = get_option( 'wpgpxmaps_show_atemp' );
+$showCad   = get_option( 'wpgpxmaps_show_cadence' );
+$showGrade = get_option( 'wpgpxmaps_show_grade' );
+/* Advanced */
+$po                 = get_option( 'wpgpxmaps_pointsoffset' );
+$donotreducegpx     = get_option( 'wpgpxmaps_donotreducegpx' );
 
-	if ( empty( $showEle ) )
-		$showEle = 'true';
+if ( empty( $showEle ) )
+	$showEle = 'true';
 
-	if ( ! ( $t ) )
-		$t = 'HYBRID';
+if ( ! ( $t ) )
+	$t = 'HYBRID';
 
-	if ( ! ( $po ) )
-		$po = 10;
+if ( ! ( $po ) )
+	$po = 10;
 
 ?>
 
@@ -815,23 +812,11 @@
 					</td>
 				</tr>
 
-				<tr>
-					<th scope="row">
-						<?php _e( 'User upload:', 'wp-gpx-maps' ); ?>
-					</th>
-					<td>
-						<input name="wpgpxmaps_allow_users_view" type="checkbox" value="true" onchange="this.value = (this.checked)" <?php if ( true === $allow_users_upload ) { echo( 'checked' ); } ?> />
-						<i>
-							<?php _e( 'Allow registered user to upload GPX files', 'wp-gpx-maps' ); ?>
-						</i>
-					</td>
-				</tr>
-
 			</table>
 
 			<p class="submit">
 				<input type="hidden" name="action" value="update" />
-				<input name="page_options" type="hidden" value="wpgpxmaps_donotreducegpx,wpgpxmaps_pointsoffset,wpgpxmaps_allow_users_view" />
+				<input name="page_options" type="hidden" value="wpgpxmaps_donotreducegpx,wpgpxmaps_pointsoffset" />
 				<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 			</p>
 

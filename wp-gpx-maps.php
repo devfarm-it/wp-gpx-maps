@@ -14,26 +14,32 @@
 
 // error_reporting (E_ALL);
 
-require 'wp-gpx-maps_utils.php';
-require 'wp-gpx-maps_admin.php';
+/**
+ * Version of the plugin
+ */
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.7.00' );
 
-add_shortcode( 'sgpx', 'handle_WP_GPX_Maps_Shortcodes' );
-add_shortcode( 'sgpxf', 'handle_WP_GPX_Maps_folder_Shortcodes' );
-register_activation_hook( __FILE__, 'WP_GPX_Maps_install' );
-register_deactivation_hook( __FILE__, 'WP_GPX_Maps_remove' );
-add_filter( 'plugin_action_links', 'WP_GPX_Maps_action_links', 10, 2 );
-add_action( 'wp_enqueue_scripts', 'enqueue_WP_GPX_Maps_scripts' );
-add_action( 'admin_enqueue_scripts', 'enqueue_WP_GPX_Maps_scripts_admin' );
-add_action( 'plugins_loaded', 'WP_GPX_Maps_lang_init' );
+require 'wp-gpx-maps-utils.php';
+require 'wp-gpx-maps-admin.php';
 
-function WP_GPX_Maps_lang_init() {
+add_shortcode( 'sgpx', 'wpgpxmaps_handle_shortcodes' );
+add_shortcode( 'sgpxf', 'wpgpxmaps_handle_folder_shortcodes' );
+register_activation_hook( __FILE__, 'wpgpxmaps_install_option' );
+register_deactivation_hook( __FILE__, 'wpgpxmaps_remove_option' );
+add_filter( 'plugin_action_links', 'wpgpxmaps_action_links', 10, 2 );
+add_action( 'wp_enqueue_scripts', 'wpgpxmaps_enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', 'wpgpxmaps_enqueue_scripts_admin' );
+add_action( 'plugins_loaded', 'wpgpxmaps_lang_init' );
+
+function wpgpxmaps_lang_init() {
 
 	if ( function_exists( 'load_plugin_textdomain' ) ) {
 		load_plugin_textdomain( 'wp-gpx-maps', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
+
 }
 
-function WP_GPX_Maps_action_links( $links, $file ) {
+function wpgpxmaps_action_links( $links, $file ) {
 
 	static $this_plugin;
 
@@ -56,9 +62,10 @@ function WP_GPX_Maps_action_links( $links, $file ) {
 		array_unshift( $links, $settings_link );
 	}
 	return $links;
+
 }
 
-function enqueue_WP_GPX_Maps_scripts_admin( $hook ) {
+function wpgpxmaps_enqueue_scripts_admin( $hook ) {
 
 	if ( strpos( $hook, 'WP-GPX-Maps' ) !== false ) {
 
@@ -74,9 +81,10 @@ function enqueue_WP_GPX_Maps_scripts_admin( $hook ) {
 		wp_register_style( 'bootstrap-table', plugins_url( '/css/bootstrap-table.css', __FILE__ ), array(), '1.13.2' );
 		wp_enqueue_style( 'bootstrap-table' );
 	}
+
 }
 
-function enqueue_WP_GPX_Maps_scripts() {
+function wpgpxmaps_enqueue_scripts() {
 
 	/* Output Style CSS */
 	wp_register_style( 'output-style', plugins_url( 'css/output-style.css', __FILE__ ), array(), '1.0.0' );
@@ -106,7 +114,7 @@ function enqueue_WP_GPX_Maps_scripts() {
 	/* Chartjs */
 	wp_register_script( 'chartjs', plugins_url( '/js/Chart.min.js', __FILE__ ), array(), '2.8.0' );
 
-	wp_register_script( 'WP-GPX-Maps', plugins_url( '/js/WP-GPX-Maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
+	wp_register_script( 'wp-gpx-maps', plugins_url( 'js//wp-gpx-maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
 
 	wp_enqueue_script( 'output-style' );
 	wp_enqueue_script( 'leaflet' );
@@ -115,7 +123,8 @@ function enqueue_WP_GPX_Maps_scripts() {
 	wp_enqueue_script( 'leaflet.fullscreen' );
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'chartjs' );
-	wp_enqueue_script( 'WP-GPX-Maps' );
+	wp_enqueue_script( 'wp-gpx-maps' );
+
 }
 
 function wpgpxmaps_findValue( $attr, $attributeName, $optionName, $defaultValue ) {
@@ -134,9 +143,10 @@ function wpgpxmaps_findValue( $attr, $attributeName, $optionName, $defaultValue 
 		$val = $defaultValue;
 	}
 	return $val;
+
 }
 
-function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
+function wpgpxmaps_handle_folder_shortcodes( $attr, $content = '' ) {
 
 	$folder         = wpgpxmaps_findValue( $attr, 'folder', '', '' );
 	$pointsoffset   = wpgpxmaps_findValue( $attr, 'pointsoffset', 'wpgpxmaps_pointsoffset', 10 );
@@ -210,9 +220,10 @@ function handle_WP_GPX_Maps_folder_Shortcodes( $attr, $content = '' ) {
 			print_r( $points );
 		}
 	}
+
 }
 
-function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
+function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 	$error = '';
 	/* General */
@@ -276,9 +287,8 @@ function handle_WP_GPX_Maps_Shortcodes( $attr, $content = '' ) {
 	$attachments = wpgpxmaps_findValue( $attr, 'attachments', 'wpgpxmaps_map_attachments', false );
 	$dtoffset    = wpgpxmaps_findValue( $attr, 'dtoffset', 'wpgpxmaps_dtoffset', 0 );
 	/* Advanced */
-	$pointsoffset       = wpgpxmaps_findValue( $attr, 'pointsoffset', 'wpgpxmaps_pointsoffset', 10 );
-	$donotreducegpx     = wpgpxmaps_findValue( $attr, 'donotreducegpx', 'wpgpxmaps_donotreducegpx', false );
-	$allow_users_upload = wpgpxmaps_findValue( $attr, 'wpgpxmaps_allow_users_upload', 'wpgpxmaps_allow_users_view', false );
+	$pointsoffset   = wpgpxmaps_findValue( $attr, 'pointsoffset', 'wpgpxmaps_pointsoffset', 10 );
+	$donotreducegpx = wpgpxmaps_findValue( $attr, 'donotreducegpx', 'wpgpxmaps_donotreducegpx', false );
 
 	$colors_map = "\"" . implode( "\",\"", ( explode( ' ', $color_map ) ) ) . "\"";
 
@@ -818,6 +828,7 @@ function convertSpeed( $speed, $uomspeed, $addUom = false ) {
 	} else {
 		return number_format( $speed, 2, '.', '' );
 	}
+
 }
 
 function downloadRemoteFile( $remoteFile ) {
@@ -848,6 +859,7 @@ function downloadRemoteFile( $remoteFile ) {
 		print_r( $e );
 		return '';
 	}
+
 }
 
 function unescape( $value ) {
@@ -855,9 +867,10 @@ function unescape( $value ) {
 	$value = str_replace( "'", "\'", $value );
 	$value = str_replace( array( '\n', '\r' ), '', $value );
 	return $value;
+
 }
 
-function WP_GPX_Maps_install() {
+function wpgpxmaps_install_option() {
 
 	/* General */
 	add_option( 'wpgpxmaps_width', '100%', '', 'yes' );
@@ -918,9 +931,13 @@ function WP_GPX_Maps_install() {
 	/* Advanced */
 	add_option( 'wpgpxmaps_pointsoffset', '10', '', 'yes' );
 	add_option( 'wpgpxmaps_donotreducegpx', 'true', '', 'yes' );
+	/* Administration */
+	add_option( 'wpgpxmaps_allow_users_upload', '', '', 'yes' );
+	add_option( 'wpgpxmaps_show_notice', '', '', 'yes' );
+
 }
 
-function WP_GPX_Maps_remove() {
+function wpgpxmaps_remove_option() {
 
 	/* General */
 	delete_option( 'wpgpxmaps_width' );
@@ -981,4 +998,11 @@ function WP_GPX_Maps_remove() {
 	/* Advanced */
 	delete_option( 'wpgpxmaps_pointsoffset' );
 	delete_option( 'wpgpxmaps_donotreducegpx' );
+	/* Administration */
+	delete_option( 'wpgpxmaps_allow_users_upload' );
+	delete_option( 'wpgpxmaps_show_notice' );
+
+	/* Deleted settings */
+	delete_option( 'wpgpxmaps_allow_users_view' );
+
 }
