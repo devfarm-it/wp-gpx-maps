@@ -2,7 +2,7 @@
 
 	require_once( ABSPATH . 'wp-admin/includes/file.php' );
 
-	require_once( 'wp-gpx-maps_utils_nggallery.php' );
+	require_once( 'wp-gpx-maps-utils-nggallery.php' );
 
 function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 
@@ -53,7 +53,6 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 	} catch ( Exception $e ) {
 			$error .= 'Error When Retrieving attached images: $e <br />';
 	}
-
 		return $result;
 }
 
