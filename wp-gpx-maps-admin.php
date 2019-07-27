@@ -9,7 +9,7 @@ function wpgpxmaps_admin_init() {
 
 	wpgpxmaps_plugin_upgrade();
 
-	if ( get_option( 'wpgpxmaps_show_notice' ) == 1 ) {
+	if ( get_site_option( 'wpgpxmaps_show_notice' ) == 1 ) {
 		if ( is_multisite() ) {
 			add_action( 'network_admin_notices', 'wpgpxmaps_show_update_notice' );
 		} else {
@@ -43,7 +43,7 @@ function wpgpxmaps_admin_menu() {
 	} elseif ( current_user_can( 'publish_posts' ) ) {
 
 		/* Access for Editors and Authors */
-		if ( get_site_option( 'wpgpxmaps_allow_users_upload' ) == 1 ) {
+		if ( get_option( 'wpgpxmaps_allow_users_upload' ) == 1 ) {
 			add_menu_page( 'WP GPX Maps', 'WP GPX Maps', 'publish_posts', 'WP-GPX-Maps', 'wpgpxmaps_html_page' );
 		}
 	}
@@ -102,21 +102,23 @@ function wpgpxmaps_show_update_notice() {
 
 	echo '<div id="wpgpxmaps-notice" class="' . $class . '"><p>' . $message . '</p></div>';
 	echo "<script>
-			function wpgpxmaps_dismiss_notice(){
+
+			function wpgpxmaps_dismiss_notice() {
 				var data = {
-				'action': 'wpgpxmaps_dismiss_notice',
+					'action': 'wpgpxmaps_dismiss_notice'
 				};
 
-				jQuery.post(ajaxurl, data, function(response) {
-					jQuery('#wpgpxmaps-notice').hide();
+				jQuery.post( ajaxurl, data, function( response ) {
+					jQuery( '#wpgpxmaps-notice' ).hide();
 				});
 			}
 
-			jQuery(document).ready(function(){
-				jQuery('body').on('click', '.notice-dismiss', function(){
+			jQuery( document ).ready( function() {
+				jQuery( 'body' ).on( 'click', '.notice-dismiss', function() {
 					wpgpxmaps_dismiss_notice();
 				});
 			});
+
 			</script>";
 
 }
@@ -174,11 +176,11 @@ function wpgpxmaps_html_page() {
 		$tab = 'tracks';
 	?>
 
-	<div id="icon-themes" class="icon32"><br></div>
+	<div id="icon-themes" class="icon32">
 
-		<h2>
-			<?php _e( 'Settings', 'wp-gpx-maps' ); ?>
-		</h2>
+		<br/>
+
+	</div>
 
 	<?php
 

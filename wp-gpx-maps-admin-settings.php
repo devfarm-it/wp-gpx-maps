@@ -34,8 +34,8 @@ $showAtemp = get_option( 'wpgpxmaps_show_atemp' );
 $showCad   = get_option( 'wpgpxmaps_show_cadence' );
 $showGrade = get_option( 'wpgpxmaps_show_grade' );
 /* Advanced */
-$po                 = get_option( 'wpgpxmaps_pointsoffset' );
-$donotreducegpx     = get_option( 'wpgpxmaps_donotreducegpx' );
+$po             = get_option( 'wpgpxmaps_pointsoffset' );
+$donotreducegpx = get_option( 'wpgpxmaps_donotreducegpx' );
 
 if ( empty( $showEle ) )
 	$showEle = 'true';
