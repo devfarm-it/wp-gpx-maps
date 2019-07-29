@@ -8,8 +8,8 @@ $is_admin = current_user_can( 'publish_posts' );
 if ( $is_admin != 1 )
 	return;
 
-$wpgpxmapsUrl       = get_admin_url() . 'admin.php?page=WP-GPX-Maps';
-$gpxRegEx           = '/.gpx$/i';
+$wpgpxmapsUrl = get_admin_url() . 'admin.php?page=WP-GPX-Maps';
+$gpxRegEx     = '/.gpx$/i';
 
 if ( current_user_can( 'manage_options' ) ) {
 
@@ -24,7 +24,7 @@ if ( current_user_can( 'manage_options' ) ) {
 if ( isset( $_POST['clearcache'] ) ) {
 	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_clearcache_nonce' . $entry ) ) {
 		echo '<div class="notice notice-success"><p>';
-		_e( 'Cache is now empty!', 'wp-gpx-maps' );
+		esc_html_e( 'Cache is now empty!', 'wp-gpx-maps' );
 		echo '</p></div>';
 		wpgpxmaps_recursive_remove_directory( $cacheGpxPath, true );
 	}
@@ -38,7 +38,7 @@ if ( is_writable( $realGpxPath ) ) {
 			<?php
 			echo '<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="' . get_bloginfo( 'wpurl' ) . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">';
 			?>
-			<?php _e( 'Choose a file to upload:', 'wp-gpx-maps' ); ?> <input name="uploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
+			<?php esc_html_e( 'Choose a file to upload:', 'wp-gpx-maps' ); ?> <input name="uploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
 			<?php
 			if ( isset( $_FILES['uploadedfile'] ) ) {
 				$total = count( $_FILES['uploadedfile']['name'] );
