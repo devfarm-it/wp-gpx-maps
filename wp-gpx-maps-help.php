@@ -4,62 +4,75 @@
 
 		<div class="wpgpxmaps-tab-faq">
 
-			<h3 class="title"><?php _e( 'FAQ', 'wp-gpx-maps' ); ?></h3>
+			<h3 class="title"><?php esc_html_e( 'FAQ', 'wp-gpx-maps' ); ?></h3>
 
 			<p>
-			<strong><?php _e( 'How can I upload the GPX files?', 'wp-gpx-maps' ); ?></strong>
+				<strong>
+					<?php esc_html_e( 'How can I upload the GPX files?', 'wp-gpx-maps' ); ?>
+				</strong>
 			</p>
 				<p>
-					&nbsp; <?php _e( '1. Method: Upload the GPX file using the uploader in the tab "Tracks".', 'wp-gpx-maps' ); ?>
+					&nbsp;
+					<?php esc_html_e( '1. Method: Upload the GPX file using the uploader in the tab "Tracks".', 'wp-gpx-maps' ); ?>
 				</p>
 				<p>
 					&nbsp;
 					<?php
-					_e( '2. Method: Upload the GPX file via FTP to your upload folder:', 'wp-gpx-maps' );
+					esc_html_e( '2. Method: Upload the GPX file via FTP to your upload folder:', 'wp-gpx-maps' );
 					echo ' ';
 					?>
 					<code><strong> <?php echo $relativeGpxPath; ?> </strong></code>
 				</p>
 			<p>
-			<strong><?php _e( 'How can I use the GPX files?', 'wp-gpx-maps' ); ?></strong>
+				<strong>
+					<?php esc_html_e( 'How can I use the GPX files?', 'wp-gpx-maps' ); ?>
+				</strong>
 			</p>
 				<p>
-					&nbsp; <?php _e( 'Go to the tab "Tracks" and copy the shortcode from the list and paste it in the page or post.', 'wp-gpx-maps' ); ?>
+					&nbsp;
+					<?php esc_html_e( 'Go to the tab "Tracks" and copy the shortcode from the list and paste it in the page or post.', 'wp-gpx-maps' ); ?>
 				</p>
 				<p>
 					&nbsp;
 					<?php
-					_e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' );
+					esc_html_e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' );
 					echo ' ';
 					?>
 					<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"]</strong></code>
 				</p>
 			<p>
-			<strong><?php _e( 'Can I also integrate GPX files from other sites?', 'wp-gpx-maps' ); ?></strong>
+				<strong>
+					<?php _e( 'Can I also integrate GPX files from other sites?', 'wp-gpx-maps' ); ?>
+				</strong>
 			</p>
 				<p>
 					&nbsp;
 					<?php
-					_e( 'Yes, it&#8217s possible. Please use this scheme:', 'wp-gpx-maps' );
+					esc_html_e( 'Yes, it&#8217s possible. Please use this scheme:', 'wp-gpx-maps' );
 					echo ' ';
 					?>
 					<code><strong>[sgpx gpx="http://www.someone.com/somewhere/somefile.gpx"]</strong></code>
 				</p>
 			<p>
-			<strong><?php _e( 'Can I change the attributes for each GPX shortcode?', 'wp-gpx-maps' ); ?></strong>
+				<strong>
+					<?php esc_html_e( 'Can I change the attributes for each GPX shortcode?', 'wp-gpx-maps' ); ?>
+				</strong>
 			</p>
 				<p>
-					&nbsp; <?php _e( 'Yes, it&#8217s possible. These changes ignore the default settings for each attribute.', 'wp-gpx-maps' ); ?>
+					&nbsp;
+					<?php esc_html_e( 'Yes, it&#8217s possible. These changes ignore the default settings for each attribute.', 'wp-gpx-maps' ); ?>
 				</p>
 				<p>
 					&nbsp;
 					<?php
-					_e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' );
+					esc_html_e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' );
 					echo ' ';
 					?>
-					<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php _e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></code>
+					<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php esc_html_e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></code>
 				</p>
-				<strong><?php _e( 'Note: If no value is displayed in the "Current value" column, the value is "false".', 'wp-gpx-maps' ); ?></strong>
+				<strong>
+					<?php esc_html_e( 'Note: If no value is displayed in the "Current value" column, the value is "false".', 'wp-gpx-maps' ); ?>
+				</strong>
 
 		</div>
 
@@ -67,21 +80,21 @@
 			<thead>
 				<tr>
 					<th class="title" colspan="4">
-						<?php _e( 'General', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'General', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
 					<th scope="col">
-						<?php _e( 'Shortcode', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Shortcode', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Description', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Description', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Possible values', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Possible values', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Current value', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Current value', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				</thead>
@@ -89,7 +102,7 @@
 				<tr>
 					<td>gpx</td>
 					<td>
-						<?php _e( 'relative path to the GPX file', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'relative path to the GPX file', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<code><strong>gpx="/wp-upload dir/gpx/yourgpxfile.gpx"</strong></code>
@@ -101,13 +114,13 @@
 				<tr>
 					<td>width</td>
 					<td>
-						<?php _e( 'Map width', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Map width', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<?php _e( 'Value in percent', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Value in percent', 'wp-gpx-maps' ); ?>
 						<br />
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>100%</strong>
@@ -119,13 +132,13 @@
 				<tr>
 					<td>mheight</td>
 					<td>
-						<?php _e( 'Map height', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Map height', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<?php _e( 'Value in pixels', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Value in pixels', 'wp-gpx-maps' ); ?>
 						<br />
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>450px</strong>
@@ -137,13 +150,13 @@
 				<tr>
 					<td>gheight</td>
 					<td>
-						<?php _e( 'Graph height', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Graph height', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<?php _e( 'Value in pixels', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Value in pixels', 'wp-gpx-maps' ); ?>
 						<br />
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>200px</strong>
@@ -155,11 +168,11 @@
 				<tr>
 					<td>download</td>
 					<td>
-						<?php _e( 'Allow users to download your GPX file', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Allow users to download your GPX file', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -171,11 +184,11 @@
 				<tr>
 					<td>skipcache</td>
 					<td>
-						<?php _e('Do not use cache. If TRUE might be very slow', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Do not use cache. If TRUE might be very slow', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -193,21 +206,21 @@
 			<thead>
 				<tr>
 					<th class="title" colspan="4">
-						<?php _e( 'Map', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Map', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
 					<th scope="col">
-						<?php _e( 'Shortcode', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Shortcode', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Description', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Description', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Possible values', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Possible values', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Current value', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Current value', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				</thead>
@@ -215,59 +228,59 @@
 				<tr>
 					<td>mtype</td>
 					<td>
-						<?php _e( 'Map type', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Map type', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM1 = Open Street Map', 'wp-gpx-maps' );
+						esc_html_e( 'OSM1 = Open Street Map', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM2 = Thunderforest - Open Cycle Map (API Key required)', 'wp-gpx-maps' );
+						esc_html_e( 'OSM2 = Thunderforest - Open Cycle Map (API Key required)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM3 = Thunderforest - Outdoors (API Key required)', 'wp-gpx-maps' );
+						esc_html_e( 'OSM3 = Thunderforest - Outdoors (API Key required)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM4 = Thunderforest - Transport (API Key required)', 'wp-gpx-maps' );
+						esc_html_e( 'OSM4 = Thunderforest - Transport (API Key required)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM5 = Thunderforest - Landscape (API Key required)', 'wp-gpx-maps' );
+						esc_html_e( 'OSM5 = Thunderforest - Landscape (API Key required)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM6 = MapToolKit - Terrain', 'wp-gpx-maps' );
+						esc_html_e( 'OSM6 = MapToolKit - Terrain', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM7 = Open Street Map - Humanitarian map style', 'wp-gpx-maps' );
+						esc_html_e( 'OSM7 = Open Street Map - Humanitarian map style', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM9 = Hike & Bike', 'wp-gpx-maps' );
+						esc_html_e( 'OSM9 = Hike & Bike', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						_e( 'OSM10 = Open Sea Map', 'wp-gpx-maps' );
+						esc_html_e( 'OSM10 = Open Sea Map', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
-						<strong>HYBRID</strong>
+						<strong>OSM1</strong>
 					</td>
 					<td>
 						<?php echo get_option( 'wpgpxmaps_map_type' ); ?>
@@ -276,11 +289,11 @@
 				<tr>
 					<td>mlinecolor</td>
 					<td>
-						<?php _e( 'Map line color', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Map line color', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>#3366cc</strong>
@@ -292,11 +305,11 @@
 				<tr>
 					<td>zoomonscrollwheel</td>
 					<td>
-						<?php _e( 'Zoom on map when mouse scroll wheel', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Zoom on map when mouse scroll wheel', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -308,11 +321,11 @@
 				<tr>
 					<td>waypoints</td>
 					<td>
-						<?php _e( 'Print the GPX waypoints inside the map', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print the GPX waypoints inside the map', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -324,7 +337,7 @@
 				<tr>
 					<td>startIcon</td>
 					<td>
-						<?php _e( 'Start track icon', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Start track icon', 'wp-gpx-maps' ); ?>
 					</td>
 					<td></td>
 					<td>
@@ -334,7 +347,7 @@
 				<tr>
 					<td>endIcon</td>
 					<td>
-						<?php _e( 'End track icon', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'End track icon', 'wp-gpx-maps' ); ?>
 					</td>
 					<td></td>
 					<td>
@@ -344,7 +357,7 @@
 				<tr>
 					<td>currentIcon</td>
 					<td>
-						<?php _e( 'Current position icon (when mouse hover)', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Current position icon (when mouse hover)', 'wp-gpx-maps' ); ?>
 					</td>
 					<td></td>
 					<td>
@@ -354,7 +367,7 @@
 				<tr>
 					<td>waypointicon</td>
 					<td>
-						<?php _e( 'Custom waypoint icon', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Custom waypoint icon', 'wp-gpx-maps' ); ?>
 					</td>
 					<td></td>
 					<td>
@@ -370,21 +383,21 @@
 			<thead>
 				<tr>
 					<th class="title" colspan="4">
-						<?php _e( 'Diagram', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Diagram', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
 					<th scope="col">
-						<?php _e( 'Shortcode', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Shortcode', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Description', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Description', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Possible values', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Possible values', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Current value', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Current value', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 			</thead>
@@ -392,11 +405,11 @@
 				<tr>
 					<td>showele</td>
 					<td>
-						<?php _e( 'Show elevation data inside the chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Show elevation data inside the chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>true</strong>
@@ -408,11 +421,11 @@
 				<tr>
 					<td>glinecolor</td>
 					<td>
-						<?php _e( 'Altitude line color', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Altitude line color', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>#3366cc</strong>
@@ -424,41 +437,41 @@
 				<tr>
 					<td>uom</td>
 					<td>
-						<?php _e( 'Distance / Altitude unit of measure', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Distance / Altitude unit of measure', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
 						/* translators: selection = chart axis labels */
-						_e( '0 = meters / meters', 'wp-gpx-maps' );
+						esc_html_e( '0 = meters / meters', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = chart axis labels */
-						_e( '1 = feet / miles', 'wp-gpx-maps' );
+						esc_html_e( '1 = feet / miles', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = chart axis labels */
-						_e( '2 = meters / kilometers', 'wp-gpx-maps' );
+						esc_html_e( '2 = meters / kilometers', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = chart axis labels */
-						_e( '3 = meters / nautical miles', 'wp-gpx-maps' );
+						esc_html_e( '3 = meters / nautical miles', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = chart axis labels */
-						_e( '4 = meters / miles', 'wp-gpx-maps' );
+						esc_html_e( '4 = meters / miles', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = chart axis labels */
-						_e( '5 = feet / nautical miles', 'wp-gpx-maps' );
+						esc_html_e( '5 = feet / nautical miles', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>0</strong>
@@ -470,7 +483,7 @@
 				<tr>
 					<td>chartFrom1</td>
 					<td>
-						<?php _e( 'Minimum value for altitude chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Minimum value for altitude chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td></td>
 					<td>
@@ -480,7 +493,7 @@
 				<tr>
 					<td>chartTo1</td>
 					<td>
-						<?php _e( 'Maximum value for altitude chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Maximum value for altitude chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td></td>
 					<td>
@@ -490,11 +503,11 @@
 				<tr>
 					<td>showspeed</td>
 					<td>
-						<?php _e( 'Show speed inside the chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Show speed inside the chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -506,11 +519,11 @@
 				<tr>
 					<td>glinecolorspeed</td>
 					<td>
-						<?php _e( 'Speed line color', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Speed line color', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>#ff0000</strong>
@@ -522,46 +535,46 @@
 				<tr>
 				<td>uomspeed</td>
 					<td>
-						<?php _e( 'Speed unit of measure', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Speed unit of measure', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
 						/* translators: selection = speed unit of measure */
-						_e( '0 = m/s', 'wp-gpx-maps' );
+						esc_html( '0 = m/s', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = speed unit of measure */
-						_e( '1 = km/h', 'wp-gpx-maps' );
+						esc_html_e( '1 = km/h', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = speed unit of measure */
-						_e( '2 = miles/h', 'wp-gpx-maps' );
+						esc_html_e( '2 = miles/h', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = speed unit of measure */
-						_e( '3 = min/km', 'wp-gpx-maps' );
+						esc_html_e( '3 = min/km', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = speed unit of measure */
-						_e( '4 = min/miles', 'wp-gpx-maps' );
+						esc_html( '4 = min/miles', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = speed unit of measure */
-						_e( '5 = Knots (nautical miles / hour)', 'wp-gpx-maps' );
+						esc_html_e( '5 = Knots (nautical miles / hour)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = speed unit of measure */
-						_e( '6 = min/100 meters', 'wp-gpx-maps' );
+						esc_html_e( '6 = min/100 meters', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>0</strong>
@@ -573,7 +586,7 @@
 				<tr>
 					<td>chartFrom2</td>
 					<td>
-						<?php _e( 'Minimum value for speed chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html( 'Minimum value for speed chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td></td>
 					<td>
@@ -583,7 +596,7 @@
 				<tr>
 					<td>chartTo2</td>
 					<td>
-						<?php _e( 'Maximum value for speed chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Maximum value for speed chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td></td>
 					<td>
@@ -593,11 +606,11 @@
 				<tr>
 					<td>showhr</td>
 					<td>
-						<?php _e( 'Show heart rate inside the chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Show heart rate inside the chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -609,11 +622,11 @@
 				<tr>
 					<td>glinecolorhr</td>
 					<td>
-						<?php _e( 'Heart rate line color', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Heart rate line color', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>#ff77bd</strong>
@@ -624,11 +637,11 @@
 				</tr>
 				<td>showatemp</td>
 					<td>
-						<?php _e( 'Show temperature inside the chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Show temperature inside the chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -640,11 +653,11 @@
 				<tr>
 					<td>glinecoloratemp</td>
 					<td>
-						<?php _e( 'Temperature line color', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Temperature line color', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>#ff77bd</strong>
@@ -656,11 +669,11 @@
 				<tr>
 					<td>showcad</td>
 					<td>
-						<?php _e( 'Show cadence inside the chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Show cadence inside the chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -672,11 +685,11 @@
 				<tr>
 					<td>glinecolorcad</td>
 					<td>
-						<?php _e( 'Cadence line color', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Cadence line color', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>#beecff</strong>
@@ -688,11 +701,11 @@
 				<tr>
 					<td>showgrade</td>
 					<td>
-						<?php _e( 'Show grade inside the chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Show grade inside the chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -704,11 +717,11 @@
 				<tr>
 					<td>glinecolorgrade</td>
 					<td>
-						<?php _e( 'Grade line color', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Grade line color', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>#beecff</strong>
@@ -725,19 +738,22 @@
 		<table class="widefat">
 			<thead>
 				<tr>
-					<th class="title" colspan="3">
-						<?php _e( 'Pictures', 'wp-gpx-maps' ); ?>
+					<th class="title" colspan="4">
+						<?php esc_html_e( 'Pictures', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
 					<th scope="col">
-						<?php _e( 'Shortcode', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Shortcode', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Description', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Description', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Possible values', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Possible values', 'wp-gpx-maps' ); ?>
+					</th>
+					<th scope="col">
+						<?php esc_html_e( 'Current value', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 			</thead>
@@ -745,41 +761,44 @@
 				<tr>
 					<td>nggalleries</td>
 					<td>
-						<?php _e( 'NextGen Gallery', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'NextGen Gallery', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<?php _e( 'Gallery ID or a list of Galleries ID separated by a comma', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Gallery ID or a list of Galleries ID separated by a comma', 'wp-gpx-maps' ); ?>
 					</td>
 				</tr>
 				<tr>
 					<td>ngimages</td>
 					<td>
-						<?php _e( 'NextGen Image', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'NextGen Image', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<?php _e( 'Image ID or a list of Images ID separated by a comma', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Image ID or a list of Images ID separated by a comma', 'wp-gpx-maps' ); ?>
 					</td>
 				</tr>
 				<tr>
 					<td>attachments</td>
 					<td>
-						<?php _e( 'Show all images that are attached to post', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Show all images that are attached to post', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
+					</td>
+					<td>
+						<?php echo get_option( 'wpgpxmaps_map_attachments' ); ?>
 					</td>
 				</tr>
 				<tr>
 					<td>dtoffset</td>
 					<td>
-						<?php _e( 'The difference between your GPX tool date and your camera date', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'The difference between your GPX tool date and your camera date', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
-						<?php _e( 'Value in seconds', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Value in seconds', 'wp-gpx-maps' ); ?>
 					</td>
 				</tr>
 			</tbody>
@@ -791,21 +810,21 @@
 			<thead>
 				<tr>
 					<th class="title" colspan="4">
-						<?php _e( 'Summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Summary table', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
 					<th scope="col">
-						<?php _e( 'Shortcode', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Shortcode', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Description', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Description', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Possible values', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Possible values', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Current value', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Current value', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 			</thead>
@@ -813,11 +832,11 @@
 				<tr>
 					<td>summary</td>
 					<td>
-						<?php _e( 'Print summary details of your GPX track', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print summary details of your GPX track', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -829,11 +848,11 @@
 				<tr>
 					<td>summarytotlen</td>
 					<td>
-						<?php _e( 'Print total distance in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print total distance in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -845,11 +864,11 @@
 				<tr>
 					<td>summarymaxele</td>
 					<td>
-						<?php _e( 'Print max. elevation in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print max. elevation in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -861,11 +880,11 @@
 				<tr>
 					<td>summaryminele</td>
 					<td>
-						<?php _e( 'Print min. elevation in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print min. elevation in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -877,11 +896,11 @@
 				<tr>
 					<td>summaryeleup</td>
 					<td>
-						<?php _e( 'Print total climbing in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print total climbing in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -893,11 +912,11 @@
 				<tr>
 					<td>summaryeledown</td>
 					<td>
-						<?php _e( 'Print total descent in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print total descent in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -909,11 +928,11 @@
 				<tr>
 					<td>summaryavgspeed</td>
 					<td>
-						<?php _e( 'Print average speed in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print average speed in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -925,11 +944,11 @@
 				<tr>
 					<td>summaryavgcad</td>
 					<td>
-						<?php _e( 'Print average cadence in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print average cadence in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -941,11 +960,11 @@
 				<tr>
 					<td>summaryavghr</td>
 					<td>
-						<?php _e( 'Print average heart rate in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print average heart rate in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -957,11 +976,11 @@
 				<tr>
 					<td>summaryavgtemp</td>
 					<td>
-						<?php _e( 'Print average temperature in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print average temperature in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -973,11 +992,11 @@
 				<tr>
 					<td>summarytotaltime</td>
 					<td>
-						<?php _e( 'Print total time in summary table', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print total time in summary table', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -995,21 +1014,21 @@
 			<thead>
 				<tr>
 					<th class="title" colspan="4">
-						<?php _e( 'Advanced', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Advanced', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 				<tr>
 					<th scope="col">
-						<?php _e( 'Shortcode', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Shortcode', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Description', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Description', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Possible values', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Possible values', 'wp-gpx-maps' ); ?>
 					</th>
 					<th scope="col">
-						<?php _e( 'Current value', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Current value', 'wp-gpx-maps' ); ?>
 					</th>
 				</tr>
 			</thead>
@@ -1017,11 +1036,11 @@
 				<tr>
 					<td>pointsoffset</td>
 					<td>
-						<?php _e( 'Skip GPX points closer than XX meters', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Skip GPX points closer than XX meters', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>10</strong>
@@ -1033,11 +1052,11 @@
 				<tr>
 					<td>donotreducegpx</td>
 					<td>
-						<?php _e( 'Print all the GPX waypoints without reduce it', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Print all the GPX waypoints without reduce it', 'wp-gpx-maps' ); ?>
 					</td>
 					<td>
 						<?php
-						_e( 'Default is:', 'wp-gpx-maps' );
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
 						echo ' ';
 						?>
 						<strong>false</strong>
@@ -1052,7 +1071,7 @@
 	</div>
 
 	<p>
-		<a href="http://devfarm.it/forums/forum/wp-gpx-maps/" target="_blank" rel="noopener noreferrer"><?php _e( 'Bugs, problems, thanks and anything else here!', 'wp-gpx-maps' ); ?></a>
+		<a href="http://devfarm.it/forums/forum/wp-gpx-maps/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Bugs, problems, thanks and anything else here!', 'wp-gpx-maps' ); ?></a>
 	</p>
 
 </div>

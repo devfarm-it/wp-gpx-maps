@@ -8,14 +8,17 @@ $is_admin = current_user_can( 'publish_posts' );
 if ( $is_admin != 1 )
 	return;
 
-$allow_users_upload = get_option( 'wpgpxmaps_allow_users_view' ) === 'true';
 $wpgpxmapsUrl       = get_admin_url() . 'admin.php?page=WP-GPX-Maps';
 $gpxRegEx           = '/.gpx$/i';
 
 if ( current_user_can( 'manage_options' ) ) {
+
 	$menu_root = 'options-general.php';
+
 } elseif ( current_user_can( 'publish_posts' ) ) {
+
 	$menu_root = 'admin.php';
+
 }
 
 if ( isset( $_POST['clearcache'] ) ) {
@@ -31,6 +34,7 @@ if ( is_writable( $realGpxPath ) ) {
 	?>
 
 		<div class="tablenav top">
+
 			<?php
 			echo '<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="' . get_bloginfo( 'wpurl' ) . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">';
 			?>

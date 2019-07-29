@@ -96,10 +96,6 @@ Icons made by <a href="https://www.freepik.com/" target="_blank" rel="noopener n
 
 == Frequently Asked Questions ==
 
-= Who can upload and manage GPX files? =
-
-The plugin uses the WordPress Roles and capabilities.
-
 = Which map types are available? =
 
 You can use the following map types:
@@ -111,7 +107,7 @@ You can use the following map types:
 1. <strong>OSM5</strong> = Thunderforest - Landscape (API Key required)
 1. <strong>OSM6</strong> = MapToolKit - Terrain
 1. <strong>OSM7</strong> = Open Street Map - Humanitarian map style
-1. <strong> OSM9</strong> =  Hike & Bike
+1. <strong>OSM9</strong> =  Hike & Bike
 1. <strong>OSM10</strong> = Open Sea Map
 
 If you use the OpenCycleMap without the API key, a watermark appears on the card: "API Key required".
@@ -202,7 +198,9 @@ Yes!
 
 = X.X.XX =
 * General: Added new map type "Thunderforest - Outddors" (OSM3)
-* Settings Tab: In the map selection changed to the correct maps provider from "Open Cycle Map" to "Thunderforest"
+* Admin: Added admin notices in the dashboard
+* Settings Tab: In the map selection changed to the correct maps provider from "Open Cycle Map"* Settings Tab: to "Thunderforest"
+* Administration Tab: New Tab with the settings "Editor & Author upload" and "Show update notice"
 * Help Tab: In the map selection changed to the correct maps provider from "Open Cycle Map" to "Thunderforest"
 * Output: In the map selection changed to the correct maps provider from "Open Cycle Map" to "Thunderforest"
 * Output: Fixed in map footer for each map, the corresponding map provider is displayed with URL
