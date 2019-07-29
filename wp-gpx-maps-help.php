@@ -1,3 +1,14 @@
+<?php
+/**
+ * Help Tab
+ *
+ * Content for Tab Help and Shortcodes.
+ *
+ * @package WP GPX Maps
+ */
+
+?>
+
 <div id="wpgpxmaps-tab-faq">
 
 	<div class="wpgpxmaps-container-tab-faq">

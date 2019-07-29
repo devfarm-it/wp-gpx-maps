@@ -1,4 +1,11 @@
 <?php
+/**
+ * Settings Tab
+ *
+ * Contains all settings for the output.
+ *
+ * @package WP GPX Maps
+ */
 
 if ( ! current_user_can( 'manage_options' ) )
 	return;

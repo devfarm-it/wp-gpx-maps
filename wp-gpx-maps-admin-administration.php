@@ -1,4 +1,11 @@
 <?php
+/**
+ * Settings Tab Administration
+ *
+ * Contains all administrative settings.
+ *
+ * @package WP GPX Maps
+ */
 
 if ( ! current_user_can( 'manage_options' ) )
 	return;

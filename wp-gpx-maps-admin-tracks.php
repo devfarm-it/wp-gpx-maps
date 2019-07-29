@@ -1,4 +1,11 @@
 <?php
+/**
+ * Tracks Tab
+ *
+ * Content for Tab Tracks and Cache.
+ *
+ * @package WP GPX Maps
+ */
 
 if ( ! ( is_admin() ) )
 	return;
