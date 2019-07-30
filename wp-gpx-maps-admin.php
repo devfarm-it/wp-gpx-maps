@@ -182,13 +182,11 @@ function wpgpxmaps_html_page() {
 		$tab = 'tracks';
 	?>
 
-	<div id="icon-themes" class="icon32">
+<div class="wrap">
 
-		<br/>
+	<div id="icon-themes" class="icon32"> </div>
 
-	</div>
-
-	<h2>
+	<h1 class="header-title">
 
 		<?php
 		printf(
@@ -198,7 +196,7 @@ function wpgpxmaps_html_page() {
 		);
 		?>
 
-	</h2>
+	</h1>
 
 	<?php
 
@@ -251,3 +249,5 @@ function wpgpxmaps_html_page() {
 }
 
 ?>
+
+<!-- The First Div (for body) ends in the respective file for the corresponding tab -->

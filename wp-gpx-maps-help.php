@@ -9,7 +9,7 @@
 
 ?>
 
-<div id="wpgpxmaps-tab-faq">
+<!-- The First Div (for body) starts in wp-gpx-admin.php -->
 
 	<div class="wpgpxmaps-container-tab-faq">
 

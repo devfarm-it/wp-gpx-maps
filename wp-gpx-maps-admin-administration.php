@@ -21,7 +21,7 @@ function wpgpxmaps__register_settings() {
 
 ?>
 
-<div id="wpgpxmaps-administration">
+<!-- The First Div (for body) starts in wp-gpx-admin.php -->
 
 	<div class="wpgpxmaps-container-tab-settings">
 

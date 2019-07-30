@@ -55,7 +55,7 @@ if ( ! ( $po ) )
 
 ?>
 
-<div id="wpgpxmaps-settings">
+<!-- The First Div (for body) starts in wp-gpx-admin.php -->
 
 	<div class="wpgpxmaps-container-tab-settings">
 

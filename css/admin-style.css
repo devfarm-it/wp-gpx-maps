@@ -3,30 +3,40 @@
  *
  * Content:
  * --------
- * 1. Over the Tabs
- * 2. Tab: Tracks
+ * 1. Admin Body
+ * 2. Over The Tabs
+ * 3. Tab: Tracks
  * 3. Tab: Settings
  * 4. Tab: Help
  *
  */
 
 /**
- * 1.0 Over the Tabs
+ * 1.0 Admin Body
  */
 
 /**
- * 2.0 Tab: Tracks
+ * 2.0 Over The Tabs
+ */
+
+h1.header-title {
+	padding-top:15px;
+	padding-left: 10px;
+}
+
+/**
+ * 3.0 Tab: Tracks
  */
 #table tbody tr:hover {
 	background: #eee;
 }
 
 /**
- * 3.0 Tab: Settings
+ * 4.0 Tab: Settings
  */
 .wpgpxmaps-container-tab-settings {
 	display: block;
-	padding: 5px 20px 1px 20px;
+	padding: 5px 10px 1px 10px;
 }
 
 .wpgpxmaps-container-tab-settings table.form-table input[type="checkbox"] {
@@ -43,16 +53,20 @@
 }
 
 /**
- * 4.0 Tab: Tracks
+ * 5.0 Tab: Administration
+ */
+
+/**
+ * 6.0 Tab: Help
  */
 .wpgpxmaps-container-tab-faq {
 	display: block;
-	padding: 5px 20px 1px 20px;
+	padding: 5px 10px 1px 10px;
 }
 
 .wpgpxmaps-tab-faq {
 	display: block;
-	padding: 5px 20px 10px 20px;
+	padding: 5px 10px 10px 10px;
 }
 
 .wpgpxmaps-container-tab-faq table.widefat {
