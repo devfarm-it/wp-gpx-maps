@@ -87,7 +87,7 @@ function wpgpxmaps_enqueue_scripts_admin( $hook ) {
 function wpgpxmaps_enqueue_scripts() {
 
 	/* Output Style CSS */
-	wp_register_style( 'output-style', plugins_url( 'css/output-style.css', __FILE__ ), array(), '1.0.0' );
+	wp_register_style( 'output-style', plugins_url( 'css/wp-gpx-maps-output.css', __FILE__ ), array(), '1.0.0' );
 	wp_enqueue_style( 'output-style' );
 
 	/* Leaflet */

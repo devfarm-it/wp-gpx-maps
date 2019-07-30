@@ -1,4 +1,11 @@
 <?php
+/**
+ * Settings Tab Administration
+ *
+ * Contains all administrative settings.
+ *
+ * @package WP GPX Maps
+ */
 
 if ( ! current_user_can( 'manage_options' ) )
 	return;
@@ -14,7 +21,7 @@ function wpgpxmaps__register_settings() {
 
 ?>
 
-<div id="wpgpxmaps-administration">
+<!-- The First Div (for body) starts in wp-gpx-admin.php -->
 
 	<div class="wpgpxmaps-container-tab-settings">
 

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Tracks Tab
+ *
+ * Content for Tab Tracks and Cache.
+ *
+ * @package WP GPX Maps
+ */
 
 if ( ! ( is_admin() ) )
 	return;
@@ -8,8 +15,8 @@ $is_admin = current_user_can( 'publish_posts' );
 if ( $is_admin != 1 )
 	return;
 
-$wpgpxmapsUrl       = get_admin_url() . 'admin.php?page=WP-GPX-Maps';
-$gpxRegEx           = '/.gpx$/i';
+$wpgpxmapsUrl = get_admin_url() . 'admin.php?page=WP-GPX-Maps';
+$gpxRegEx     = '/.gpx$/i';
 
 if ( current_user_can( 'manage_options' ) ) {
 
@@ -21,10 +28,12 @@ if ( current_user_can( 'manage_options' ) ) {
 
 }
 
+/* The First Div (for body) starts in wp-gpx-admin.php */
+
 if ( isset( $_POST['clearcache'] ) ) {
 	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_clearcache_nonce' . $entry ) ) {
 		echo '<div class="notice notice-success"><p>';
-		_e( 'Cache is now empty!', 'wp-gpx-maps' );
+		esc_html_e( 'Cache is now empty!', 'wp-gpx-maps' );
 		echo '</p></div>';
 		wpgpxmaps_recursive_remove_directory( $cacheGpxPath, true );
 	}
@@ -38,7 +47,7 @@ if ( is_writable( $realGpxPath ) ) {
 			<?php
 			echo '<form enctype="multipart/form-data" method="POST" style="float:left; margin:5px 20px 0 0" action="' . get_bloginfo( 'wpurl' ) . '/wp-admin/' . $menu_root . '?page=WP-GPX-Maps">';
 			?>
-			<?php _e( 'Choose a file to upload:', 'wp-gpx-maps' ); ?> <input name="uploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
+			<?php esc_html_e( 'Choose a file to upload:', 'wp-gpx-maps' ); ?> <input name="uploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
 			<?php
 			if ( isset( $_FILES['uploadedfile'] ) ) {
 				$total = count( $_FILES['uploadedfile']['name'] );
@@ -151,82 +160,81 @@ if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 
 	<table id="table" class="wp-list-table widefat plugins"></table>
 
-<script type="text/javascript">
+	<script type="text/javascript">
 
-	function submitgpx(el)
-	{
-		var newEl = document.createElement('span');
-		newEl.innerHTML = '<?php _e( 'Uploading file...', 'wp-gpx-maps' ); ?>';
-		el.parentNode.insertBefore(newEl,el.nextSibling);
-		el.parentNode.submit()
-	}
+		function submitgpx(el){
+			var newEl = document.createElement('span');
+			newEl.innerHTML = '<?php _e( 'Uploading file...', 'wp-gpx-maps' ); ?>';
+			el.parentNode.insertBefore(newEl,el.nextSibling);
+			el.parentNode.submit()
+		}
 
-	jQuery('#table').bootstrapTable({
-		columns: [{
-			field: 'name',
-			title: '<?php _e( 'File', 'wp-gpx-maps' ); ?>',
-			sortable: true,
-			formatter: function(value, row, index) {
+		jQuery('#table').bootstrapTable({
+			columns: [{
+				field: 'name',
+				title: '<?php _e( 'File', 'wp-gpx-maps' ); ?>',
+				sortable: true,
+				formatter: function(value, row, index) {
 
-				return [
-					'<b>' + row.name + '</b><br />',
-					'<a class="delete_gpx_row" href="<?php echo $wpgpxmapsUrl; ?>&_wpnonce=' + row.nonce + '" ><?php _e( 'Delete', 'wp-gpx-maps' ); ?></a>',
-					' | ',
-					'<a href="<?php echo $relativeGpxPath; ?>' + row.name + '"><?php _e( 'Download', 'wp-gpx-maps' ); ?></a>',
-					' | ',
-					'<a href="#" class="copy-shortcode" title="<?php _e( 'Copy shortcode', 'wp-gpx-maps' ); ?>"><?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?></a> <span class="code"> [sgpx gpx="<?php echo $relativeGpxPath; ?>' + row.name + '"]</span>',
-				].join('')
+					return [
+						'<b>' + row.name + '</b><br />',
+						'<a class="delete_gpx_row" href="<?php echo $wpgpxmapsUrl; ?>&_wpnonce=' + row.nonce + '" ><?php _e( 'Delete', 'wp-gpx-maps' ); ?></a>',
+						' | ',
+						'<a href="<?php echo $relativeGpxPath; ?>' + row.name + '"><?php _e( 'Download', 'wp-gpx-maps' ); ?></a>',
+						' | ',
+						'<a href="#" class="copy-shortcode" title="<?php _e( 'Copy shortcode', 'wp-gpx-maps' ); ?>"><?php _e( 'Shortcode:', 'wp-gpx-maps' ); ?></a> <span class="code"> [sgpx gpx="<?php echo $relativeGpxPath; ?>' + row.name + '"]</span>',
+					].join('')
 
-			}
-		}, {
-			field: 'lastedit',
-			title: '<?php _e( 'Last modified', 'wp-gpx-maps' ); ?>',
-			sortable: true,
-			formatter: function(value, row, index) {
+				}
+			}, {
+				field: 'lastedit',
+				title: '<?php _e( 'Last modified', 'wp-gpx-maps' ); ?>',
+				sortable: true,
+				formatter: function(value, row, index) {
 					var d = new Date(value*1000);
 					return d.toLocaleDateString() + " " + d.toLocaleTimeString();
 				}
-		}, {
-			field: 'size',
-			title: '<?php _e( 'File size', 'wp-gpx-maps' ); ?>',
-			sortable: true,
-			formatter: function(value, row, index) { return humanFileSize(value); }
-		}],
-		sortName : 'lastedit',
-		sortOrder : 'desc',
-		data: <?php echo wp_json_encode( $myGpxFileNames ); ?>
-	});
+			}, {
+				field: 'size',
+				title: '<?php _e( 'File size', 'wp-gpx-maps' ); ?>',
+				sortable: true,
+				formatter: function(value, row, index) { return humanFileSize(value); }
+			}],
+			sortName : 'lastedit',
+			sortOrder : 'desc',
+			data: <?php echo wp_json_encode( $myGpxFileNames ); ?>
+		});
 
-	jQuery('.delete_gpx_row').click(function(){
-		return confirm("<?php _e( 'Are you sure you want to delete the file?', 'wp-gpx-maps' ); ?>");
-	})
+		jQuery('.delete_gpx_row').click(function(){
+			return confirm("<?php _e( 'Are you sure you want to delete the file?', 'wp-gpx-maps' ); ?>");
+		})
 
-	function humanFileSize(bytes, si) {
-		var thresh = si ? 1000 : 1024;
-		if(Math.abs(bytes) < thresh) {
-			return bytes + ' B';
-		}
-		var units = si
-			? ['kB','MB','GB','TB','PB','EB','ZB','YB']
-			: ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
-		var u = -1;
-		do {
-			bytes /= thresh;
-			++u;
-		} while(Math.abs(bytes) >= thresh && u < units.length - 1);
-		return bytes.toFixed(1)+' '+units[u];
-	}
+		function humanFileSize(bytes, si) {
+			var thresh = si ? 1000 : 1024;
+			if(Math.abs(bytes) < thresh) {
+				return bytes + ' B';
+			}
+			var units = si
+				? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+				: ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+			var u = -1;
+			do {
+				bytes /= thresh;
+				++u;
+				} while(Math.abs(bytes) >= thresh && u < units.length - 1);
+				return bytes.toFixed(1)+' '+units[u];
+			}
 
-	jQuery('.copy-shortcode').click(function(e){
-		var $temp = jQuery("<input>");
-		jQuery("body").append($temp);
-		var shortcode = jQuery(this).next().text().trim();
-		$temp.val(shortcode).select();
-		document.execCommand("copy");
-		$temp.remove();
+			jQuery('.copy-shortcode').click(function(e){
+				var $temp = jQuery("<input>");
+				jQuery("body").append($temp);
+				var shortcode = jQuery(this).next().text().trim();
+				$temp.val(shortcode).select();
+				document.execCommand("copy");
+				$temp.remove();
+				e.preventDefault();
+		});
 
-		e.preventDefault();
+	</script>
 
-	});
-
-</script>
+</div>

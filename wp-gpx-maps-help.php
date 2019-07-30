@@ -1,4 +1,15 @@
-<div id="wpgpxmaps-tab-faq">
+<?php
+/**
+ * Help Tab
+ *
+ * Content for Tab Help and Shortcodes.
+ *
+ * @package WP GPX Maps
+ */
+
+?>
+
+<!-- The First Div (for body) starts in wp-gpx-admin.php -->
 
 	<div class="wpgpxmaps-container-tab-faq">
 
@@ -42,7 +53,7 @@
 				</p>
 			<p>
 				<strong>
-					<?php _e( 'Can I also integrate GPX files from other sites?', 'wp-gpx-maps' ); ?>
+					<?php esc_html_e( 'Can I also integrate GPX files from other sites?', 'wp-gpx-maps' ); ?>
 				</strong>
 			</p>
 				<p>

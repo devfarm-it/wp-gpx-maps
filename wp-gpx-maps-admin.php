@@ -93,7 +93,13 @@ function wpgpxmaps_show_update_notice() {
 
 	if ( ! current_user_can( 'manage_options' ) ) return;
 	$class    = 'notice is-dismissible';
-	$message  = '<strong>' . sprintf( __( 'What&lsquo;s new in WP GPX Maps %s:', 'wp-gpx-maps' ), WPGPXMAPS_CURRENT_VERSION ) . '</strong><br/><br/>';
+	$message  = '<strong>' .
+		sprintf(
+			/* translators: %1s: Plugin versions number */
+			__( 'What&lsquo;s new in WP GPX Maps %1s', 'wp-gpx-maps' ),
+			WPGPXMAPS_CURRENT_VERSION
+		) .
+		'</strong><br/><br/>';
 	$message .= esc_html__( 'Added new map type Thunderforest - Outdoors (API Key required).', 'wp-gpx-maps' ) . '<br/>';
 	$message .= esc_html__( 'Changed to the correct maps provider from &ldquo;Open Cycle Map&rdquo; to &ldquo;Thunderforest&rdquo; in Settins, Help and Output.', 'wp-gpx-maps' ) . '<br/>';
 	$message .= esc_html__( 'New administration tab with the settings "Editor & Author upload" and "Show update notice".', 'wp-gpx-maps' ) . '<br/>';
@@ -176,11 +182,21 @@ function wpgpxmaps_html_page() {
 		$tab = 'tracks';
 	?>
 
-	<div id="icon-themes" class="icon32">
+<div class="wrap">
 
-		<br/>
+	<div id="icon-themes" class="icon32"> </div>
 
-	</div>
+	<h1 class="header-title">
+
+		<?php
+		printf(
+			/* translators: %1s: Plugin versions number */
+			__( 'WP GPX Maps %1s', 'wp-gpx-maps' ),
+			WPGPXMAPS_CURRENT_VERSION
+		);
+		?>
+
+	</h1>
 
 	<?php
 
@@ -192,7 +208,7 @@ function wpgpxmaps_html_page() {
 		if ( ! @mkdir( $realGpxPath, 0755, true ) ) {
 			echo '<div class=" notice notice-error"><p>';
 			printf(
-				/* translators: Relative path of the GPX folder */
+				/* translators: %1s: Relative path of the GPX folder */
 				esc_html__( 'Can&lsquo;t create the folder %1s for GPX files. Please create the folder and make it writable! If not, you will must update the files manually!', 'wp-gpx-maps' ),
 				'<span class="code"><strong>' . esc_html( $relativeGpxPath ) . '</strong></span>'
 			);
@@ -207,7 +223,7 @@ function wpgpxmaps_html_page() {
 		if ( ! @mkdir( $cacheGpxPath, 0755, true ) ) {
 			echo '<div class=" notice notice-error"><p>';
 			printf(
-				/* translators: Relative path of the GPX cache folder */
+				/* translators: %1s: Relative path of the GPX cache folder */
 				esc_html__( 'Can&lsquo;t create the cache folder %1s for the GPX files. Please create the folder and make it writable! If not, you will must update the files manually!', 'wp-gpx-maps' ),
 				'<span class="code"><strong>' . esc_html( $relativeGpxCachePath ) . '</strong></span>'
 			);
@@ -233,3 +249,5 @@ function wpgpxmaps_html_page() {
 }
 
 ?>
+
+<!-- The First Div (for body) ends in the respective file for the corresponding tab -->
