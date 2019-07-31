@@ -27,6 +27,16 @@ h1.header-title {
 /**
  * 3.0 Tab: Tracks
  */
+
+.tablenav-top {
+	clear: both;
+	height: 30px;
+	margin-top: 10px;
+	margin-bottom: 4px;
+	margin-left: 10px;
+	padding-bottom: 10px;
+}
+
 #table tbody tr:hover {
 	background: #eee;
 }
