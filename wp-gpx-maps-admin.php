@@ -9,7 +9,7 @@ function wpgpxmaps_admin_init() {
 
 	wpgpxmaps_plugin_upgrade();
 
-	if ( get_site_option( 'wpgpxmaps_show_notice' ) == 1 ) {
+	if ( get_option( 'wpgpxmaps_show_notice' ) == 1 ) {
 		if ( is_multisite() ) {
 			add_action( 'network_admin_notices', 'wpgpxmaps_show_update_notice' );
 		} else {
@@ -78,11 +78,11 @@ function wpgpxmaps_plugin_upgrade() {
 	if ( wpgpxmaps_get_current_version() == $installed_version )
 		return;
 
-	delete_site_option( 'wpgpxmaps_version' );
+	delete_option( 'wpgpxmaps_version' );
 	update_option( 'wpgpxmaps_version', wpgpxmaps_get_current_version() );
 
 	delete_option( 'wpgpxmaps_show_notice', 0 );
-	update_site_option( 'wpgpxmaps_show_notice', 1 );
+	update_option( 'wpgpxmaps_show_notice', 1 );
 
 }
 
@@ -134,7 +134,7 @@ function wpgpxmaps_show_update_notice() {
  */
 function wpgpxmaps_dismiss_notice() {
 
-	$result = update_site_option( 'wpgpxmaps_show_notice', 0 );
+	$result = update_option( 'wpgpxmaps_show_notice', 0 );
 	return $result;
 }
 
