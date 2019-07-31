@@ -23,8 +23,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 	$imgids = explode( ',', $ngImages );
 
 	if ( ! wpgpxmaps_isNGGalleryActive() )
-
-		return '';
+	return '';
 	try {
 		$pictures = array();
 		foreach ( $galids as $g ) {
