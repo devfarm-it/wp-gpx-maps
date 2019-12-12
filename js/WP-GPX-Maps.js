@@ -430,6 +430,12 @@ var WPGPXMAPS = {
 						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
+				
+				baseMaps['国土地理院地図'] = L.tileLayer( 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+					maxZoom: 18,
+					attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a>, ' +
+						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+				});
 
 				switch ( mapType ) {
 
@@ -492,6 +498,11 @@ var WPGPXMAPS = {
 					/* Map type: Open Sea Map */
 					case 'OSM10': {
 						baseMaps['Open Sea Map'].addTo( this.map );
+						break;
+					}
+
+					case 'OSM11': {
+						baseMaps['国土地理院地図'].addTo( this.map );
 						break;
 					}
 

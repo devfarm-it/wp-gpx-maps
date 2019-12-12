@@ -114,7 +114,7 @@ function wpgpxmaps_enqueue_scripts() {
 	/* Chartjs */
 	wp_register_script( 'chartjs', plugins_url( '/js/Chart.min.js', __FILE__ ), array(), '2.8.0' );
 
-	wp_register_script( 'wp-gpx-maps', plugins_url( 'js//wp-gpx-maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
+	wp_register_script( 'wp-gpx-maps', plugins_url( 'js/WP-GPX-Maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
 
 	wp_enqueue_script( 'output-style' );
 	wp_enqueue_script( 'leaflet' );
