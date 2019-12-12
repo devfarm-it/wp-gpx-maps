@@ -402,7 +402,7 @@ if ( ! ( $po ) )
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM11" <?php if ( $t == 'OSM11' ) echo 'checked'; ?>>
 							<?php
 							echo ' ';
-							_e( '国土地理院地図', 'wp-gpx-maps' );
+							_e( 'GSI Map (Japan)', 'wp-gpx-maps' );
 							?>
 						<br />
 					</td>

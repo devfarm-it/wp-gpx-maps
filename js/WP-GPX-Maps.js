@@ -431,7 +431,7 @@ var WPGPXMAPS = {
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
 				
-				baseMaps['国土地理院地図'] = L.tileLayer( 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+				baseMaps['GSI Map (Japan)'] = L.tileLayer( 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
 					maxZoom: 18,
 					attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a>, ' +
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
@@ -502,7 +502,7 @@ var WPGPXMAPS = {
 					}
 
 					case 'OSM11': {
-						baseMaps['国土地理院地図'].addTo( this.map );
+						baseMaps['GSI Map (Japan)'].addTo( this.map );
 						break;
 					}
 
