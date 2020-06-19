@@ -269,7 +269,7 @@
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						esc_html_e( 'OSM6 = MapToolKit - Terrain', 'wp-gpx-maps' );
+						//esc_html_e( 'OSM6 = MapToolKit - Terrain', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php

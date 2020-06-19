@@ -375,12 +375,12 @@ if ( ! ( $po ) )
 							esc_html_e( 'Thunderforest - Landscape (API Key required)', 'wp-gpx-maps' );
 							?>
 						<br />
-						<input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ( 'OSM6' == $t ) echo 'checked'; ?>>
+						<!-- <input type="radio" name="wpgpxmaps_map_type" value="OSM6" <?php if ( 'OSM6' == $t ) echo 'checked'; ?>>-->
 							<?php
 							/* translators: map provider / map type */
-							esc_html_e( 'MapToolKit - Terrain', 'wp-gpx-maps' );
+							//esc_html_e( 'MapToolKit - Terrain', 'wp-gpx-maps' );
 							?>
-						<br />
+						<!--<br />-->
 						<input type="radio" name="wpgpxmaps_map_type" value="OSM7" <?php if ( 'OSM7' == $t ) echo 'checked'; ?>>
 							<?php
 							/* translators: map provider / map type */

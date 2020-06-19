@@ -62,7 +62,7 @@ var WPGPXMAPS = {
 				mapTypeIds.push( 'OSM3' );
 				mapTypeIds.push( 'OSM4' );
 				mapTypeIds.push( 'OSM5' );
-				mapTypeIds.push( 'OSM6' );
+				//mapTypeIds.push( 'OSM6' );
 
 				switch ( mapType ) {
 					case 'TERRAIN': { mapType = google.maps.MapTypeId.TERRAIN; break;}
@@ -73,7 +73,7 @@ var WPGPXMAPS = {
 					case 'OSM3': { mapType = 'OSM3'; break;}
 					case 'OSM4': { mapType = 'OSM4'; break;}
 					case 'OSM5': { mapType = 'OSM5'; break;}
-					case 'OSM6': { mapType = 'OSM6'; break;}
+					//case 'OSM6': { mapType = 'OSM6'; break;}
 					default: { mapType = google.maps.MapTypeId.HYBRID; break;}
 				}
 
@@ -157,15 +157,15 @@ var WPGPXMAPS = {
 				}) );
 
 				/* Map type: MapToolKit - Terrain */
-				this.map.mapTypes.set( 'OSM6', new google.maps.ImageMapType({
-					getTileUrl: function( coord, zoom ) {
-						return 'https://tile2.maptoolkit.net/terrain/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
-					},
-					tileSize: new google.maps.Size( 256, 256 ),
-					name: 'MTK-Terr',
-					alt: 'MapToolKit - Terrain',
-					maxZoom: 18
-				}) );
+				//this.map.mapTypes.set( 'OSM6', new google.maps.ImageMapType({
+				//	getTileUrl: function( coord, zoom ) {
+				//		return 'https://tile2.maptoolkit.net/terrain/' + zoom + '/' + coord.x + '/' + coord.y + '.png';
+				//	},
+				//	tileSize: new google.maps.Size( 256, 256 ),
+				//	name: 'MTK-Terr',
+				//	alt: 'MapToolKit - Terrain',
+				//	maxZoom: 18
+				//}) );
 			},
 
 			this.AppPolylines = function( mapData, color1, currentIcon, startIcon, endIcon ) {
@@ -389,13 +389,13 @@ var WPGPXMAPS = {
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
 
-				/* Map type: MapToolKit - Terrain */
-				baseMaps['MapToolKit - Terrain'] = L.tileLayer( 'https://tile2.maptoolkit.net/terrain/{z}/{x}/{y}.png', {
-					maxZoom: 18,
-					attribution: 'Maps &copy; <a href="https://www.maptoolkit.net/">Maptoolkit</a> contributors, ' +
-						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-				});
+				///* Map type: MapToolKit - Terrain */
+				//baseMaps['MapToolKit - Terrain'] = L.tileLayer( 'https://tile2.maptoolkit.net/terrain/{z}/{x}/{y}.png', {
+				//	maxZoom: 18,
+				//	attribution: 'Maps &copy; <a href="https://www.maptoolkit.net/">Maptoolkit</a> contributors, ' +
+				//		'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				//		'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+				//});
 
 				/* Map type: Open Street Map - Humanitarian Map Style */
 				baseMaps['Humanitarian Map Style'] = L.tileLayer( 'https://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
@@ -469,11 +469,11 @@ var WPGPXMAPS = {
 						break;
 					}
 
-					/* Map type: MapToolKit - Terrain */
-					case 'OSM6': {
-						baseMaps['MapToolKit - Terrain'].addTo( this.map );
-						break;
-					}
+					///* Map type: MapToolKit - Terrain */
+					//case 'OSM6': {
+					//	baseMaps['MapToolKit - Terrain'].addTo( this.map );
+					//	break;
+					//}
 
 					/* Map type: Open Street Map - Humanitarian Map Style*/
 					case 'OSM7': {

@@ -105,7 +105,6 @@ You can use the following map types:
 1. <strong>OSM3</strong> = Thunderforest - Outdoors (API Key required)
 1. <strong>OSM4</strong> = Thunderforest - Transport (API Key required)
 1. <strong>OSM5</strong> = Thunderforest - Landscape (API Key required)
-1. <strong>OSM6</strong> = MapToolKit - Terrain
 1. <strong>OSM7</strong> = Open Street Map - Humanitarian map style
 1. <strong>OSM9</strong> =  Hike & Bike
 1. <strong>OSM10</strong> = Open Sea Map
@@ -314,7 +313,6 @@ Yes!
 * Added possibility to hide the elevation chart
 = 1.2.2 =
 * Smaller map type selector
-* New map: MapToolKit - Terrain
 * Fix: Google maps exception for NextGen Gallery
 = 1.2.1 =
 * Fix: NextGen Gallery 1.9 compatibility
