@@ -247,7 +247,3 @@ function wpgpxmaps_html_page() {
 	}
 
 }
-
-?>
-
-<!-- The First Div (for body) ends in the respective file for the corresponding tab -->
