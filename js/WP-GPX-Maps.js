@@ -108,7 +108,7 @@ var WPGPXMAPS = {
 					maxZoom: 18
 				}) );
 
-				/* Map type: Thunderforst - Open Cycle Map with API key or Open Cycle Map - Cycle */
+				/* Map type: Thunderforest - Open Cycle Map with API key or Open Cycle Map - Cycle */
 				this.map.mapTypes.set( 'OSM2', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
 						if ( hasThunderforestApiKey ) {
@@ -119,40 +119,40 @@ var WPGPXMAPS = {
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
 					name: 'TF-OCM',
-					alt: 'Thunderforst - Open Cycle Map',
+					alt: 'Thunderforest - Open Cycle Map',
 					maxZoom: 18
 				}) );
 
-				/* Map type: Thunderforst - Transport with API key */
+				/* Map type: Thunderforest - Transport with API key */
 				this.map.mapTypes.set( 'OSM3', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
 						return 'https://a.tile.thunderforest.com/outdoors/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
 					name: 'TF-Outd',
-					alt: 'Thunderforst - Outdoors',
+					alt: 'Thunderforest - Outdoors',
 					maxZoom: 18
 				}) );
 
-				/* Map type: Thunderforst - Transport with API key */
+				/* Map type: Thunderforest - Transport with API key */
 				this.map.mapTypes.set( 'OSM4', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
 						return 'https://a.tile.thunderforest.com/transport/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
 					name: 'TF-Tran',
-					alt: 'Thunderforst - Transport',
+					alt: 'Thunderforest - Transport',
 					maxZoom: 18
 				}) );
 
-				/* Map type: Thunderforst - Landscape with API key */
+				/* Map type: Thunderforest - Landscape with API key */
 				this.map.mapTypes.set( 'OSM5', new google.maps.ImageMapType({
 					getTileUrl: function( coord, zoom ) {
 						return 'https://a.tile.thunderforest.com/landscape/' + zoom + '/' + coord.x + '/' + coord.y + '.png?apikey=' + ThunderforestApiKey;
 					},
 					tileSize: new google.maps.Size( 256, 256 ),
 					name: 'TF-Land',
-					alt: 'Thunderforst - Landscape',
+					alt: 'Thunderforest - Landscape',
 					maxZoom: 18
 				}) );
 
@@ -337,7 +337,7 @@ var WPGPXMAPS = {
 
 				if ( hasThunderforestApiKey ) {
 
-					/* Map type: Thunderforst - OpenCycleMap with API key */
+					/* Map type: Thunderforest - OpenCycleMap with API key */
 					baseMaps['Thunderforest - Cycle'] = L.tileLayer( 'https://a.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
 						maxZoom: 18,
 						attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
@@ -357,24 +357,24 @@ var WPGPXMAPS = {
 
 				}
 
-				/* Map type: Thunderforst - Outdoors with API key */
-				baseMaps['Thunderforst - Outdoors'] = L.tileLayer( 'https://a.tile.thunderforest.com/outddors/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+				/* Map type: Thunderforest - Outdoors with API key */
+				baseMaps['Thunderforest - Outdoors'] = L.tileLayer( 'https://a.tile.thunderforest.com/outddors/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
 					maxZoom: 18,
 					attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
 						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
 
-				/* Map type: Thunderforst - Transport with API key */
-				baseMaps['Thunderforst - Transport'] = L.tileLayer( 'https://a.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+				/* Map type: Thunderforest - Transport with API key */
+				baseMaps['Thunderforest - Transport'] = L.tileLayer( 'https://a.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
 					maxZoom: 18,
 					attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
 						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 						'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
 				});
 
-				/* Map type: Thunderforst - Landscape with API key */
-				baseMaps['Thunderforst - Landscape'] = L.tileLayer( 'https://a.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+				/* Map type: Thunderforest - Landscape with API key */
+				baseMaps['Thunderforest - Landscape'] = L.tileLayer( 'https://a.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
 					maxZoom: 18,
 					attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
 						'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -445,27 +445,27 @@ var WPGPXMAPS = {
 						break;
 					}
 
-					/* Map type: Thunderforst - Open Cycle Maps with API key */
+					/* Map type: Thunderforest - Open Cycle Maps with API key */
 					case 'OSM2': {
-						baseMaps['Thunderforst - Cycle'].addTo( this.map );
+						baseMaps['Thunderforest - Cycle'].addTo( this.map );
 						break;
 					}
 
-					/* Map type: Thunderforst - Outdoors with API key */
+					/* Map type: Thunderforest - Outdoors with API key */
 					case 'OSM3': {
-						baseMaps['Thunderforst - Outdoors'].addTo( this.map );
+						baseMaps['Thunderforest - Outdoors'].addTo( this.map );
 						break;
 					}
 
-					/* Map type: Thunderforst - Landscape with API key */
+					/* Map type: Thunderforest - Landscape with API key */
 					case 'OSM4': {
-						baseMaps['Thunderforst - Transport'].addTo( this.map );
+						baseMaps['Thunderforest - Transport'].addTo( this.map );
 						break;
 					}
 
-					/* Map type: Thunderforst - Landscape with API key */
+					/* Map type: Thunderforest - Landscape with API key */
 					case 'OSM5': {
-						baseMaps['Thunderforst - Landscape'].addTo( this.map );
+						baseMaps['Thunderforest - Landscape'].addTo( this.map );
 						break;
 					}
 
