@@ -30,7 +30,13 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			$item['data'] = wp_get_attachment_link( $attachment_id, array( 105, 105 ) );
 
 			if ( is_callable( 'exif_read_data' ) ) {
+				
+				try {
 					$exif = @exif_read_data( $img_src[0] );
+				} catch (Exception $e) {
+					$exif = false;
+				}
+								
 				if ( $exif !== false ) {
 					$item['lon'] = getExifGps( $exif['GPSLongitude'], $exif['GPSLongitudeRef'] );
 					$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );

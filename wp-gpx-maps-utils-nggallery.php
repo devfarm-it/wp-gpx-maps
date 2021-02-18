@@ -33,28 +33,37 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			array_push( $pictures, nggdb::find_image( $i ) );
 		}
 		foreach ( $pictures as $p ) {
-			$item         = array();
-			$item['data'] = $p->thumbHTML;
-			if ( is_callable( 'exif_read_data' ) ) {
-				$exif = @exif_read_data( $p->imagePath );
-				if ( $exif !== false && is_array($exif) && sizeof($exif) > 0 ) {					//print_r($exif);
-					$item['lon'] = getExifGps( $exif['GPSLongitude'], $exif['GPSLongitudeRef'] );
-					$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );									
-					if ( ( $item['lat'] != 0 ) || ( $item['lon'] != 0 ) ) {
-						$result[] = $item;
-					} elseif ( isset( $p->imagedate ) ) {
-						$_dt   = strtotime( $p->imagedate ) + $dtoffset;
-						$_item = findItemCoordinate( $_dt, $dt, $lat, $lon );
-						if ( $_item != null ) {
-							$item['lat'] = $_item['lat'];
-							$item['lon'] = $_item['lon'];
-							$result[]    = $item;
+			
+			try {
+		
+				$item         = array();
+				$item['data'] = $p->thumbHTML;
+				if ( is_callable( 'exif_read_data' ) && is_object($p) && property_exists($p,"imagePath") ) {
+					$exif = @exif_read_data( $p->imagePath );
+					if ( $exif !== false && is_array($exif) && sizeof($exif) > 0 ) {					//print_r($exif);
+						$item['lon'] = getExifGps( $exif['GPSLongitude'], $exif['GPSLongitudeRef'] );
+						$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );									
+						if ( ( $item['lat'] != 0 ) || ( $item['lon'] != 0 ) ) {
+							$result[] = $item;
+						} elseif ( isset( $p->imagedate ) ) {
+							$_dt   = strtotime( $p->imagedate ) + $dtoffset;
+							$_item = findItemCoordinate( $_dt, $dt, $lat, $lon );
+							if ( $_item != null ) {
+								$item['lat'] = $_item['lat'];
+								$item['lon'] = $_item['lon'];
+								$result[]    = $item;
+							}
 						}
 					}
-				}
-			} else {
-				$error .= "Sorry, <a href='https://php.net/manual/en/function.exif-read-data.php' target='_blank' rel='noopener noreferrer'>exif_read_data</a> function not found! check your hosting.<br />";
+				} else {
+					$error .= "Sorry, <a href='https://php.net/manual/en/function.exif-read-data.php' target='_blank' rel='noopener noreferrer'>exif_read_data</a> function not found! check your hosting.<br />";
+				}	
+		
+			} catch (Exception $e) {
+				//$error .= "Sorry, <a href='https://php.net/manual/en/function.exif-read-data.php' target='_blank' rel='noopener noreferrer'>exif_read_data</a> function not found! check your hosting.<br />";
 			}
+			
+
 		}
 		/* START FIX NEXT GEN GALLERY 2.x */
 		if ( class_exists( 'C_Component_Registry' ) ) {
