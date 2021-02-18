@@ -6,7 +6,7 @@ Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-galle
 Requires at least: 4.6.0
 Tested up to: 5.2.2
 Requires PHP: 5.6.20
-Stable tag: 1.7.00
+Stable tag: 1.7.02
 
 Draws a GPX track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -195,7 +195,11 @@ Yes!
 
 == Changelog ==
 
-= X.X.XX =
+
+= 1.7.02 =
+* fix admin error
+= 1.7.01 =
+* General: Removed Maptoolkit (code OSM6) map provider. Requested by H.F. (Maptoolkit Managing director)
 * General: Added new map type "Thunderforest - Outddors" (OSM3)
 * Admin: Added admin notices in the dashboard
 * Settings Tab: In the map selection changed to the correct maps provider from "Open Cycle Map"* Settings Tab: to "Thunderforest"

@@ -37,9 +37,9 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			$item['data'] = $p->thumbHTML;
 			if ( is_callable( 'exif_read_data' ) ) {
 				$exif = @exif_read_data( $p->imagePath );
-				if ( $exif !== false ) {
+				if ( $exif !== false && is_array($exif) && sizeof($exif) > 0 ) {					//print_r($exif);
 					$item['lon'] = getExifGps( $exif['GPSLongitude'], $exif['GPSLongitudeRef'] );
-					$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );
+					$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );									
 					if ( ( $item['lat'] != 0 ) || ( $item['lon'] != 0 ) ) {
 						$result[] = $item;
 					} elseif ( isset( $p->imagedate ) ) {
@@ -68,8 +68,8 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 
 			/* START FIX NEXT GEN GALLERY PRO */
 
-			if ( preg_match( "/data-nplmodal-gallery-id=[\"'](.*?)[\"']/", $dummy, $m ) ) {
-				$galid = $m[1];
+			if ( preg_match( "/(data-nplmodal-gallery-id|data-thumbnail)=[\"'](.*?)[\"']/", $dummy, $m ) ) {
+				$galid = $m[2];
 				if ( $galid ) {
 					for ( $i = 0; $i < count( $result ); ++$i ) {
 						$result[$i]['data'] = str_replace( '%PRO_LIGHTBOX_GALLERY_ID%', $galid, $result[$i]['data'] );
@@ -82,7 +82,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 
 	} catch ( Exception $e ) {
 		$error .= 'Error When Retrieving NextGen Gallery galleries/images: $e <br />';
-	}
+	}	
 	return $result;
 }
 
@@ -101,10 +101,9 @@ function findItemCoordinate( $imgdt, $dt, $lat, $lon ) {
 }
 
 function getExifGps( $exifCoord, $hemi ) {
-
-	$degrees = count( $exifCoord ) > 0 ? gps2Num( $exifCoord[0] ) : 0;
-	$minutes = count( $exifCoord ) > 1 ? gps2Num( $exifCoord[1] ) : 0;
-	$seconds = count( $exifCoord ) > 2 ? gps2Num( $exifCoord[2] ) : 0;
+	$degrees = is_array($exifCoord) && sizeof( $exifCoord ) > 0 ? gps2Num( $exifCoord[0] ) : 0;
+	$minutes = is_array($exifCoord) && sizeof( $exifCoord ) > 1 ? gps2Num( $exifCoord[1] ) : 0;
+	$seconds = is_array($exifCoord) && sizeof( $exifCoord ) > 2 ? gps2Num( $exifCoord[2] ) : 0;
 	$flip    = ( 'W' == $hemi or 'S' == $hemi ) ? -1 : 1;
 
 	return $flip * ( $degrees + $minutes / 60 + $seconds / 3600 );
