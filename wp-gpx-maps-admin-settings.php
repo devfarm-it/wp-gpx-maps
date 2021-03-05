@@ -44,9 +44,6 @@ $showGrade = get_option( 'wpgpxmaps_show_grade' );
 $po             = get_option( 'wpgpxmaps_pointsoffset' );
 $donotreducegpx = get_option( 'wpgpxmaps_donotreducegpx' );
 
-if ( empty( $showEle ) )
-	$showEle = 'true';
-
 if ( ! ( $t ) )
 	$t = 'HYBRID';
 
@@ -520,11 +517,10 @@ if ( ! ( $po ) )
 						<?php esc_html_e( 'Altitude:', 'wp-gpx-maps' ); ?>
 					</th>
 					<td>
-						<input type="checkbox" <?php if ( true == $showEle ) { echo( 'checked' ); } ?> onchange="wpgpxmaps_show_elevation.value = this.checked" onload="wpgpxmaps_show_elevation.value = this.checked" />
+						<input name="wpgpxmaps_show_elevation" type="checkbox" value="true" <?php if ( true == $showEle ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
 						<i>
 							<?php esc_html_e( 'Show altitude', 'wp-gpx-maps' ); ?>
 						</i>
-						<input name="wpgpxmaps_show_elevation" type="hidden" value="<?php echo $showEle; ?>">
 					</td>
 				</tr>
 
