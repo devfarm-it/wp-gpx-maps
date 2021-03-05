@@ -204,6 +204,9 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 	$points->avgTemp      = 0;
 	$points->totalLength  = 0;
 
+	$points->name = "";
+	$points->desc = "";
+
 	$gpx = simplexml_load_file( $filePath );
 
 	if ( false === $gpx )
@@ -212,6 +215,9 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 		$gpx->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
 		$gpx->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
 		$gpx->registerXPathNamespace( 'ns3', 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1' );
+
+		if (!empty($gpx->metadata->name)) $points->name = $gpx->metadata->name;
+		if (!empty($gpx->metadata->desc)) $points->desc = $gpx->metadata->desc;
 
 		$nodes = $gpx->xpath( '//trk | //a:trk | //b:trk ' );
 		/* Normal GPX */
