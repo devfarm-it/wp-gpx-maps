@@ -27,6 +27,8 @@ $avg_cad        = get_option( 'wpgpxmaps_summary_avg_cad' );
 $avg_hr         = get_option( 'wpgpxmaps_summary_avg_hr' );
 $avg_temp       = get_option( 'wpgpxmaps_summary_avg_temp' );
 $total_time     = get_option( 'wpgpxmaps_summary_total_time' );
+$showName 		= get_option( 'wpgpxmaps_summary_show_name' );
+$showDesc 		= get_option( 'wpgpxmaps_summary_show_desc' );
 /* Map */
 $t                 = get_option( 'wpgpxmaps_map_type' );
 $zoomonscrollwheel = get_option( 'wpgpxmaps_zoomonscrollwheel' );
@@ -309,11 +311,35 @@ if ( ! ( $po ) )
 					</td>
 				</tr>
 
+				<tr>
+					<th scope="row">
+						<?php esc_html_e( 'Show name:', 'wp-gpx-maps' ); ?>
+					</th>
+					<td>
+						<input name="wpgpxmaps_summary_show_name" type="checkbox" value="true" <?php if ( true == $showName ) { echo ( 'checked' ); } ?> onchange="this.value = (this.checked)" />
+						<i>
+							<?php esc_html_e( 'Show name from GPX metadata', 'wp-gpx-maps' ); ?>
+						</i>
+					</td>
+				</tr>
+
+								<tr>
+					<th scope="row">
+						<?php esc_html_e( 'Show description:', 'wp-gpx-maps' ); ?>
+					</th>
+					<td>
+						<input name="wpgpxmaps_summary_show_desc" type="checkbox" value="true" <?php if ( true == $showDesc ) { echo ( 'checked' ); } ?> onchange="this.value = (this.checked)" />
+						<i>
+							<?php esc_html_e( 'Show description from GPX metadata', 'wp-gpx-maps' ); ?>
+						</i>
+					</td>
+				</tr>
+
 			</table>
 
 			<p class="submit">
 				<input type="hidden" name="action" value="update" />
-				<input name="page_options" type="hidden" value="wpgpxmaps_summary,wpgpxmaps_summary_tot_len,wpgpxmaps_summary_max_ele,wpgpxmaps_summary_min_ele,wpgpxmaps_summary_total_ele_up,wpgpxmaps_summary_total_ele_down,wpgpxmaps_summary_avg_speed,wpgpxmaps_summary_avg_cad,wpgpxmaps_summary_avg_hr,wpgpxmaps_summary_avg_temp,wpgpxmaps_summary_total_time" />
+				<input name="page_options" type="hidden" value="wpgpxmaps_summary,wpgpxmaps_summary_tot_len,wpgpxmaps_summary_max_ele,wpgpxmaps_summary_min_ele,wpgpxmaps_summary_total_ele_up,wpgpxmaps_summary_total_ele_down,wpgpxmaps_summary_avg_speed,wpgpxmaps_summary_avg_cad,wpgpxmaps_summary_avg_hr,wpgpxmaps_summary_avg_temp,wpgpxmaps_summary_total_time,wpgpxmaps_summary_show_name,wpgpxmaps_summary_show_desc" />
 				<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 			</p>
 
