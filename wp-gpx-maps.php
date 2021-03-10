@@ -234,6 +234,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$distanceType   = wpgpxmaps_findValue( $attr, 'distanceType', 'wpgpxmaps_distance_type', 0 );
 	$skipcache      = wpgpxmaps_findValue( $attr, 'skipcache', 'wpgpxmaps_skipcache', '' );
 	$download       = wpgpxmaps_findValue( $attr, 'download', 'wpgpxmaps_download', '' );
+	$printmap		= wpgpxmaps_findValue( $attr, 'printmap', 'wpgpxmaps_printmap', '' );
 	$usegpsposition = wpgpxmaps_findValue( $attr, 'usegpsposition', 'wpgpxmaps_usegpsposition', false );
 	/* Print Summary Table */
 	$summary          = wpgpxmaps_findValue( $attr, 'summary', 'wpgpxmaps_summary', false );
@@ -783,6 +784,11 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		$output .= "Download file: <a href='$gpxurl' target='_new' download>" . __( $downloadname, 'wp-gpx-maps' ) . '</a>';
 	}
 
+	if ( (true === $printmap || 'true' === $printmap ) && $gpxurl != ''){
+
+		$output .= "<div><input type='button' id='btn' value='" . __( 'Print this map', 'wp-gpx-maps' ) ."' onclick='window.print();'></div>";
+	}
+
 	return $output;
 }
 
@@ -959,6 +965,7 @@ function wpgpxmaps_remove_option() {
 	delete_option( 'wpgpxmaps_distance_type' );
 	delete_option( 'wpgpxmaps_skipcache' );
 	delete_option( 'wpgpxmaps_download' );
+	delete_option( 'wpgpxmaps_print' );
 	delete_option( 'wpgpxmaps_usegpsposition' );
 	/* Print Summary Table */
 	delete_option( 'wpgpxmaps_summary' );

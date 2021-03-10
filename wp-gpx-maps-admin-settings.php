@@ -14,6 +14,7 @@ if ( ! current_user_can( 'manage_options' ) )
 $distanceType   = get_option( 'wpgpxmaps_distance_type' );
 $skipcache      = get_option( 'wpgpxmaps_skipcache' );
 $download       = get_option( 'wpgpxmaps_download' );
+$printmap		= get_option( 'wpgpxmaps_printmap' );
 $usegpsposition = get_option( 'wpgpxmaps_usegpsposition' );
 /* Print Summary Table */
 $summary        = get_option( 'wpgpxmaps_summary' );
@@ -138,6 +139,18 @@ if ( ! ( $po ) )
 
 			<tr>
 				<th scope="row">
+					<?php esc_html_e( 'Print map:', 'wp-gpx-maps' ); ?>
+				</th>
+				<td>
+					<input name="wpgpxmaps_printmap" type="checkbox" value="true" <?php if ( true == $printmap ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
+					<i>
+						<?php esc_html_e( 'Allow users to print your GPX file', 'wp-gpx-maps' ); ?>
+					</i>
+				</td>
+			</tr>
+			
+			<tr>
+				<th scope="row">
 					<?php esc_html_e( 'Use browser GPS position:', 'wp-gpx-maps' ); ?>
 				</th>
 				<td>
@@ -164,7 +177,7 @@ if ( ! ( $po ) )
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_printmap,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 
