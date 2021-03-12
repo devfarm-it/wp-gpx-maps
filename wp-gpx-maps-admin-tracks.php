@@ -148,13 +148,16 @@ if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 
 				}
 			} else {
-
+				/* Use getPoints to parse the GPX data and extract the <name> field */
+				$points = wpgpxmaps_getPoints($realGpxPath . '/' . $entry,0,0,0);
+				$name = $points->name;
 				$myFile           = $realGpxPath . '/' . $entry;
 				$myGpxFileNames[] = array(
-					'name'     => $entry,
+					'filename'     => $entry,
+					'metadata'	   => "$name",
 					'size'     => filesize( $myFile ),
 					'lastedit' => filemtime( $myFile ),
-					'nonce'    => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
+					'nonce' 	   => wp_create_nonce( 'wpgpx_deletefile_nonce_' . $entry ),
 				);
 			}
 		}
@@ -186,20 +189,27 @@ if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 
 		jQuery('#table').bootstrapTable({
 			columns: [{
-				field: 'name',
+				field: 'filename',
 				title: '<?php _e( 'File', 'wp-gpx-maps' ); ?>',
 				sortable: true,
 				formatter: function(value, row, index) {
 
 					return [
-						'<b>' + row.name + '</b><br />',
+						'<b>' + row.filename + '</b><br />',
 						'<a class="delete_gpx_row" href="<?php echo $wpgpxmapsUrl; ?>&_wpnonce=' + row.nonce + '" ><?php esc_html_e( 'Delete', 'wp-gpx-maps' ); ?></a>',
 						' | ',
-						'<a href="<?php echo $relativeGpxPath; ?>' + row.name + '"><?php esc_html_e( 'Download', 'wp-gpx-maps' ); ?></a>',
+						'<a href="<?php echo $relativeGpxPath; ?>' + row.filename + '"><?php esc_html_e( 'Download', 'wp-gpx-maps' ); ?></a>',
 						' | ',
-						'<a href="#" class="copy-shortcode" title="<?php esc_html_e( 'Copy shortcode', 'wp-gpx-maps' ); ?>"><?php esc_html_e( 'Shortcode:', 'wp-gpx-maps' ); ?></a> <span class="code"> [sgpx gpx="<?php echo $relativeGpxPath; ?>' + row.name + '"]</span>',
+						'<a href="#" class="copy-shortcode" title="<?php esc_html_e( 'Copy shortcode', 'wp-gpx-maps' ); ?>"><?php esc_html_e( 'Shortcode:', 'wp-gpx-maps' ); ?></a> <span class="code"> [sgpx gpx="<?php echo $relativeGpxPath; ?>' + row.filename + '"]</span>',
 					].join('')
 
+				}
+			}, {
+				field: 'metadata',
+				title: '<?php esc_html_e( 'Meta-data title', 'wp-gpx-maps' ); ?>',
+				sortable: true,
+				formatter: function(value, row, index) {
+					return '<b>' + row.metadata +'</b>';
 				}
 			}, {
 				field: 'lastedit',
