@@ -781,7 +781,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$gpxurl = $dummy . $gpxurl;
 		}
 		$downloadname = basename($gpxurl);
-		$output .= "Download file: <a href='$gpxurl' target='_new' download>" . __( $downloadname, 'wp-gpx-maps' ) . '</a>';
+		$output .= "<div>Download file: <a href='$gpxurl' target='_new' download>" . __( $downloadname, 'wp-gpx-maps' ) . '</a></div>';
 	}
 
 	if ( (true === $printmap || 'true' === $printmap ) && $gpxurl != ''){
