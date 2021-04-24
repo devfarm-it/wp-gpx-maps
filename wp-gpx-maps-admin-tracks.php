@@ -124,7 +124,7 @@ $myGpxFileNames = array();
 if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 	while ( false !== ( $entry = readdir( $handle ) ) ) {
 		if ( preg_match( $gpxRegEx, $entry ) ) {
-			if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry ) ) {
+			if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry)  && !isset( $_GET['createpost'] ) ) {
 				if ( file_exists( $realGpxPath . '/' . $entry ) ) {
 					unlink( $realGpxPath . '/' . $entry );
 
@@ -148,6 +148,23 @@ if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 
 				}
 			} else {
+				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'wpgpx_deletefile_nonce_' . $entry)  && isset( $_GET['createpost'] ) ) {
+					$points = wpgpxmaps_getPoints($realGpxPath . '/' . $entry,0,0,0);
+					$name = $points->name;
+					$defaultcategory = get_option( 'wpgpxmaps_defaultcategory' );
+					$my_post = array(
+						'post_title'    => wp_strip_all_tags($name),
+						'post_content'  => "[sgpx gpx=\"$relativeGpxPath/$entry\"]",
+						'post_status'   => 'publish',
+						'post_category' => array($defaultcategory)
+					);
+					$posturl = get_permalink(wp_insert_post($my_post));
+					echo '<div class="notice notice-success"><p>';
+					echo esc_html('The post has been created.');
+					echo ' <a href="' . $posturl . '">';
+					echo esc_html('View post.');
+					echo '</a></p></div>';
+				}
 				/* Use getPoints to parse the GPX data and extract the <name> field */
 				$points = wpgpxmaps_getPoints($realGpxPath . '/' . $entry,0,0,0);
 				$name = $points->name;
@@ -209,7 +226,7 @@ if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 				title: '<?php esc_html_e( 'Meta-data title', 'wp-gpx-maps' ); ?>',
 				sortable: true,
 				formatter: function(value, row, index) {
-					return '<b>' + row.metadata +'</b>';
+					return '<b>' + row.metadata +'</b><br /><a href="<?php echo $wpgpxmapsUrl; ?>&_wpnonce=' + row.nonce + '&createpost=true' +'"> <?php esc_html_e( 'Create Post', 'wp-gpx-maps' ); ?></a></form>';
 				}
 			}, {
 				field: 'lastedit',

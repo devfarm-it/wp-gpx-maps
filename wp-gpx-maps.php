@@ -899,6 +899,7 @@ function wpgpxmaps_install_option() {
 	add_option( 'wpgpxmaps_skipcache', '', '', 'yes' );
 	add_option( 'wpgpxmaps_download', '', '', 'yes' );
 	add_option( 'wpgpxmaps_usegpsposition', '', '', 'yes' );
+	add_option( 'wpgpxmaps_defaultcategory', '', '', 0 );
 	/* Print Summary Table */
 	add_option( 'wpgpxmaps_summary', '', '', 'yes' );
 	add_option( 'wpgpxmaps_summary_tot_len', '', '', 'yes' );
@@ -967,6 +968,7 @@ function wpgpxmaps_remove_option() {
 	delete_option( 'wpgpxmaps_download' );
 	delete_option( 'wpgpxmaps_print' );
 	delete_option( 'wpgpxmaps_usegpsposition' );
+	delete_option( 'wpgpxmaps_defaultcategory' );
 	/* Print Summary Table */
 	delete_option( 'wpgpxmaps_summary' );
 	delete_option( 'wpgpxmaps_summary_tot_len' );
