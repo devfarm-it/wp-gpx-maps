@@ -16,6 +16,7 @@ $skipcache      = get_option( 'wpgpxmaps_skipcache' );
 $download       = get_option( 'wpgpxmaps_download' );
 $printmap		= get_option( 'wpgpxmaps_printmap' );
 $usegpsposition = get_option( 'wpgpxmaps_usegpsposition' );
+$defaultcategory = get_option( 'wpgpxmaps_defaultcategory' );
 /* Print Summary Table */
 $summary        = get_option( 'wpgpxmaps_summary' );
 $tot_len        = get_option( 'wpgpxmaps_summary_tot_len' );
@@ -172,12 +173,20 @@ if ( ! ( $po ) )
 					</em>
 				</td>
 			</tr>
+			<tr>
+				<th scope="row">
+					<?php esc_html_e( 'Default post category:', 'wp-gpx-maps' ); ?>
+				</th>
+				<td>
+					<?php wp_dropdown_categories(array('name' => 'wpgpxmaps_defaultcategory', 'selected' => $defaultcategory)); ?>
+				</td>
+			</tr>
 
 		</table>
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_printmap,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_defaultcategory,wpgpxmaps_printmap,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 
