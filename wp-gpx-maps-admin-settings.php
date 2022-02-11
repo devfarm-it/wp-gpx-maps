@@ -14,9 +14,7 @@ if ( ! current_user_can( 'manage_options' ) )
 $distanceType   = get_option( 'wpgpxmaps_distance_type' );
 $skipcache      = get_option( 'wpgpxmaps_skipcache' );
 $download       = get_option( 'wpgpxmaps_download' );
-$printmap		= get_option( 'wpgpxmaps_printmap' );
 $usegpsposition = get_option( 'wpgpxmaps_usegpsposition' );
-$defaultcategory = get_option( 'wpgpxmaps_defaultcategory' );
 /* Print Summary Table */
 $summary        = get_option( 'wpgpxmaps_summary' );
 $tot_len        = get_option( 'wpgpxmaps_summary_tot_len' );
@@ -29,8 +27,6 @@ $avg_cad        = get_option( 'wpgpxmaps_summary_avg_cad' );
 $avg_hr         = get_option( 'wpgpxmaps_summary_avg_hr' );
 $avg_temp       = get_option( 'wpgpxmaps_summary_avg_temp' );
 $total_time     = get_option( 'wpgpxmaps_summary_total_time' );
-$showName 		= get_option( 'wpgpxmaps_summary_show_name' );
-$showDesc 		= get_option( 'wpgpxmaps_summary_show_desc' );
 /* Map */
 $t                 = get_option( 'wpgpxmaps_map_type' );
 $zoomonscrollwheel = get_option( 'wpgpxmaps_zoomonscrollwheel' );
@@ -47,6 +43,9 @@ $showGrade = get_option( 'wpgpxmaps_show_grade' );
 /* Advanced */
 $po             = get_option( 'wpgpxmaps_pointsoffset' );
 $donotreducegpx = get_option( 'wpgpxmaps_donotreducegpx' );
+
+if ( empty( $showEle ) )
+	$showEle = 'true';
 
 if ( ! ( $t ) )
 	$t = 'HYBRID';
@@ -140,18 +139,6 @@ if ( ! ( $po ) )
 
 			<tr>
 				<th scope="row">
-					<?php esc_html_e( 'Print map:', 'wp-gpx-maps' ); ?>
-				</th>
-				<td>
-					<input name="wpgpxmaps_printmap" type="checkbox" value="true" <?php if ( true == $printmap ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
-					<i>
-						<?php esc_html_e( 'Allow users to print your GPX file', 'wp-gpx-maps' ); ?>
-					</i>
-				</td>
-			</tr>
-			
-			<tr>
-				<th scope="row">
 					<?php esc_html_e( 'Use browser GPS position:', 'wp-gpx-maps' ); ?>
 				</th>
 				<td>
@@ -173,20 +160,12 @@ if ( ! ( $po ) )
 					</em>
 				</td>
 			</tr>
-			<tr>
-				<th scope="row">
-					<?php esc_html_e( 'Default post category:', 'wp-gpx-maps' ); ?>
-				</th>
-				<td>
-					<?php wp_dropdown_categories(array('name' => 'wpgpxmaps_defaultcategory', 'selected' => $defaultcategory)); ?>
-				</td>
-			</tr>
 
 		</table>
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_defaultcategory,wpgpxmaps_printmap,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 
@@ -333,35 +312,11 @@ if ( ! ( $po ) )
 					</td>
 				</tr>
 
-				<tr>
-					<th scope="row">
-						<?php esc_html_e( 'Show name:', 'wp-gpx-maps' ); ?>
-					</th>
-					<td>
-						<input name="wpgpxmaps_summary_show_name" type="checkbox" value="true" <?php if ( true == $showName ) { echo ( 'checked' ); } ?> onchange="this.value = (this.checked)" />
-						<i>
-							<?php esc_html_e( 'Show name from GPX metadata', 'wp-gpx-maps' ); ?>
-						</i>
-					</td>
-				</tr>
-
-								<tr>
-					<th scope="row">
-						<?php esc_html_e( 'Show description:', 'wp-gpx-maps' ); ?>
-					</th>
-					<td>
-						<input name="wpgpxmaps_summary_show_desc" type="checkbox" value="true" <?php if ( true == $showDesc ) { echo ( 'checked' ); } ?> onchange="this.value = (this.checked)" />
-						<i>
-							<?php esc_html_e( 'Show description from GPX metadata', 'wp-gpx-maps' ); ?>
-						</i>
-					</td>
-				</tr>
-
 			</table>
 
 			<p class="submit">
 				<input type="hidden" name="action" value="update" />
-				<input name="page_options" type="hidden" value="wpgpxmaps_summary,wpgpxmaps_summary_tot_len,wpgpxmaps_summary_max_ele,wpgpxmaps_summary_min_ele,wpgpxmaps_summary_total_ele_up,wpgpxmaps_summary_total_ele_down,wpgpxmaps_summary_avg_speed,wpgpxmaps_summary_avg_cad,wpgpxmaps_summary_avg_hr,wpgpxmaps_summary_avg_temp,wpgpxmaps_summary_total_time,wpgpxmaps_summary_show_name,wpgpxmaps_summary_show_desc" />
+				<input name="page_options" type="hidden" value="wpgpxmaps_summary,wpgpxmaps_summary_tot_len,wpgpxmaps_summary_max_ele,wpgpxmaps_summary_min_ele,wpgpxmaps_summary_total_ele_up,wpgpxmaps_summary_total_ele_down,wpgpxmaps_summary_avg_speed,wpgpxmaps_summary_avg_cad,wpgpxmaps_summary_avg_hr,wpgpxmaps_summary_avg_temp,wpgpxmaps_summary_total_time" />
 				<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 			</p>
 
@@ -565,10 +520,11 @@ if ( ! ( $po ) )
 						<?php esc_html_e( 'Altitude:', 'wp-gpx-maps' ); ?>
 					</th>
 					<td>
-						<input name="wpgpxmaps_show_elevation" type="checkbox" value="true" <?php if ( true == $showEle ) { echo( 'checked' ); } ?> onchange="this.value = (this.checked)" />
+						<input type="checkbox" <?php if ( true == $showEle ) { echo( 'checked' ); } ?> onchange="wpgpxmaps_show_elevation.value = this.checked" onload="wpgpxmaps_show_elevation.value = this.checked" />
 						<i>
 							<?php esc_html_e( 'Show altitude', 'wp-gpx-maps' ); ?>
 						</i>
+						<input name="wpgpxmaps_show_elevation" type="hidden" value="<?php echo $showEle; ?>">
 					</td>
 				</tr>
 

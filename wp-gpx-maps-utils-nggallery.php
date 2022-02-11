@@ -32,17 +32,43 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 		foreach ( $imgids as $i ) {
 			array_push( $pictures, nggdb::find_image( $i ) );
 		}
+
 		foreach ( $pictures as $p ) {
+			
+			if (!is_object($p))
+				continue;				
 			
 			try {
 		
 				$item         = array();
 				$item['data'] = $p->thumbHTML;
-				if ( is_callable( 'exif_read_data' ) && is_object($p) && property_exists($p,"imagePath") ) {
-					$exif = @exif_read_data( $p->imagePath );
-					if ( $exif !== false && is_array($exif) && sizeof($exif) > 0 ) {					//print_r($exif);
-						$item['lon'] = getExifGps( $exif['GPSLongitude'], $exif['GPSLongitudeRef'] );
-						$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );									
+				if ( is_callable( 'exif_read_data' ) ) {
+					
+					$imagePath = $p->__get("imagePath");
+					
+					$exif = @exif_read_data( $imagePath );
+					if ( $exif !== false && is_array($exif) && sizeof($exif) > 0 ) {
+						//print_r($exif);
+						
+						$GPSLongitude = 0;
+						$GPSLatitude = 0;
+						$GPSLongitudeRef ='';
+						$GPSLatitudeRef ='';
+						
+						if (array_key_exists('GPSLongitude', $exif))
+							$GPSLongitude = $exif['GPSLongitude'];
+						
+						if (array_key_exists('GPSLatitude', $exif))
+							$GPSLatitude = $exif['GPSLatitude'];
+						
+						if (array_key_exists('GPSLongitudeRef', $exif))
+							$GPSLongitudeRef = $exif['GPSLongitudeRef'];
+						
+						if (array_key_exists('GPSLatitudeRef', $exif))
+							$GPSLatitudeRef = $exif['GPSLatitudeRef'];
+						
+						$item['lon'] = getExifGps( $GPSLongitude, $GPSLongitudeRef );
+						$item['lat'] = getExifGps( $GPSLatitude, $GPSLatitudeRef );									
 						if ( ( $item['lat'] != 0 ) || ( $item['lon'] != 0 ) ) {
 							$result[] = $item;
 						} elseif ( isset( $p->imagedate ) ) {
@@ -73,7 +99,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			$params['display_type']    = NEXTGEN_GALLERY_BASIC_THUMBNAILS;
 			$params['images_per_page'] = 999;
 			/* Salso add js references to get the gallery working */
-			$dummy = $renderer->display_images( $params, $inner_content );
+			$dummy = $renderer->display_images( $params );
 
 			/* START FIX NEXT GEN GALLERY PRO */
 
@@ -95,16 +121,21 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 	return $result;
 }
 
+// $imgdt : image date
+// $dt : all gpx datetime
+// $lat : all gpx latitude
+// $lon : all gpx longitude
 function findItemCoordinate( $imgdt, $dt, $lat, $lon ) {
-
+	$prevdt = 0;
 	foreach ( array_keys( $dt ) as $i ) {
-		if ( $i != 0 && $imgdt >= $dt[$i - 1] && $imgdt <= $dt[$i] ) {
+		if ( $i != 0 && $imgdt >= $prevdt && $imgdt <= $dt[$i] ) {
 			if ( $lat[$i] != 0 && $lon[$i] != 0 )
 			return array(
 				'lat' => $lat[$i],
 				'lon' => $lon[$i],
-			);
+			);		
 		}
+		$prevdt = $dt[$i];
 	}
 	return null;
 }
@@ -123,15 +154,16 @@ function gps2Num( $coordPart ) {
 	$parts = explode( '/', $coordPart );
 
 	if ( count( $parts ) <= 0 )
-	return 0;
+		return 0;
 
 	if ( count( $parts ) == 1 )
-	return $parts[0];
+		return $parts[0];
 
-		$lat = floatval( $parts[0] );
-		$lon = floatval( $parts[1] );
+	$lat = floatval( $parts[0] );
+	$lon = floatval( $parts[1] );
 
 	if ( 0 == $lon )
-	return $lat;
+		return $lat;
+	
 	return $lat / $lon;
 }

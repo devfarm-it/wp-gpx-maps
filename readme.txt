@@ -3,10 +3,10 @@
 Contributors: bastianonm, Stephan Klein, Michel Selerin, TosattoSimonePio, Kniebremser
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
-Requires at least: 4.6.0
-Tested up to: 5.2.2
-Requires PHP: 5.6.20
-Stable tag: 1.7.03
+Requires at least: 5.2.0
+Tested up to: 5.9
+Requires PHP: 7.3+
+Stable tag: 1.7.05
 
 Draws a GPX track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -195,6 +195,10 @@ Yes!
 
 == Changelog ==
 
+= 1.7.05 =
+* Fix NextGen warnings
+= 1.7.04 =
+* Fix php8+ errors
 = 1.7.03 =
 * fix download file link
 * fix error with images exif parsing

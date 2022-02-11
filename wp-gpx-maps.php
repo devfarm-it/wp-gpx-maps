@@ -3,7 +3,7 @@
  * Plugin Name: WP-GPX-Maps
  * Plugin URI: http://www.devfarm.it/
  * Description: Draws a GPX track with altitude chart
- * Version: 1.7.03
+ * Version: 1.7.05
  * Author: Bastianon Massimo
  * Author URI: http://www.devfarm.it/
  * Text Domain: wp-gpx-maps
@@ -17,7 +17,7 @@
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.7.03' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.7.05' );
 
 require 'wp-gpx-maps-utils.php';
 require 'wp-gpx-maps-admin.php';
@@ -234,7 +234,6 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$distanceType   = wpgpxmaps_findValue( $attr, 'distanceType', 'wpgpxmaps_distance_type', 0 );
 	$skipcache      = wpgpxmaps_findValue( $attr, 'skipcache', 'wpgpxmaps_skipcache', '' );
 	$download       = wpgpxmaps_findValue( $attr, 'download', 'wpgpxmaps_download', '' );
-	$printmap		= wpgpxmaps_findValue( $attr, 'printmap', 'wpgpxmaps_printmap', '' );
 	$usegpsposition = wpgpxmaps_findValue( $attr, 'usegpsposition', 'wpgpxmaps_usegpsposition', false );
 	/* Print Summary Table */
 	$summary          = wpgpxmaps_findValue( $attr, 'summary', 'wpgpxmaps_summary', false );
@@ -248,8 +247,6 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$p_avg_hr         = wpgpxmaps_findValue( $attr, 'summaryavghr', 'wpgpxmaps_summary_avg_hr', false );
 	$p_avg_temp       = wpgpxmaps_findValue( $attr, 'summaryavgtemp', 'wpgpxmaps_summary_avg_temp', false );
 	$p_total_time     = wpgpxmaps_findValue( $attr, 'summarytotaltime', 'wpgpxmaps_summary_total_time', false );
-	$p_show_name	  = wpgpxmaps_findValue( $attr, 'showname', 'wpgpxmaps_summary_show_name', false );
-	$p_show_desc      = wpgpxmaps_findValue( $attr, 'showdesc', 'wpgpxmaps_summary_show_desc', false );
 	/* Map */
 	$mt                 = wpgpxmaps_findValue( $attr, 'mtype', 'wpgpxmaps_map_type', 'HYBRID' );
 	$color_map          = wpgpxmaps_findValue( $attr, 'mlinecolor', 'wpgpxmaps_map_line_color', '#3366cc' );
@@ -261,7 +258,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$currentIcon        = wpgpxmaps_findValue( $attr, 'currenticon', 'wpgpxmaps_map_current_icon', '' );
 	$waypointIcon       = wpgpxmaps_findValue( $attr, 'waypointicon', 'wpgpxmaps_map_waypoint_icon', '' );
 	/* Diagram - Elevation */
-	$showEle     = wpgpxmaps_findValue( $attr, 'showele', 'wpgpxmaps_show_elevation', false );
+	$showEle     = wpgpxmaps_findValue( $attr, 'showele', 'wpgpxmaps_show_elevation', true );
 	$color_graph = wpgpxmaps_findValue( $attr, 'glinecolor', 'wpgpxmaps_graph_line_color', '#3366cc' );
 	$uom         = wpgpxmaps_findValue( $attr, 'uom', 'wpgpxmaps_unit_of_measure', '0' );
 	$chartFrom1  = wpgpxmaps_findValue( $attr, 'chartfrom1', 'wpgpxmaps_graph_offset_from1', '' );
@@ -374,6 +371,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 	$isGpxUrl = ( preg_match( '/^(http(s)?\:\/\/)/', trim( $gpx ) ) == 1 );
 
+
 	if ( ( ! isset( $points_maps ) || $points_maps == '' ) && $gpx != '' ) {
 	// if (true) {
 
@@ -392,9 +390,6 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		}
 
 		$points = wpgpxmaps_getPoints( $gpx, $pointsoffset, $donotreducegpx, $distanceType );
-
-		$name = $points->name;
-		$desc  = $points->desc;
 
 		$points_maps        = '';
 		$points_graph_dist  = '';
@@ -732,10 +727,6 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	if ( true == $summary && ( $points_graph_speed != '' || $points_graph_ele != '' || $points_graph_dist != '' ) ) {
 
 		$output .= "<div id='wpgpxmaps_summary_" . $r . "' class='wpgpxmaps_summary'>";
-		if (true == $p_show_name && $name != '')
-		$output .= "<span class='name'><span class='summarylabel'>" .__('Name:', 'wp-gpx-maps'). "</span><span class='summaryvalue'> $name</span></span><br />";
-		if (true == $p_show_desc && $desc != '')
-		$output .= "<span class='desc'><span class='summarylabel'>" .__('Description:', 'wp-gpx-maps'). "</span><span class='summaryvalue'> $desc</span></span><br />";
 		if ( $points_graph_dist != '' && true == $p_tot_len ) {
 			$output .= "<span class='totlen'><span class='summarylabel'>" . __( 'Total distance:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $tot_len</span></span><br />";
 		}
@@ -781,12 +772,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$gpxurl = $dummy . $gpxurl;
 		}
 		$downloadname = basename($gpxurl);
-		$output .= "<div>Download file: <a href='$gpxurl' target='_new' download>" . __( $downloadname, 'wp-gpx-maps' ) . '</a></div>';
-	}
-
-	if ( (true === $printmap || 'true' === $printmap ) && $gpxurl != ''){
-
-		$output .= "<div><input type='button' id='btn' value='" . __( 'Print this map', 'wp-gpx-maps' ) ."' onclick='window.print();'></div>";
+		$output .= "Download file: <a href='$gpxurl' target='_new' download>" . __( $downloadname, 'wp-gpx-maps' ) . '</a>';
 	}
 
 	return $output;
@@ -795,7 +781,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 function convertSeconds( $s ) {
 
 	if ( 0 == $s )
-	return 0;
+		return 0;
+	
 	$s      = 1.0 / $s;
 	$_sSecT = $s * 60; // sec/km
 	$_sMin  = floor( $_sSecT / 60 );
@@ -807,7 +794,7 @@ function convertSpeed( $speed, $uomspeed, $addUom = false ) {
 
 	$uom = '';
 
-	if ( '6' == $uomspeed ) {
+	if ( '6' == $uomspeed && $speed != 0 ) {
 		/* min/100 meters */
 		$speed = 1 / $speed * 100 / 60;
 		$uom   = ' min/100m';
@@ -899,7 +886,6 @@ function wpgpxmaps_install_option() {
 	add_option( 'wpgpxmaps_skipcache', '', '', 'yes' );
 	add_option( 'wpgpxmaps_download', '', '', 'yes' );
 	add_option( 'wpgpxmaps_usegpsposition', '', '', 'yes' );
-	add_option( 'wpgpxmaps_defaultcategory', '', '', 0 );
 	/* Print Summary Table */
 	add_option( 'wpgpxmaps_summary', '', '', 'yes' );
 	add_option( 'wpgpxmaps_summary_tot_len', '', '', 'yes' );
@@ -966,9 +952,7 @@ function wpgpxmaps_remove_option() {
 	delete_option( 'wpgpxmaps_distance_type' );
 	delete_option( 'wpgpxmaps_skipcache' );
 	delete_option( 'wpgpxmaps_download' );
-	delete_option( 'wpgpxmaps_print' );
 	delete_option( 'wpgpxmaps_usegpsposition' );
-	delete_option( 'wpgpxmaps_defaultcategory' );
 	/* Print Summary Table */
 	delete_option( 'wpgpxmaps_summary' );
 	delete_option( 'wpgpxmaps_summary_tot_len' );
@@ -981,8 +965,6 @@ function wpgpxmaps_remove_option() {
 	delete_option( 'wpgpxmaps_summary_avg_hr' );
 	delete_option( 'wpgpxmaps_summary_avg_temp' );
 	delete_option( 'wpgpxmaps_summary_total_time' );
-	delete_option( 'wpgpxmaps_summary_show_name' );
-	delete_option( 'wpgpxmaps_summary_show_desc' );
 	/* Map */
 	delete_option( 'wpgpxmaps_map_type' );
 	delete_option( 'wpgpxmaps_map_line_color' );

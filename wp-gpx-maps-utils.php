@@ -137,7 +137,7 @@ function wpgpxmaps_recursive_remove_directory( $directory, $empty = false ) {
 	return true;
 }
 
-function wpgpxmaps_getPoints( $gpxPath, $gpxOffset = 10, $donotreducegpx, $distancetype ) {
+function wpgpxmaps_getPoints( $gpxPath, $gpxOffset = 10, $donotreducegpx = false, $distancetype = 0) {
 
 	$points = array();
 	$dist   = 0;
@@ -148,11 +148,11 @@ function wpgpxmaps_getPoints( $gpxPath, $gpxOffset = 10, $donotreducegpx, $dista
 	$lastOffset = 0;
 
 	if ( file_exists( $gpxPath ) ) {
-		$points = @wpgpxmaps_parseXml( $gpxPath, $gpxOffset, $distancetype );
+		$points = wpgpxmaps_parseXml( $gpxPath, $gpxOffset, $distancetype );
 	} else {
 		echo _e( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' ) . ' ' . $gpxPath;
 	}
-
+	
 	/* Reduce the points to around 200 to speedup */
 	if ( $donotreducegpx != true ) {
 		$count = sizeof( $points->lat );
@@ -179,7 +179,7 @@ function wpgpxmaps_getPoints( $gpxPath, $gpxOffset = 10, $donotreducegpx, $dista
 
 function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
-	$points = null;
+	$points = new stdClass;
 
 	$points->dt    = array();
 	$points->lat   = array();
@@ -204,9 +204,6 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 	$points->avgTemp      = 0;
 	$points->totalLength  = 0;
 
-	$points->name = "";
-	$points->desc = "";
-
 	$gpx = simplexml_load_file( $filePath );
 
 	if ( false === $gpx )
@@ -215,9 +212,6 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 		$gpx->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
 		$gpx->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
 		$gpx->registerXPathNamespace( 'ns3', 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1' );
-
-		if (!empty($gpx->metadata->name)) $points->name = $gpx->metadata->name;
-		if (!empty($gpx->metadata->desc)) $points->desc = $gpx->metadata->desc;
 
 		$nodes = $gpx->xpath( '//trk | //a:trk | //b:trk ' );
 		/* Normal GPX */
@@ -238,15 +232,15 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 			$lastLon  = 0;
 			$lastEle  = 0;
 			$lastTime = 0;
-			// $dist = 0;
+			$dist     = 0;
 			$lastOffset  = 0;
 			$speedBuffer = array();
 
 			foreach ( $trkpts as $trkpt ) {
 
-				$lat   = $trkpt['lat'];
-				$lon   = $trkpt['lon'];
-				$ele   = $trkpt->ele;
+				$lat   = (float) $trkpt['lat'];
+				$lon   = (float) $trkpt['lon'];
+				$ele   = (float) $trkpt->ele;
 				$time  = $trkpt->time;
 				$speed = (float) $trkpt->speed;
 				$hr    = 0;
@@ -291,7 +285,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 					$lastEle  = $ele;
 					$lastTime = $time;
 				} else {
-
+					
 					/* Normal Case  */
 					$offset = calculateDistance( (float) $lat, (float) $lon, (float) $ele, (float) $lastLat, (float) $lastLon, (float) $lastEle, $distancetype );
 					$dist   = $dist + $offset;
@@ -300,12 +294,12 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 					if ( $speed == 0 ) {
 							$datediff = (float) my_date_diff( $lastTime, $time );
-						if ( $datediff > 0 ) {
+						if ( $datediff != 0 ) {
 							$speed = $offset / $datediff;
 						}
 					}
 
-					if ( $ele != 0 && $lastEle != 0 ) {
+					if ( $ele != 0 && $lastEle != 0 && $offset != 0 ) {
 						$deltaEle = (float) ( $ele - $lastEle );
 
 						if ( (float) $ele > (float) $lastEle ) {
@@ -367,16 +361,16 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 		unset( $nodes );
 
 		try {
-			array_pop( $points->dt, null );
-			array_pop( $points->lat, null );
-			array_pop( $points->lon, null );
-			array_pop( $points->ele, null );
-			array_pop( $points->dist, null );
-			array_pop( $points->speed, null );
-			array_pop( $points->hr, null );
-			array_pop( $points->atemp, null );
-			array_pop( $points->cad, null );
-			array_pop( $points->grade, null );
+			array_pop( $points->dt );
+			array_pop( $points->lat );
+			array_pop( $points->lon );
+			array_pop( $points->ele );
+			array_pop( $points->dist );
+			array_pop( $points->speed );
+			array_pop( $points->hr );
+			array_pop( $points->atemp );
+			array_pop( $points->cad );
+			array_pop( $points->grade );
 
 			$_time               = array_filter( $points->dt );
 			$_ele                = array_filter( $points->ele );
@@ -389,21 +383,34 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 			/* Calculating Average Speed */
 			$_speed           = array_filter( $points->speed );
-			$points->avgSpeed = array_sum( $_speed ) / count( $_speed );
+			if (count($_speed) > 0)
+				$points->avgSpeed = array_sum( $_speed ) / count( $_speed );
+			else
+				$points->avgSpeed = null;
 
 			/* Calculating Average Cadence */
 			$_cad           = array_filter( $points->cad );
-			$points->avgCad = (float) round( array_sum( $_cad ) / count( $_cad ), 0 );
+			if (count($_cad) > 0)
+				$points->avgCad = (float) round( array_sum( $_cad ) / count( $_cad ), 0 );
+			else
+				$points->avgCad = null;
 
 			/* Calculating Average Heart Rate */
 			$_hr           = array_filter( $points->hr );
-			$points->avgHr = (float) round( array_sum( $_hr ) / count( $_hr ), 0 );
+			if (count($_hr) > 0)
+				$points->avgHr = (float) round( array_sum( $_hr ) / count( $_hr ), 0 );
+			else
+				$points->avgHr = null;
 
 			/* Calculating Average Temperature */
 			$_temp           = array_filter( $points->atemp );
-			$points->avgTemp = (float) round( array_sum( $_temp ) / count( $_temp ), 1 );
+			if (count($_temp) > 0)
+				$points->avgTemp = (float) round( array_sum( $_temp ) / count( $_temp ), 1 );
+			else
+				$points->avgTemp = null;
 
 		} catch ( Exception $e ) {
+			print_r($e);
 		}
 	} else {
 
