@@ -33,7 +33,7 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			if ( is_callable( 'exif_read_data' ) ) {
 				
 				try {
-					$exif = @exif_read_data( $img_src[0] );
+					$exif = @exif_read_data( $img_file );
 				} catch (Exception $e) {
 					$exif = false;
 				}
