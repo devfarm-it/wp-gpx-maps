@@ -25,6 +25,7 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			$img_src      = wp_get_attachment_image_src( $attachment_id, 'full' );
 			$img_thmb     = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
 			$img_metadata = wp_get_attachment_metadata( $attachment_id );
+			$img_file     = get_attached_file( $attachment_id, $unfiltered );
 
 			$item         = array();
 			$item['data'] = wp_get_attachment_link( $attachment_id, array( 105, 105 ) );
@@ -42,8 +43,8 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 					$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );
 					if ( ( $item['lat'] != 0 ) || ( $item['lon'] != 0 ) ) {
 						$result[] = $item;
-					} elseif ( isset( $p->imagedate ) ) {
-						$_dt   = strtotime( $p->imagedate ) + $dtoffset;
+					} elseif ( isset( $exif['DateTimeOriginal'] ) ) {
+						$_dt   = strtotime( $exif['DateTimeOriginal'] ) + $dtoffset;
 						$_item = findItemCoordinate( $_dt, $dt, $lat, $lon );
 						if ( $_item != null ) {
 							$item['lat'] = $_item['lat'];
