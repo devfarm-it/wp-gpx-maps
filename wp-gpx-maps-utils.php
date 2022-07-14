@@ -29,8 +29,8 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 
 			$item         = array();
 			$item['data'] = wp_get_attachment_link( $attachment_id, array( 105, 105 ) );
-			if (!strpos('title',$item['data'])) {
-				$item['data'] = str_replace('alt=','title="' . get_the_excerpt($attachment_id) . '" alt=',$item['data']);
+			if (!strpos('alt',$item['data'])) {
+				$item['data'] = str_replace('src=','alt="' . get_the_excerpt($attachment_id) . '" src=',$item['data']);
 			}
 			
 			if ( is_callable( 'exif_read_data' ) ) {
