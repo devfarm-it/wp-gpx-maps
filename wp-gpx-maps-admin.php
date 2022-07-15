@@ -249,5 +249,4 @@ function wpgpxmaps_html_page() {
 	}
 
 }
-
 ?>
