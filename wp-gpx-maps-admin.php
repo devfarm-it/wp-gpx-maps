@@ -198,6 +198,8 @@ function wpgpxmaps_html_page() {
 
 	</h1>
 
+	<!-- The First Div (for body) ends in the respective file for the corresponding tab -->
+
 	<?php
 
 	if ( file_exists( $realGpxPath ) && is_dir( $realGpxPath ) ) {
@@ -247,3 +249,4 @@ function wpgpxmaps_html_page() {
 	}
 
 }
+?>

@@ -3,7 +3,7 @@
  * Plugin Name: WP-GPX-Maps
  * Plugin URI: http://www.devfarm.it/
  * Description: Draws a GPX track with altitude chart
- * Version: 1.7.00
+ * Version: 1.7.05
  * Author: Bastianon Massimo
  * Author URI: http://www.devfarm.it/
  * Text Domain: wp-gpx-maps
@@ -17,7 +17,7 @@
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.7.00' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.7.05' );
 
 require 'wp-gpx-maps-utils.php';
 require 'wp-gpx-maps-admin.php';
@@ -370,6 +370,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	}
 
 	$isGpxUrl = ( preg_match( '/^(http(s)?\:\/\/)/', trim( $gpx ) ) == 1 );
+
 
 	if ( ( ! isset( $points_maps ) || $points_maps == '' ) && $gpx != '' ) {
 	// if (true) {
@@ -757,10 +758,13 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		}
 		$output .= '</div>';
 	}
+	
+	//$output .="--$download--";
 
 	/* Print download link */
-	if ( true == $download && $gpxurl != '' ) {
+	if ( (true === $download || 'true' === $download ) && $gpxurl != '' ) {
 		if ( true == $isGpxUrl ) {
+
 
 		} else {
 
@@ -777,7 +781,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 function convertSeconds( $s ) {
 
 	if ( 0 == $s )
-	return 0;
+		return 0;
+	
 	$s      = 1.0 / $s;
 	$_sSecT = $s * 60; // sec/km
 	$_sMin  = floor( $_sSecT / 60 );
@@ -789,7 +794,7 @@ function convertSpeed( $speed, $uomspeed, $addUom = false ) {
 
 	$uom = '';
 
-	if ( '6' == $uomspeed ) {
+	if ( '6' == $uomspeed && $speed != 0 ) {
 		/* min/100 meters */
 		$speed = 1 / $speed * 100 / 60;
 		$uom   = ' min/100m';
