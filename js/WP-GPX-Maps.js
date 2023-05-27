@@ -1140,18 +1140,24 @@ var WPGPXMAPS = {
 							title: function( tooltipItems, data ) {
 
 								/* Return value for title: */
-								var fpt = _formats[0];
-								return Math.round( tooltipItems[0].xLabel, fpt.dec ) + fpt.suf;;
+								var label_x = _formats[0].label_x;
+								var x_pos = tooltipItems[0].xLabel;
+								var x_dec = label_x.dec;
+								var x_unit = label_x.suf;
+								return Math.round( x_pos, x_dec ) + x_unit;
 							},
 							label: function( tooltipItem, data ) {
 
 								/* Format list values: */
 								var label = data.datasets[tooltipItem.datasetIndex].label || '';
-								var fpt = _formats[tooltipItem.datasetIndex];
+								var label_y = _formats[tooltipItem.datasetIndex].label_y;
+								var y_dec = label_y.dec;
+								var y_unit = label_y.suf;
+								var y_pos = tooltipItem.yLabel;
 								if ( label ) {
 									label += ': ';
 								}
-								label += Math.round( tooltipItem.yLabel, fpt.dec ) + fpt.suf;
+								label += Math.round( y_pos, y_dec ) + y_unit;
 								return label;
 							},
 							footer: function( tooltipItem ) {
@@ -1227,7 +1233,7 @@ var WPGPXMAPS = {
 					yaxe.max = myData.Max;
 				}
 
-				_formats.push( l_y );
+				_formats.push( {"label_x": label_x, "label_y":label_y} );
 				hoptions.options.scales.yAxes.push( yaxe );
 				hoptions.data.datasets.push( wpgpxmapsGetDataset( lng.altitude, myData.Items, color2, yaxe.id ) );
 
