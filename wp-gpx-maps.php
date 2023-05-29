@@ -22,6 +22,21 @@ define( 'WPGPXMAPS_CURRENT_VERSION', '1.7.05' );
 require 'wp-gpx-maps-utils.php';
 require 'wp-gpx-maps-admin.php';
 
+define("wpgpxmaps_FEET_MILES", "1");
+define("wpgpxmaps_METERS_KILOMETERS", "2");
+define("wpgpxmaps_METERS_NAUTICALMILES", "3");
+define("wpgpxmaps_METER_MILES", "4");
+define("wpgpxmaps_FEET_NAUTICALMILES", "5");
+
+define("wpgpxmaps_KM_PER_HOURS", "1");
+define("wpgpxmaps_MILES_PER_HOURS", "2");
+define("wpgpxmaps_MINUTES_PER_KM", "3");
+define("wpgpxmaps_MINUTES_PER_MILES", "4");
+define("wpgpxmaps_KNOTS", "5");
+define("wpgpxmaps_MINUTES_PER_100METERS", "6");
+
+
+
 add_shortcode( 'sgpx', 'wpgpxmaps_handle_shortcodes' );
 add_shortcode( 'sgpxf', 'wpgpxmaps_handle_folder_shortcodes' );
 register_activation_hook( __FILE__, 'wpgpxmaps_install_option' );
@@ -152,7 +167,7 @@ function wpgpxmaps_handle_folder_shortcodes( $attr, $content = '' ) {
 	$pointsoffset   = wpgpxmaps_findValue( $attr, 'pointsoffset', 'wpgpxmaps_pointsoffset', 10 );
 	$distanceType   = wpgpxmaps_findValue( $attr, 'distanceType', 'wpgpxmaps_distance_type', 0 );
 	$donotreducegpx = wpgpxmaps_findValue( $attr, 'donotreducegpx', 'wpgpxmaps_donotreducegpx', false );
-	$uom            = wpgpxmaps_findValue( $attr, 'uom', 'wpgpxmaps_unit_of_measure', '0' );
+	$unit_of_measure            = wpgpxmaps_findValue( $attr, 'uom', 'wpgpxmaps_unit_of_measure', '0' );
 
 	/* Fix folder path */
 	$sitePath = wp_gpx_maps_sitePath();
@@ -189,24 +204,24 @@ function wpgpxmaps_handle_folder_shortcodes( $attr, $content = '' ) {
 					$_ele  = (float) $points->ele[$i];
 					$_dist = (float) $points->dist[$i];
 
-					if ( '1' == $uom ) {
+					if ( wpgpxmaps_FEET_MILES == $unit_of_measure ) {
 						/* feet / miles */
 						$_dist *= 0.000621371192;
 						$_ele  *= 3.2808399;
 
-					} elseif ( '2' == $uom ) {
+					} elseif ( wpgpxmaps_METERS_KILOMETERS == $unit_of_measure ) {
 						/* meters / kilometers */
 						$_dist = (float) ( $_dist / 1000 );
 
-					} elseif ( '3' == $uom ) {
+					} elseif ( wpgpxmaps_METERS_NAUTICALMILES == $unit_of_measure ) {
 						/* meters / nautical miles */
 						$_dist = (float) ( $_dist / 1000 / 1.852 );
 
-					} elseif ( '4' == $uom ) {
+					} elseif ( wpgpxmaps_METER_MILES == $unit_of_measure ) {
 						/* meters / miles */
 						$_dist *= 0.000621371192;
 
-					} elseif ( '5' == $uom ) {
+					} elseif ( wpgpxmaps_FEET_NAUTICALMILES == $unit_of_measure ) {
 						/* feet / nautical miles */
 						$_dist = (float) ( $_dist / 1000 / 1.852 );
 						$_ele *= 3.2808399;
@@ -260,13 +275,13 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	/* Diagram - Elevation */
 	$showEle     = wpgpxmaps_findValue( $attr, 'showele', 'wpgpxmaps_show_elevation', true );
 	$color_graph = wpgpxmaps_findValue( $attr, 'glinecolor', 'wpgpxmaps_graph_line_color', '#3366cc' );
-	$uom         = wpgpxmaps_findValue( $attr, 'uom', 'wpgpxmaps_unit_of_measure', '0' );
+	$unit_of_measure         = wpgpxmaps_findValue( $attr, 'uom', 'wpgpxmaps_unit_of_measure', '0' );
 	$chartFrom1  = wpgpxmaps_findValue( $attr, 'chartfrom1', 'wpgpxmaps_graph_offset_from1', '' );
 	$chartTo1    = wpgpxmaps_findValue( $attr, 'chartto1', 'wpgpxmaps_graph_offset_to1', '' );
 	/* Diagram - Speed */
 	$showSpeed         = wpgpxmaps_findValue( $attr, 'showspeed', 'wpgpxmaps_show_speed', false );
 	$color_graph_speed = wpgpxmaps_findValue( $attr, 'glinecolorspeed', 'wpgpxmaps_graph_line_color_speed', '#ff0000' );
-	$uomspeed          = wpgpxmaps_findValue( $attr, 'uomspeed', 'wpgpxmaps_unit_of_measure_speed', '0' );
+	$unit_of_measure_speed          = wpgpxmaps_findValue( $attr, 'uomspeed', 'wpgpxmaps_unit_of_measure_speed', '0' );
 	$chartFrom2        = wpgpxmaps_findValue( $attr, 'chartfrom2', 'wpgpxmaps_graph_offset_from2', '' );
 	$chartTo2          = wpgpxmaps_findValue( $attr, 'chartto2', 'wpgpxmaps_graph_offset_to2', '' );
 	/* Diagram - Heart rate */
@@ -301,7 +316,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	} else {
 		$mtime = 0;
 	}
-	$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$uomspeed,$uom,$distanceType,v1.3.9";
+	$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$unit_of_measure_speed,$unit_of_measure,$distanceType,v1.3.9";
 
 	$cacheFileName = md5( $cacheFileName );
 
@@ -448,24 +463,24 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 				$_ele  = (float) $points->ele[$i];
 				$_dist = (float) $points->dist[$i];
 
-				if ( '1' == $uom ) {
+				if ( wpgpxmaps_FEET_MILES == $unit_of_measure ) {
 					/* feet / miles */
 					$_dist *= 0.000621371192;
 					$_ele  *= 3.2808399;
 
-				} elseif ( '2' == $uom ) {
+				} elseif ( wpgpxmaps_METERS_KILOMETERS == $unit_of_measure ) {
 					/* meters / kilometers */
 					$_dist = (float) ( $_dist / 1000 );
 
-				} elseif ( '3' == $uom ) {
+				} elseif ( wpgpxmaps_METERS_NAUTICALMILES == $unit_of_measure ) {
 					/* meters / nautical miles */
 					$_dist = (float) ( $_dist / 1000 / 1.852 );
 
-				} elseif ( '4' == $uom ) {
+				} elseif ( wpgpxmaps_METER_MILES == $unit_of_measure ) {
 					/* meters / miles */
 					$_dist *= 0.000621371192;
 
-				} elseif ( '5' == $uom ) {
+				} elseif ( wpgpxmaps_FEET_NAUTICALMILES == $unit_of_measure ) {
 					/* feet / nautical miles */
 					$_dist = (float) ( $_dist / 1000 / 1.852 );
 					$_ele *= 3.2808399;
@@ -476,7 +491,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 				if ( true == $showSpeed ) {
 					$_speed              = (float) $points->speed[$i];
-					$points_graph_speed .= convertSpeed( $_speed, $uomspeed ) . ',';
+					$points_graph_speed .= convertSpeed( $_speed, $unit_of_measure_speed ) . ',';
 				}
 
 				if ( true == $showHr ) {
@@ -497,7 +512,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			}
 		}
 
-		if ( '1' == $uom ) {
+		if ( wpgpxmaps_FEET_MILES == $unit_of_measure ) {
 			/* feet / miles */
 			$tot_len        = round( $tot_len * 0.000621371192, 2 ) . ' mi';
 			$max_ele        = round( $max_ele * 3.2808399, 0 ) . ' ft';
@@ -505,7 +520,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$total_ele_up   = round( $total_ele_up * 3.2808399, 0 ) . ' ft';
 			$total_ele_down = round( $total_ele_down * 3.2808399, 0 ) . ' ft';
 
-		} elseif ( '2' == $uom ) {
+		} elseif ( wpgpxmaps_METERS_KILOMETERS == $unit_of_measure ) {
 			/* meters / kilometers */
 			$tot_len        = round( $tot_len / 1000, 2 ) . ' km';
 			$max_ele        = round( $max_ele, 0 ) . ' m';
@@ -513,7 +528,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$total_ele_up   = round( $total_ele_up, 0 ) . ' m';
 			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 
-		} elseif ( '3' == $uom ) {
+		} elseif ( wpgpxmaps_METERS_NAUTICALMILES == $unit_of_measure ) {
 			/* meters / nautical miles */
 			$tot_len        = round( $tot_len / 1000 / 1.852, 2 ) . ' NM';
 			$max_ele        = round( $max_ele, 0 ) . ' m';
@@ -521,7 +536,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$total_ele_up   = round( $total_ele_up, 0 ) . ' m';
 			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 
-		} elseif ( '4' == $uom ) {
+		} elseif ( wpgpxmaps_METER_MILES == $unit_of_measure ) {
 			/* meters / miles */
 			$tot_len        = round( $tot_len * 0.000621371192, 2 ) . ' mi';
 			$max_ele        = round( $max_ele, 0 ) . ' m';
@@ -529,7 +544,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$total_ele_up   = round( $total_ele_up, 0 ) . ' m';
 			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 
-		} elseif ( '5' == $uom ) {
+		} elseif ( wpgpxmaps_FEET_NAUTICALMILES == $unit_of_measure ) {
 			/* feet / nautical miles */
 			$tot_len        = round( $tot_len / 1000 / 1.852, 2 ) . ' NM';
 			$max_ele        = round( $max_ele * 3.2808399, 0 ) . ' ft';
@@ -546,7 +561,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$total_ele_down = round( $total_ele_down, 0 ) . ' m';
 		}
 
-		$avg_speed = convertSpeed( $avg_speed, $uomspeed, true );
+		$avg_speed = convertSpeed( $avg_speed, $unit_of_measure_speed, true );
 		$waypoints = '[]';
 
 		if ( true == $showW ) {
@@ -679,8 +694,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 					graphCad           : [' . ( $hideGraph ? '' : $points_graph_cad ) . '],
 					graphGrade         : [' . ( $hideGraph ? '' : $points_graph_grade ) . '],
 					waypoints          : ' . $waypoints . ',
-					unit               : "' . $uom . '",
-					unitspeed          : "' . $uomspeed . '",
+					unit               : "' . $unit_of_measure . '",
+					unitspeed          : "' . $unit_of_measure_speed . '",
 					color1             : [' . $colors_map . '],
 					color2             : "' . $color_graph . '",
 					color3             : "' . $color_graph_speed . '",
@@ -790,47 +805,47 @@ function convertSeconds( $s ) {
 	return $_sMin + $_sSec / 100;
 }
 
-function convertSpeed( $speed, $uomspeed, $addUom = false ) {
+function convertSpeed( $speed, $unit_of_measure_speed, $addUom = false ) {
 
-	$uom = '';
+	$unit_of_measure = '';
 
-	if ( '6' == $uomspeed && $speed != 0 ) {
+	if ( wpgpxmaps_MINUTES_PER_100METERS == $unit_of_measure_speed && $speed != 0 ) {
 		/* min/100 meters */
 		$speed = 1 / $speed * 100 / 60;
-		$uom   = ' min/100m';
+		$unit_of_measure   = ' min/100m';
 
-	} elseif ( '5' == $uomspeed ) {
+	} elseif ( wpgpxmaps_KNOTS == $unit_of_measure_speed ) {
 		/* knots */
 		$speed *= 1.94384449;
-		$uom    = ' knots';
+		$unit_of_measure    = ' knots';
 
-	} elseif ( '4' == $uomspeed ) {
+	} elseif ( wpgpxmaps_MINUTES_PER_MILES == $unit_of_measure_speed ) {
 		/* min/miles*/
 		$speed = convertSeconds( $speed * 0.037282272 );
-		$uom   = ' min/mi';
+		$unit_of_measure   = ' min/mi';
 
-	} elseif ( '3' == $uomspeed ) {
+	} elseif ( wpgpxmaps_MINUTES_PER_KM == $unit_of_measure_speed ) {
 		/* min/km */
 		$speed = convertSeconds( $speed * 0.06 );
-		$uom   = ' min/km';
+		$unit_of_measure   = ' min/km';
 
-	} elseif ( '2' == $uomspeed ) {
+	} elseif ( wpgpxmaps_MILES_PER_HOURS == $unit_of_measure_speed ) {
 		/* miles/h */
 		$speed *= 2.2369362920544025;
-		$uom    = ' mi/h';
+		$unit_of_measure    = ' mi/h';
 
-	} elseif ( '1' == $uomspeed ) {
+	} elseif ( wpgpxmaps_KM_PER_HOURS == $unit_of_measure_speed ) {
 		/* km/h */
 		$speed *= 3.6;
-		$uom    = ' km/h';
+		$unit_of_measure    = ' km/h';
 
 	} else {
-		/* dafault m/s */
-		$uom = ' m/s';
+		/* default m/s */
+		$unit_of_measure = ' m/s';
 	}
 
 	if ( true == $addUom ) {
-		return number_format( $speed, 2, '.', '' ) . $uom;
+		return number_format( $speed, 2, '.', '' ) . $unit_of_measure;
 	} else {
 		return number_format( $speed, 2, '.', '' );
 	}

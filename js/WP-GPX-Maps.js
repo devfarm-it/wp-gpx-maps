@@ -7,6 +7,19 @@ Author: Bastianon Massimo
 Author URI: http://www.devfarm.it/
 */
 
+
+let wpgpxmaps_FEET_MILES = "1";
+let wpgpxmaps_METERS_KILOMETERS = "2";
+let wpgpxmaps_METERS_NAUTICALMILES = "3";
+let wpgpxmaps_METER_MILES = "4";
+let wpgpxmaps_FEET_NAUTICALMILES = "5";
+let wpgpxmaps_MINUTES_PER_100METERS = "6";
+let wpgpxmaps_KNOTS = "5";
+let wpgpxmaps_MINUTES_PER_MILES = "4";
+let wpgpxmaps_MINUTES_PER_KM = "3";
+let wpgpxmaps_MILES_PER_HOURS = "2";
+let wpgpxmaps_KM_PER_HOURS = "1";
+
 var WPGPXMAPS = {
 
 	Utils: {
@@ -726,8 +739,8 @@ var WPGPXMAPS = {
 		var graphCad = params.graphCad;
 		var graphGrade = params.graphGrade;
 		var waypoints = params.waypoints;
-		var unit = params.unit;
-		var unitspeed = params.unitspeed;
+		var unit_of_measure = params.unit;
+		var unit_of_measure_speed = params.unitspeed;
 		var color1 = params.color1;
 		var color2 = params.color2;
 		var color3 = params.color3;
@@ -756,8 +769,8 @@ var WPGPXMAPS = {
 
 		/* Unit of measure settings. */
 		var l_s;
-		var l_x;
-		var l_y;
+		var label_x;
+		var label_y;
 		var l_grade = { suf: '%', dec: 1 };
 		var l_hr = { suf: '', dec: 0 };
 		var l_cad = { suf: '', dec: 0 };
@@ -937,7 +950,7 @@ var WPGPXMAPS = {
 						{
 							for (var i=0; i<ngImageMarkers.length; i++) {
 								ngImageMarkers[i].setMap(null);
-							}
+			}
 							controlUIhi.src = pluginUrl + "/wp-gpx-maps/img/showImages.png";
 							controlUIhi.title = lng.showImages;
 						}
@@ -1030,42 +1043,41 @@ var WPGPXMAPS = {
 
 			var valLen = graphDist.length;
 
-
-			if ( '1' == unit ) {
+			if ( wpgpxmaps_FEET_MILES == unit_of_measure ) {
 
 				/* feet / miles */
-				l_x = { suf: 'mi', dec: 1 };
-				l_y = { suf: 'ft', dec: 0 };
+				label_x = { suf: 'mi', dec: 1 };
+				label_y = { suf: 'ft', dec: 0 };
 
-			} else if ( '2' == unit ) {
+			} else if ( wpgpxmaps_METERS_KILOMETERS == unit_of_measure ) {
 
 				/* meters / kilometers */
-				l_x = { suf: 'km', dec: 1 };
-				l_y = { suf: 'm', dec: 0 };
+				label_x = { suf: 'km', dec: 1 };
+				label_y = { suf: 'm', dec: 2 };
 
-			} else if ( '3' == unit ) {
+			} else if ( wpgpxmaps_METERS_NAUTICALMILES == unit_of_measure ) {
 
 				/* meters / nautical miles */
-				l_x = { suf: 'NM', dec: 1 };
-				l_y = { suf: 'm', dec: 0 };
+				label_x = { suf: 'NM', dec: 1 };
+				label_y = { suf: 'm', dec: 0 };
 
-			} else if ( '4' == unit ) {
+			} else if ( wpgpxmaps_METER_MILES == unit_of_measure ) {
 
 				/* meters / miles */
-				l_x = { suf: 'mi', dec: 1 };
-				l_y = { suf: 'm', dec: 0 };
+				label_x = { suf: 'mi', dec: 1 };
+				label_y = { suf: 'm', dec: 0 };
 
-			} else if ( '5' == unit ) {
+			} else if ( wpgpxmaps_FEET_NAUTICALMILES == unit_of_measure ) {
 
 				/* feet / nautical miles */
-				l_x = { suf: 'NM', dec: 1 };
-				l_y = { suf: 'ft', dec: 0 };
+				label_x = { suf: 'NM', dec: 1 };
+				label_y = { suf: 'ft', dec: 0 };
 
 			} else {
 
 				/* meters / meters */
-				l_x = { suf: 'm', dec: 0 };
-				l_y = { suf: 'm', dec: 0 };
+				label_x = { suf: 'm', dec: 0 };
+				label_y = { suf: 'm', dec: 0 };
 
 			}
 
@@ -1115,7 +1127,7 @@ var WPGPXMAPS = {
 
 								/* Include a dollar sign in the ticks. */
 								callback: function( value, index, values ) {
-									return Math.round( value, l_x.dec ) + l_x.suf;
+									return Math.round( value, label_x.dec ) + label_x.suf;
 								}
 							}
 						} ]
@@ -1128,18 +1140,24 @@ var WPGPXMAPS = {
 							title: function( tooltipItems, data ) {
 
 								/* Return value for title: */
-								var fpt = _formats[0];
-								return Math.round( tooltipItems[0].xLabel, fpt.dec ) + fpt.suf;;
+								var label_x = _formats[0].label_x;
+								var x_pos = tooltipItems[0].xLabel;
+								var x_dec = label_x.dec;
+								var x_unit = label_x.suf;
+								return Math.round( x_pos, x_dec ) + x_unit;
 							},
 							label: function( tooltipItem, data ) {
 
 								/* Format list values: */
 								var label = data.datasets[tooltipItem.datasetIndex].label || '';
-								var fpt = _formats[tooltipItem.datasetIndex];
+								var label_y = _formats[tooltipItem.datasetIndex].label_y;
+								var y_dec = label_y.dec;
+								var y_unit = label_y.suf;
+								var y_pos = tooltipItem.yLabel;
 								if ( label ) {
 									label += ': ';
 								}
-								label += Math.round( tooltipItem.yLabel, fpt.dec ) + fpt.suf;
+								label += Math.round( y_pos, y_dec ) + y_unit;
 								return label;
 							},
 							footer: function( tooltipItem ) {
@@ -1186,8 +1204,9 @@ var WPGPXMAPS = {
 					ticks: {
 
 						/* Include a dollar sign in the ticks. */
+						// This draw the lateral axis alias
 						callback: function( value, index, values ) {
-							return Math.round( value, l_y.dec ) + l_y.suf;
+							return Math.round( value, label_y.dec ) + label_y.suf;
 						}
 					},
 					id: 'y-axis-' + ( hoptions.options.scales.yAxes.length + 1 )
@@ -1214,7 +1233,7 @@ var WPGPXMAPS = {
 					yaxe.max = myData.Max;
 				}
 
-				_formats.push( l_y );
+				_formats.push( {"label_x": label_x, "label_y":label_y} );
 				hoptions.options.scales.yAxes.push( yaxe );
 				hoptions.data.datasets.push( wpgpxmapsGetDataset( lng.altitude, myData.Items, color2, yaxe.id ) );
 
@@ -1222,32 +1241,33 @@ var WPGPXMAPS = {
 
 			if ( graphSpeed != '' ) {
 
-				if ( '6' == unitspeed ) {
+
+				if ( wpgpxmaps_MINUTES_PER_100METERS == unit_of_measure_speed ) {
 
 					/* min/100 meters */
 					l_s = { suf: 'min/100m', dec: 2 };
 
-				} else if ( '5' == unitspeed ) {
+				} else if ( wpgpxmaps_KNOTS == unit_of_measure_speed ) {
 
 					/* knots */
 					l_s = { suf: 'knots', dec: 2 };
 
-				} else if ( '4' == unitspeed ) {
+				} else if ( wpgpxmaps_MINUTES_PER_MILES == unit_of_measure_speed ) {
 
 					/* min/miles */
 					l_s = { suf: 'min/mi', dec: 2 };
 
-				} else if ( '3' == unitspeed ) {
+				} else if ( wpgpxmaps_MINUTES_PER_KM == unit_of_measure_speed ) {
 
 					/* min/km */
 					l_s = { suf: 'min/km', dec: 2 };
 
-				} else if ( '2' == unitspeed ) {
+				} else if ( wpgpxmaps_MILES_PER_HOURS == unit_of_measure_speed ) {
 
 					/* miles/h */
 					l_s = { suf: 'mi/h', dec: 0 };
 
-				} else if ( '1' == unitspeed ) {
+				} else if ( wpgpxmaps_KM_PER_HOURS == unit_of_measure_speed ) {
 
 					/* km/h */
 					l_s = { suf: 'km/h', dec: 0 };

@@ -175,11 +175,12 @@ function wpgpxmaps_html_page() {
 	$relativeGpxPath      = str_replace( '\\', '/', $relativeGpxPath );
 	$relativeGpxCachePath = relativeGpxCacheFolderPath();
 	$relativeGpxCachePath = str_replace( '\\', '/', $relativeGpxCachePath );
-	$tab                  = $_GET['tab'];
-
-	if ( $tab == '' )
-
+	if (array_key_exists('tab', $_GET)){
+		$tab = $_GET['tab'];
+	}else{
 		$tab = 'tracks';
+	}
+
 	?>
 
 <div class="wrap">
@@ -249,3 +250,5 @@ function wpgpxmaps_html_page() {
 	}
 
 }
+
+?>
