@@ -6,7 +6,7 @@ Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-galle
 Requires at least: 5.2.0
 Tested up to: 5.9
 Requires PHP: 7.3+
-Stable tag: 1.7.05
+Stable tag: 1.7.06
 
 Draws a GPX track with altitude graph. You can also display your nextgen gallery images in the map.
 
@@ -195,6 +195,8 @@ Yes!
 
 == Changelog ==
 
+= 1.7.06 =
+* Fix vulnerability
 = 1.7.05 =
 * Fix NextGen warnings
 = 1.7.04 =
