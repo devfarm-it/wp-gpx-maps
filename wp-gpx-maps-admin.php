@@ -133,6 +133,9 @@ function wpgpxmaps_show_update_notice() {
  * Dismiss the update notice
  */
 function wpgpxmaps_dismiss_notice() {
+	
+	if ( !current_user_can( 'manage_options' ) ) 
+		return null;
 
 	$result = update_site_option( 'wpgpxmaps_show_notice', 0 );
 	return $result;
