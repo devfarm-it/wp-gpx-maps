@@ -385,8 +385,16 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 			$_time               = array_filter( $points->dt );
 			$_ele                = array_filter( $points->ele );
 			$_dist               = array_filter( $points->dist );
-			$points->maxEle      = max( $_ele );
-			$points->minEle      = min( $_ele );
+
+			if ($_ele) {
+				/* 	
+					There might be cases where ele is not set in the gpx (0.00).
+					array_filter will filter out those values and as a consequence min()/max() would fail. 
+				*/
+				$points->maxEle      = max( $_ele );
+				$points->minEle      = min( $_ele );
+			}
+
 			$points->totalLength = max( $_dist );
 			$points->maxTime     = max( $_time );
 			$points->minTime     = min( $_time );
