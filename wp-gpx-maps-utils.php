@@ -25,7 +25,7 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			$img_src      = wp_get_attachment_image_src( $attachment_id, 'full' );
 			$img_thmb     = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
 			$img_metadata = wp_get_attachment_metadata( $attachment_id );
-			$img_file     = get_attached_file( $attachment_id, $unfiltered );
+			$img_file     = get_attached_file( $attachment_id, false );
 
 			$item         = array();
 			$item['data'] = wp_get_attachment_link( $attachment_id, array( 105, 105 ) );
@@ -48,8 +48,12 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 				}
 								
 				if ( $exif !== false ) {
-					$item['lon'] = getExifGps( $exif['GPSLongitude'], $exif['GPSLongitudeRef'] );
-					$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );
+					$item['lat'] = 0;
+					$item['lon'] = 0;
+					if (isset($exif['GPSLongitude']) && isset($exif['GPSLongitudeRef'])) {
+						$item['lon'] = getExifGps( $exif['GPSLongitude'], $exif['GPSLongitudeRef'] );
+						$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );
+					}
 					if ( ( $item['lat'] != 0 ) || ( $item['lon'] != 0 ) ) {
 						$result[] = $item;
 					} elseif ( isset( $exif['DateTimeOriginal'] ) ) {
