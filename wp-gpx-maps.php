@@ -8,6 +8,7 @@
  * Author URI: http://www.devfarm.it/
  * Text Domain: wp-gpx-maps
  * Domain Path: /languages
+ * License: GPL2
  *
  * @package WP-GPX-Maps
  */
@@ -786,8 +787,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$dummy  = ( defined( 'WP_SITEURL' ) ) ? WP_SITEURL : get_bloginfo( 'url' );
 			$gpxurl = $dummy . $gpxurl;
 		}
-		$downloadname = basename($gpxurl);
-		$output .= "Download file: <a href='$gpxurl' target='_new' download>" . __( $downloadname, 'wp-gpx-maps' ) . '</a>';
+		$output .= "Download file: <a href='$gpxurl' target='_new' download>" . basename($gpxurl) . '</a>';
 	}
 
 	return $output;
