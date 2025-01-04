@@ -32,7 +32,7 @@
 					esc_html_e( '2. Method: Upload the GPX file via FTP to your upload folder:', 'wp-gpx-maps' );
 					echo ' ';
 					?>
-					<code><strong> <?php echo $relativeGpxPath; ?> </strong></code>
+					<code><strong> <?php echo esc_html( $relativeGpxPath ); ?> </strong></code>
 				</p>
 			<p>
 				<strong>
@@ -49,7 +49,7 @@
 					esc_html_e( 'You can manually set the relative path to your GPX file. Please use this scheme:', 'wp-gpx-maps' );
 					echo ' ';
 					?>
-					<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"]</strong></code>
+					<code><strong>[sgpx gpx="<?php echo esc_html( $relativeGpxPath ); ?>yourgpxfile.gpx"]</strong></code>
 				</p>
 			<p>
 				<strong>
@@ -79,7 +79,7 @@
 					esc_html_e( 'The Full set of optional attributes can be found below. Please use this scheme:', 'wp-gpx-maps' );
 					echo ' ';
 					?>
-					<code><strong>[sgpx gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx &lt; <?php esc_html_e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></code>
+					<code><strong>[sgpx gpx="<?php echo esc_html( $relativeGpxPath ); ?>yourgpxfile.gpx &lt; <?php esc_html_e( 'read below all the optional attributes', 'wp-gpx-maps' ); ?> &gt;"]</strong></code>
 				</p>
 				<strong>
 					<?php esc_html_e( 'Note: If no value is displayed in the "Current value" column, the value is "false".', 'wp-gpx-maps' ); ?>
@@ -119,7 +119,7 @@
 						<code><strong>gpx="/wp-upload dir/gpx/yourgpxfile.gpx"</strong></code>
 					</td>
 					<td>
-						<code><strong>gpx="<?php echo $relativeGpxPath; ?>yourgpxfile.gpx"</strong></code>
+						<code><strong>gpx="<?php echo esc_html( $relativeGpxPath ); ?>yourgpxfile.gpx"</strong></code>
 					</td>
 				</tr>
 				<tr>
@@ -137,7 +137,7 @@
 						<strong>100%</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_width' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_width' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -155,7 +155,7 @@
 						<strong>450px</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_height' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_height' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -173,7 +173,7 @@
 						<strong>200px</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_height' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_height' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -189,7 +189,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_download' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_download' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -205,7 +205,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_skipcache' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_skipcache' ) ); ?>
 					</td>
 				</tr>
 				</tbody>
@@ -294,7 +294,7 @@
 						<strong>OSM1</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_map_type' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_map_type' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -310,7 +310,7 @@
 						<strong>#3366cc</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_map_line_color' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_map_line_color' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -326,7 +326,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_zoomonscrollwheel' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_zoomonscrollwheel' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -342,7 +342,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_show_waypoint' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_show_waypoint' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -352,7 +352,7 @@
 					</td>
 					<td></td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_map_start_icon' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_map_start_icon' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -362,7 +362,7 @@
 					</td>
 					<td></td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_map_end_icon' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_map_end_icon' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -372,7 +372,7 @@
 					</td>
 					<td></td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_map_current_icon' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_map_current_icon' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -382,7 +382,7 @@
 					</td>
 					<td></td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_map_waypoint_icon' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_map_waypoint_icon' ) ); ?>
 					</td>
 				</tr>
 			</tbody>
@@ -426,7 +426,7 @@
 						<strong>true</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_show_elevation' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_show_elevation' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -442,7 +442,7 @@
 						<strong>#3366cc</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_line_color' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_line_color' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -488,7 +488,7 @@
 						<strong>0</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_unit_of_measure' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_unit_of_measure' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -498,7 +498,7 @@
 					</td>
 					<td></td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_offset_from1' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_offset_from1' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -508,7 +508,7 @@
 					</td>
 					<td></td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_offset_to1' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_offset_to1' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -524,7 +524,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_show_speed' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_show_speed' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -540,7 +540,7 @@
 						<strong>#ff0000</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_line_color_speed' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_line_color_speed' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -591,7 +591,7 @@
 						<strong>0</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_unit_of_measure_speed' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_unit_of_measure_speed' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -601,7 +601,7 @@
 					</td>
 					<td></td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_offset_from2' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_offset_from2' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -611,7 +611,7 @@
 					</td>
 					<td></td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_offset_to2' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_offset_to2' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -627,7 +627,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_show_hr' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_show_hr' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -643,7 +643,7 @@
 						<strong>#ff77bd</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_line_color_hr' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_line_color_hr' ) ); ?>
 					</td>
 				</tr>
 				<td>showatemp</td>
@@ -658,7 +658,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_show_atemp' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_show_atemp' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -674,7 +674,7 @@
 						<strong>#ff77bd</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_line_color_atemp' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_line_color_atemp' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -690,7 +690,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_show_cadence' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_show_cadence' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -706,7 +706,7 @@
 						<strong>#beecff</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_line_color_cad' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_line_color_cad' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -722,7 +722,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_show_grade' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_show_grade' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -738,7 +738,7 @@
 						<strong>#beecff</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_graph_line_color_grade' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_graph_line_color_grade' ) ); ?>
 					</td>
 				</tr>
 			</tbody>
@@ -800,7 +800,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_map_attachments' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_map_attachments' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -853,7 +853,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -869,7 +869,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_tot_len' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_tot_len' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -885,7 +885,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_max_ele' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_max_ele' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -901,7 +901,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_min_ele' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_min_ele' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -917,7 +917,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_total_ele_up' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_total_ele_up' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -933,7 +933,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_total_ele_down' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_total_ele_down' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -949,7 +949,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_avg_speed' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_avg_speed' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -965,7 +965,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_avg_cad' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_avg_cad' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -981,7 +981,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_avg_hr' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_avg_hr' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -997,7 +997,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_avg_temp' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_avg_temp' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -1013,7 +1013,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_summary_total_time' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_summary_total_time' ) ); ?>
 					</td>
 				</tr>
 			</tbody>
@@ -1057,7 +1057,7 @@
 						<strong>10</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_pointsoffset' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_pointsoffset' ) ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -1073,7 +1073,7 @@
 						<strong>false</strong>
 					</td>
 					<td>
-						<?php echo get_option( 'wpgpxmaps_donotreducegpx' ); ?>
+						<?php echo esc_html( get_option( 'wpgpxmaps_donotreducegpx' ) ); ?>
 					</td>
 				</tr>
 			</tbody>

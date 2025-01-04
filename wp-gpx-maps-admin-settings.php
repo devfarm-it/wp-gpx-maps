@@ -7,8 +7,11 @@
  * @package WP GPX Maps
  */
 
-if ( ! current_user_can( 'manage_options' ) )
+if ( ! current_user_can( 'manage_options' ) ){
+	echo '<div class="notice notice-error">No permission<p>';	
 	return;
+}
+
 
 /* General */
 $distanceType   = get_option( 'wpgpxmaps_distance_type' );
@@ -125,12 +128,14 @@ function render_select($name, $label, $options, $selected) {
 			render_checkbox('wpgpxmaps_download', 'GPX Download:', $download);
 			render_checkbox('wpgpxmaps_usegpsposition', 'Use browser GPS position:', $usegpsposition);
 			render_text_input('wpgpxmaps_openstreetmap_apikey', 'Thunderforest API Key (Open Cycle Map):', get_option('wpgpxmaps_openstreetmap_apikey'), 'width:400px');
+			render_text_input('wpgpxmaps_mapbox_apikey', 'Mapbox API Key:', get_option('wpgpxmaps_mapbox_apikey'), 'width:400px');
+
 			?>
 		</table>
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey,wpgpxmaps_mapbox_apikey" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>
