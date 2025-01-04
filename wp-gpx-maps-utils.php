@@ -1,11 +1,9 @@
 <?php
 
 	require_once( ABSPATH . 'wp-admin/includes/file.php' );
-
 	require_once( 'wp-gpx-maps-utils-nggallery.php' );
 
 function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
-
 	$result = array();
 
 	try {
@@ -21,7 +19,6 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 		) );
 
 		foreach ( $attachments as $attachment_id => $attachment ) {
-
 			$img_src      = wp_get_attachment_image_src( $attachment_id, 'full' );
 			$img_thmb     = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
 			$img_metadata = wp_get_attachment_metadata( $attachment_id );
@@ -31,16 +28,15 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			$item['data'] = wp_get_attachment_link( $attachment_id, array( 105, 105 ) );
 			if (!strpos('alt',$item['data'])) {
 				if (!empty(get_the_excerpt($attachment_id))) {
-					$item['data'] = str_replace('src=','alt="' . get_the_excerpt($attachment_id) . '" src=',$item['data']);
+					$item['data'] = str_replace('src=','alt="' . esc_attr(get_the_excerpt($attachment_id)) . '" src=',$item['data']);
 				} elseif (!empty(get_the_title($attachment_id))) {
-					$item['data'] = str_replace('src=','alt="' . get_the_title($attachment_id) . '" src=',$item['data']);
+					$item['data'] = str_replace('src=','alt="' . esc_attr(get_the_title($attachment_id)) . '" src=',$item['data']);
 				} else {
 					$item['data'] = str_replace('src=','alt="missing caption" src=',$item['data']);
 				}
 			}
 			
 			if ( is_callable( 'exif_read_data' ) ) {
-				
 				try {
 					$exif = @exif_read_data( $img_file );
 				} catch (Exception $e) {
@@ -67,35 +63,32 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			}
 		}
 	} catch ( Exception $e ) {
-			$error .= 'Error When Retrieving attached images: $e <br />';
+		$error .= 'Error When Retrieving attached images: ' . esc_html($e->getMessage()) . '<br />';
 	}
-		return $result;
+	return $result;
 }
 
 function wp_gpx_maps_sitePath() {
-
 	return substr( substr( __FILE__, 0, strrpos( __FILE__, 'wp-content' ) ), 0, -1 );
 	// return substr(get_home_path(), 0, -1);
 }
 
 function gpxFolderPath() {
-
 	$upload_dir  = wp_upload_dir();
 	$uploadsPath = $upload_dir['basedir'];
 
 	if ( current_user_can( 'manage_options' ) ) {
-			$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx';
+		$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx';
 	} elseif ( current_user_can( 'publish_posts' ) ) {
-			global $current_user;
-			wp_get_current_user();
-			$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx' . DIRECTORY_SEPARATOR . $current_user->user_login;
+		global $current_user;
+		wp_get_current_user();
+		$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx' . DIRECTORY_SEPARATOR . sanitize_file_name($current_user->user_login);
 	}
 
 	return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $ret );
 }
 
 function gpxCacheFolderPath() {
-
 	$upload_dir  = wp_upload_dir();
 	$uploadsPath = $upload_dir['basedir'];
 	$ret         = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx' . DIRECTORY_SEPARATOR . '~cache';
@@ -103,7 +96,6 @@ function gpxCacheFolderPath() {
 }
 
 function relativeGpxFolderPath() {
-
 	$sitePath    = wp_gpx_maps_sitePath();
 	$realGpxPath = gpxFolderPath();
 	$ret         = str_replace( $sitePath, '', $realGpxPath ) . DIRECTORY_SEPARATOR;
@@ -111,7 +103,6 @@ function relativeGpxFolderPath() {
 }
 
 function relativeGpxCacheFolderPath() {
-
 	$sitePath         = wp_gpx_maps_sitePath();
 	$realGpxCachePath = gpxCacheFolderPath();
 	$ret              = str_replace( $sitePath, '', $realGpxCachePath ) . DIRECTORY_SEPARATOR;
@@ -119,7 +110,6 @@ function relativeGpxCacheFolderPath() {
 }
 
 function wpgpxmaps_recursive_remove_directory( $directory, $empty = false ) {
-
 	if ( substr( $directory, -1 ) == '/' ) {
 		$directory = substr( $directory, 0, -1 );
 	}
@@ -148,7 +138,6 @@ function wpgpxmaps_recursive_remove_directory( $directory, $empty = false ) {
 }
 
 function wpgpxmaps_getPoints( $gpxPath, $gpxOffset = 10, $donotreducegpx = false, $distancetype = 0) {
-
 	$points = array();
 	$dist   = 0;
 
@@ -160,7 +149,7 @@ function wpgpxmaps_getPoints( $gpxPath, $gpxOffset = 10, $donotreducegpx = false
 	if ( file_exists( $gpxPath ) ) {
 		$points = wpgpxmaps_parseXml( $gpxPath, $gpxOffset, $distancetype );
 	} else {
-		echo _e( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' ) . ' ' . $gpxPath;
+		echo esc_html__( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' ) . ' ' . esc_html($gpxPath);
 	}
 	
 	/* Reduce the points to around 200 to speedup */
@@ -188,7 +177,6 @@ function wpgpxmaps_getPoints( $gpxPath, $gpxOffset = 10, $donotreducegpx = false
 }
 
 function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
-
 	$points = new stdClass;
 
 	$points->dt    = array();
@@ -214,7 +202,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 	$points->avgTemp      = 0;
 	$points->totalLength  = 0;
 
-	$gpx = simplexml_load_file( $filePath );
+	$gpx = @simplexml_load_file( $filePath );
 
 	if ( false === $gpx )
 		return;
@@ -230,7 +218,9 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 		foreach ( $nodes as $_trk ) {
 
-			$trk = simplexml_load_string( $_trk->asXML() );
+			// @ will remove the errors on namaspaces
+
+			$trk = @simplexml_load_string( $_trk->asXML() );
 
 			$trk->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
 			$trk->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
@@ -565,7 +555,7 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
 		try {
 			$gpx = simplexml_load_file( $gpxPath );
 		} catch ( Exception $e ) {
-			echo _e( 'WP GPX Maps Error: Can&#8217;t parse xml file!', 'wp-gpx-maps' ) . ' ' . $gpxPath;
+			echo esc_html__( 'WP GPX Maps Error: Can&#8217;t parse xml file!', 'wp-gpx-maps' ) . ' ' . esc_html($gpxPath);
 			return $points;
 		}
 
@@ -589,7 +579,8 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
 
 				if ( $sym ) {
 					$img_name = 'map-marker-' . $sym;
-					$query    = "SELECT ID FROM {$wpdb->prefix}posts WHERE post_name LIKE '{$img_name}' AND post_type LIKE 'attachment'";
+					$query    = $wpdb->prepare("SELECT ID FROM {$wpdb->prefix}posts WHERE post_name LIKE %s AND post_type LIKE 'attachment'", $img_name);
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.DirectQuery
 					$img_id   = $wpdb->get_var( $query );
 					if ( ! is_null( $img_id ) ) {
 						$img = wp_get_attachment_url( $img_id );
@@ -601,11 +592,11 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
 						'lon'  => (float) $lon,
 						'ele'  => (float) $ele,
 						'time' => $time,
-						'name' => $name,
-						'desc' => $desc,
-						'sym'  => $sym,
-						'type' => $type,
-						'img'  => $img,
+						'name' => esc_html($name),
+						'desc' => esc_html($desc),
+						'sym'  => esc_html($sym),
+						'type' => esc_html($type),
+						'img'  => esc_url($img),
 					));
 			}
 		}
@@ -614,13 +605,11 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
 }
 
 function toRadians( $degrees ) {
-
-		return (float) ( $degrees * 3.1415926535897932385 / 180 );
+	return (float) ( $degrees * 3.1415926535897932385 / 180 );
 }
 
 function calculateDistance( $lat1, $lon1, $ele1, $lat2, $lon2, $ele2, $distancetype ) {
-
-		/* Distance typ: Climb */
+	/* Distance typ: Climb */
 	if ( '2' == $distancetype ) {
 		return (float) $ele1 - (float) $ele2;
 
@@ -646,7 +635,6 @@ function calculateDistance( $lat1, $lon1, $ele1, $lat2, $lon2, $ele2, $distancet
 }
 
 function my_date_diff( $old_date, $new_date ) {
-
 	$t1 = strtotime( $new_date );
 	$t2 = strtotime( $old_date );
 
@@ -660,7 +648,6 @@ function my_date_diff( $old_date, $new_date ) {
 }
 
 function date_getDecimals( $date ) {
-
 	if ( preg_match( '(\.([0-9]{2})Z?)', $date, $matches ) ) {
 		return (float) ( (float) $matches[1] / 100 );
 	} else {
