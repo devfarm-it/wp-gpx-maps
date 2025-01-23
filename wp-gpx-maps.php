@@ -18,7 +18,7 @@
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.7.06' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.7.10' );
 
 require 'wp-gpx-maps-utils.php';
 require 'wp-gpx-maps-admin.php';
@@ -83,13 +83,6 @@ function wpgpxmaps_action_links( $links, $file ) {
 function wpgpxmaps_enqueue_scripts_admin( $hook ) {
 
 	if ( strpos( $hook, 'WP-GPX-Maps' ) !== false ) {
-
-		/* Admin Style CSS */
-		wp_register_style( 'admin-style', plugins_url( 'css/admin-style.css', __FILE__ ), array(), '1.0.0' );
-		wp_enqueue_style( 'admin-style' );
-		/* mColorPicker */
-		wp_register_script( 'mColorPicker', plugins_url( '/js/mColorPicker_min.js', __FILE__ ), array(), '1.0 r39' );
-		wp_enqueue_script( 'mColorPicker' );
 		/* bootstrap-table */
 		wp_register_script( 'bootstrap-table', plugins_url( '/js/bootstrap-table.js', __FILE__ ), array(), '1.13.2' );
 		wp_enqueue_script( 'bootstrap-table' );
@@ -121,44 +114,59 @@ function downloadRemoteFile( $file_url ) {
 
 function wpgpxmaps_enqueue_scripts() {
 
-	/* Output Style CSS */
-	wp_register_style( 'output-style', plugins_url( 'css/wp-gpx-maps-output.css', __FILE__ ), array(), '1.0.0' );
-	wp_enqueue_style( 'output-style' );
+	if (false)
+	{
 
-	/* Leaflet */
-	wp_register_style( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.css', __FILE__ ), array(), '1.5.1' );
-	wp_enqueue_style( 'leaflet' );
+		/* Output Style CSS */
+		wp_register_style( 'output-style', plugins_url( 'css/wp-gpx-maps-output.css', __FILE__ ), array(), '1.0.0' );
+		wp_enqueue_style( 'output-style' );
 
-	/* Leaflet.markercluster */
-	wp_register_style( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/MarkerCluster.css', __FILE__ ), array(), '1.4.1,' );
-	wp_enqueue_style( 'leaflet.markercluster' );
+		/* Leaflet */
+		wp_register_style( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.css', __FILE__ ), array(), '1.5.1' );
+		wp_enqueue_style( 'leaflet' );
 
-	/* Leaflet.Photo */
-	wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), '0' );
-	wp_enqueue_style( 'leaflet.Photo' );
+		/* Leaflet.markercluster */
+		wp_register_style( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/MarkerCluster.css', __FILE__ ), array(), '1.4.1,' );
+		wp_enqueue_style( 'leaflet.markercluster' );
 
-	/* Leaflet.fullscreen */
-	wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.css', __FILE__ ), array(), '1.5.1' );
-	wp_enqueue_style( 'leaflet.fullscreen' );
+		/* Leaflet.Photo */
+		wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), '0' );
+		wp_enqueue_style( 'leaflet.Photo' );
 
-	wp_register_script( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.js', __FILE__ ), array(), '1.5.1' );
-	wp_register_script( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/leaflet.markercluster.js', __FILE__ ), array( 'leaflet' ), '1.4.1' );
-	wp_register_script( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.js', __FILE__ ), array( 'leaflet', 'leaflet.markercluster' ), '0' );
-	wp_register_script( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.js', __FILE__ ), array( 'leaflet' ), '1.4.5' );
+		/* Leaflet.fullscreen */
+		wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.css', __FILE__ ), array(), '1.5.1' );
+		wp_enqueue_style( 'leaflet.fullscreen' );
 
-	/* Chartjs */
-	wp_register_script( 'chartjs', plugins_url( '/js/Chart.min.js', __FILE__ ), array(), '2.8.0' );
+		wp_register_script( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.js', __FILE__ ), array(), '1.5.1' );
+		wp_register_script( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/leaflet.markercluster.js', __FILE__ ), array( 'leaflet' ), '1.4.1' );
+		wp_register_script( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.js', __FILE__ ), array( 'leaflet', 'leaflet.markercluster' ), '0' );
+		wp_register_script( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.js', __FILE__ ), array( 'leaflet' ), '1.4.5' );
 
-	wp_register_script( 'wp-gpx-maps', plugins_url( 'js/WP-GPX-Maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
+		/* Chartjs */
+		wp_register_script( 'chartjs', plugins_url( '/js/Chart.min.js', __FILE__ ), array(), '2.8.0' );
 
-	wp_enqueue_script( 'output-style' );
-	wp_enqueue_script( 'leaflet' );
-	wp_enqueue_script( 'leaflet.markercluster' );
-	wp_enqueue_script( 'leaflet.Photo' );
-	wp_enqueue_script( 'leaflet.fullscreen' );
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'chartjs' );
-	wp_enqueue_script( 'wp-gpx-maps' );
+		wp_register_script( 'wp-gpx-maps', plugins_url( 'js/WP-GPX-Maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
+
+		wp_enqueue_script( 'output-style' );
+		wp_enqueue_script( 'leaflet' );
+		wp_enqueue_script( 'leaflet.markercluster' );
+		wp_enqueue_script( 'leaflet.Photo' );
+		wp_enqueue_script( 'leaflet.fullscreen' );
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'chartjs' );
+		wp_enqueue_script( 'wp-gpx-maps' );
+
+	}
+	else
+	{
+		/* Output Style CSS */
+		wp_register_style( 'output-style', plugins_url( 'assets/dist/style.css', __FILE__ ), array(), '1.0.0' );
+		wp_enqueue_style( 'output-style' );
+
+		wp_register_script_module( 'wp-gpx-maps', plugins_url( 'assets/dist/WP-GPX-Maps.es.js', __FILE__ ), array(), '1.6.02' );
+		wp_enqueue_script_module( 'wp-gpx-maps' );
+
+	}
 
 }
 
@@ -252,7 +260,7 @@ function wpgpxmaps_handle_folder_shortcodes( $attr, $content = '' ) {
 
 				}
 			}
-			print_r( $points );
+			//print_r( $points );
 		}
 	}
 
@@ -348,7 +356,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 	$gpxcache = gpxCacheFolderPath();
 
-	if ( ! ( file_exists( $gpxcache ) && is_dir( $gpxcache ) ) )
+	if ( ! ( $wp_filesystem->exists( $gpxcache ) && $wp_filesystem->is_dir( $gpxcache ) ) )
 	{
 		$wp_filesystem->mkdir( $gpxcache, 0755, true );
 		//@mkdir( $gpxcache, 0755, true );	
@@ -411,6 +419,10 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$avgv_hr            = 0;
 			$avg_temp           = 0;
 			$tot_len            = 0;
+
+			echo ( esc_html($e->getMessage()) );
+			echo ( esc_html("Error getting file $gpxcache from cache") );
+
 		}
 	}
 
@@ -642,8 +654,6 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$ngimgs_data = '';
 	if ( $ngGalleries != '' || $ngImages != '' ) {
 		$ngimgs      = getNGGalleryImages( $ngGalleries, $ngImages, $points_x_time, $points_x_lat, $points_x_lon, $dtoffset, $error );
-		$ngimgs_data = '';
-
 		foreach ( $ngimgs as $img ) {
 			$data         = $img['data'];
 			$data         = str_replace( '\n', '', $data );
@@ -710,15 +720,16 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 				<div id="wpgpxmaps_' . esc_attr( $r ) . '_osm_footer" class="wpgpxmaps_osm_footer" style="display:none;"><span> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</span></div>
 			</div>
 			<canvas id="myChart_' . esc_attr( $r ) . '" class="plot" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $gh ) . '"></canvas>
-			<div id="ngimages_' . esc_attr( $r ) . '" class="ngimages" style="display:none">' . wp_kses_post( $ngimgs_data ) . '</div>
+			<div id="ngimages_' . esc_attr( $r ) . '" class="ngimages" style="display:none">' . $ngimgs_data . '</div>
 			<div id="report_' . esc_attr( $r ) . '" class="report"></div>
 		</div>
 		' . esc_html( $error ) . '
-		<script type="text/javascript">
+		<script type="module">
+		import { WPGPXMaps } from "'. "/wp-content/plugins/wp-gpx-maps/assets/dist/WP-GPX-Maps.es.js" . '";
 
-			jQuery(document).ready(function() {
+		window.addEventListener("load", function() {
 
-				jQuery( "#wpgpxmaps_' . esc_js( $r ) . '" ).wpgpxmaps( {
+			var wpgpxmaps_' . esc_js( $r ) . ' = new WPGPXMaps({
 					targetId           : "' . esc_js( $r ) . '",
 					mapType            : "' . esc_js( $mt ) . '",
 					mapData            : [' . esc_js( $points_maps ) . '],
@@ -770,8 +781,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 						backToCenter	: "' . esc_js( __( 'Back to center', 'wp-gpx-maps' ) ) . '"
 					}
 				});
-
-			});
+	
+		});
 
 		</script>';
 

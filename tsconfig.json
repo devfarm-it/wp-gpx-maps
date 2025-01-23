@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "es5", "es6", "DOM"],
+    "types" : ["node"],
+  },
+  "include": [
+    "assets/src/@types/types.ts",
+    "assets/src/*.ts",
+    "assets/src/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

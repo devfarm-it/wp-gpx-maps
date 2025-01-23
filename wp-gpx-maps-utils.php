@@ -376,7 +376,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 			$_ele                = array_filter( $points->ele );
 			$_dist               = array_filter( $points->dist );
 
-			if ($_ele) {
+			if (count($_ele) > 0) {
 				/* 	
 					There might be cases where ele is not set in the gpx (0.00).
 					array_filter will filter out those values and as a consequence min()/max() would fail. 
@@ -386,8 +386,17 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 			}
 
 			$points->totalLength = max( $_dist );
-			$points->maxTime     = max( $_time );
-			$points->minTime     = min( $_time );
+
+			if (count($_time) > 0)		
+			{
+				$points->maxTime     = max( $_time );
+				$points->minTime     = min( $_time );
+			}
+			else
+			{
+				$points->maxTime     = null;
+				$points->minTime     = null;
+			}
 
 			/* Calculating Average Speed */
 			$_speed           = array_filter( $points->speed );

@@ -1,0 +1,21 @@
+{
+  "name": "wp-gpx-maps",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.7",
+    "leaflet": "^1.9.4",
+    "leaflet.fullscreen": "^3.0.2",
+    "leaflet.markercluster": "^1.5.3"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.16",
+    "@types/leaflet.fullscreen": "^3.0.2",
+    "typescript": "^4.0.0",
+    "vite": "^4.0.0"
+  }
+}
