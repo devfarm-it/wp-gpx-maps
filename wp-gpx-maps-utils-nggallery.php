@@ -1,7 +1,6 @@
 <?php
 
 function wpgpxmaps_isNGGalleryActive() {
-
 	if ( ! function_exists( 'is_plugin_active' ) ) {
 		require_once( wp_gpx_maps_sitePath() . '/wp-admin/includes/plugin.php' );
 	}
@@ -9,12 +8,12 @@ function wpgpxmaps_isNGGalleryActive() {
 }
 
 function wpgpxmaps_isNGGalleryProActive() {
-
 	if ( ! function_exists( 'is_plugin_active' ) ) {
 		require_once( wp_gpx_maps_sitePath() . '/wp-admin/includes/plugin.php' );
 	}
 		return is_plugin_active( 'nextgen-gallery-pro/nggallery-pro.php' );
 }
+
 
 function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset, &$error ) {
 
@@ -33,6 +32,8 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			array_push( $pictures, nggdb::find_image( $i ) );
 		}
 
+		//print_r($pictures);
+
 		foreach ( $pictures as $p ) {
 			
 			if (!is_object($p))
@@ -48,6 +49,7 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 					
 					$exif = @exif_read_data( $imagePath );
 					if ( $exif !== false && is_array($exif) && sizeof($exif) > 0 ) {
+
 						//print_r($exif);
 						
 						$GPSLongitude = 0;
@@ -88,12 +90,11 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			} catch (Exception $e) {
 				//$error .= "Sorry, <a href='https://php.net/manual/en/function.exif-read-data.php' target='_blank' rel='noopener noreferrer'>exif_read_data</a> function not found! check your hosting.<br />";
 			}
-			
 
 		}
 		/* START FIX NEXT GEN GALLERY 2.x */
-		if ( class_exists( 'C_Component_Registry' ) ) {
-			$renderer                  = C_Component_Registry::get_instance()->get_utility( 'I_Displayed_Gallery_Renderer' );
+		if ( class_exists( 'C_Displayed_Gallery_Renderer' ) ) {
+			$renderer                  = C_Displayed_Gallery_Renderer::get_instance();
 			$params['gallery_ids']     = $ngGalleries;
 			$params['image_ids']       = $ngImages;
 			$params['display_type']    = NEXTGEN_GALLERY_BASIC_THUMBNAILS;
@@ -113,10 +114,15 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			}
 			/* END FIX NEXT GEN GALLERY PRO */
 		}
+		else
+		{
+			echo "no C_Displayed_Gallery_Renderer ";
+		}
 		/* END FIX NEXT GEN GALLERY 2.x */
 
 	} catch ( Exception $e ) {
-		$error .= 'Error When Retrieving NextGen Gallery galleries/images: $e <br />';
+		$error .= $e->getMessage();
+		$error .= "Error When Retrieving NextGen Gallery galleries/images: $e ";
 	}	
 	return $result;
 }
