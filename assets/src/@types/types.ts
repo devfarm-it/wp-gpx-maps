@@ -43,6 +43,7 @@ interface Params {
     usegpsposition: string;
     currentpositioncon: string;
     TFApiKey: string;
+    MapBoxApiKey: string;
 }
 
 interface LangTranslation {
@@ -73,9 +74,15 @@ interface ChartLabels {
 
 type LatLng = [number, number];
 
-interface MapEngine {
+interface MapEngine<T> {
 
-    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, ThunderforestApiKey: string | null | undefined): void;
+    map: T | null;
+
+    Bounds: Array<number[]> | null;
+
+    EventSelectChart: null | Function;
+
+    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, ApiKey: string | null | undefined): void;
 
     AppPolylines(mapData: Array<[number, number] | null>, colors: string[], currentIcon: string | null, startIcon: string | null, endIcon: string | null): void;
 
@@ -84,6 +91,8 @@ interface MapEngine {
     MoveMarkerToPosition(LatLon: [number,number], updateChart: boolean): void;
 
     SetCurrentGPSPosition(LatLon: [number,number], currentpositioncon : string, lng : LangTranslation): void;
+
+    AddPhotos(photos: any[]): void;
 
     CenterMap(): void;
 }

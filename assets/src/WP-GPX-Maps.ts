@@ -12,8 +12,11 @@ import './../../css/bootstrap-table.css';
 import './../../css/wp-gpx-maps-output.css';
 
 import { ActiveElement, Chart, ScaleOptions, LinearScale, ChartConfiguration, registerables, ActiveDataPoint } from 'chart.js'
-import { LeafletMapEngine } from './maps-engines/LeafletMapEngine';
 import { WPGPXMAPS } from './Utils/Utils';
+
+import { LeafletMapEngine } from './maps-engines/LeafletMapEngine';
+
+import { MapBoxMapEngine } from './maps-engines/MapBoxMapEngine';
 
 const wpgpxmaps_FEET_MILES = "1";
 const wpgpxmaps_METERS_KILOMETERS = "2";
@@ -29,6 +32,8 @@ const wpgpxmaps_KM_PER_HOURS = "1";
 
 export class WPGPXMaps {
 	private params: Params;
+
+	public map : MapEngine<any>|null = null;
 
 	public myChart: Chart|null = null;
 
@@ -96,18 +101,24 @@ export class WPGPXMaps {
 
 		let _this = this;
 
-		var mapWidth = el_map.style.width;
+		if (this.params.MapBoxApiKey &&  this.params.MapBoxApiKey.length>20)
+		{
+			this.map = new MapBoxMapEngine();
+		}
+		else
+		{
+			this.map = new LeafletMapEngine();
+		}
 
-		var map = new LeafletMapEngine();
 		//map.lng = lng;
-		map.init(
+		this.map.init(
 			el_map,
 			mapType,
 			('true' == zoomOnScrollWheel),
 			TFApiKey
 		);
 
-		map.EventSelectChart = function (LatLon: LatLng) {
+		this.map.EventSelectChart = function (LatLon: LatLng) {
 
 			if (_this.myChart) {
 				var l1 = LatLon[0];
@@ -149,7 +160,7 @@ export class WPGPXMaps {
 					/* User position. */
 					var pos = [position.coords.latitude, position.coords.longitude];
 
-					map.SetCurrentGPSPosition([pos[0], pos[1]], currentpositioncon, langs);
+					this.map.SetCurrentGPSPosition([pos[0], pos[1]], currentpositioncon, langs);
 
 
 				},
@@ -168,7 +179,7 @@ export class WPGPXMaps {
 
 		/* Print WayPoints. */
 		if (waypoints != null && waypoints.length > 0) {
-			map.AddWaypoints(waypoints, waypointIcon);
+			this.map.AddWaypoints(waypoints, waypointIcon);
 		}
 
 		/* Print Images. */
@@ -192,7 +203,7 @@ export class WPGPXMaps {
 					Number(ngg_span.getAttribute('lon'))
 				];
 
-				map.Bounds.push(pos);
+				this.map.Bounds.push(pos);
 
 				photos.push({
 					'lat': pos[0],
@@ -206,7 +217,7 @@ export class WPGPXMaps {
 
 			if (photos.length > 0) {
 
-				map.AddPhotos(photos);
+				this.map.AddPhotos(photos);
 
 				/*
 				var showHideImagesCustomControl = L.Control.extend({
@@ -303,7 +314,7 @@ export class WPGPXMaps {
 
 		/* Print Track. */
 		if (mapData) {
-			map.AppPolylines(mapData, color1, currentIcon, startIcon, endIcon);
+			this.map.AppPolylines(mapData, color1, currentIcon, startIcon, endIcon);
 		}
 
 		/*
@@ -311,6 +322,7 @@ export class WPGPXMaps {
 		map.fitBounds(bounds);
 		*/
 
+		var contextMap = this.map;
 
 		// Fix post tabs. */
 		let _tab: HTMLElement | null = null;
@@ -324,7 +336,6 @@ export class WPGPXMaps {
 		}
 
 		if (_tab) {
-			var contextMap = map;
 			var tabResized = false;
 
 			var FixMapSize = function (e: any) {
@@ -340,7 +351,6 @@ export class WPGPXMaps {
 			document.querySelector(".wpsm_nav-tabs a")?.addEventListener("click", FixMapSize, false);
 			_tab.querySelector("div > ul > li > a")?.addEventListener("click", FixMapSize, false);
 		}
-
 
 		var graphh = el_chart?.style.height;
 
@@ -419,7 +429,10 @@ export class WPGPXMaps {
 						// animationDuration: 0,
 						// duration of animations when hovering an item
 					},
-
+					interaction: {
+						intersect: false,
+						mode: 'index',
+					},
 					// responsiveAnimationDuration: 0,
 					// animation duration after a resize
 					//customLine: {
@@ -475,10 +488,16 @@ export class WPGPXMaps {
 									var i = tooltipItem[0].dataIndex;
 									var point = WPGPXMAPS.Utils.GetItemFromArray(mapData, i);
 									if (point)
-										map.MoveMarkerToPosition(point, false);
+										contextMap.MoveMarkerToPosition(point, false);
 								}
 							}
 						},
+
+
+
+
+						
+
 						/*
 							decimation: {
 								beforeEvent: function (chart, args, options) {

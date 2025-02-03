@@ -10,7 +10,9 @@
     "chart.js": "^4.4.7",
     "leaflet": "^1.9.4",
     "leaflet.fullscreen": "^3.0.2",
-    "leaflet.markercluster": "^1.5.3"
+    "leaflet.markercluster": "^1.5.3",
+    "mapbox-gl": "^3.9.4",
+    "mapbox-gl-style-switcher": "^1.0.11"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.16",
