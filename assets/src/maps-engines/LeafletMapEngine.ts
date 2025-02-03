@@ -116,7 +116,7 @@ class ClusterPhotos {
 
 }
 
-export class LeafletMapEngine implements MapEngine {
+export class LeafletMapEngine implements MapEngine<Map> {
 
     Bounds: Array<number[]> = [];
     lng: LangTranslation | null = null;
@@ -587,7 +587,7 @@ export class LeafletMapEngine implements MapEngine {
                 title: photo.caption || "",
             });
 
-            m.bindPopup('<img src="' + photo.url + '" /></a><p>' + photo.name + '</p>',  { minWidth: 500 });
+            m.bindPopup('<img src="' + photo.url + '" /></a><p>' + photo.name + '</p>', { minWidth: 500 });
 
             m.addTo(this.map);
             //this.map.addLayer(m);

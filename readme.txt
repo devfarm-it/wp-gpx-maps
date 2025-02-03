@@ -6,7 +6,7 @@ Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-galle
 Requires at least: 6.2.0
 Tested up to: 6.7.1
 Requires PHP: 7.3+
-Stable tag: 1.7.10
+Stable tag: 1.7.11
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
