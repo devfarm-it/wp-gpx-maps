@@ -1,10 +1,134 @@
-import { Colors } from 'chart.js';
 import { WPGPXMAPS } from '../Utils/Utils';
-import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
-import mapboxgl, { LngLatBounds, Map, Marker } from 'mapbox-gl';
+import { MapboxStyleDefinition, MapboxStyleSwitcherOptions, MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
+import mapboxgl, { ControlPosition, IControl, LngLatBounds, Map, Marker } from 'mapbox-gl';
+import * as turf from '@turf/turf';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import "mapbox-gl-style-switcher/styles.css";
+
+class AnumationControl implements IControl {
+
+    container: HTMLElement;
+
+    start: number = 0.0;
+    animationDuration: number = 80000;
+    cameraAltitude: number = 1000;
+
+    targetRoute: Array<number[]> = [];
+    cameraRoute: Array<number[]> = [];
+
+    map: Map;
+
+    iconDefault: string = '/wp-content/plugins/wp-gpx-maps/img/map-play-svgrepo-com.svg';
+    iconStop: string = '/wp-content/plugins/wp-gpx-maps/img/stop-svgrepo-com.svg';
+
+    routeDistance: number = 0.0;
+    cameraRouteDistance: number = 0.0;
+
+    isPlaying: boolean = false;
+
+    onAdd(map: Map): HTMLElement {
+
+        this.map = map;
+
+        this.container = document.createElement('div');
+        this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group mapboxgl-wp-gpx-maps';
+        this.container.innerHTML = `<button style='background-image: url(${this.iconDefault});'>&nbsp;</div>`;
+        this.container.onclick = () => {
+            // Your custom logic here
+
+            if (this.isPlaying == false) {
+                this.isPlaying = true;
+                this._playAnimation();
+            }
+            else {
+                this.isPlaying = false;
+            }
+        };
+        return this.container;
+    }
+
+    _animationFrame(time) {
+
+        if (this.isPlaying == false) {
+            this.start = 0.0;
+            return;
+        }
+
+        if (!this.start) this.start = time;
+        // phase determines how far through the animation we are
+        const phase = (time - this.start) / this.animationDuration;
+
+        // phase is normalized between 0 and 1
+        // when the animation is finished, reset start to loop the animation
+        if (phase > 1) {
+            // wait 1.5 seconds before looping
+            setTimeout(() => {
+                this.start = 0.0;
+            }, 1500);
+        }
+
+        // use the phase to get a point that is the appropriate distance along the route
+        // this approach syncs the camera and route positions ensuring they move
+        // at roughly equal rates even if they don't contain the same number of points
+        const alongRoute = turf.along(
+            turf.lineString(this.targetRoute),
+            this.routeDistance * phase
+        ).geometry.coordinates;
+
+        const alongCamera = turf.along(
+            turf.lineString(this.cameraRoute),
+            this.cameraRouteDistance * phase
+        ).geometry.coordinates;
+
+        const camera = this.map.getFreeCameraOptions();
+
+        // set the position and altitude of the camera
+        camera.position = mapboxgl.MercatorCoordinate.fromLngLat(
+            {
+                lng: alongCamera[0],
+                lat: alongCamera[1]
+            },
+            this.cameraAltitude
+        );
+
+        // tell the camera to look at a point along the route
+        camera.lookAtPoint({
+            lng: alongRoute[0],
+            lat: alongRoute[1]
+        });
+
+        this.map.setFreeCameraOptions(camera);
+
+        window.requestAnimationFrame((time) => this._animationFrame(time));
+    }
+
+    _stopAnimation() {
+
+    }
+
+    _playAnimation() {
+
+        this.cameraRouteDistance = turf.lineDistance(
+            turf.lineString(this.cameraRoute)
+        );
+
+        this.routeDistance = turf.lineDistance(
+            turf.lineString(this.targetRoute)
+        );
+
+        window.requestAnimationFrame((time) => this._animationFrame(time));
+    }
+
+    onRemove(map: Map) {
+        this.container.remove();
+    }
+
+    getDefaultPosition?: () => ControlPosition;
+    _setLanguage?: (language?: string | string[]) => void;
+
+
+}
 
 export class MapBoxMapEngine implements MapEngine<Map> {
 
@@ -13,7 +137,9 @@ export class MapBoxMapEngine implements MapEngine<Map> {
     EventSelectChart: null | Function = null;
     CurrentLocationMarker: mapboxgl.Marker | null = null;
 
-    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, MapBoxApiKey: string | null | undefined): void {
+    animationControl: AnumationControl | null = null;
+
+    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, MapBoxApiKey: string | null | undefined, otherParams: any ): void {
 
         this.map = new mapboxgl.Map({
             container: targetElement,
@@ -24,26 +150,75 @@ export class MapBoxMapEngine implements MapEngine<Map> {
             scrollZoom: scrollWheelZoom
         });
 
-        //this.map.addControl(new MapboxStyleSwitcherControl());
+        this.animationControl = new AnumationControl();
+
         this.map.addControl(new mapboxgl.NavigationControl());
         this.map.addControl(new mapboxgl.FullscreenControl());
 
-        // 3d terrain
+        const styles: MapboxStyleDefinition[] = [
+            { uri: 'mapbox://styles/mapbox/standard', title: 'Standard' },
+            { uri: 'mapbox://styles/mapbox/standard-satellite', title: 'Standard Satelite' },
+            { uri: 'mapbox://styles/mapbox/streets-v12', title: 'Streets' },
+            { uri: 'mapbox://styles/mapbox/outdoors-v12', title: 'Outdoors' },
+            { uri: 'mapbox://styles/mapbox/light-v11', title: 'Light' },
+            { uri: 'mapbox://styles/mapbox/dark-v11', title: 'Dark' },
+            { uri: 'mapbox://styles/mapbox/satellite-v9', title: 'Satellite' },
+            { uri: 'mapbox://styles/mapbox/satellite-streets-v12', title: 'Satellite Streets' },
+            { uri: 'mapbox://styles/mapbox/navigation-day-v1', title: 'Navigation Day' },
+            { uri: 'mapbox://styles/mapbox/navigation-night-v1', title: 'Navigation Night' }
+        ];
+
+        // Pass options (optional)
+        const options: MapboxStyleSwitcherOptions = {
+            defaultStyle: "Satellite Streets",
+            eventListeners: {
+                // return true if you want to stop execution
+                //           onOpen: (event: MouseEvent) => boolean;
+                //           onSelect: (event: MouseEvent) => boolean;
+                //           onChange: (event: MouseEvent, style: string) => boolean;
+            }
+        };
+
+        this.map.addControl(new MapboxStyleSwitcherControl() as IControl, 'top-left');
+        this.map.addControl(this.animationControl);
+
         this.map.on('style.load', () => {
-            this.map.addSource('mapbox-dem', {
-                'type': 'raster-dem',
-                'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-                'tileSize': 512,
-                'maxzoom': 14
-            });
-            // add the DEM source as a terrain layer with exaggerated height
-            this.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+            if (otherParams.MapBoxFog) {
+
+                // Add daytime fog
+                this.map.setFog({
+                    'range': [-1, 2],
+                    'horizon-blend': 0.3,
+                    'color': 'white',
+                    'high-color': '#add8e6',
+                    'space-color': '#d8f2ff',
+                    'star-intensity': 0.0
+                });
+
+            }
+
+            if (otherParams.MapBox3dTerrain) {
+
+                // 3d terrain
+                this.map.addSource('mapbox-dem', {
+                    'type': 'raster-dem',
+                    'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                    'tileSize': 512,
+                    'maxzoom': 14
+                });
+                
+                // add the DEM source as a terrain layer with exaggerated height
+                this.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+            }
+
         });
 
     }
 
     _addMarker(ll: [number, number], icon: string | null, popup: Function | null): Marker {
-    
+
         // Create a DOM element for each marker.
         const el = document.createElement('div');
         const width = 32;
@@ -58,7 +233,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
             popup?.call(this, e);
         });
 
-        return new mapboxgl.Marker().setLngLat([ll[1], ll[0]]).addTo(this.map);
+        return new mapboxgl.Marker(el).setLngLat([ll[1], ll[0]]).addTo(this.map);
 
     }
 
@@ -66,9 +241,13 @@ export class MapBoxMapEngine implements MapEngine<Map> {
 
         this.Bounds = mapData.filter(o => o != null);
 
-        this.map.on('load', () => {
+        this.map.on('style.load', () => {
 
             const pointsArray = WPGPXMAPS.Utils.DividePolylinesPoints(mapData);
+
+            const LngLatRute = this.Bounds.map((point) => [point[1], point[0]]);
+            this.animationControl.cameraRoute = LngLatRute;
+            this.animationControl.targetRoute = LngLatRute;
 
             this.map.addSource('route', {
                 'type': 'geojson',
@@ -108,7 +287,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
             if ('' == currentIcon || null == currentIcon) {
                 currentIcon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
             }
-            
+
             this.CurrentLocationMarker = this._addMarker(mapData[0], currentIcon, (e) => {
 
 
@@ -120,7 +299,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
                 let ll = mapData[0];
 
                 if (ll != null) {
-                    this._addMarker(ll, startIcon,null);
+                    this._addMarker(ll, startIcon, null);
                 }
 
             }
@@ -130,7 +309,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
                 let ll = mapData[mapData.length - 1];
 
                 if (ll != null) {
-                    this._addMarker(ll, endIcon,null);
+                    this._addMarker(ll, endIcon, null);
                 }
 
             }
@@ -145,7 +324,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
     }
     MoveMarkerToPosition(LatLon: [number, number], updateChart: boolean): void {
 
-        this.CurrentLocationMarker?.setLngLat([LatLon[1], LatLon[0]]);  
+        this.CurrentLocationMarker?.setLngLat([LatLon[1], LatLon[0]]);
 
         //throw new Error('Method not implemented.');
     }
@@ -180,7 +359,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
                 const sw = new mapboxgl.LngLat(bounds.minLng, bounds.minLat);
                 const ne = new mapboxgl.LngLat(bounds.maxLng, bounds.maxLat);
 
-                this.map?.fitBounds(new mapboxgl.LngLatBounds(sw, ne), { padding: 20, animate: false });
+                this.map?.fitBounds(new mapboxgl.LngLatBounds(sw, ne), { padding: 30, animate: false });
 
             }
 
@@ -192,6 +371,22 @@ export class MapBoxMapEngine implements MapEngine<Map> {
     }
 
     AddPhotos(photos: any[]): void {
+
+        const width = 40;
+        const height = 40;
+
+        for (const photo of photos) {
+            let _m = this._addMarker([photo.lat, photo.lng], photo.thumbnail, (e) => {
+                let _selector = `a[data-image-id='${photo.image_id}']`;
+                let galleryEl = document.querySelector(_selector);
+                (galleryEl as HTMLAnchorElement)?.click()
+            });
+            _m._element.classList.add('wp-gpx-maps-photo-marker');
+            _m._element.style.width = `${width}px`;
+            _m._element.style.height = `${height}px`;
+            //_m.setPopup(new mapboxgl.Popup({ maxWidth: "900px"}).setHTML(`<img src='${photo.url}' alt='${photo.name}' />`));
+
+        }
 
         //new ClusterPhotos(this.map).populate(photos)
     }

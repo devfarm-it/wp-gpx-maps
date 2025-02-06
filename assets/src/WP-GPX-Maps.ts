@@ -115,7 +115,8 @@ export class WPGPXMaps {
 			el_map,
 			mapType,
 			('true' == zoomOnScrollWheel),
-			TFApiKey
+			TFApiKey,
+			this.params
 		);
 
 		this.map.EventSelectChart = function (LatLon: LatLng) {
@@ -209,7 +210,8 @@ export class WPGPXMaps {
 					'lat': pos[0],
 					'lng': pos[1],
 					'name': ngg_span_a.children[0].getAttribute('alt'),
-					'url': ngg_span_a.children[0].getAttribute('src'),
+					'image_id': ngg_span_a.getAttribute('data-image-id'),
+					'url': ngg_span_a.getAttribute('href'),
 					'thumbnail': ngg_span_a.children[0].getAttribute('src')
 				});
 
