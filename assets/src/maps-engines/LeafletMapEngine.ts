@@ -129,7 +129,7 @@ export class LeafletMapEngine implements MapEngine<Map> {
     constructor() {
     }
 
-    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, ThunderforestApiKey: string | null | undefined): void {
+    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, ThunderforestApiKey: string | null | undefined, otherParams: any): void {
 
         this.map = L.map(targetElement,
             {

@@ -34,6 +34,15 @@ $total_time     = get_option( 'wpgpxmaps_summary_total_time' );
 $t                 = get_option( 'wpgpxmaps_map_type' );
 $zoomonscrollwheel = get_option( 'wpgpxmaps_zoomonscrollwheel' );
 $showW             = get_option( 'wpgpxmaps_show_waypoint' );
+
+/* MapBox */
+$mapbox3dTerrain        = get_option( 'wpgpxmaps_mapbox_3dterrain' );
+$mapboxMapType          = get_option( 'wpgpxmaps_mapbox_type' );
+$mapboxCustomMapType    = get_option( 'wpgpxmaps_mapbox_customtype' );
+$mapboxFog             	= get_option( 'wpgpxmaps_mapbox_fog' );
+
+
+
 /* Diagram */
 $showEle   = get_option( 'wpgpxmaps_show_elevation' );
 $uom       = get_option( 'wpgpxmaps_unit_of_measure' );
@@ -179,7 +188,7 @@ function render_select($name, $label, $options, $selected) {
 
 			<?php
 			
-				render_radio('wpgpxmaps_map_type', 'Default map type:', [
+			render_radio('wpgpxmaps_map_type', 'Default map type:', [
 				'OSM1' => 'Open Street Map',
 				'OSM2' => 'Open Cycle Map / Thunderforest - Open Cycle Map (API Key required)',
 				'OSM3' => 'Thunderforest - Outdoors (API Key required)',
@@ -190,7 +199,26 @@ function render_select($name, $label, $options, $selected) {
 				'OSM9' => 'Hike & Bike',
 				'OSM10' => 'Open Sea Map',
 				'OSM11' => 'GSI Map (Japan)'
-			], $t);			
+			], $t);		
+			
+			render_radio('wpgpxmaps_mapbox_type', 'MapBox map type:', [
+				'standard' => 'Standard',
+				'standard-satellite' => 'Standard Satelite',
+				'streets-v12' => 'Streets',
+				'outdoors-v12' => 'Outdoors',
+				'light-v11' => 'Light',
+				'dark-v11' => 'Dark',
+				'satellite-v9' => 'Satellite',
+				'satellite-streets-v12' => 'Satellite Streets',
+				'navigation-day-v1' => 'Navigation Day',
+				'navigation-night-v1' => 'Navigation Night'
+			], $mapboxMapType);		
+
+			render_text_input('wpgpxmaps_mapbox_customtype', 'MapBox 3d terrain:', $mapboxCustomMapType, 'width:400px;');
+			
+			render_checkbox('wpgpxmaps_mapbox_3dterrain', 'MapBox 3d terrain:', $mapbox3dTerrain);
+			render_checkbox('wpgpxmaps_mapbox_fog', 'MapBox fog:', $mapboxFog);
+
 			render_text_input('wpgpxmaps_map_line_color', 'Map line color:', get_option('wpgpxmaps_map_line_color'), 'width:100px;');
 			render_checkbox('wpgpxmaps_zoomonscrollwheel', 'On mouse scroll wheel:', $zoomonscrollwheel);
 			render_checkbox('wpgpxmaps_show_waypoint', 'Waypoints support:', $showW);
@@ -204,7 +232,7 @@ function render_select($name, $label, $options, $selected) {
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>

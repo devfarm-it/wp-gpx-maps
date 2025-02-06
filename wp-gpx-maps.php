@@ -766,6 +766,12 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 					pluginUrl          : "' . esc_url( plugins_url() ) . '",
 					TFApiKey           : "' . esc_js( get_option( 'wpgpxmaps_openstreetmap_apikey' ) ) . '",
 					MapBoxApiKey           : "' . esc_js( get_option( 'wpgpxmaps_mapbox_apikey' ) ) . '",
+
+					MapBoxMapType           : "' . esc_js( get_option( 'wpgpxmaps_mapbox_type' ) ) . '",
+					MapBoxMapCustomType     : "' . esc_js( get_option( 'wpgpxmaps_mapbox_customtype' ) ) . '",
+					MapBox3dTerrain         : ' . esc_js( filter_var(get_option( 'wpgpxmaps_mapbox_3dterrain' ), FILTER_VALIDATE_BOOLEAN) ) . ',
+					MapBoxFog           	: ' . esc_js( filter_var(get_option( 'wpgpxmaps_mapbox_fog' ), FILTER_VALIDATE_BOOLEAN) ) . ',
+
 					langs              : {
 						altitude        : "' . esc_js( __( 'Altitude', 'wp-gpx-maps' ) ) . '",
 						currentPosition : "' . esc_js( __( 'Current position', 'wp-gpx-maps' ) ) . '",

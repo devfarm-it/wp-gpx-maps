@@ -44,6 +44,10 @@ interface Params {
     currentpositioncon: string;
     TFApiKey: string;
     MapBoxApiKey: string;
+    MapBoxMapType: string;
+    MapBoxMapCustomType: string;
+    MapBox3dTerrain: boolean;
+    MapBoxFog: boolean;
 }
 
 interface LangTranslation {
@@ -82,15 +86,15 @@ interface MapEngine<T> {
 
     EventSelectChart: null | Function;
 
-    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, ApiKey: string | null | undefined): void;
+    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, ApiKey: string | null | undefined, otherParams: any): void;
 
     AppPolylines(mapData: Array<[number, number] | null>, colors: string[], currentIcon: string | null, startIcon: string | null, endIcon: string | null): void;
 
     AddWaypoints(waypoints: any, waypointIcon: string | null): void;
 
-    MoveMarkerToPosition(LatLon: [number,number], updateChart: boolean): void;
+    MoveMarkerToPosition(LatLon: [number, number], updateChart: boolean): void;
 
-    SetCurrentGPSPosition(LatLon: [number,number], currentpositioncon : string, lng : LangTranslation): void;
+    SetCurrentGPSPosition(LatLon: [number, number], currentpositioncon: string, lng: LangTranslation): void;
 
     AddPhotos(photos: any[]): void;
 
