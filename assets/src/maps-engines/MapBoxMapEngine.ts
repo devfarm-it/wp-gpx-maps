@@ -1,6 +1,6 @@
 import { WPGPXMAPS } from '../Utils/Utils';
 import { MapboxStyleDefinition, MapboxStyleSwitcherOptions, MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
-import mapboxgl, { ControlPosition, IControl, LngLatBounds, Map, Marker } from 'mapbox-gl';
+import mapboxgl, { ControlPosition, GeoJSONSource, IControl, LngLatBounds, Map, Marker } from 'mapbox-gl';
 import * as turf from '@turf/turf';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -138,8 +138,19 @@ export class MapBoxMapEngine implements MapEngine<Map> {
     CurrentLocationMarker: mapboxgl.Marker | null = null;
 
     animationControl: AnumationControl | null = null;
+    otherParams: any;
 
-    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, MapBoxApiKey: string | null | undefined, otherParams: any ): void {
+    animateLineOptions: any = {
+        SpeedFactor: 30, // number of frames per longitude degree
+        Animation: null, // to store and cancel the animation
+        StartTime: 0,
+        Progress: 0, // progress = timestamp - startTime
+        ResetTime: false // indicator of whether time reset is needed for the animation
+    }
+
+    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, MapBoxApiKey: string | null | undefined, otherParams: any): void {
+
+        this.otherParams = otherParams;
 
         this.map = new mapboxgl.Map({
             container: targetElement,
@@ -182,7 +193,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
         this.map.addControl(new MapboxStyleSwitcherControl() as IControl, 'top-left');
         this.map.addControl(this.animationControl);
 
-        this.map.on('style.load', () => {
+        this.map.on('style.load', async () => {
 
             if (otherParams.MapBoxFog) {
 
@@ -207,7 +218,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
                     'tileSize': 512,
                     'maxzoom': 14
                 });
-                
+
                 // add the DEM source as a terrain layer with exaggerated height
                 this.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
 
@@ -241,7 +252,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
 
         this.Bounds = mapData.filter(o => o != null);
 
-        this.map.on('style.load', () => {
+        this.map.on('style.load', async () => {
 
             const pointsArray = WPGPXMAPS.Utils.DividePolylinesPoints(mapData);
 
@@ -315,6 +326,13 @@ export class MapBoxMapEngine implements MapEngine<Map> {
             }
 
             this.CenterMap();
+
+
+            if (this.otherParams.MapBoxAnimateOnLoading == '1') {
+
+                this.animateLineOptions.StartTime = performance.now();
+                this.animateLine();
+            }
 
         });
 
@@ -390,5 +408,51 @@ export class MapBoxMapEngine implements MapEngine<Map> {
 
         //new ClusterPhotos(this.map).populate(photos)
     }
+
+    // animated in a circle as a sine wave along the map.
+    animateLine(timestamp: number | null = null) {
+
+        if (timestamp == null) {
+            // fist call
+            var geojson = (this.map.getSource('route') as GeoJSONSource)._data;
+            this.animateLineOptions.ruteJeoJson = geojson;
+            this.animateLineOptions.ruteCoordinates = (geojson as any).features[0].geometry.coordinates;
+            (geojson as any).features[0].geometry.coordinates = [];
+        }
+
+        if (this.animateLineOptions.ResetTime) {
+            // resume previous progress
+            this.animateLineOptions.sta = performance.now() - this.animateLineOptions.Progress;
+            this.animateLineOptions.ResetTime = false;
+        } else {
+            this.animateLineOptions.Progress = timestamp - this.animateLineOptions.StartTime;
+        }
+
+        if (this.animateLineOptions.Progress < 0)
+            this.animateLineOptions.Progress = 0;
+
+        // restart if it finishes a loop
+        if (this.animateLineOptions.Progress > this.animateLineOptions.SpeedFactor * 360) {
+            this.animateLineOptions.startTime = timestamp;
+
+            // stop the animation 
+            return;
+
+        } else {
+
+            let len = this.animateLineOptions.ruteCoordinates.length;
+            let slice = Math.floor(len * this.animateLineOptions.Progress / (this.animateLineOptions.SpeedFactor * 360));
+
+            this.animateLineOptions.ruteJeoJson.features[0].geometry.coordinates =
+                this.animateLineOptions.ruteCoordinates.slice(0, slice);
+
+            // then update the map
+            var s = (this.map.getSource('route') as GeoJSONSource).setData(this.animateLineOptions.ruteJeoJson);
+        }
+        // Request the next frame of the animation.
+        this.animateLineOptions.animation = requestAnimationFrame((time) => this.animateLine(time));
+    }
+
+
 
 }

@@ -40,7 +40,7 @@ $mapbox3dTerrain        = get_option( 'wpgpxmaps_mapbox_3dterrain' );
 $mapboxMapType          = get_option( 'wpgpxmaps_mapbox_type' );
 $mapboxCustomMapType    = get_option( 'wpgpxmaps_mapbox_customtype' );
 $mapboxFog             	= get_option( 'wpgpxmaps_mapbox_fog' );
-
+$mapboxLoadAnimation 	= get_option( 'wpgpxmaps_mapbox_load_animation');
 
 
 /* Diagram */
@@ -201,7 +201,7 @@ function render_select($name, $label, $options, $selected) {
 				'OSM11' => 'GSI Map (Japan)'
 			], $t);		
 			
-			render_radio('wpgpxmaps_mapbox_type', 'MapBox map type:', [
+			render_radio('wpgpxmaps_mapbox_type', 'MapBox default style:', [
 				'standard' => 'Standard',
 				'standard-satellite' => 'Standard Satelite',
 				'streets-v12' => 'Streets',
@@ -214,8 +214,13 @@ function render_select($name, $label, $options, $selected) {
 				'navigation-night-v1' => 'Navigation Night'
 			], $mapboxMapType);		
 
-			render_text_input('wpgpxmaps_mapbox_customtype', 'MapBox 3d terrain:', $mapboxCustomMapType, 'width:400px;');
+			render_text_input('wpgpxmaps_mapbox_customtype', 'Custom MapBox style:', $mapboxCustomMapType, 'width:400px;');
 			
+			render_radio('wpgpxmaps_mapbox_load_animation', 'MapBox animation on load:', [
+				'0' => 'Disabled',
+				'1' => 'Draw line from start to end',
+			], $mapboxLoadAnimation);		
+
 			render_checkbox('wpgpxmaps_mapbox_3dterrain', 'MapBox 3d terrain:', $mapbox3dTerrain);
 			render_checkbox('wpgpxmaps_mapbox_fog', 'MapBox fog:', $mapboxFog);
 
@@ -232,7 +237,7 @@ function render_select($name, $label, $options, $selected) {
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>
