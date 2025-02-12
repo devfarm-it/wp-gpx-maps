@@ -771,6 +771,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 					MapBoxMapCustomType     : "' . esc_js( get_option( 'wpgpxmaps_mapbox_customtype' ) ) . '",
 					MapBox3dTerrain         : "' . esc_js( filter_var(get_option( 'wpgpxmaps_mapbox_3dterrain' ), FILTER_VALIDATE_BOOLEAN) ) . '",
 					MapBoxFog           	: "' . esc_js( filter_var(get_option( 'wpgpxmaps_mapbox_fog' ), FILTER_VALIDATE_BOOLEAN) ) . '",
+					MapBoxAnimateOnLoading 	: "' . esc_js( get_option( 'wpgpxmaps_mapbox_load_animation' ) ) . '",
 
 					langs              : {
 						altitude        : "' . esc_js( __( 'Altitude', 'wp-gpx-maps' ) ) . '",
