@@ -376,6 +376,11 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 			$_ele                = array_filter( $points->ele );
 			$_dist               = array_filter( $points->dist );
 
+			if (count($_dist) > 0)		
+			{
+				$points->totalLength = max( $_dist );
+			}
+
 			if (count($_ele) > 0) {
 				/* 	
 					There might be cases where ele is not set in the gpx (0.00).
@@ -384,8 +389,6 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 				$points->maxEle      = max( $_ele );
 				$points->minEle      = min( $_ele );
 			}
-
-			$points->totalLength = max( $_dist );
 
 			if (count($_time) > 0)		
 			{
