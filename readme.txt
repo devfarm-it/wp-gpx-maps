@@ -197,6 +197,8 @@ Yes!
 
 == Changelog ==
 
+= 1.8.00 =
+* MapBox provider: needs ApiKey and brings a lot of new cool features like 3d maps and much more
 = 1.7.10 =
 * Fix security issues
 = 1.7.06 =
