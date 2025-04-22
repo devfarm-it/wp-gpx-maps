@@ -28,13 +28,6 @@ if ( current_user_can( 'manage_options' ) ) {
 
 }
 
-global $wp_filesystem;
-if (empty($wp_filesystem)) {
-	require_once (ABSPATH . '/wp-admin/includes/file.php');
-	WP_Filesystem();
-}
-
-
 /**
  * Override the default upload path.
  * 
