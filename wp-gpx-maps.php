@@ -344,25 +344,16 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	} else {
 		$mtime = 0;
 	}
-	//$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$unit_of_measure_speed,$unit_of_measure,$distanceType,v1.3.9";
-	$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$unit_of_measure_speed,$unit_of_measure,$distanceType,v1.8.00";
+	$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$unit_of_measure_speed,$unit_of_measure,$distanceType,v1.3.9";
 
 	$cacheFileName = md5( $cacheFileName );
 
-	global $wp_filesystem;
-	if (empty($wp_filesystem)) {
-		require_once (ABSPATH . '/wp-admin/includes/file.php');
-		WP_Filesystem();
-	}
-
 	$gpxcache = gpxCacheFolderPath();
 
-	if ( ! ( $wp_filesystem->exists( $gpxcache ) && $wp_filesystem->is_dir( $gpxcache ) ) )
+	if ( ! ( file_exists( $gpxcache ) && is_dir( $gpxcache ) ) )
 	{
-		$wp_filesystem->mkdir( $gpxcache, 0755, true );
-		//@mkdir( $gpxcache, 0755, true );	
+		@mkdir( $gpxcache, 0755, true );
 	}
-
 
 	$gpxcache .= DIRECTORY_SEPARATOR . $cacheFileName . '.tmp';
 
@@ -370,7 +361,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	if ( file_exists( $gpxcache ) && ! ( true == $skipcache ) ) {
 
 		try {
-			$cache_str          = $wp_filesystem->get_contents( $gpxcache );
+			$cache_str          = file_get_contents( $gpxcache );
 			$cache_obj          = unserialize( $cache_str );
 			$points_maps        = $cache_obj['points_maps'];
 			$points_x_time      = $cache_obj['points_x_time'];
@@ -673,13 +664,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 	if ( ! ( true == $skipcache ) ) {
 
-		global $wp_filesystem;
-		if (empty($wp_filesystem)) {
-			require_once (ABSPATH . '/wp-admin/includes/file.php');
-			WP_Filesystem();
-		}
-
-		$wp_filesystem->put_contents( $gpxcache, serialize( array(
+		file_put_contents( $gpxcache, serialize( array(
 			'points_maps'        => $points_maps,
 			'points_x_time'      => $points_x_time,
 			'points_x_lat'       => $points_x_lat,

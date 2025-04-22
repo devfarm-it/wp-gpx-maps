@@ -580,7 +580,6 @@ export class WPGPXMaps {
 
 			if (graphSpeed && graphSpeed.length > 0) {
 
-
 				if (wpgpxmaps_MINUTES_PER_100METERS == unitspeed) {
 
 					/* min/100 meters */
@@ -721,6 +720,11 @@ export class WPGPXMaps {
 								hoptions.data.datasets.push(this.wpgpxmapsGetDataset(langs.cadence, myData.Items, color5, _id));
 								_formats.push( { label_x: _formats[0].label_x , label_y : l_cad});
 
+			}
+
+			if (graphGrade && graphGrade.length > 0) 
+			{
+				var myGrade = WPGPXMAPS.Utils.calculateGrade( graphEle, graphDist.slice(1));
 			}
 
 			if (graphGrade && graphGrade.length > 0) {
