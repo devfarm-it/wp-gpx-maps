@@ -597,7 +597,7 @@
 				<tr>
 					<td>chartFrom2</td>
 					<td>
-						<?php esc_html( 'Minimum value for speed chart', 'wp-gpx-maps' ); ?>
+						<?php esc_html_e( 'Minimum value for speed chart', 'wp-gpx-maps' ); ?>
 					</td>
 					<td></td>
 					<td>
