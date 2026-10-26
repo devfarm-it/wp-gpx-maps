@@ -1,4 +1,8 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Settings Tab Administration
  *
@@ -9,15 +13,6 @@
 
 if ( ! current_user_can( 'manage_options' ) )
 	return;
-
-add_action( 'admin_init', 'wpgpxmaps_register_settings' );
-
-function wpgpxmaps__register_settings() {
-
-	register_setting( 'wpgpxmaps_group', 'wpgpxmaps_allow_users_upload' );
-	register_setting( 'wpgpxmaps_group', 'wpgpxmaps_show_notice' );
-
-}
 
 ?>
 

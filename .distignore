@@ -11,6 +11,12 @@
 /assets/src
 /assets/dist/*.map
 /assets/dist/WP-GPX-Maps.umd.js
+# Old non-bundled libraries, no longer loaded (the plugin uses assets/dist)
+/ThirdParties
+/js/Chart.min.js
+/js/WP-GPX-Maps.js
+/js/mColorPicker_min.js
+/build
 .distignore
 .gitignore
 CLAUDE.md
