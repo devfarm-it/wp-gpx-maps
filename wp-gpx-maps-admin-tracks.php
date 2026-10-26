@@ -36,10 +36,13 @@ if ( current_user_can( 'manage_options' ) ) {
  */
 function wpgpxmaps_181088_upload_dir( $dir ) {
 
+	/* Same folder that is listed in the Tracks tab (authors have their own subfolder) */
+	$subdir = wpgpxmaps_gpxUploadSubdir();
+
 	return array(
-		'path'   => $dir['basedir'] . '/gpx',
-		'url'    => $dir['baseurl'] . '/gpx',
-		'subdir' => '/gpx',
+		'path'   => $dir['basedir'] . $subdir,
+		'url'    => $dir['baseurl'] . $subdir,
+		'subdir' => $subdir,
 	) + $dir;
 }
 
@@ -72,7 +75,7 @@ function wpgpxmaps_move_uploaded_file($uploadedfile)
 
 if ( isset( $_POST['clearcache'] ) ) {
 
-	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ), 'wpgpx_clearcache_nonce' . $entry ) ) {
+	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpgpx_clearcache_nonce' ) ) {
 
 		echo '<div class="notice notice-success"><p>';
 		esc_html_e( 'Cache is now empty!', 'wp-gpx-maps' );
@@ -93,16 +96,22 @@ if ( is_writable( $realGpxPath ) ) {
 		<?php esc_html_e( 'Choose a file to upload:', 'wp-gpx-maps' ); ?> 
 		<input name="wpgpxmapsuploadedfile[]" type="file" onchange="submitgpx(this);" multiple />
 		<?php
-		
-			if (isset($_FILES['wpgpxmapsuploadedfile'])) {
+			wp_nonce_field( 'wpgpxmaps_upload', 'wpgpxmaps_upload_nonce' );
 
-				$uploaded_files = $_FILES['wpgpxmapsuploadedfile'];
-				$upload_dir = wp_upload_dir();
-				$custom_dir = $upload_dir['basedir'] . '/gpx';
-		
+			if ( isset( $_FILES['wpgpxmapsuploadedfile'] ) && ! ( isset( $_POST['wpgpxmaps_upload_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wpgpxmaps_upload_nonce'] ) ), 'wpgpxmaps_upload' ) ) ) {
+
+				echo '<div class=" notice notice-error"><p>';
+				esc_html_e( 'There was an error uploading the file, please try again!', 'wp-gpx-maps' );
+				echo '</p></div>';
+
+			} elseif ( isset( $_FILES['wpgpxmapsuploadedfile']['name'] ) && is_array( $_FILES['wpgpxmapsuploadedfile']['name'] ) ) {
+
+				// Nonce verified above; every file goes through wp_handle_upload(), which sanitizes the name.
+				$uploaded_files = $_FILES['wpgpxmapsuploadedfile']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
 				// Ensure the directory exists
-				if (!is_dir($custom_dir)) {
-					wp_mkdir_p($custom_dir);
+				if ( ! is_dir( $realGpxPath ) ) {
+					wp_mkdir_p( $realGpxPath );
 				}
 		
 				// Loop through each uploaded file
@@ -147,9 +156,6 @@ if ( is_writable( $realGpxPath ) ) {
 		
 					}
 				}
-		
-				// Remove the override to avoid affecting other uploads
-				remove_filter('upload_dir', 'custom_upload_dir');
 			}
 		
 					
@@ -189,7 +195,7 @@ $myGpxFileNames = array();
 if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 	while ( false !== ( $entry = readdir( $handle ) ) ) {
 		if ( preg_match( $gpxRegEx, $entry ) ) {
-			if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ), 'wpgpx_deletefile_nonce_' . $entry ) ) {
+			if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpgpx_deletefile_nonce_' . $entry ) ) {
 				if ( file_exists( $realGpxPath . '/' . $entry ) ) {
 					unlink( $realGpxPath . '/' . $entry );
 

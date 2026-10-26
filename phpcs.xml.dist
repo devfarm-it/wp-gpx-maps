@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="WP GPX Maps">
+	<description>PHP 7.4+ compatibility and WordPress security checks.</description>
+
+	<file>.</file>
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/ThirdParties/*</exclude-pattern>
+	<exclude-pattern>/dev/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+
+	<!-- Code must run on every PHP version from readme "Requires PHP" up to the newest -->
+	<config name="testVersion" value="7.4-"/>
+	<config name="minimum_wp_version" value="6.5"/>
+	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- Security: escaping output, sanitizing input, nonces -->
+	<rule ref="WordPress.Security"/>
+</ruleset>

@@ -3,17 +3,6 @@
 	require_once( ABSPATH . 'wp-admin/includes/file.php' );
 	require_once( 'wp-gpx-maps-utils-nggallery.php' );
 
-	// Helpers pour éviter ValueError sous PHP 8 quand les tableaux sont vides
-	if (!function_exists('wpgpx_safe_max')) {
-		function wpgpx_safe_max(array $arr, $default = null) { return $arr ? max($arr) : $default; }
-	}
-	if (!function_exists('wpgpx_safe_min')) {
-		function wpgpx_safe_min(array $arr, $default = null) { return $arr ? min($arr) : $default; }
-	}
-	if (!function_exists('wpgpx_safe_avg')) {
-		function wpgpx_safe_avg(array $arr, $default = null) { return $arr ? array_sum($arr)/count($arr) : $default; }
-	}
-
 function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 	$result = array();
 
@@ -33,11 +22,11 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 			$img_src      = wp_get_attachment_image_src( $attachment_id, 'full' );
 			$img_thmb     = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
 			$img_metadata = wp_get_attachment_metadata( $attachment_id );
-			$img_file     = get_attached_file( $attachment_id, $unfiltered );
+			$img_file     = get_attached_file( $attachment_id );
 
 			$item         = array();
 			$item['data'] = wp_get_attachment_link( $attachment_id, array( 105, 105 ) );
-			if (!strpos('alt',$item['data'])) {
+			if ( false === strpos( $item['data'], 'alt=' ) ) {
 				if (!empty(get_the_excerpt($attachment_id))) {
 					$item['data'] = str_replace('src=','alt="' . esc_attr(get_the_excerpt($attachment_id)) . '" src=',$item['data']);
 				} elseif (!empty(get_the_title($attachment_id))) {
@@ -54,9 +43,9 @@ function wpgpxmaps_getAttachedImages( $dt, $lat, $lon, $dtoffset, &$error ) {
 					$exif = false;
 				}
 								
-				if ( $exif !== false ) {
-					$item['lon'] = getExifGps( $exif['GPSLongitude'], $exif['GPSLongitudeRef'] );
-					$item['lat'] = getExifGps( $exif['GPSLatitude'], $exif['GPSLatitudeRef'] );
+				if ( is_array( $exif ) ) {
+					$item['lon'] = getExifGps( isset( $exif['GPSLongitude'] ) ? $exif['GPSLongitude'] : 0, isset( $exif['GPSLongitudeRef'] ) ? $exif['GPSLongitudeRef'] : '' );
+					$item['lat'] = getExifGps( isset( $exif['GPSLatitude'] ) ? $exif['GPSLatitude'] : 0, isset( $exif['GPSLatitudeRef'] ) ? $exif['GPSLatitudeRef'] : '' );
 					if ( ( $item['lat'] != 0 ) || ( $item['lon'] != 0 ) ) {
 						$result[] = $item;
 					} elseif ( isset( $exif['DateTimeOriginal'] ) ) {
@@ -84,18 +73,20 @@ function wp_gpx_maps_sitePath() {
 	// return substr(get_home_path(), 0, -1);
 }
 
-function gpxFolderPath() {
-	$upload_dir  = wp_upload_dir();
-	$uploadsPath = $upload_dir['basedir'];
-
-	if ( current_user_can( 'manage_options' ) ) {
-		$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx';
-	} elseif ( current_user_can( 'publish_posts' ) ) {
-		global $current_user;
-		wp_get_current_user();
-		$ret = $uploadsPath . DIRECTORY_SEPARATOR . 'gpx' . DIRECTORY_SEPARATOR . sanitize_file_name($current_user->user_login);
+/**
+ * GPX folder of the current user, relative to the uploads folder:
+ * administrators use /gpx, editors and authors their own /gpx/<username>.
+ */
+function wpgpxmaps_gpxUploadSubdir() {
+	if ( ! current_user_can( 'manage_options' ) && current_user_can( 'publish_posts' ) ) {
+		return '/gpx/' . sanitize_file_name( wp_get_current_user()->user_login );
 	}
+	return '/gpx';
+}
 
+function gpxFolderPath() {
+	$upload_dir = wp_upload_dir();
+	$ret        = $upload_dir['basedir'] . wpgpxmaps_gpxUploadSubdir();
 	return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $ret );
 }
 
@@ -149,45 +140,42 @@ function wpgpxmaps_recursive_remove_directory( $directory, $empty = false ) {
 }
 
 function wpgpxmaps_getPoints( $gpxPath, $gpxOffset = 10, $donotreducegpx = false, $distancetype = 0) {
-	$points = array();
-	$dist   = 0;
 
-	$lastLat    = 0;
-	$lastLon    = 0;
-	$lastEle    = 0;
-	$lastOffset = 0;
-
-	if ( file_exists( $gpxPath ) ) {
+	if ( is_string( $gpxPath ) && '' != $gpxPath && file_exists( $gpxPath ) ) {
 		$points = wpgpxmaps_parseXml( $gpxPath, $gpxOffset, $distancetype );
 	} else {
-		echo esc_html__( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' ) . ' ' . esc_html($gpxPath);
+		$points = wpgpxmaps_emptyPoints();
+		echo esc_html__( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' ) . ' ' . esc_html( is_string( $gpxPath ) ? basename( $gpxPath ) : '' );
 	}
-	
+
 	/* Reduce the points to around 200 to speedup */
 	if ( $donotreducegpx != true ) {
-		$count = sizeof( $points->lat );
+		$count = count( $points->lat );
 		if ( $count > 200 ) {
 			$f = round( $count/200 );
 			if ( $f > 1 )
-				for ( $i = $count; $i > 0; $i-- )
-					if ( $i % $f != 0 && $points->lat[$i] != null ) {
-						unset( $points->dt[$i] );
-						unset( $points->lat[$i] );
-						unset( $points->lon[$i] );
-						unset( $points->ele[$i] );
-						unset( $points->dist[$i] );
-						unset( $points->speed[$i] );
-						unset( $points->hr[$i] );
-						unset( $points->atemp[$i] );
-						unset( $points->cad[$i] );
-						unset( $points->grade[$i] );
-					}
+				for ( $i = $count - 1; $i > 0;$i-- )
+			if ( $i % $f != 0 && isset( $points->lat[$i] ) ) {
+				unset( $points->dt[$i] );
+				unset( $points->lat[$i] );
+				unset( $points->lon[$i] );
+				unset( $points->ele[$i] );
+				unset( $points->dist[$i] );
+				unset( $points->speed[$i] );
+				unset( $points->hr[$i] );
+				unset( $points->atemp[$i] );
+				unset( $points->cad[$i] );
+				unset( $points->grade[$i] );
+			}
 		}
 	}
 	return $points;
 }
 
-function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
+/**
+ * Empty result of wpgpxmaps_parseXml(), used when the file can't be read or parsed.
+ */
+function wpgpxmaps_emptyPoints() {
 	$points = new stdClass;
 
 	$points->dt    = array();
@@ -213,30 +201,72 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 	$points->avgTemp      = 0;
 	$points->totalLength  = 0;
 
-	$gpx = @simplexml_load_file( $filePath );
+	return $points;
+}
+
+/**
+ * Find a value in the decoded <extensions> of a track point, ignoring the namespace prefix
+ * (e.g. 'hr' matches ns3:hr, gpxtpx:hr and hr). Returns 0 when not found or not numeric.
+ */
+function wpgpxmaps_getExtensionValue( $data, $name ) {
+	if ( ! is_array( $data ) ) {
+		return 0;
+	}
+	foreach ( $data as $key => $value ) {
+		$parts = explode( ':', (string) $key );
+		if ( end( $parts ) === $name && is_numeric( $value ) ) {
+			return (float) $value;
+		}
+		if ( is_array( $value ) ) {
+			$found = wpgpxmaps_getExtensionValue( $value, $name );
+			if ( 0 != $found ) {
+				return $found;
+			}
+		}
+	}
+	return 0;
+}
+
+/**
+ * Load a GPX file without network access (no remote DTD or entities).
+ */
+function wpgpxmaps_loadXmlFile( $filePath ) {
+	return @simplexml_load_file( $filePath, 'SimpleXMLElement', LIBXML_NONET );
+}
+
+function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
+	$points = wpgpxmaps_emptyPoints();
+
+	$gpx = wpgpxmaps_loadXmlFile( $filePath );
 
 	if ( false === $gpx )
-		return;
+		return $points;
 
-	$gpx->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
-	$gpx->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
-	$gpx->registerXPathNamespace( 'ns3', 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1' );
+		$gpx->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
+		$gpx->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
+		$gpx->registerXPathNamespace( 'ns3', 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1' );
 
-	$nodes = $gpx->xpath( '//trk | //a:trk | //b:trk ' );
-	/* Normal GPX */
+		$nodes = $gpx->xpath( '//trk | //a:trk | //b:trk ' );
+		$nodes = is_array( $nodes ) ? $nodes : array();
+		/* Normal GPX */
 
 	if ( count( $nodes ) > 0 ) {
 
 		foreach ( $nodes as $_trk ) {
 
 			// @ will remove the errors on namaspaces
-			$trk = @simplexml_load_string( $_trk->asXML() );
+
+			$trk = @simplexml_load_string( $_trk->asXML(), 'SimpleXMLElement', LIBXML_NONET );
+
+			if ( false === $trk )
+				continue;
 
 			$trk->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
 			$trk->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
 			$trk->registerXPathNamespace( 'ns3', 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1' );
 
 			$trkpts = $trk->xpath( '//trkpt | //a:trkpt | //b:trkpt' );
+			$trkpts = is_array( $trkpts ) ? $trkpts : array();
 
 			$lastLat  = 0;
 			$lastLon  = 0;
@@ -251,7 +281,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 				$lat   = (float) $trkpt['lat'];
 				$lon   = (float) $trkpt['lon'];
 				$ele   = (float) $trkpt->ele;
-				$time  = $trkpt->time;
+				$time  = (string) $trkpt->time;
 				$speed = (float) $trkpt->speed;
 				$hr    = 0;
 				$atemp = 0;
@@ -262,24 +292,21 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 					$arr = json_decode( wp_json_encode( $trkpt->extensions ), 1 );
 
-					if ( isset( $arr['ns3:TrackPointExtension'] ) ) {
-						$tpe   = $arr['ns3:TrackPointExtension'];
-						$hr    = @$tpe['ns3:hr'];
-						$atemp = @$tpe['ns3:atemp'];
-						$cad   = @$tpe['ns3:cad'];
-
-					} elseif ( isset( $arr['TrackPointExtension'] ) ) {
-						$tpe   = $arr['TrackPointExtension'];
-						$hr    = @$tpe['hr'];
-						$atemp = @$tpe['atemp'];
-						$cad   = @$tpe['cad'];
-					}
+					/* The namespace prefix depends on the device/app (ns3: Garmin, gpxtpx: Strava, none...) */
+					$hr    = wpgpxmaps_getExtensionValue( $arr, 'hr' );
+					$atemp = wpgpxmaps_getExtensionValue( $arr, 'atemp' );
+					$cad   = wpgpxmaps_getExtensionValue( $arr, 'cad' );
 				}
+
+				/* Empty extension elements are decoded as arrays: keep only numbers */
+				$hr    = is_numeric( $hr ) ? (float) $hr : 0;
+				$atemp = is_numeric( $atemp ) ? (float) $atemp : 0;
+				$cad   = is_numeric( $cad ) ? (float) $cad : 0;
 
 				if ( 0 == $lastLat && 0 == $lastLon ) {
 
 					/* Base Case  */
-					array_push( $points->dt, strtotime( $time ) );
+					array_push( $points->dt, '' != $time ? strtotime( $time ) : false );
 					array_push( $points->lat, (float) $lat );
 					array_push( $points->lon, (float) $lon );
 					array_push( $points->ele, (float) round( $ele, 2 ) );
@@ -302,8 +329,8 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 					$points->totalLength = $dist;
 
-					if ( $speed == 0 ) {
-						$datediff = (float) my_date_diff( $lastTime, $time );
+					if ( $speed == 0 && '' != $time && '' != $lastTime ) {
+							$datediff = (float) my_date_diff( $lastTime, $time );
 						if ( $datediff != 0 ) {
 							$speed = $offset / $datediff;
 						}
@@ -324,13 +351,18 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 					if ( ( (float) $offset + (float) $lastOffset ) > $gpxOffset ) {
 						/* Bigger Offset -> write coordinate */
-						/* Sécurise la moyenne (buffer possiblement vide) */
-						$avgSpeed = wpgpx_safe_avg($speedBuffer, 0);
+						$avgSpeed = 0;
+
+						foreach ( $speedBuffer as $s ) {
+							$avgSpeed += $s;
+						}
+
+						$avgSpeed    = $avgSpeed / count( $speedBuffer );
 						$speedBuffer = array();
 
 						$lastOffset = 0;
 
-						array_push( $points->dt, strtotime( $time ) );
+						array_push( $points->dt, '' != $time ? strtotime( $time ) : false );
 						array_push( $points->lat, (float) $lat );
 						array_push( $points->lon, (float) $lon );
 						array_push( $points->ele, (float) round( $ele, 2 ) );
@@ -377,51 +409,58 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 			array_pop( $points->cad );
 			array_pop( $points->grade );
 
-			/* Filtre et ré-indexe pour éviter max/min sur tableaux vides */
-			$_time = array_values(array_filter( $points->dt ));
-			$_ele  = array_values(array_filter( $points->ele ));
-			$_dist = array_values(array_filter( $points->dist ));
+			$_time               = array_filter( $points->dt );
+			$_ele                = array_filter( $points->ele );
+			$_dist               = array_filter( $points->dist );
 
-			if (!empty($_ele)) {
-				/*
-					There might be cases where ele is not set in the gpx (0.00).
-					array_filter will filter out those values and as a consequence min()/max() would fail.
-				*/
-				$points->maxEle = wpgpx_safe_max($_ele, null);
-				$points->minEle = wpgpx_safe_min($_ele, null);
-			} else {
-				$points->maxEle = null;
-				$points->minEle = null;
+			if (count($_dist) > 0)		
+			{
+				$points->totalLength = max( $_dist );
 			}
 
-			/* Ces trois valeurs doivent être "safe" même si vides */
-			$points->totalLength = wpgpx_safe_max($_dist, 0);
-			$points->maxTime     = wpgpx_safe_max($_time, 0);
-			$points->minTime     = wpgpx_safe_min($_time, 0);
+			if (count($_ele) > 0) {
+				/* 	
+					There might be cases where ele is not set in the gpx (0.00).
+					array_filter will filter out those values and as a consequence min()/max() would fail. 
+				*/
+				$points->maxEle      = max( $_ele );
+				$points->minEle      = min( $_ele );
+			}
+
+			if (count($_time) > 0)		
+			{
+				$points->maxTime     = max( $_time );
+				$points->minTime     = min( $_time );
+			}
+			else
+			{
+				$points->maxTime     = null;
+				$points->minTime     = null;
+			}
 
 			/* Calculating Average Speed */
-			$_speed = array_filter( $points->speed );
+			$_speed           = array_filter( $points->speed );
 			if (count($_speed) > 0)
 				$points->avgSpeed = array_sum( $_speed ) / count( $_speed );
 			else
 				$points->avgSpeed = null;
 
 			/* Calculating Average Cadence */
-			$_cad = array_filter( $points->cad );
+			$_cad           = array_filter( $points->cad );
 			if (count($_cad) > 0)
 				$points->avgCad = (float) round( array_sum( $_cad ) / count( $_cad ), 0 );
 			else
 				$points->avgCad = null;
 
 			/* Calculating Average Heart Rate */
-			$_hr = array_filter( $points->hr );
+			$_hr           = array_filter( $points->hr );
 			if (count($_hr) > 0)
 				$points->avgHr = (float) round( array_sum( $_hr ) / count( $_hr ), 0 );
 			else
 				$points->avgHr = null;
 
 			/* Calculating Average Temperature */
-			$_temp = array_filter( $points->atemp );
+			$_temp           = array_filter( $points->atemp );
 			if (count($_temp) > 0)
 				$points->avgTemp = (float) round( array_sum( $_temp ) / count( $_temp ), 1 );
 			else
@@ -430,13 +469,13 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 		} catch ( Exception $e ) {
 			print_r($e);
 		}
-
 	} else {
 
 		/* GPX Garmin case */
 		$gpx->registerXPathNamespace( 'gpxx', 'http://www.garmin.com/xmlschemas/GpxExtensions/v3' );
 
 		$nodes = $gpx->xpath( '//gpxx:rpt' );
+		$nodes = is_array( $nodes ) ? $nodes : array();
 
 		if ( count( $nodes ) > 0 ) {
 
@@ -449,8 +488,8 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 			/* GPX Garmin case */
 			foreach ( $nodes as $rpt ) {
 
-				$lat = $rpt['lat'];
-				$lon = $rpt['lon'];
+				$lat = (float) $rpt['lat'];
+				$lon = (float) $rpt['lon'];
 				if ( 0 == $lastLat && 0 == $lastLon ) {
 
 					/* Base Case */
@@ -498,6 +537,7 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 			/* GPX Strange case */
 			$nodes = $gpx->xpath( '//rtept | //a:rtept | //b:rtept' );
+			$nodes = is_array( $nodes ) ? $nodes : array();
 			if ( count( $nodes ) > 0 ) {
 
 				$lastLat    = 0;
@@ -509,8 +549,8 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 				/* Garmin case */
 				foreach ( $nodes as $rtept ) {
 
-					$lat = $rtept['lat'];
-					$lon = $rtept['lon'];
+					$lat = (float) $rtept['lat'];
+					$lon = (float) $rtept['lon'];
 					if ( 0 == $lastLat && 0 == $lastLon ) {
 
 						/* Base Case */
@@ -562,18 +602,19 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 
 function wpgpxmaps_getWayPoints( $gpxPath ) {
 	$points = array();
-	if ( file_exists( $gpxPath ) ) {
-		try {
-			$gpx = simplexml_load_file( $gpxPath );
-		} catch ( Exception $e ) {
-			echo esc_html__( 'WP GPX Maps Error: Can&#8217;t parse xml file!', 'wp-gpx-maps' ) . ' ' . esc_html($gpxPath);
+	if ( is_string( $gpxPath ) && '' != $gpxPath && file_exists( $gpxPath ) ) {
+		$gpx = wpgpxmaps_loadXmlFile( $gpxPath );
+
+		if ( false === $gpx ) {
+			echo esc_html__( 'WP GPX Maps Error: Can&#8217;t parse xml file!', 'wp-gpx-maps' ) . ' ' . esc_html( basename( $gpxPath ) );
 			return $points;
 		}
 
-		$gpx->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
-		$gpx->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
-		$nodes = $gpx->xpath( '//wpt | //a:wpt | //b:wpt' );
-		global $wpdb;
+			$gpx->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
+			$gpx->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
+			$nodes = $gpx->xpath( '//wpt | //a:wpt | //b:wpt' );
+			$nodes = is_array( $nodes ) ? $nodes : array();
+			global $wpdb;
 
 		if ( count( $nodes ) > 0 ) {
 			/* Normal case */
@@ -598,17 +639,17 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
 					}
 				}
 
-				array_push($points, array(
-					'lat'  => (float) $lat,
-					'lon'  => (float) $lon,
-					'ele'  => (float) $ele,
-					'time' => $time,
-					'name' => esc_html($name),
-					'desc' => esc_html($desc),
-					'sym'  => esc_html($sym),
-					'type' => esc_html($type),
-					'img'  => esc_url($img),
-				));
+					array_push($points, array(
+						'lat'  => (float) $lat,
+						'lon'  => (float) $lon,
+						'ele'  => (float) $ele,
+						'time' => $time,
+						'name' => esc_html($name),
+						'desc' => esc_html($desc),
+						'sym'  => esc_html($sym),
+						'type' => esc_html($type),
+						'img'  => esc_url($img),
+					));
 			}
 		}
 	}

@@ -1,0 +1,75 @@
+# Checks on every push and pull request. A red check blocks the merge (see branch protection).
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  php-lint:
+    name: PHP ${{ matrix.php }} syntax
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.1', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+      - name: Lint
+        run: find . -name '*.php' -not -path './vendor/*' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l
+
+  phpcs:
+    name: PHP compatibility and WordPress security (PHPCS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: composer, cs2pr
+      - run: composer install --no-progress
+      - run: vendor/bin/phpcs -q --report=checkstyle | cs2pr
+
+  build:
+    name: JavaScript build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Bundle committed in assets/dist is up to date
+        run: |
+          if ! git diff --quiet -- assets/dist/WP-GPX-Maps.es.js; then
+            echo "::warning::assets/dist differs from a fresh build of assets/src. Run 'npm run build' and commit (the release workflow rebuilds it anyway)."
+          fi
+
+  plugin-check:
+    name: Plugin Check (wordpress.org rules)
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci && npm run build
+      - name: Copy the files that are published (same rules as the release)
+        run: rsync -a --exclude-from=.distignore ./ ./build/wp-gpx-maps/
+      - uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: ./build/wp-gpx-maps

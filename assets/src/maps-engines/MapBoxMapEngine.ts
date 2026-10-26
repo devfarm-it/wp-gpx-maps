@@ -155,7 +155,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
         this.map = new mapboxgl.Map({
             container: targetElement,
             style: 'mapbox://styles/mapbox/streets-v11',
-            accessToken: "pk.eyJ1Ijoic2VjdXJjdWJlbWF4IiwiYSI6ImNsbW94MzRodjE4YjEya3BuM3liZXl6MXYifQ.db3c6nnAcFwFm5jD2NCg6w", // MapBoxApiKey ?? 
+            accessToken: MapBoxApiKey ?? '', // key from the plugin settings (never hardcode a token here)
             center: [0, 0],
             zoom: 1,
             scrollZoom: scrollWheelZoom
