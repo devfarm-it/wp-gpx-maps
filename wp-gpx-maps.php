@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WP-GPX-Maps
+ * Plugin Name: WP GPX Maps
  * Plugin URI: http://www.devfarm.it/
  * Description: Draws a GPX track with altitude chart
  * Version: 1.8.00
@@ -14,6 +14,10 @@
  *
  * @package WP-GPX-Maps
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // error_reporting (E_ALL);
 
@@ -149,59 +153,13 @@ function wpgpxmaps_module_version() {
 
 function wpgpxmaps_enqueue_scripts() {
 
-	if (false)
-	{
+	/* Output Style CSS */
+	wp_register_style( 'output-style', plugins_url( 'assets/dist/style.css', __FILE__ ), array(), '1.0.0' );
+	wp_enqueue_style( 'output-style' );
 
-		/* Output Style CSS */
-		wp_register_style( 'output-style', plugins_url( 'css/wp-gpx-maps-output.css', __FILE__ ), array(), '1.0.0' );
-		wp_enqueue_style( 'output-style' );
+	wp_register_script_module( 'wp-gpx-maps', plugins_url( 'assets/dist/WP-GPX-Maps.es.js', __FILE__ ), array(), wpgpxmaps_module_version() );
+	wp_enqueue_script_module( 'wp-gpx-maps' );
 
-		/* Leaflet */
-		wp_register_style( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.css', __FILE__ ), array(), '1.5.1' );
-		wp_enqueue_style( 'leaflet' );
-
-		/* Leaflet.markercluster */
-		wp_register_style( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/MarkerCluster.css', __FILE__ ), array(), '1.4.1,' );
-		wp_enqueue_style( 'leaflet.markercluster' );
-
-		/* Leaflet.Photo */
-		wp_register_style( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.css', __FILE__ ), array(), '0' );
-		wp_enqueue_style( 'leaflet.Photo' );
-
-		/* Leaflet.fullscreen */
-		wp_register_style( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.css', __FILE__ ), array(), '1.5.1' );
-		wp_enqueue_style( 'leaflet.fullscreen' );
-
-		wp_register_script( 'leaflet', plugins_url( '/ThirdParties/Leaflet_1.5.1/leaflet.js', __FILE__ ), array(), '1.5.1' );
-		wp_register_script( 'leaflet.markercluster', plugins_url( '/ThirdParties/Leaflet.markercluster-1.4.1/leaflet.markercluster.js', __FILE__ ), array( 'leaflet' ), '1.4.1' );
-		wp_register_script( 'leaflet.Photo', plugins_url( '/ThirdParties/Leaflet.Photo/Leaflet.Photo.js', __FILE__ ), array( 'leaflet', 'leaflet.markercluster' ), '0' );
-		wp_register_script( 'leaflet.fullscreen', plugins_url( '/ThirdParties/leaflet.fullscreen-1.4.5/Control.FullScreen.js', __FILE__ ), array( 'leaflet' ), '1.4.5' );
-
-		/* Chartjs */
-		wp_register_script( 'chartjs', plugins_url( '/js/Chart.min.js', __FILE__ ), array(), '2.8.0' );
-
-		wp_register_script( 'wp-gpx-maps', plugins_url( 'js/WP-GPX-Maps.js', __FILE__ ), array( 'jquery', 'leaflet', 'chartjs' ), '1.6.02' );
-
-		wp_enqueue_script( 'output-style' );
-		wp_enqueue_script( 'leaflet' );
-		wp_enqueue_script( 'leaflet.markercluster' );
-		wp_enqueue_script( 'leaflet.Photo' );
-		wp_enqueue_script( 'leaflet.fullscreen' );
-		wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'chartjs' );
-		wp_enqueue_script( 'wp-gpx-maps' );
-
-	}
-	else
-	{
-		/* Output Style CSS */
-		wp_register_style( 'output-style', plugins_url( 'assets/dist/style.css', __FILE__ ), array(), '1.0.0' );
-		wp_enqueue_style( 'output-style' );
-
-		wp_register_script_module( 'wp-gpx-maps', plugins_url( 'assets/dist/WP-GPX-Maps.es.js', __FILE__ ), array(), wpgpxmaps_module_version() );
-		wp_enqueue_script_module( 'wp-gpx-maps' );
-
-	}
 
 }
 
@@ -424,7 +382,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 	if ( ! ( file_exists( $gpxcache ) && is_dir( $gpxcache ) ) )
 	{
-		@mkdir( $gpxcache, 0755, true );
+		wp_mkdir_p( $gpxcache );
 	}
 
 	$gpxcache .= DIRECTORY_SEPARATOR . $cacheFileName . '.tmp';
@@ -642,7 +600,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		}
 		if ( true == $isGpxUrl ) {
 			/* Remove the temporary copy created by download_url() */
-			@unlink( $gpx );
+			wp_delete_file( $gpx );
 		}
 		if ( false == $showEle ) {
 			$points_graph_ele = '';
@@ -733,7 +691,6 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		)
 	),
 		LOCK_EX);
-		@chmod( $gpxcache, 0644 );
 	}
 
 	$hideGraph = ( '0' == $gh || '0px' == $gh );

@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 	require_once( ABSPATH . 'wp-admin/includes/file.php' );
 	require_once( 'wp-gpx-maps-utils-nggallery.php' );
 
@@ -125,13 +129,13 @@ function wpgpxmaps_recursive_remove_directory( $directory, $empty = false ) {
 				if ( is_dir( $path ) ) {
 					wpgpxmaps_recursive_remove_directory( $path );
 				} else {
-					unlink( $path );
+					wp_delete_file( $path );
 				}
 			}
 		}
 		closedir( $handle );
 		if ( false == $empty ) {
-			if ( ! rmdir( $directory ) ) {
+			if ( ! rmdir( $directory ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- empty cache folder, WP_Filesystem not needed
 				return false;
 			}
 		}
@@ -631,9 +635,8 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
 
 				if ( $sym ) {
 					$img_name = 'map-marker-' . $sym;
-					$query    = $wpdb->prepare("SELECT ID FROM {$wpdb->prefix}posts WHERE post_name LIKE %s AND post_type LIKE 'attachment'", $img_name);
+					$img_id   = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = 'attachment'", $img_name ) );
 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.DirectQuery
-					$img_id   = $wpdb->get_var( $query );
 					if ( ! is_null( $img_id ) ) {
 						$img = wp_get_attachment_url( $img_id );
 					}

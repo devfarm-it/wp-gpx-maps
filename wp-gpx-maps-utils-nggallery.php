@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function wpgpxmaps_isNGGalleryActive() {
 	if ( ! function_exists( 'is_plugin_active' ) ) {
 		require_once( wp_gpx_maps_sitePath() . '/wp-admin/includes/plugin.php' );
