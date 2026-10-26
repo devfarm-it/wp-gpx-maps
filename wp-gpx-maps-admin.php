@@ -94,11 +94,11 @@ function wpgpxmaps_show_update_notice() {
 			</strong>
 			<br/>
 			<br/>
-			IMPORTANT! this plugin will mifrate to MapBox API. 
+			IMPORTANT! this plugin will migrate to MapBox API.
 			<a href="https://console.mapbox.com/account/access-tokens/" target="_blank" rel="noopener noreferrer">
-				You need to create an account and get an API key. 
+				You need to create an account and get an API key.
 			</a>
-			This will enable beatifoul 3D maps and more features.
+			This will enable beautiful 3D maps and more features.
 			<em>
 				<a href="https://wordpress.org/plugins/wp-gpx-maps/#developers" target="_blank" rel="noopener noreferrer">
 					<?php echo esc_html__( 'You can find the complete changelog here.', 'wp-gpx-maps' ) ?> 
@@ -115,7 +115,8 @@ function wpgpxmaps_show_update_notice() {
 	<script>
 		function wpgpxmaps_dismiss_notice() {
 			var data = {
-				'action': 'wpgpxmaps_dismiss_notice'
+				'action': 'wpgpxmaps_dismiss_notice',
+				'_ajax_nonce': '<?php echo esc_js( wp_create_nonce( 'wpgpxmaps_dismiss_notice' ) ); ?>'
 			};
 
 			jQuery.post( ajaxurl, data, function( response ) {
@@ -136,14 +137,18 @@ function wpgpxmaps_show_update_notice() {
  * Dismiss the update notice
  */
 function wpgpxmaps_dismiss_notice() {
-	if ( !current_user_can( 'manage_options' ) ) 
-		return null;
+	check_ajax_referer( 'wpgpxmaps_dismiss_notice' );
 
-	$result = update_site_option( 'wpgpxmaps_show_notice', 0 );
-	return $result;
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( null, 403 );
+	}
+
+	update_site_option( 'wpgpxmaps_show_notice', 0 );
+	wp_send_json_success();
 }
 
 function wpgpxmaps_ilc_admin_tabs( $current ) {
+	$tabs = array();
 	if ( current_user_can( 'manage_options' ) ) {
 		// Access for Super Administrators and Administrators
 		$tabs = array(
@@ -176,7 +181,8 @@ function wpgpxmaps_html_page() {
 	$relativeGpxCachePath = relativeGpxCacheFolderPath();
 	$relativeGpxCachePath = str_replace( '\\', '/', $relativeGpxCachePath );
 
-	$tab = array_key_exists('tab', $_GET) ? sanitize_text_field($_GET['tab']) : 'tracks';
+	// Only selects which tab to show (compared against a fixed list below), no data is changed: no nonce needed.
+	$tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'tracks'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	?>
 

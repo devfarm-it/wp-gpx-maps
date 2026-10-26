@@ -1,0 +1,19 @@
+{
+    "name": "devfarm-it/wp-gpx-maps",
+    "description": "Development tools for WP GPX Maps (not shipped with the plugin).",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "wp-coding-standards/wpcs": "^3.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "lint": "phpcs"
+    }
+}

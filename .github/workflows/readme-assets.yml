@@ -1,0 +1,20 @@
+# Updates only readme.txt and the wordpress.org banners/screenshots (.wordpress-org/) without a new release,
+# e.g. to raise "Tested up to" when a new WordPress version comes out.
+# Started by hand (Actions > this workflow > Run workflow), so it never runs in the middle of a release.
+name: Update readme and assets on wordpress.org
+
+on:
+  workflow_dispatch:
+
+jobs:
+  assets:
+    runs-on: ubuntu-latest
+    environment: wordpress-org
+    steps:
+      - uses: actions/checkout@v4
+      - uses: 10up/action-wordpress-plugin-asset-update@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: wp-gpx-maps
+          IGNORE_OTHER_FILES: true
