@@ -214,7 +214,9 @@ Yes!
 * Fix: chart error when the altitude chart is disabled
 * Fix: heart rate, cadence and temperature are read from every GPX app (e.g. Strava), not only Garmin
 * Fix: custom waypoint icon was never shown
-* Fix: MapBox maps use the API key from the plugin settings
+* Fix: MapBox maps use the API key and the default style from the plugin settings
+* MapBox: waypoints with popups, no duplicate markers when the style is changed, play button icon
+* Fix: GPX files with more than one track are drawn as separate lines (Leaflet and MapBox)
 * Fix: browsers load the new JavaScript after every plugin update (no stale cache)
 * Thanks to arnaud-izzi (PHP 8 fixes for GPX files without elevation, GitHub #65) and DAnn2012 (help text, GitHub #66)
 * Requires WordPress 6.5 and PHP 7.4 or newer
