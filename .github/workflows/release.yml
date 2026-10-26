@@ -17,7 +17,7 @@ jobs:
     # Optional manual approval: add required reviewers to this environment in Settings > Environments
     environment: wordpress-org
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Tag, plugin Version and readme Stable tag must match
         run: |
@@ -31,7 +31,7 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm

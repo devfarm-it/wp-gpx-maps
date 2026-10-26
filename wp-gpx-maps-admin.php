@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( is_admin() ) {
 	add_action( 'admin_init', 'wpgpxmaps_admin_init' );
 	add_action( 'admin_menu', 'wpgpxmaps_admin_menu' );
@@ -88,7 +92,7 @@ function wpgpxmaps_show_update_notice() {
 				<?php echo 		sprintf(
 					/* translators: %1s: Plugin versions number */
 					esc_html__( 'What&lsquo;s new in WP GPX Maps %1s', 'wp-gpx-maps' ),
-					esc_html__(WPGPXMAPS_CURRENT_VERSION)
+					esc_html( WPGPXMAPS_CURRENT_VERSION )
 				) ?>
 
 			</strong>
@@ -207,7 +211,7 @@ function wpgpxmaps_html_page() {
 	if ( file_exists( $realGpxPath ) && is_dir( $realGpxPath ) ) {
 		// Directory exists
 	} else {
-		if ( ! @mkdir( $realGpxPath, 0755, true ) ) {
+		if ( ! wp_mkdir_p( $realGpxPath ) ) {
 			echo '<div class=" notice notice-error"><p>';
 			printf(
 				/* translators: %1s: Relative path of the GPX folder */
@@ -220,7 +224,7 @@ function wpgpxmaps_html_page() {
 	if ( file_exists( $cacheGpxPath ) && is_dir( $cacheGpxPath ) ) {
 		// Directory exists
 	} else {
-		if ( ! @mkdir( $cacheGpxPath, 0755, true ) ) {
+		if ( ! wp_mkdir_p( $cacheGpxPath ) ) {
 			echo '<div class=" notice notice-error"><p>';
 			printf(
 				/* translators: %1s: Relative path of the GPX cache folder */
