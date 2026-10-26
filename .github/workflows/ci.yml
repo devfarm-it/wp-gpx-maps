@@ -18,7 +18,7 @@ jobs:
       matrix:
         php: ['7.4', '8.1', '8.3', '8.4']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
@@ -31,7 +31,7 @@ jobs:
     name: PHP compatibility and WordPress security (PHPCS)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
@@ -44,8 +44,8 @@ jobs:
     name: JavaScript build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -62,14 +62,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
       - run: npm ci && npm run build
       - name: Copy the files that are published (same rules as the release)
-        run: rsync -a --exclude-from=.distignore ./ ./build/wp-gpx-maps/
+        run: |
+          mkdir -p build/wp-gpx-maps
+          rsync -a --exclude-from=.distignore --exclude=/build ./ build/wp-gpx-maps/
       - uses: wordpress/plugin-check-action@v1
         with:
           build-dir: ./build/wp-gpx-maps

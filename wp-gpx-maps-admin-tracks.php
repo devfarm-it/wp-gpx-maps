@@ -1,4 +1,8 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Tracks Tab
  *
@@ -85,7 +89,7 @@ if ( isset( $_POST['clearcache'] ) ) {
 	}
 }
 
-if ( is_writable( $realGpxPath ) ) {
+if ( wp_is_writable( $realGpxPath ) ) {
 	?>
 
 	<div class="tablenav-top">
@@ -197,7 +201,7 @@ if ( is_readable( $realGpxPath ) && $handle = opendir( $realGpxPath ) ) {
 		if ( preg_match( $gpxRegEx, $entry ) ) {
 			if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wpgpx_deletefile_nonce_' . $entry ) ) {
 				if ( file_exists( $realGpxPath . '/' . $entry ) ) {
-					unlink( $realGpxPath . '/' . $entry );
+					wp_delete_file( $realGpxPath . '/' . $entry );
 
 					echo '<div class="notice notice-success"><p>';
 					printf(

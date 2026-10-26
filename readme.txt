@@ -2,7 +2,7 @@
 
 Contributors: bastianonm, Stephan Klein, Michel Selerin, TosattoSimonePio, Kniebremser
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
-Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
+Tags: gpx, maps, track, leaflet, elevation
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
