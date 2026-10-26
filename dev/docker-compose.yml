@@ -1,0 +1,54 @@
+# Local WordPress to test the plugin in this repository.
+# Start:  docker compose up -d   then   ./setup.ps1   (first time only)
+# Site:   http://localhost:8080   (admin user and password in .env)
+# Reset:  docker compose down -v
+
+services:
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: wordpress
+      MARIADB_RANDOM_ROOT_PASSWORD: "1"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  wordpress:
+    image: wordpress:7.1-php8.4-apache
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: "1"
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_DEBUG_LOG', true );
+        define( 'WP_DEBUG_DISPLAY', true );
+    volumes:
+      - wp_data:/var/www/html
+      - ..:/var/www/html/wp-content/plugins/wp-gpx-maps
+
+  cli:
+    image: wordpress:cli-php8.4
+    profiles: ["cli"]
+    user: "33:33"
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wp_data:/var/www/html
+      - ..:/var/www/html/wp-content/plugins/wp-gpx-maps
+      - ./gpx:/gpx-src:ro
+
+volumes:
+  db_data:
+  wp_data:

@@ -21,12 +21,15 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 	$galids = explode( ',', $ngGalleries );
 	$imgids = explode( ',', $ngImages );
 
-	if ( ! wpgpxmaps_isNGGalleryActive() )
-	return '';
+	if ( ! wpgpxmaps_isNGGalleryActive() || ! class_exists( 'nggdb' ) )
+	return $result;
 	try {
 		$pictures = array();
 		foreach ( $galids as $g ) {
-			$pictures = array_merge( $pictures, nggdb::get_gallery( $g ) );
+			$gallery = nggdb::get_gallery( $g );
+			if ( is_array( $gallery ) ) {
+				$pictures = array_merge( $pictures, $gallery );
+			}
 		}
 		foreach ( $imgids as $i ) {
 			array_push( $pictures, nggdb::find_image( $i ) );
@@ -114,16 +117,11 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 			}
 			/* END FIX NEXT GEN GALLERY PRO */
 		}
-		else
-		{
-			echo "no C_Displayed_Gallery_Renderer ";
-		}
 		/* END FIX NEXT GEN GALLERY 2.x */
 
-	} catch ( Exception $e ) {
-		$error .= $e->getMessage();
-		$error .= "Error When Retrieving NextGen Gallery galleries/images: $e ";
-	}	
+	} catch ( Throwable $e ) {
+		$error .= 'Error When Retrieving NextGen Gallery galleries/images: ' . $e->getMessage() . ' ';
+	}
 	return $result;
 }
 
@@ -132,6 +130,8 @@ function getNGGalleryImages( $ngGalleries, $ngImages, $dt, $lat, $lon, $dtoffset
 // $lat : all gpx latitude
 // $lon : all gpx longitude
 function findItemCoordinate( $imgdt, $dt, $lat, $lon ) {
+	if ( ! is_array( $dt ) )
+		return null;
 	$prevdt = 0;
 	foreach ( array_keys( $dt ) as $i ) {
 		if ( $i != 0 && $imgdt >= $prevdt && $imgdt <= $dt[$i] ) {
@@ -157,13 +157,13 @@ function getExifGps( $exifCoord, $hemi ) {
 
 function gps2Num( $coordPart ) {
 
-	$parts = explode( '/', $coordPart );
+	$parts = explode( '/', (string) $coordPart );
 
 	if ( count( $parts ) <= 0 )
 		return 0;
 
 	if ( count( $parts ) == 1 )
-		return $parts[0];
+		return floatval( $parts[0] );
 
 	$lat = floatval( $parts[0] );
 	$lon = floatval( $parts[1] );

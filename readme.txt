@@ -3,10 +3,10 @@
 Contributors: bastianonm, Stephan Klein, Michel Selerin, TosattoSimonePio, Kniebremser
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
 Tags: maps, gpx, gps, graph, chart, leaflet, track, garmin, image, nextgen-gallery, nextgen, exif, OpenStreetMap, OpenCycleMap, Hike&Bike, heart rate, heartrate, cadence
-Requires at least: 6.2.0
-Tested up to: 6.7.1
-Requires PHP: 7.3+
-Stable tag: 1.7.11
+Requires at least: 6.5
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 1.8.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,25 @@ Yes!
 
 = 1.8.00 =
 * MapBox provider: needs ApiKey and brings a lot of new cool features like 3d maps and much more
+* Security: fixed a reflected XSS. Shortcode parameters can no longer be set from the page URL (query string)
+* Security: GPX files and folders must be inside the WordPress site, wp-content or uploads folder (path traversal)
+* Security: added nonce checks to GPX upload and to the update notice dismiss (CSRF)
+* Security: safer cache reading, no network access while parsing GPX, temporary copies of remote GPX are deleted
+* Fix: map not displayed on pages with nested permalinks or with WordPress in a subfolder
+* Fix: map not displayed when waypoints are enabled
+* Fix: PHP 8 fatal errors with missing, invalid or remote GPX files that can't be downloaded
+* Fix: PHP 8 errors with tracks without time or elevation and with empty heart rate, cadence or temperature values
+* Fix: PHP 8 warnings with images without GPS data, missing NextGen galleries, Clear Cache and shortcodes outside posts
+* Fix: files uploaded by Editors and Authors are saved in their own folder again
+* Fix: total time in the summary is correct for tracks longer than 24 hours
+* Fix: chart error (and map not centered) with GPX files that contain more than one track
+* Fix: chart error when the altitude chart is disabled
+* Fix: heart rate, cadence and temperature are read from every GPX app (e.g. Strava), not only Garmin
+* Fix: custom waypoint icon was never shown
+* Fix: MapBox maps use the API key from the plugin settings
+* Fix: browsers load the new JavaScript after every plugin update (no stale cache)
+* Thanks to arnaud-izzi (PHP 8 fixes for GPX files without elevation, GitHub #65) and DAnn2012 (help text, GitHub #66)
+* Requires WordPress 6.5 and PHP 7.4 or newer
 = 1.7.10 =
 * Fix security issues
 = 1.7.06 =
@@ -434,3 +453,6 @@ Yes!
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.8.00 =
+Security release: fixes a reflected XSS and PHP 8 errors. Requires WordPress 6.5 and PHP 7.4. Shortcode parameters can no longer be passed in the page URL.
