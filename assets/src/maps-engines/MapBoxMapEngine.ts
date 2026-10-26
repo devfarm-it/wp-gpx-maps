@@ -19,13 +19,19 @@ class AnumationControl implements IControl {
 
     map: Map;
 
-    iconDefault: string = '/wp-content/plugins/wp-gpx-maps/img/map-play-svgrepo-com.svg';
-    iconStop: string = '/wp-content/plugins/wp-gpx-maps/img/stop-svgrepo-com.svg';
+    iconDefault: string;
+    iconStop: string;
 
     routeDistance: number = 0.0;
     cameraRouteDistance: number = 0.0;
 
     isPlaying: boolean = false;
+
+    constructor(pluginUrl: string) {
+        // pluginUrl is plugins_url(): works also when WordPress is installed in a subfolder
+        this.iconDefault = pluginUrl + '/wp-gpx-maps/img/map-play-svgrepo-com.svg';
+        this.iconStop = pluginUrl + '/wp-gpx-maps/img/stop-svgrepo-com.svg';
+    }
 
     onAdd(map: Map): HTMLElement {
 
@@ -33,7 +39,7 @@ class AnumationControl implements IControl {
 
         this.container = document.createElement('div');
         this.container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group mapboxgl-wp-gpx-maps';
-        this.container.innerHTML = `<button style='background-image: url(${this.iconDefault});'>&nbsp;</div>`;
+        this.container.innerHTML = `<button type='button' style='background: url(${this.iconDefault}) center / 70% no-repeat;'>&nbsp;</button>`;
         this.container.onclick = () => {
             // Your custom logic here
 
@@ -139,6 +145,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
 
     animationControl: AnumationControl | null = null;
     otherParams: any;
+    markersAdded: boolean = false;
 
     animateLineOptions: any = {
         SpeedFactor: 30, // number of frames per longitude degree
@@ -148,20 +155,29 @@ export class MapBoxMapEngine implements MapEngine<Map> {
         ResetTime: false // indicator of whether time reset is needed for the animation
     }
 
-    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, MapBoxApiKey: string | null | undefined, otherParams: any): void {
+    init(targetElement: HTMLElement, mapType: string, scrollWheelZoom: boolean, TFApiKey: string | null | undefined, otherParams: any): void {
 
         this.otherParams = otherParams;
 
+        // Default style from the plugin settings: custom style URL first, then one of the Mapbox styles
+        let style = 'mapbox://styles/mapbox/streets-v11';
+        if (otherParams?.MapBoxMapCustomType) {
+            style = otherParams.MapBoxMapCustomType;
+        } else if (otherParams?.MapBoxMapType) {
+            style = 'mapbox://styles/mapbox/' + otherParams.MapBoxMapType;
+        }
+
         this.map = new mapboxgl.Map({
             container: targetElement,
-            style: 'mapbox://styles/mapbox/streets-v11',
-            accessToken: MapBoxApiKey ?? '', // key from the plugin settings (never hardcode a token here)
+            style: style,
+            // The 4th argument is the Thunderforest key (shared signature with Leaflet): the Mapbox key comes from the plugin settings
+            accessToken: otherParams?.MapBoxApiKey ?? '',
             center: [0, 0],
             zoom: 1,
             scrollZoom: scrollWheelZoom
         });
 
-        this.animationControl = new AnumationControl();
+        this.animationControl = new AnumationControl(otherParams?.pluginUrl ?? '/wp-content/plugins');
 
         this.map.addControl(new mapboxgl.NavigationControl());
         this.map.addControl(new mapboxgl.FullscreenControl());
@@ -295,6 +311,12 @@ export class MapBoxMapEngine implements MapEngine<Map> {
                 }
             });
 
+            // 'style.load' runs again every time the style is changed: the route layer must be added again, the markers not
+            if (this.markersAdded || !mapData.some(o => o != null)) {
+                return;
+            }
+            this.markersAdded = true;
+
             if ('' == currentIcon || null == currentIcon) {
                 currentIcon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
             }
@@ -338,7 +360,22 @@ export class MapBoxMapEngine implements MapEngine<Map> {
 
     }
     AddWaypoints(waypoints: any, waypointIcon: string | null): void {
-        //throw new Error('Method not implemented.');
+
+        const defaultIcon = waypointIcon ? waypointIcon : 'https://maps.google.com/mapfiles/ms/micons/flag.png';
+
+        for (const wpt of waypoints) {
+
+            this.Bounds.push([wpt.lat, wpt.lon]);
+
+            // name and desc are already HTML-escaped by PHP (esc_html)
+            let cnt = wpt.name == '' ? `<div>${wpt.desc}</div>` : `<div><b>${wpt.name}</b><br />${wpt.desc}</div>`;
+            cnt += `<p><a href='https://maps.google.com?daddr=${wpt.lat},${wpt.lon}' target='_blank' rel='noopener noreferrer'>Itin&eacute;raire</a></p>`;
+
+            const marker = this._addMarker([wpt.lat, wpt.lon], wpt.img ? wpt.img : defaultIcon, null);
+            marker.setPopup(new mapboxgl.Popup({ offset: 16 }).setHTML(cnt));
+        }
+
+        this.CenterMap();
     }
     MoveMarkerToPosition(LatLon: [number, number], updateChart: boolean): void {
 
