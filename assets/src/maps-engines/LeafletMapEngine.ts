@@ -476,9 +476,9 @@ export class LeafletMapEngine implements MapEngine<Map> {
             iconAnchor: [16, 16] // Point of the icon which will correspond to marker's location.
         });
 
-        if (waypointIcon != '') {
+        if (waypointIcon) {
             icon = L.icon({
-                iconUrl: 'waypointIcon',
+                iconUrl: waypointIcon,
                 iconSize: [32, 32], // Size of the icon.
                 iconAnchor: [16, 16] // Point of the icon which will correspond to marker's location.
             });

@@ -1,0 +1,23 @@
+# Files and folders that are NOT published to wordpress.org
+# (used by the release workflow and by the Plugin Check job)
+/.git
+/.github
+/.wordpress-org
+/.vscode
+/.vs
+/dev
+/node_modules
+/vendor
+/assets/src
+/assets/dist/*.map
+/assets/dist/WP-GPX-Maps.umd.js
+.distignore
+.gitignore
+CLAUDE.md
+composer.json
+composer.lock
+package.json
+package-lock.json
+phpcs.xml.dist
+tsconfig.json
+vite.config.ts

@@ -464,7 +464,6 @@ export class WPGPXMaps {
 								title: function (tooltipItems) {
 
 									/* Return value for title: */
-									var label_x = _formats[0].label_x;
 									var x_pos = tooltipItems[0].element.x as number;
 									var x_dec = label_x.dec;
 									var x_unit = label_x.suf;
@@ -649,7 +648,7 @@ export class WPGPXMaps {
 					yaxe.max = myData.Max;
 				}
 
-				_formats.push( { label_x: _formats[0].label_x , label_y :   l_s});
+				_formats.push( { label_x: label_x , label_y :   l_s});
 
 				var _id = 'yaxis' + yAxeCount++;
 				(hoptions.options?.scales as any)[_id] = yaxe;
@@ -674,7 +673,7 @@ export class WPGPXMaps {
 				var _id = 'yaxis' + yAxeCount++;
 				(hoptions.options?.scales as any)[_id] = yaxe;
 				hoptions.data.datasets.push(this.wpgpxmapsGetDataset(langs.heartRate, myData.Items, color4, _id));
-				_formats.push( { label_x: _formats[0].label_x , label_y : l_hr});
+				_formats.push( { label_x: label_x , label_y : l_hr});
 
 			}
 
@@ -695,7 +694,7 @@ export class WPGPXMaps {
 				var _id = 'yaxis' + yAxeCount++;
 				(hoptions.options?.scales as any)[_id] = yaxe;
 				hoptions.data.datasets.push(this.wpgpxmapsGetDataset(langs.atemp, myData.Items, color7, _id));
-				_formats.push( { label_x: _formats[0].label_x , label_y :   { suf: '°C', dec: 1 }});
+				_formats.push( { label_x: label_x , label_y :   { suf: '°C', dec: 1 }});
 			}
 
 
@@ -718,7 +717,7 @@ export class WPGPXMaps {
 				var _id = 'yaxis' + yAxeCount++;
 				(hoptions.options?.scales as any)[_id] = yaxe;
 								hoptions.data.datasets.push(this.wpgpxmapsGetDataset(langs.cadence, myData.Items, color5, _id));
-								_formats.push( { label_x: _formats[0].label_x , label_y : l_cad});
+								_formats.push( { label_x: label_x , label_y : l_cad});
 
 			}
 
@@ -744,7 +743,7 @@ export class WPGPXMaps {
 
 				};
 
-				_formats.push( { label_x: _formats[0].label_x , label_y : l_grade});
+				_formats.push( { label_x: label_x , label_y : l_grade});
 
 				var _id = 'yaxis' + yAxeCount++;
 				(hoptions.options?.scales as any)[_id] = yaxe;
@@ -769,6 +768,8 @@ export class WPGPXMaps {
 		let min = 10000;
 		let max = -10000;
 
+		let lastX = 0;
+
 		for (let i = 0; i < l; i++) {
 			if (distArr[i] != null) {
 				let _item = dataArr[i];
@@ -781,8 +782,15 @@ export class WPGPXMaps {
 					x: distArr[i],
 					y: _item
 				};
+				lastX = distArr[i];
 				if (_item > max) max = _item;
 				if (_item < min) min = _item;
+			} else {
+				// Gap between two tracks: keep the index aligned with mapData and break the line
+				items[i] = {
+					x: lastX,
+					y: null
+				};
 			}
 		}
 		return {
