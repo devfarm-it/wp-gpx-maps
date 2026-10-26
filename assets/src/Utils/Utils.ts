@@ -1,20 +1,20 @@
 
 export const WPGPXMAPS = {
     Utils: {
+        // Splits the points on the null separators between tracks; never returns null points or empty tracks
         DividePolylinesPoints(mapData: any[]): any[] {
-            let lastCut = 0;
             const result: any[] = [];
-            const _len = mapData.length;
+            let current: any[] = [];
 
-            for (let i = 0; i < _len; i++) {
-                if (mapData[i] === null) {
-                    result.push(mapData.slice(lastCut === 0 ? 0 : lastCut + 1, i));
-                    lastCut = i;
+            for (const point of mapData) {
+                if (point === null) {
+                    if (current.length > 0) result.push(current);
+                    current = [];
+                } else {
+                    current.push(point);
                 }
             }
-            if ((_len - 1) !== lastCut) {
-                result.push(mapData.slice(lastCut));
-            }
+            if (current.length > 0) result.push(current);
             return result;
         },
 
