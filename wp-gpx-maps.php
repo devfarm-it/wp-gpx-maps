@@ -28,6 +28,7 @@ define( 'WPGPXMAPS_CURRENT_VERSION', '1.8.00' );
 
 require 'wp-gpx-maps-utils.php';
 require 'wp-gpx-maps-admin.php';
+require 'wp-gpx-maps-block.php';
 
 define("wpgpxmaps_FEET_MILES", "1");
 define("wpgpxmaps_METERS_KILOMETERS", "2");
@@ -47,6 +48,7 @@ add_shortcode( 'sgpxf', 'wpgpxmaps_handle_folder_shortcodes' );
 register_activation_hook( __FILE__, 'wpgpxmaps_install_option' );
 register_deactivation_hook( __FILE__, 'wpgpxmaps_remove_option' );
 add_filter( 'plugin_action_links', 'wpgpxmaps_action_links', 10, 2 );
+add_action( 'init', 'wpgpxmaps_register_assets' );
 add_action( 'wp_enqueue_scripts', 'wpgpxmaps_enqueue_scripts' );
 add_action( 'admin_enqueue_scripts', 'wpgpxmaps_enqueue_scripts_admin' );
 add_action( 'plugins_loaded', 'wpgpxmaps_lang_init' );
@@ -151,15 +153,22 @@ function wpgpxmaps_module_version() {
 	return WPGPXMAPS_CURRENT_VERSION . ( $mtime ? '.' . $mtime : '' );
 }
 
-function wpgpxmaps_enqueue_scripts() {
+/**
+ * Register the map style and module on every request: the block editor needs them too (block.json "style").
+ */
+function wpgpxmaps_register_assets() {
 
 	/* Output Style CSS */
-	wp_register_style( 'output-style', plugins_url( 'assets/dist/style.css', __FILE__ ), array(), '1.0.0' );
-	wp_enqueue_style( 'output-style' );
+	wp_register_style( 'output-style', plugins_url( 'assets/dist/style.css', __FILE__ ), array(), wpgpxmaps_module_version() );
 
 	wp_register_script_module( 'wp-gpx-maps', plugins_url( 'assets/dist/WP-GPX-Maps.es.js', __FILE__ ), array(), wpgpxmaps_module_version() );
-	wp_enqueue_script_module( 'wp-gpx-maps' );
 
+}
+
+function wpgpxmaps_enqueue_scripts() {
+
+	wp_enqueue_style( 'output-style' );
+	wp_enqueue_script_module( 'wp-gpx-maps' );
 
 }
 
@@ -168,6 +177,10 @@ function wpgpxmaps_findValue( $attr, $attributeName, $optionName, $defaultValue 
 	$val = '';
 	if ( isset( $attr[$attributeName] ) ) {
 		$val = sanitize_text_field( $attr[$attributeName] );
+		/* "false" in the shortcode must turn off an option enabled in the settings ('false' == true in PHP) */
+		if ( in_array( strtolower( $val ), array( 'false', 'no', 'off' ), true ) ) {
+			return false;
+		}
 	}
 	if ( $val == '' && $optionName != '' ) {
 		$val = sanitize_text_field( get_option( $optionName ) );
@@ -718,7 +731,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		<script type="module">
 		import { WPGPXMaps } from "' . esc_url( $module_url ) . '";
 
-		window.addEventListener("load", function() {
+		/* Start after the page has loaded, or at once if it already has (block editor preview, late-loaded content) */
+		const wpgpxmapsStart_' . esc_js( $r ) . ' = function() {
 
 			var wpgpxmaps_' . esc_js( $r ) . ' = new WPGPXMaps({
 					targetId           : "' . esc_js( $r ) . '",
@@ -779,8 +793,14 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 						backToCenter	: "' . esc_js( __( 'Back to center', 'wp-gpx-maps' ) ) . '"
 					}
 				});
-	
-		});
+
+		};
+
+		if (document.readyState === "complete") {
+			wpgpxmapsStart_' . esc_js( $r ) . '();
+		} else {
+			window.addEventListener("load", wpgpxmapsStart_' . esc_js( $r ) . ');
+		}
 
 		</script>';
 

@@ -6,6 +6,9 @@ non si fanno più commit SVN a mano.
 
 ## Struttura
 - PHP del plugin nella radice; JS in `assets/src` (TypeScript) compilato con `npm run build` in `assets/dist`.
+- Blocco `wp-gpx-maps/map`: `blocks/map/` (block.json, `index.js` in JS semplice sui globali `wp.*`, senza build) +
+  `wp-gpx-maps-block.php` (registrazione, render tramite `wpgpxmaps_handle_shortcodes`, REST `wp-gpx-maps/v1/tracks`).
+  Gli attributi hanno gli stessi nomi dello shortcode; quelli non impostati usano le impostazioni del plugin.
 - `.wordpress-org/`: banner, icone e screenshot della pagina wordpress.org (cartella `/assets` di SVN).
 - `.distignore`: cosa NON va nel pacchetto pubblicato (sorgenti TS, mappe, dev/, configurazioni).
 - `dev/`: WordPress 7.1 + PHP 8.4 in Docker che monta questo repo come plugin. `docker compose up -d` in `dev/`, poi
