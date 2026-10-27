@@ -6,7 +6,7 @@ Tags: gpx, maps, track, leaflet, elevation
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.8.00
+Stable tag: 1.9.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -391,6 +391,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.9.00 =
+Security and PHP 8 fixes, new GPX Map block, colored tracks, 3D view, several GPX files in one map. Requires WordPress 6.5 and PHP 7.4. Shortcode parameters can no longer be passed in the page URL.
 
 = 1.8.00 =
 Security release: fixes a reflected XSS and PHP 8 errors. Requires WordPress 6.5 and PHP 7.4. Shortcode parameters can no longer be passed in the page URL.
