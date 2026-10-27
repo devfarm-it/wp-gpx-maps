@@ -27,3 +27,4 @@ package-lock.json
 phpcs.xml.dist
 tsconfig.json
 vite.config.ts
+/gpx-demo

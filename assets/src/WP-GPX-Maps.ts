@@ -106,7 +106,8 @@ export class WPGPXMaps {
 
 		var el = document.getElementById('wpgpxmaps_' + targetId);
 		var el_map = document.getElementById('map_' + targetId);
-		var el_chart = document.getElementById('chart_' + targetId);
+		/* The chart canvas (its id is myChart_..., not chart_...) */
+		var el_chart = document.getElementById('myChart_' + targetId);
 		var el_report = document.getElementById('report_' + targetId);
 		var el_osm_credits = document.getElementById('wpgpxmaps_' + targetId + '_osm_footer');
 
@@ -414,7 +415,9 @@ export class WPGPXMaps {
 
 		var graphh = el_chart?.style.height;
 
-		if (graphDist && (graphEle || graphSpeed || graphHr || graphAtemp || graphCad) && graphh != '0px') {
+		/* Empty arrays are truthy: check that there is data to show (gheight=0px sends none) */
+		const hasData = (a: any[] | undefined) => Array.isArray(a) && a.length > 0;
+		if (hasData(graphDist) && (hasData(graphEle) || hasData(graphSpeed) || hasData(graphHr) || hasData(graphAtemp) || hasData(graphCad) || hasData(graphGrade)) && graphh != '0px' && graphh != '0') {
 
 			var valLen = graphDist.length;
 
@@ -428,7 +431,7 @@ export class WPGPXMaps {
 
 				/* meters / kilometers */
 				label_x = { suf: 'km', dec: 1 };
-				label_y = { suf: 'm', dec: 2 };
+				label_y = { suf: 'm', dec: 0 };
 
 			} else if (wpgpxmaps_METERS_NAUTICALMILES == unit) {
 

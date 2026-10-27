@@ -432,7 +432,10 @@ export class MapBoxMapEngine implements MapEngine<Map> {
                 const sw = new mapboxgl.LngLat(bounds.minLng, bounds.minLat);
                 const ne = new mapboxgl.LngLat(bounds.maxLng, bounds.maxLat);
 
-                this.map?.fitBounds(new mapboxgl.LngLatBounds(sw, ne), { padding: 30, animate: false });
+                /* Initial 3D view: tilt (pitch) and rotation (bearing) set in the shortcode / block */
+                const pitch = Number(this.otherParams?.MapBoxPitch) || 0;
+                const bearing = Number(this.otherParams?.MapBoxBearing) || 0;
+                this.map?.fitBounds(new mapboxgl.LngLatBounds(sw, ne), { padding: pitch > 0 ? 60 : 30, animate: false, pitch: pitch, bearing: bearing });
 
             }
 

@@ -34,6 +34,17 @@
 		{ value: '5', label: 'feet / nautical miles' },
 	];
 
+	const MAPBOX_STYLES = [
+		{ value: 'standard', label: 'Standard' },
+		{ value: 'standard-satellite', label: 'Standard Satellite' },
+		{ value: 'streets-v12', label: 'Streets' },
+		{ value: 'outdoors-v12', label: 'Outdoors' },
+		{ value: 'light-v11', label: 'Light' },
+		{ value: 'dark-v11', label: 'Dark' },
+		{ value: 'satellite-v9', label: 'Satellite' },
+		{ value: 'satellite-streets-v12', label: 'Satellite Streets' },
+	];
+
 	const COLOR_BY = [
 		{ value: 'none', label: 'One color' },
 		{ value: 'grade', label: 'Grade (climb / descent)' },
@@ -171,9 +182,10 @@
 			el(
 				PanelBody,
 				{ title: __( 'Map' ), initialOpen: false },
-				data.hasMapBoxKey
-					? el( Notice, { status: 'info', isDismissible: false }, __( 'A MapBox API key is set: maps use MapBox and the MapBox style from the plugin settings.' ) )
-					: select( 'mtype', __( 'Map type' ), MAP_TYPES ),
+				data.hasMapBoxKey ? select( 'mapboxstyle', __( 'MapBox style' ), MAPBOX_STYLES ) : select( 'mtype', __( 'Map type' ), MAP_TYPES ),
+				data.hasMapBoxKey ? toggle( 'mapbox3d', __( '3D terrain' ) ) : null,
+				data.hasMapBoxKey ? text( 'pitch', __( 'View tilt (0-85)' ), __( 'For example 60 for a 3D view' ) ) : null,
+				data.hasMapBoxKey ? text( 'bearing', __( 'View rotation (-180 to 180)' ) ) : null,
 				text( 'mheight', __( 'Map height' ), __( 'For example 450px' ) ),
 				select( 'colorby', __( 'Color the track by' ), COLOR_BY ),
 				effective( attributes, 'colorby' ) === 'none' ? color( 'mlinecolor', __( 'Track color' ) ) : null,
