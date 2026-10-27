@@ -197,6 +197,11 @@ Yes!
 
 == Changelog ==
 
+= 1.9.00 =
+* New: "GPX Map" block for the block editor, with live preview, a list of the uploaded GPX files and all the main options in the sidebar (the [sgpx] shortcode keeps working)
+* Fix: "false" values in the shortcode (e.g. showele=false, summary=false) now turn off options enabled in the settings
+* Maps also start when the page is already loaded (block editor preview, content loaded later)
+
 = 1.8.00 =
 * MapBox provider: needs ApiKey and brings a lot of new cool features like 3d maps and much more
 * Security: fixed a reflected XSS. Shortcode parameters can no longer be set from the page URL (query string)
