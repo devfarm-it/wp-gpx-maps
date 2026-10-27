@@ -10,192 +10,127 @@ Stable tag: 1.8.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Draws a GPX track with altitude graph. You can also display your nextgen gallery images in the map.
+Show your GPX tracks on an interactive map with an elevation profile, speed and heart rate charts, 3D terrain and a route summary.
 
 == Description ==
 
-This plugin has, as input, the GPX file with the track you've made and as output it shows the map of the track and an interactive altitude graph (where available).
+WP GPX Maps turns a GPX file into an interactive map and charts: upload the track, add the **GPX Map** block (or the `[sgpx]` shortcode) and your readers get the route, the elevation profile and the statistics of your hike, ride or run.
 
-<strong>Fully configurable:</strong>
+= Maps =
 
-- Custom colors
-- Custom icons
-- Multiple language support
+* **OpenStreetMap** and other free maps (no account needed): OpenStreetMap, Humanitarian, Hike & Bike, OpenSeaMap, and the Thunderforest maps (OpenCycleMap, Outdoors, Transport, Landscape) with a free Thunderforest API key.
+* **MapBox** with your own API key: Outdoors, Streets, Satellite, Satellite Streets, Light, Dark, Standard and custom styles, **3D terrain**, fog and a tilted 3D view (`pitch`, `bearing`).
+* **Track colored by grade** (blue descent, green flat, yellow to red climb), **speed**, **heart rate** or **elevation**, with a legend.
+* **Several GPX files in one map** (`gpx="a.gpx,b.gpx"`), one color per file with a legend.
+* Start / finish markers, **distance markers** every N km or miles, waypoints with popups, full screen, photos from NextGEN Gallery or from the images attached to the post.
 
-<strong>Supported charts:</strong>
+= Charts =
 
-- Altitude
-- Speed
-- Heart rate
-- Temperature
-- Cadence
-- Grade
+* Filled **elevation profile**, **speed**, **heart rate**, **cadence**, **temperature** and **grade**.
+* Move the mouse on the chart and the position is shown on the map; move it on the track and the point is shown in the chart.
+* GPS noise is smoothed out: grade averaged over about 100 m, speed without single spikes.
+* Meters, kilometers, feet, miles or nautical miles; speed in km/h, mph, min/km, min/mile, knots or min/100 m.
 
-<strong>NextGen Gallery Integration:</strong>
+= Summary =
 
-Display your NextGen Gallery images inside the map!
-Even if you don't have a GPS camera, this plugin can retrive the image position starting from the image date and your GPX file.
+Total distance, maximum and minimum elevation, total climbing and descent, average and maximum speed, maximum grade, average heart rate, cadence and temperature, total time and **moving time** (pauses excluded).
 
-<strong>Post Attachments Integration:</strong>
+= Easy to use =
 
-This version is extended by: <a href="https://klein-gedruckt.de/2015/03/wordpress-plugin-wp-gpx-maps/" target="_blank" rel="noopener noreferrer">Stephan Klein</a> and supports displaying all images attached to a post without using NGG.
+* **GPX Map block** for the block editor with live preview: pick an uploaded GPX file from a list and set every option in the sidebar.
+* Upload and manage your GPX files in **Settings > WP GPX Maps** (editors and authors can upload their own files).
+* Every option has a default in the settings, so a simple `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]` is enough.
+* GPX 1.0 and 1.1, Garmin and Strava extensions (heart rate, cadence, temperature), multi-track files.
+* Cache of the processed tracks, scripts loaded as an ES module, works with PHP 7.4 to 8.4.
 
-Try this plugin: <a href="https://devfarm.it/wp-gpx-maps-demo/" target="_blank" rel="noopener noreferrer">https://devfarm.it/wp-gpx-maps-demo/</a>
+= Support and development =
 
-<strong>Support:</strong>
+* Questions and bug reports: the [support forum](https://wordpress.org/support/plugin/wp-gpx-maps/).
+* Development, issues and pull requests: [GitHub](https://github.com/devfarm-it/wp-gpx-maps).
+* Translations: [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-gpx-maps/).
 
-If you need help, please use: <a href="http://www.devfarm.it/forums/forum/wp-gpx-maps/" target="_blank" rel="noopener noreferrer">www.devfarm.it Support Forum</a>
-
-Would you like to help fix bugs or further develop the plugin? On <a href="https://github.com/devfarm-it/wp-gpx-maps" target="_blank" rel="noopener noreferrer">Github</a> you can contribuite easly with your code.
-
-<strong>Translations:</strong>
-
-Translators are welcome to contribute to the plugin. Please use the <a href="https://translate.wordpress.org/projects/wp-plugins/wp-gpx-maps/)" target="_blank" rel="noopener noreferrer">WordPress translation website</a>.
-
-The language files in the plugin contain 18 translatable texts for 13 languages:
-
-- Catalan ca
-- Dutch nl_NL
-- English (default)
-- French fr_FR
-- Hungarian hu_HU
-- Italian it_IT
-- Norwegian nb_NO
-- Polish pl_PL
-- Portuguese (Brazilian) pt_BR
-- Russian ru_RU
-- Spanish es_ES
-- Swedish sv_SE
-- Turkish tr_TR
-- Bulgarian bg_BG
-- Slovak cs_CZ
-- Norwegian nb_NO
-- Japanese ja_JP
-
-(Many thanks to all guys who helped me with the translations)
-
-<strong>Supported GPX namespaces are:</strong>
-
-1. http://www.topografix.com/GPX/1/0
-
-1. <a href="http://www.topografix.com/GPX/1/1" target="_blank" rel="noopener noreferrer">www.topografix.com/GPX/1/1</a>
-
-1. http://www.garmin.com/xmlschemas/GpxExtensions/v3
-
-1. http://www.garmin.com/xmlschemas/TrackPointExtension/v1
-
-Thanks to: <a href="http://www.securcube.net/" target="_blank" rel="noopener noreferrer">www.securcube.net</a>, <a href="http://www.devfarm.it/" target="_blank" rel="noopener noreferrer">www.devfarm.it</a>
-
-Icons made by <a href="https://www.freepik.com/" target="_blank" rel="noopener noreferrer">Freepik</a> from <a href="https://www.flaticon.com/" target="_blank" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">Creative Commons BY 3.0</a>
+Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https://www.flaticon.com/), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 
 == Installation ==
 
-1. Use the classic wordpress plugin installer or copy the plugins folder to the `/wp-content/plugins/` directory
-
-1. Activate the plugin through the 'Plugins' menu in WordPress
-
-1. Add the shortcode [sgpx gpx="&gt;relative path to your gpx&lt;"] or [sgpx gpx="&gt;http://somesite.com/files/yourfile.gpx&lt;"]
+1. Install the plugin from **Plugins > Add New** (search for "WP GPX Maps") and activate it.
+1. Upload your GPX files in **Settings > WP GPX Maps > Tracks**, or use any GPX file already on your site or on another site.
+1. In a post or page add the **GPX Map** block and choose the GPX file. With the classic editor use the shortcode, for example `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]`.
+1. Optional: in **Settings > WP GPX Maps** set the defaults for all the maps, a Thunderforest API key for the Thunderforest maps or a MapBox API key for the MapBox maps and 3D terrain.
 
 == Frequently Asked Questions ==
 
-= Which map types are available? =
+= Do I need an API key? =
 
-You can use the following map types:
+No. OpenStreetMap, Humanitarian, Hike & Bike and OpenSeaMap work without a key. The Thunderforest maps need a free Thunderforest API key. MapBox styles and 3D terrain need your own MapBox access token: when it is set in the settings, all the maps use MapBox.
 
-1. <strong>OSM1</strong> = Open Street Map (Default setting)
-1. <strong>OSM2</strong> = Open Cycle Map / Thunderforest - Open Cycle Map (API Key required)
-1. <strong>OSM3</strong> = Thunderforest - Outdoors (API Key required)
-1. <strong>OSM4</strong> = Thunderforest - Transport (API Key required)
-1. <strong>OSM5</strong> = Thunderforest - Landscape (API Key required)
-1. <strong>OSM7</strong> = Open Street Map - Humanitarian map style
-1. <strong>OSM9</strong> =  Hike & Bike
-1. <strong>OSM10</strong> = Open Sea Map
+= How do I show the 3D view? =
 
-If you use the OpenCycleMap without the API key, a watermark appears on the card: "API Key required".
+Set a MapBox access token, then enable **3D terrain** and a **view tilt** in the block (or `mapbox3d=true pitch=60` in the shortcode). `bearing` rotates the view, `mapboxstyle` chooses the style of a single map, for example `satellite-streets-v12`.
 
-The Thunderforest maps Outdoors, Transport and Landscape are only displayed with an API Key.
+= How do I show several tracks in one map? =
+
+Use the GPX files separated by commas: `[sgpx gpx="/wp-content/uploads/gpx/day1.gpx,/wp-content/uploads/gpx/day2.gpx"]`. Each file gets its own color and the totals are for the whole route.
 
 = Which shortcode attributes are available? =
 
-You can use the following shortcodes:
+The main ones (every attribute also has a default in the settings; `true` / `false` turn an option on or off):
 
-1. <strong>gpx:</strong> Relative path to the GPX file
-1. <strong>width:</strong> Map width (Value in percent)
-1. <strong>mheight:</strong> Map height (Value in pixeln)
-1. <strong>gheight:</strong> Graph height (Value in pixeln)
-1. <strong>skipcache:</strong> Do not use cache. If TRUE might be very slow (Default is false)
-1. <strong>download:</strong> Allow users to download your GPX file (Default is false)
-1. <strong>summary:</strong> Print summary details of your GPX track (Default is false)
-1. <strong>summarytotlen:</strong> Print total distance in summary table (Default is false)
-1. <strong>summarymaxele:</strong> Print max elevation in summary table (Default is false)
-1. <strong>summaryminele:</strong> Print min Elevation in summary table (Default is false)
-1. <strong>summaryeleup:</strong> Print total climbing in summary table (Default is false)
-1. <strong>summaryeledown:</strong> Print total descent in summary table (Default is false)
-1. <strong>summaryavgspeed:</strong> Print average Speed in summary table (Default is false)
-1. <strong>summarytotaltime:</strong> Print total time in summary table (Default is false)
-1. <strong>mtype:</strong> Map types
-1. <strong>mlinecolor:</strong> Map line color (Default is #3366cc)
-1. <strong>zoomonscrollwheel:</strong> Zoom on map when mouse scroll wheel (Default is false)
-1. <strong>waypoints:</strong> Print the gpx waypoints inside the map (Default is false)
-1. <strong>startIcon:</strong> Start track icon
-1. <strong>endIcon:</strong> End track icon
-1. <strong>currentIcon:</strong> Current position icon (when mouse hover)
-1. <strong>waypointicon:</strong> Custom waypoint icon
-1. <strong>showele:</strong> Show elevation data inside the chart (Default is true)
-1. <strong>uom:</strong> Distance/altitude unit of measure
-1. 0 = meters/meters (Default setting)
-1. 1 = feet/miles
-1. 2 = meters/kilometers
-1. 3 = meters/nautical miles
-1. 4 = meters/miles
-1. 5 = feet/nautical miles
-1. <strong>glinecolor:</strong> Altitude line color (Default is #3366cc)
-1. <strong>chartFrom1:</strong> Minimun value for altitude chart
-1. <strong>chartTo1:</strong> Maxumin value for altitude chart
-1. <strong>showspeed:</strong> Show speed inside the chart (Default is false)
-1. <strong>glinecolorspeed:</strong> Speed line color (Default is #ff0000)
-1. <strong>uomspeed:</strong> Unit of measure for speed
-1. 0 = m/s (Default setting)
-1. 1 = km/h
-1. 2 = miles/h
-1. 3 = min/km
-1. 4 = min/miles
-1. 5 = Nautical Miles/Hour (Knots)
-1. 6 = min/100 meters
-1. <strong>chartFrom2:</strong> Minimun value for speed chart
-1. <strong>chartTo2:</strong> Maxumin value for speed chart
-1. <strong>showhr:</strong> Show heart rate inside the chart (Default is false)
-1. <strong>glinecolorhr:</strong> Heart rate line color (Default is #ff77bd)
-1. <strong>showatemp:</strong> Show temperature inside the chart (Default is false)
-1. <strong>glinecoloratemp:</strong> Temperature line color (Default is #ff77bd)
-1. <strong>showcad:</strong> Show cadence inside the chart (Default is false)
-1. <strong>glinecolorcad:</strong> Cadence line color (Default is #beecff)
-1. <strong>showgrade:</strong> Show grade inside the chart (Default is false)
-1. <strong>glinecolorgrade:</strong> Grade line color (Default is #beecff)
-1. <strong>nggalleries:</strong> NextGen Gallery id or a list of Galleries id separated by a comma
-1. <strong>ngimages:</strong> NextGen Image id or a list of Images id separated by a comma
-1. <strong>attachments:</strong> Show all images that are attached to post (Default is false)
-1. <strong>dtoffset:</strong> The difference (in seconds) between your gpx tool date and your camera date
-1. <strong>pointsoffset:</strong> Skip points closer than XX meters (Default is 10)
-1. <strong>donotreducegpx:</strong> Print all the point without reduce it (Default is false)
+* **gpx**: path of the GPX file from the site root, or its URL; several files separated by commas.
+* **mheight**, **gheight**, **width**: map height, chart height (`0px` hides the chart), width.
+* **mtype**: map type without MapBox: `OSM1` OpenStreetMap, `OSM2` OpenCycleMap, `OSM3` Thunderforest Outdoors, `OSM4` Transport, `OSM5` Landscape, `OSM7` Humanitarian, `OSM9` Hike & Bike, `OSM10` OpenSeaMap, `OSM11` GSI Japan.
+* **mapboxstyle**, **mapbox3d**, **pitch**, **bearing**: MapBox style, 3D terrain, view tilt (0-85) and rotation.
+* **colorby**: `grade`, `speed`, `hr`, `elevation` or `none`.
+* **mlinecolor**: track color (several colors separated by spaces, one per track).
+* **kmmarkers**: distance marker every N km or miles; **startend**: start / finish markers.
+* **waypoints**, **startIcon**, **endIcon**, **currentIcon**, **waypointicon**, **zoomonscrollwheel**, **download**.
+* **showele**, **showspeed**, **showhr**, **showcad**, **showatemp**, **showgrade** and their colors **glinecolor**, **glinecolorspeed**, **glinecolorhr**, **glinecolorcad**, **glinecoloratemp**, **glinecolorgrade**.
+* **uom**: 0 meters, 1 feet/miles, 2 meters/kilometers, 3 meters/nautical miles, 4 meters/miles, 5 feet/nautical miles.
+* **uomspeed**: 0 m/s, 1 km/h, 2 miles/h, 3 min/km, 4 min/mile, 5 knots, 6 min/100 m.
+* **chartFrom1**, **chartTo1**, **chartFrom2**, **chartTo2**: range of the altitude and speed axes.
+* **summary** and **summarytotlen**, **summarymaxele**, **summaryminele**, **summaryeleup**, **summaryeledown**, **summaryavgspeed**, **summarymaxspeed**, **summarymaxgrade**, **summaryavgcad**, **summaryavghr**, **summaryavgtemp**, **summarytotaltime**, **summarymovingtime**.
+* **nggalleries**, **ngimages**, **attachments**, **dtoffset**: photos on the map.
+* **pointsoffset**, **donotreducegpx**, **skipcache**: processing of large files.
 
-= What happening if I've a very large GPX files? =
+The complete list with the current defaults is in **Settings > WP GPX Maps > Help**.
 
-This plugin will print a small amout of points to speedup javascript and pageload.
+= What happens with very large GPX files? =
+
+The plugin skips points closer than 10 meters (`pointsoffset`) and can keep about 200 points for the map and the chart, then caches the result, so even long tracks load fast.
 
 = Is it free? =
 
-Yes!
+Yes, WP GPX Maps is free and open source (GPLv2 or later).
 
 == Screenshots ==
-1. Simple GPX
-1. GPX with waypoints
-1. Admin area - List of tracks
-1. Admin area - Settings
-1. Altitude & Speed
-1. Altitude & Speed & Heart rate
+
+1. Track colored by grade on a MapBox Outdoors map with 3D terrain, distance markers, elevation and speed chart, and summary.
+2. 3D view of a trail on MapBox Satellite Streets.
+3. The same trail with the MapBox Dark and Light styles.
+4. OpenStreetMap, no API key needed: elevation and speed chart and full summary with moving time.
+5. Two GPX files in one map, one color per file, with a continuous elevation profile.
+6. Track colored by speed: moving on the chart shows altitude, speed and grade, and the position on the map.
+7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.9.00 =
+* New: "GPX Map" block for the block editor, with live preview, a list of the uploaded GPX files and all the main options in the sidebar (the [sgpx] shortcode keeps working)
+* New: several GPX files in one map, gpx="a.gpx,b.gpx": one color per file, legend, cumulative distance and totals
+* New: start / finish markers (hide with startend="false") and distance markers every N km or miles (kmmarkers="5")
+* New: summary with moving time, max speed and max grade (summarymovingtime, summarymaxspeed, summarymaxgrade)
+* New: filled elevation profile and a vertical line on the selected point; hovering the track also shows the point in the chart with MapBox
+* Fix: "Total descent" was a negative number
+* Fix: the chart distance no longer restarts from 0 for each track of a multi-track GPX file
+* Fix: chart tooltip showed pixel positions instead of distance and values; selecting a point from the map did not show it in the chart
+* Developers: wpgpxmaps_get_track_info() and wpgpxmaps_module_url(); the map module exports Leaflet
+* New: MapBox style, 3D terrain and initial 3D view for each map: mapboxstyle, mapbox3d, pitch, bearing (also in the block)
+* Charts: grade averaged over about 100 m and speed without GPS spikes; max speed computed the same way; whole meters on the altitude axis
+* Fix: gheight="0px" showed an empty chart instead of hiding it
+* New: color the track by grade (climb / descent), speed, heart rate or elevation, with a legend on the map: colorby="grade|speed|hr|elevation", in the block and in the settings
+* Fix: "false" values in the shortcode (e.g. showele=false, summary=false) now turn off options enabled in the settings
+* Maps also start when the page is already loaded (block editor preview, content loaded later)
+* Developers: hooks for add-ons (filters wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra, wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_admin_tabs; actions wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tab_{tab}; JavaScript event "wpgpxmaps:ready")
 
 = 1.8.00 =
 * MapBox provider: needs ApiKey and brings a lot of new cool features like 3d maps and much more
