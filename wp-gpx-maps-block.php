@@ -25,6 +25,7 @@ function wpgpxmaps_block_options() {
 		'mheight'          => 'wpgpxmaps_height',
 		'gheight'          => 'wpgpxmaps_graph_height',
 		'mlinecolor'       => 'wpgpxmaps_map_line_color',
+		'colorby'          => 'wpgpxmaps_map_color_by',
 		'glinecolor'       => 'wpgpxmaps_graph_line_color',
 		'uom'              => 'wpgpxmaps_unit_of_measure',
 		'uomspeed'         => 'wpgpxmaps_unit_of_measure_speed',
@@ -70,6 +71,9 @@ function wpgpxmaps_block_editor_data() {
 	}
 	if ( '' == $defaults['mtype'] ) {
 		$defaults['mtype'] = 'OSM1';
+	}
+	if ( '' == $defaults['colorby'] ) {
+		$defaults['colorby'] = 'none';
 	}
 
 	$settings_url = current_user_can( 'manage_options' ) ? admin_url( 'options-general.php?page=WP-GPX-Maps' ) : admin_url( 'admin.php?page=WP-GPX-Maps' );

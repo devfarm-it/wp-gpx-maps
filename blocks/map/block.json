@@ -14,6 +14,7 @@
 		"mheight": { "type": "string" },
 		"gheight": { "type": "string" },
 		"mlinecolor": { "type": "string" },
+		"colorby": { "type": "string" },
 		"glinecolor": { "type": "string" },
 		"uom": { "type": "string" },
 		"uomspeed": { "type": "string" },

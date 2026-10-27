@@ -315,7 +315,32 @@ export class WPGPXMaps {
 		*/
 
 		/* Print Track. */
-		if (mapData) {
+		const { colorBy, colorData } = this.params;
+
+		if (mapData && colorBy && colorData && colorData.length === mapData.length) {
+
+			/* Track colored by grade, speed, heart rate or elevation, with a legend */
+			const scale = WPGPXMAPS.Utils.TrackColorScale(colorBy, colorData);
+			const colored = WPGPXMAPS.Utils.SplitTrackByColor(mapData, colorData, scale.colorOf);
+			this.map.AppPolylines(colored.mapData, colored.colors, currentIcon, startIcon, endIcon);
+
+			const speedUnits: { [key: string]: string } = { '0': 'm/s', '1': 'km/h', '2': 'mi/h', '3': 'min/km', '4': 'min/mi', '5': 'knots', '6': 'min/100m' };
+			const legend: { [key: string]: [string, string] } = {
+				grade: [langs.grade, '%'],
+				speed: [langs.speed, ' ' + (speedUnits[unitspeed] ?? 'm/s')],
+				hr: [langs.heartRate, ' bpm'],
+				elevation: [langs.altitude, (unit === wpgpxmaps_FEET_MILES || unit === wpgpxmaps_FEET_NAUTICALMILES) ? ' ft' : ' m'],
+			};
+			const [title, suffix] = legend[colorBy] ?? [colorBy, ''];
+			const dec = colorBy === 'speed' ? 1 : 0;
+			const container = document.getElementById('map_' + targetId + '_cont');
+			if (container) {
+				WPGPXMAPS.Utils.AddTrackLegend(container, title, scale.stops,
+					(colorBy === 'grade' ? '≤' : '') + scale.min.toFixed(dec) + suffix,
+					(colorBy === 'grade' ? '≥' : '') + scale.max.toFixed(dec) + suffix);
+			}
+
+		} else if (mapData) {
 			this.map.AppPolylines(mapData, color1, currentIcon, startIcon, endIcon);
 		}
 

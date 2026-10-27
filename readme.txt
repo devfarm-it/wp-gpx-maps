@@ -199,6 +199,7 @@ Yes!
 
 = 1.9.00 =
 * New: "GPX Map" block for the block editor, with live preview, a list of the uploaded GPX files and all the main options in the sidebar (the [sgpx] shortcode keeps working)
+* New: color the track by grade (climb / descent), speed, heart rate or elevation, with a legend on the map: colorby="grade|speed|hr|elevation", in the block and in the settings
 * Fix: "false" values in the shortcode (e.g. showele=false, summary=false) now turn off options enabled in the settings
 * Maps also start when the page is already loaded (block editor preview, content loaded later)
 

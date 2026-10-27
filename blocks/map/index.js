@@ -34,6 +34,14 @@
 		{ value: '5', label: 'feet / nautical miles' },
 	];
 
+	const COLOR_BY = [
+		{ value: 'none', label: 'One color' },
+		{ value: 'grade', label: 'Grade (climb / descent)' },
+		{ value: 'speed', label: 'Speed' },
+		{ value: 'hr', label: 'Heart rate' },
+		{ value: 'elevation', label: 'Elevation' },
+	];
+
 	const SPEED_UNITS = [
 		{ value: '0', label: 'm/s' },
 		{ value: '1', label: 'km/h' },
@@ -167,7 +175,8 @@
 					? el( Notice, { status: 'info', isDismissible: false }, __( 'A MapBox API key is set: maps use MapBox and the MapBox style from the plugin settings.' ) )
 					: select( 'mtype', __( 'Map type' ), MAP_TYPES ),
 				text( 'mheight', __( 'Map height' ), __( 'For example 450px' ) ),
-				color( 'mlinecolor', __( 'Track color' ) ),
+				select( 'colorby', __( 'Color the track by' ), COLOR_BY ),
+				effective( attributes, 'colorby' ) === 'none' ? color( 'mlinecolor', __( 'Track color' ) ) : null,
 				toggle( 'waypoints', __( 'Show waypoints' ) ),
 				toggle( 'zoomonscrollwheel', __( 'Zoom with the mouse wheel' ) ),
 				toggle( 'download', __( 'GPX download link' ) )

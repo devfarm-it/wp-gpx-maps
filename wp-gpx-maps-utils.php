@@ -659,6 +659,75 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
 	return $points;
 }
 
+/**
+ * Values used to color the track (attribute colorby), one per map point and in the same order as the map data
+ * (null where the tracks are separated). Returns an empty array when the GPX has no data for that value.
+ *
+ * grade: % slope averaged over about 100 m (raw GPS points change slope at every meter)
+ * speed: in the speed unit of the chart; hr: bpm; elevation: m or ft as the chart.
+ */
+function wpgpxmaps_colorValues( $points, $colorby, $unit_of_measure, $unit_of_measure_speed ) {
+
+	if ( ! in_array( $colorby, array( 'grade', 'speed', 'hr', 'elevation' ), true ) || ! is_array( $points->lat ) ) {
+		return array();
+	}
+
+	$keys    = array_keys( $points->lat );
+	$values  = array();
+	$hasData = false;
+	$feet    = ( wpgpxmaps_FEET_MILES == $unit_of_measure || wpgpxmaps_FEET_NAUTICALMILES == $unit_of_measure );
+
+	foreach ( $keys as $n => $k ) {
+
+		if ( null === $points->lat[ $k ] ) {
+			$values[] = null;
+			continue;
+		}
+
+		$value = null;
+
+		if ( 'grade' == $colorby ) {
+			/* Points about 50 m before and after (at least the next point on each side), inside the same track */
+			$dist = (float) $points->dist[ $k ];
+			$from = $n;
+			$to   = $n;
+			while ( $from > 0 && null !== $points->lat[ $keys[ $from - 1 ] ] && ( $from == $n || $dist - (float) $points->dist[ $keys[ $from - 1 ] ] <= 50 ) ) {
+				$from--;
+			}
+			while ( $to < count( $keys ) - 1 && null !== $points->lat[ $keys[ $to + 1 ] ] && ( $to == $n || (float) $points->dist[ $keys[ $to + 1 ] ] - $dist <= 50 ) ) {
+				$to++;
+			}
+			$run  = (float) $points->dist[ $keys[ $to ] ] - (float) $points->dist[ $keys[ $from ] ];
+			$ele1 = (float) $points->ele[ $keys[ $from ] ];
+			$ele2 = (float) $points->ele[ $keys[ $to ] ];
+			if ( $run > 0 && 0 != $ele1 && 0 != $ele2 ) {
+				$value = ( $ele2 - $ele1 ) / $run * 100;
+			}
+		} elseif ( 'speed' == $colorby ) {
+			if ( (float) $points->speed[ $k ] > 0 ) {
+				$value = (float) convertSpeed( $points->speed[ $k ], $unit_of_measure_speed );
+			}
+		} elseif ( 'hr' == $colorby ) {
+			if ( (float) $points->hr[ $k ] > 0 ) {
+				$value = (float) $points->hr[ $k ];
+			}
+		} elseif ( 'elevation' == $colorby ) {
+			if ( 0 != (float) $points->ele[ $k ] ) {
+				$value = (float) $points->ele[ $k ] * ( $feet ? 3.2808399 : 1 );
+			}
+		}
+
+		if ( null !== $value ) {
+			$hasData = true;
+			$value   = round( $value, 1 );
+		}
+		/* Points without a value keep the color of the previous one: use the previous value */
+		$values[] = ( null === $value && $n > 0 ) ? end( $values ) : $value;
+	}
+
+	return $hasData ? $values : array();
+}
+
 function toRadians( $degrees ) {
 	return (float) ( $degrees * 3.1415926535897932385 / 180 );
 }
