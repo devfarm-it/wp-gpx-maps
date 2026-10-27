@@ -19,6 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<div class="wpgpxmaps-tab-faq">
 
+			<p>
+				<?php esc_html_e( 'WP GPX Maps is free and open source. If it is useful to you, you can support its development:', 'wp-gpx-maps' ); ?>
+				<a href="https://github.com/sponsors/bastianonm" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Sponsor on GitHub', 'wp-gpx-maps' ); ?></a>
+			</p>
+
 			<h3 class="title"><?php esc_html_e( 'FAQ', 'wp-gpx-maps' ); ?></h3>
 
 			<p>
