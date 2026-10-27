@@ -14,6 +14,8 @@ non si fanno più commit SVN a mano.
   non cambiarli in modo incompatibile senza alzare la versione. Il sito di test monta anche il Pro tramite
   `dev/docker-compose.override.yml` (locale, ignorato da git).
 - `.wordpress-org/`: banner, icone e screenshot della pagina wordpress.org (cartella `/assets` di SVN).
+- `readme.txt` = pagina wordpress.org (utenti, changelog); `README.md` = pagina GitHub per sviluppatori (API add-on,
+  sviluppo, rilascio), esclusa dal pacchetto. Tenerli allineati quando cambiano hook o funzioni.
 - `.distignore`: cosa NON va nel pacchetto pubblicato (sorgenti TS, mappe, dev/, configurazioni).
 - `dev/`: WordPress 7.1 + PHP 8.4 in Docker che monta questo repo come plugin. `docker compose up -d` in `dev/`, poi
   `./setup.ps1` la prima volta (installa WP, attiva il plugin, copia `dev/gpx/*.gpx`, crea un articolo per ogni caso).

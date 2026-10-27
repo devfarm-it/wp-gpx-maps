@@ -1,5 +1,5 @@
 # First-time setup of the local test site (run from this folder after "docker compose up -d").
-# Installs WordPress, activates the plugin from ../trunk, copies the test GPX files and creates one test post per case.
+# Installs WordPress, activates the plugin (this repository), copies the test GPX files and creates one test post per case.
 
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot

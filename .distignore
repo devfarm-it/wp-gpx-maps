@@ -20,6 +20,7 @@
 .distignore
 .gitignore
 CLAUDE.md
+README.md
 composer.json
 composer.lock
 package.json
