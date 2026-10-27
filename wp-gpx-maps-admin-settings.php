@@ -229,6 +229,13 @@ function render_select($name, $label, $options, $selected) {
 			render_checkbox('wpgpxmaps_mapbox_fog', 'MapBox fog:', $mapboxFog);
 
 			render_text_input('wpgpxmaps_map_line_color', 'Map line color:', get_option('wpgpxmaps_map_line_color'), 'width:100px;');
+			render_select('wpgpxmaps_map_color_by', 'Track color by:', [
+				'' => 'One color (map line color)',
+				'grade' => 'Grade (climb / descent)',
+				'speed' => 'Speed',
+				'hr' => 'Heart rate',
+				'elevation' => 'Elevation'
+			], get_option('wpgpxmaps_map_color_by'));
 			render_checkbox('wpgpxmaps_zoomonscrollwheel', 'On mouse scroll wheel:', $zoomonscrollwheel);
 			render_checkbox('wpgpxmaps_show_waypoint', 'Waypoints support:', $showW);
 			render_text_input('wpgpxmaps_map_start_icon', 'Start track icon:', get_option('wpgpxmaps_map_start_icon'), 'width:400px;');
@@ -241,7 +248,7 @@ function render_select($name, $label, $options, $selected) {
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_map_color_by,wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>

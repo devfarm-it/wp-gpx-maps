@@ -346,6 +346,11 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	/* Advanced */
 	$pointsoffset   	= wpgpxmaps_findValue( $attr, 'pointsoffset', 'wpgpxmaps_pointsoffset', 10 );
 	$donotreducegpx 	= wpgpxmaps_findValue( $attr, 'donotreducegpx', 'wpgpxmaps_donotreducegpx', false );
+	/* Track color: '' or 'none' (one color) or by grade, speed, heart rate, elevation */
+	$colorby = (string) wpgpxmaps_findValue( $attr, 'colorby', 'wpgpxmaps_map_color_by', '' );
+	if ( ! in_array( $colorby, array( 'grade', 'speed', 'hr', 'elevation' ), true ) ) {
+		$colorby = '';
+	}
 
 	/* Gallery and image ids are printed inside a script: allow only comma separated numbers */
 	$ngGalleries = implode( ',', array_filter( array_map( 'absint', explode( ',', $ngGalleries ) ) ) );
@@ -365,6 +370,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$points_graph_atemp = '';
 	$points_graph_cad   = '';
 	$points_graph_grade = '';
+	$points_color       = array();
 	$waypoints          = '[]';
 	$max_ele            = 0;
 	$min_ele            = 0;
@@ -387,7 +393,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	} else {
 		$mtime = 0;
 	}
-	$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$unit_of_measure_speed,$unit_of_measure,$distanceType,v1.3.9";
+	$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$unit_of_measure_speed,$unit_of_measure,$distanceType,$colorby,v1.9.0";
 
 	$cacheFileName = md5( $cacheFileName );
 
@@ -417,6 +423,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$points_graph_atemp = $cache_obj['points_graph_atemp'];
 			$points_graph_cad   = $cache_obj['points_graph_cad'];
 			$points_graph_grade = $cache_obj['points_graph_grade'];
+			$points_color       = isset( $cache_obj['points_color'] ) && is_array( $cache_obj['points_color'] ) ? $cache_obj['points_color'] : array();
 			$waypoints          = $cache_obj['waypoints'];
 			$max_ele            = $cache_obj['max_ele'];
 			$min_ele            = $cache_obj['min_ele'];
@@ -462,6 +469,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		$points_x_time = $points->dt;
 		$points_x_lat  = $points->lat;
 		$points_x_lon  = $points->lon;
+
+		$points_color = wpgpxmaps_colorValues( $points, $colorby, $unit_of_measure, $unit_of_measure_speed );
 
 		$max_ele        = $points->maxEle;
 		$min_ele        = $points->minEle;
@@ -689,6 +698,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			'points_graph_atemp' => $points_graph_atemp,
 			'points_graph_cad'   => $points_graph_cad,
 			'points_graph_grade' => $points_graph_grade,
+			'points_color'       => $points_color,
 			'waypoints'          => $waypoints,
 			'max_ele'            => $max_ele,
 			'min_ele'            => $min_ele,
@@ -749,6 +759,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 					unit               : "' . esc_js( $unit_of_measure ) . '",
 					unitspeed          : "' . esc_js( $unit_of_measure_speed ) . '",
 					color1             : ' . wp_json_encode( $colors_map, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ',
+					colorBy            : "' . esc_js( $points_color ? $colorby : '' ) . '",
+					colorData          : ' . wp_json_encode( array_values( $points_color ) ) . ',
 					color2             : "' . esc_js( $color_graph ) . '",
 					color3             : "' . esc_js( $color_graph_speed ) . '",
 					color4             : "' . esc_js( $color_graph_hr ) . '",
@@ -954,6 +966,7 @@ function wpgpxmaps_install_option() {
 		// Map
 		'wpgpxmaps_map_type' => 'HYBRID',
 		'wpgpxmaps_map_line_color' => '#3366cc',
+		'wpgpxmaps_map_color_by' => '',
 		'wpgpxmaps_zoomonscrollwheel' => '',
 		'wpgpxmaps_show_waypoint' => '',
 		'wpgpxmaps_map_start_icon' => '',
@@ -1025,6 +1038,7 @@ function wpgpxmaps_remove_option() {
 		// Map
 		'wpgpxmaps_map_type',
 		'wpgpxmaps_map_line_color',
+		'wpgpxmaps_map_color_by',
 		'wpgpxmaps_zoomonscrollwheel',
 		'wpgpxmaps_show_waypoint',
 		'wpgpxmaps_map_start_icon',

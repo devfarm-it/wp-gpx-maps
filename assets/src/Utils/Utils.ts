@@ -18,6 +18,122 @@ export const WPGPXMAPS = {
             return result;
         },
 
+        /*
+         * Color scale for the track. Grade has fixed stops (descent blue, flat green, climb yellow to red);
+         * speed, heart rate and elevation go from blue to red between the 5th and 95th percentile,
+         * so a single GPS spike does not flatten the scale.
+         */
+        TrackColorScale(colorBy: string, values: Array<number | null>): { colorOf: (v: number | null) => string, stops: Array<[number, string]>, min: number, max: number } {
+
+            let stops: Array<[number, string]>;
+            let min: number;
+            let max: number;
+
+            if (colorBy === 'grade') {
+                stops = [[-12, '#1d4ed8'], [-6, '#38bdf8'], [0, '#22c55e'], [4, '#eab308'], [8, '#f97316'], [12, '#dc2626'], [18, '#7f1d1d']];
+                min = -12;
+                max = 18;
+            } else {
+                const sorted = values.filter((v): v is number => v !== null && !isNaN(v)).sort((a, b) => a - b);
+                min = sorted.length ? sorted[Math.floor(sorted.length * 0.05)] : 0;
+                max = sorted.length ? sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.95))] : 1;
+                if (max <= min) max = min + 1;
+                const colors = ['#2563eb', '#22c55e', '#eab308', '#dc2626'];
+                stops = colors.map((c, i) => [min + (max - min) * i / (colors.length - 1), c] as [number, string]);
+            }
+
+            const toRgb = (hex: string) => [1, 3, 5].map(i => parseInt(hex.substring(i, i + 2), 16));
+
+            const colorOf = (v: number | null): string => {
+                if (v === null || isNaN(v)) return '#888888';
+                // Few color steps: neighbouring points with the same color are drawn as one line
+                const step = colorBy === 'grade' ? 1 : (max - min) / 20;
+                v = Math.round(v / step) * step;
+                if (v <= stops[0][0]) return stops[0][1];
+                if (v >= stops[stops.length - 1][0]) return stops[stops.length - 1][1];
+                for (let i = 0; i < stops.length - 1; i++) {
+                    if (v <= stops[i + 1][0]) {
+                        const f = (v - stops[i][0]) / (stops[i + 1][0] - stops[i][0]);
+                        const a = toRgb(stops[i][1]);
+                        const b = toRgb(stops[i + 1][1]);
+                        return '#' + a.map((c, j) => Math.round(c + f * (b[j] - c)).toString(16).padStart(2, '0')).join('');
+                    }
+                }
+                return stops[stops.length - 1][1];
+            };
+
+            return { colorOf, stops, min, max };
+        },
+
+        /*
+         * Splits the track in pieces of the same color. The map engines draw each piece between null separators
+         * with its own color; consecutive pieces share their boundary point, so the line has no gaps.
+         */
+        SplitTrackByColor(mapData: Array<[number, number] | null>, values: Array<number | null>, colorOf: (v: number | null) => string): { mapData: Array<[number, number] | null>, colors: string[] } {
+
+            const outData: Array<[number, number] | null> = [];
+            const colors: string[] = [];
+            let current: Array<[number, number]> = [];
+            let currentColor = '';
+
+            const close = () => {
+                if (current.length > 1) {
+                    if (outData.length > 0) outData.push(null);
+                    outData.push(...current);
+                    colors.push(currentColor);
+                }
+                current = [];
+            };
+
+            for (let i = 0; i < mapData.length; i++) {
+                const point = mapData[i];
+                if (point === null) {
+                    close();
+                    continue;
+                }
+                // The segment that ends at this point takes the color of this point
+                const color = colorOf(values[i] ?? null);
+                if (current.length === 0) {
+                    current = [point];
+                    currentColor = color;
+                } else if (color === currentColor || current.length === 1) {
+                    if (current.length === 1) currentColor = color;
+                    current.push(point);
+                } else {
+                    const last = current[current.length - 1];
+                    close();
+                    current = [last, point];
+                    currentColor = color;
+                }
+            }
+            close();
+
+            return { mapData: outData, colors: colors };
+        },
+
+        /* Small legend with the color bar, added on top of the map (works with Leaflet and MapBox) */
+        AddTrackLegend(container: HTMLElement, title: string, stops: Array<[number, string]>, minLabel: string, maxLabel: string): void {
+            const min = stops[0][0];
+            const max = stops[stops.length - 1][0];
+            const gradient = stops.map(s => `${s[1]} ${Math.round((s[0] - min) / (max - min) * 100)}%`).join(', ');
+            const legend = document.createElement('div');
+            legend.className = 'wpgpxmaps-legend';
+            legend.style.cssText = 'position:absolute;left:8px;bottom:30px;z-index:1000;background:rgba(255,255,255,.9);padding:4px 8px;border-radius:4px;font:11px/1.3 sans-serif;color:#222;box-shadow:0 1px 3px rgba(0,0,0,.3);pointer-events:none';
+            const titleEl = document.createElement('div');
+            titleEl.textContent = title;
+            const bar = document.createElement('div');
+            bar.style.cssText = `width:140px;height:8px;margin:3px 0;border-radius:2px;background:linear-gradient(to right, ${gradient})`;
+            const labels = document.createElement('div');
+            labels.style.cssText = 'display:flex;justify-content:space-between';
+            const minEl = document.createElement('span');
+            minEl.textContent = minLabel;
+            const maxEl = document.createElement('span');
+            maxEl.textContent = maxLabel;
+            labels.append(minEl, maxEl);
+            legend.append(titleEl, bar, labels);
+            container.appendChild(legend);
+        },
+
         GetItemFromArray(arr: Array<[number,number]|null>, index: number): [number,number] | null {
             try {
                 return arr[index];

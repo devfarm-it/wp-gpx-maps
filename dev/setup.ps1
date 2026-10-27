@@ -40,7 +40,11 @@ $posts = [ordered]@{
     'File GPX mancante'                            = "[sgpx gpx=`"$g/missing.gpx`"]"
     'Path traversal'                               = "[sgpx gpx=`"/../../../../etc/passwd`"]"
     'Senza altitudine, solo velocita'              = "[sgpx gpx=`"$g/full.gpx`" showele=false showspeed=true showhr=true]"
-    'Due mappe nella stessa pagina'                ="[sgpx gpx=`"$g/full.gpx`"]`n`n[sgpx gpx=`"$g/multitrack.gpx`"]"
+    'Colore per pendenza'                          = "[sgpx gpx=`"$g/full.gpx`" colorby=grade showspeed=true]"
+    'Colore per velocita, FC e quota'              = "[sgpx gpx=`"$g/full.gpx`" colorby=speed uomspeed=1]`n`n[sgpx gpx=`"$g/full.gpx`" colorby=hr]`n`n[sgpx gpx=`"$g/full.gpx`" colorby=elevation]"
+    'Colore per pendenza, piu tracce'              = "[sgpx gpx=`"$g/multitrack.gpx`" colorby=grade]"
+    'Colore per pendenza senza quota'              = "[sgpx gpx=`"$g/notime-noele.gpx`" colorby=grade]"
+    'Due mappe nella stessa pagina'                = "[sgpx gpx=`"$g/full.gpx`"]`n`n[sgpx gpx=`"$g/multitrack.gpx`"]"
 }
 foreach ($title in $posts.Keys) {
     Wp post create --post_type=post --post_status=publish --post_title="$title" --post_content="$($posts[$title])"

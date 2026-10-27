@@ -48,6 +48,9 @@ interface Params {
     MapBoxMapCustomType: string;
     MapBox3dTerrain: boolean;
     MapBoxFog: boolean;
+    /* Track color: '' (one color), 'grade', 'speed', 'hr' or 'elevation', with one value per mapData point */
+    colorBy?: string;
+    colorData?: Array<number | null>;
 }
 
 interface LangTranslation {
