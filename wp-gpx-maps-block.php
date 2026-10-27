@@ -114,6 +114,14 @@ function wpgpxmaps_render_block( $attributes ) {
 		return '';
 	}
 
+	/**
+	 * Filters the shortcode attributes built from the block, e.g. for block attributes added by an add-on.
+	 *
+	 * @param array $atts       Shortcode attributes.
+	 * @param array $attributes Block attributes.
+	 */
+	$atts = apply_filters( 'wpgpxmaps_block_shortcode_atts', $atts, $attributes );
+
 	return '<div ' . get_block_wrapper_attributes() . '>' . wpgpxmaps_handle_shortcodes( $atts ) . '</div>';
 }
 

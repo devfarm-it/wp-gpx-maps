@@ -783,6 +783,23 @@ export class WPGPXMaps {
 			el_chart?.style.setProperty("display", "none");
 		}
 
+		/*
+		 * Public event for add-ons (WP GPX Maps Pro), API version 1:
+		 * document.addEventListener('wpgpxmaps:ready', e => { e.detail.map, e.detail.chart, e.detail.params.extra, ... })
+		 */
+		el_map.ownerDocument.dispatchEvent(new CustomEvent('wpgpxmaps:ready', {
+			detail: {
+				apiVersion: 1,
+				instance: this,
+				targetId: targetId,
+				engine: this.map instanceof MapBoxMapEngine ? 'mapbox' : 'leaflet',
+				map: this.map?.map ?? null,
+				chart: this.myChart,
+				container: el,
+				params: this.params,
+			}
+		}));
+
 		return this;
 
 	};

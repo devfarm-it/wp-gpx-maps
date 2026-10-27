@@ -202,6 +202,7 @@ Yes!
 * New: color the track by grade (climb / descent), speed, heart rate or elevation, with a legend on the map: colorby="grade|speed|hr|elevation", in the block and in the settings
 * Fix: "false" values in the shortcode (e.g. showele=false, summary=false) now turn off options enabled in the settings
 * Maps also start when the page is already loaded (block editor preview, content loaded later)
+* Developers: hooks for add-ons (filters wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra, wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_admin_tabs; actions wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tab_{tab}; JavaScript event "wpgpxmaps:ready")
 
 = 1.8.00 =
 * MapBox provider: needs ApiKey and brings a lot of new cool features like 3d maps and much more

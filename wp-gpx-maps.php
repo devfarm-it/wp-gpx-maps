@@ -26,6 +26,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 define( 'WPGPXMAPS_CURRENT_VERSION', '1.8.00' );
 
+/**
+ * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
+ * in a way that is not backward compatible. Hooks: wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra,
+ * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
+ * wpgpxmaps_admin_tab_{tab}; JavaScript event "wpgpxmaps:ready" on document.
+ */
+define( 'WPGPXMAPS_API_VERSION', 1 );
+
 require 'wp-gpx-maps-utils.php';
 require 'wp-gpx-maps-admin.php';
 require 'wp-gpx-maps-block.php';
@@ -170,6 +178,9 @@ function wpgpxmaps_enqueue_scripts() {
 	wp_enqueue_style( 'output-style' );
 	wp_enqueue_script_module( 'wp-gpx-maps' );
 
+	/** Fires after the map scripts are enqueued on the front end, for add-on scripts and styles. */
+	do_action( 'wpgpxmaps_enqueue_scripts' );
+
 }
 
 function wpgpxmaps_findValue( $attr, $attributeName, $optionName, $defaultValue ) {
@@ -281,6 +292,16 @@ function wpgpxmaps_handle_folder_shortcodes( $attr, $content = '' ) {
 }
 
 function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
+
+	/* [sgpx] without attributes passes an empty string */
+	$attr = is_array( $attr ) ? $attr : array();
+
+	/**
+	 * Filters the shortcode (and block) attributes before they are read, e.g. to add defaults or new attributes.
+	 *
+	 * @param array $attr Shortcode attributes.
+	 */
+	$attr = apply_filters( 'wpgpxmaps_shortcode_atts', $attr );
 
 	$error = '';
 	/* General */
@@ -727,6 +748,15 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	/* Same URL (and version) as the enqueued module, so the browser loads it only once */
 	$module_url = add_query_arg( 'ver', wpgpxmaps_module_version(), plugins_url( 'assets/dist/WP-GPX-Maps.es.js', __FILE__ ) );
 
+	/**
+	 * Filters extra data passed to the map script (params.extra), read by add-ons in the "wpgpxmaps:ready" event.
+	 *
+	 * @param array $extra Data, encoded as JSON.
+	 * @param array $attr  Shortcode attributes.
+	 */
+	$extra = apply_filters( 'wpgpxmaps_map_extra', array(), $attr );
+	$extra = is_array( $extra ) ? $extra : array();
+
 	$output = '
 		<div id="wpgpxmaps_' . esc_attr( $r ) . '" class="wpgpxmaps">
 			<div id="map_' . esc_attr( $r ) . '_cont" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $mh ) . ';position:relative" >
@@ -761,6 +791,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 					color1             : ' . wp_json_encode( $colors_map, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ',
 					colorBy            : "' . esc_js( $points_color ? $colorby : '' ) . '",
 					colorData          : ' . wp_json_encode( array_values( $points_color ) ) . ',
+					extra              : ' . wp_json_encode( $extra, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ',
 					color2             : "' . esc_js( $color_graph ) . '",
 					color3             : "' . esc_js( $color_graph_speed ) . '",
 					color4             : "' . esc_js( $color_graph_hr ) . '",
@@ -869,7 +900,14 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		$output .= "Download file: <a href='" . esc_url( $gpxurl ) . "' target='_new' download>" . esc_html( basename( $gpxurl ) ) . '</a>';
 	}
 
-	return $output;
+	/**
+	 * Filters the HTML of a map (map, chart, summary and download link).
+	 *
+	 * @param string $output HTML.
+	 * @param array  $attr   Shortcode attributes.
+	 * @param string $r      Map id: the elements are #wpgpxmaps_{id}, #map_{id}, #myChart_{id}.
+	 */
+	return apply_filters( 'wpgpxmaps_map_html', $output, $attr, $r );
 }
 
 function convertSeconds( $s ) {
