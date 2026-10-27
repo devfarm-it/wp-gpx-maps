@@ -18,6 +18,20 @@ import { LeafletMapEngine } from './maps-engines/LeafletMapEngine';
 
 import { MapBoxMapEngine } from './maps-engines/MapBoxMapEngine';
 
+/* Public API for add-ons (version 1): the bundled Leaflet (with MarkerCluster and FullScreen), to draw extra maps */
+import L from 'leaflet';
+export { L as Leaflet };
+
+/*
+ * Default Leaflet marker icons. Leaflet looks for them next to leaflet.css, which does not work once bundled
+ * (the browser asked for "marker-icon.png" relative to the page): use the images inlined in the bundle.
+ */
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({ iconUrl: markerIcon, iconRetinaUrl: markerIcon2x, shadowUrl: markerShadow });
+
 const wpgpxmaps_FEET_MILES = "1";
 const wpgpxmaps_METERS_KILOMETERS = "2";
 const wpgpxmaps_METERS_NAUTICALMILES = "3";
@@ -92,7 +106,8 @@ export class WPGPXMaps {
 
 		var el = document.getElementById('wpgpxmaps_' + targetId);
 		var el_map = document.getElementById('map_' + targetId);
-		var el_chart = document.getElementById('chart_' + targetId);
+		/* The chart canvas (its id is myChart_..., not chart_...) */
+		var el_chart = document.getElementById('myChart_' + targetId);
 		var el_report = document.getElementById('report_' + targetId);
 		var el_osm_credits = document.getElementById('wpgpxmaps_' + targetId + '_osm_footer');
 
@@ -121,30 +136,21 @@ export class WPGPXMaps {
 
 		this.map.EventSelectChart = function (LatLon: LatLng) {
 
-			if (_this.myChart) {
-				var l1 = LatLon[0];
-				var l2 = LatLon[1];
-				var ci = _this.getClosestIndex(mapData, l1, l2);
-				var activeElements: any[] = [];
-				var seriesLen = (_this.myChart as any)._metasets.length;
-				for (var i = 0; i < seriesLen; i++) {
-					activeElements.push(((_this.myChart as any)._metasets[i] as any).data[ci]);
-				}
-				if (activeElements.length > 0) {
-
-					let _active = _this.myChart.tooltip?.getActiveElements();
-					if (_active == undefined || _active.length == 0) {
-						_this.myChart.tooltip?.setActiveElements([{
-							datasetIndex: 0,
-							index: ci,
-						}], {
-							x: activeElements[0].x,
-							y: activeElements[0].y
-						});
-					}
-					(_this.myChart.tooltip as any).setActiveElements(activeElements);
-					//(_this.myChart.tooltip as any).draw();
-					_this.myChart.draw();
+			const chart = _this.myChart;
+			if (chart) {
+				const ci = _this.getClosestIndex(mapData, LatLon[0], LatLon[1]);
+				/* Chart.js 4 wants { datasetIndex, index } references, only for points that exist */
+				const active = chart.data.datasets
+					.map((_ds: any, datasetIndex: number) => ({ datasetIndex, index: ci }))
+					.filter((a: any) => {
+						const el: any = chart.getDatasetMeta(a.datasetIndex).data[ci];
+						return el && !isNaN(el.x) && !isNaN(el.y);
+					});
+				if (active.length > 0) {
+					const el: any = chart.getDatasetMeta(active[0].datasetIndex).data[ci];
+					chart.setActiveElements(active);
+					chart.tooltip?.setActiveElements(active, { x: el.x, y: el.y });
+					chart.update('none');
 				}
 			}
 		};
@@ -315,8 +321,61 @@ export class WPGPXMaps {
 		*/
 
 		/* Print Track. */
-		if (mapData) {
+		const { colorBy, colorData } = this.params;
+
+		if (mapData && colorBy && colorData && colorData.length === mapData.length) {
+
+			/* Track colored by grade, speed, heart rate or elevation, with a legend */
+			const scale = WPGPXMAPS.Utils.TrackColorScale(colorBy, colorData);
+			const colored = WPGPXMAPS.Utils.SplitTrackByColor(mapData, colorData, scale.colorOf);
+			this.map.AppPolylines(colored.mapData, colored.colors, currentIcon, startIcon, endIcon);
+
+			const speedUnits: { [key: string]: string } = { '0': 'm/s', '1': 'km/h', '2': 'mi/h', '3': 'min/km', '4': 'min/mi', '5': 'knots', '6': 'min/100m' };
+			const legend: { [key: string]: [string, string] } = {
+				grade: [langs.grade, '%'],
+				speed: [langs.speed, ' ' + (speedUnits[unitspeed] ?? 'm/s')],
+				hr: [langs.heartRate, ' bpm'],
+				elevation: [langs.altitude, (unit === wpgpxmaps_FEET_MILES || unit === wpgpxmaps_FEET_NAUTICALMILES) ? ' ft' : ' m'],
+			};
+			const [title, suffix] = legend[colorBy] ?? [colorBy, ''];
+			const dec = colorBy === 'speed' ? 1 : 0;
+			const container = document.getElementById('map_' + targetId + '_cont');
+			if (container) {
+				WPGPXMAPS.Utils.AddTrackLegend(container, title, scale.stops,
+					(colorBy === 'grade' ? '≤' : '') + scale.min.toFixed(dec) + suffix,
+					(colorBy === 'grade' ? '≥' : '') + scale.max.toFixed(dec) + suffix);
+			}
+
+		} else if (mapData) {
 			this.map.AppPolylines(mapData, color1, currentIcon, startIcon, endIcon);
+
+			/* Several GPX files: legend with the name and color of each file */
+			const { trackNames, trackColors } = this.params;
+			const container = document.getElementById('map_' + targetId + '_cont');
+			if (container && trackNames && trackNames.length > 1 && trackColors && trackColors.length) {
+				WPGPXMAPS.Utils.AddTracksLegend(container, trackNames, trackColors);
+			}
+		}
+
+		/* Default start / end markers (when no custom icon is set) and distance markers */
+		const realPoints = (mapData || []).filter((p: any) => p !== null) as Array<[number, number]>;
+		if (realPoints.length > 1) {
+			if (this.params.startEnd !== false && !startIcon) {
+				this.map.AddHtmlMarker(realPoints[0], WPGPXMAPS.Utils.MarkerElement('', '#16a34a', 16), langs.start ?? 'Start');
+			}
+			if (this.params.startEnd !== false && !endIcon) {
+				this.map.AddHtmlMarker(realPoints[realPoints.length - 1], WPGPXMAPS.Utils.MarkerElement('', '#dc2626', 16), langs.finish ?? 'Finish');
+			}
+			const kmMarkers = Number(this.params.kmMarkers) || 0;
+			if (kmMarkers > 0) {
+				const miles = unit === wpgpxmaps_FEET_MILES || unit === wpgpxmaps_METER_MILES;
+				const nautical = unit === wpgpxmaps_METERS_NAUTICALMILES || unit === wpgpxmaps_FEET_NAUTICALMILES;
+				const unitMeters = miles ? 1609.344 : (nautical ? 1852 : 1000);
+				const suffix = miles ? ' mi' : (nautical ? ' NM' : ' km');
+				for (const m of WPGPXMAPS.Utils.DistanceMarkers(mapData, kmMarkers, unitMeters)) {
+					this.map.AddHtmlMarker(m.point, WPGPXMAPS.Utils.MarkerElement(String(m.value), '#1f2937', 22), m.value + suffix);
+				}
+			}
 		}
 
 		/*
@@ -356,7 +415,9 @@ export class WPGPXMaps {
 
 		var graphh = el_chart?.style.height;
 
-		if (graphDist && (graphEle || graphSpeed || graphHr || graphAtemp || graphCad) && graphh != '0px') {
+		/* Empty arrays are truthy: check that there is data to show (gheight=0px sends none) */
+		const hasData = (a: any[] | undefined) => Array.isArray(a) && a.length > 0;
+		if (hasData(graphDist) && (hasData(graphEle) || hasData(graphSpeed) || hasData(graphHr) || hasData(graphAtemp) || hasData(graphCad) || hasData(graphGrade)) && graphh != '0px' && graphh != '0') {
 
 			var valLen = graphDist.length;
 
@@ -370,7 +431,7 @@ export class WPGPXMaps {
 
 				/* meters / kilometers */
 				label_x = { suf: 'km', dec: 1 };
-				label_y = { suf: 'm', dec: 2 };
+				label_y = { suf: 'm', dec: 0 };
 
 			} else if (wpgpxmaps_METERS_NAUTICALMILES == unit) {
 
@@ -463,25 +524,19 @@ export class WPGPXMaps {
 							callbacks: {
 								title: function (tooltipItems) {
 
-									/* Return value for title: */
-									var x_pos = tooltipItems[0].element.x as number;
-									var x_dec = label_x.dec;
-									var x_unit = label_x.suf;
-									return x_pos.toFixed(x_dec) + x_unit;
+									/* Distance of the point (data value, not the pixel position) */
+									var x_pos = tooltipItems[0].parsed.x as number;
+									return x_pos.toFixed(label_x.dec) + ' ' + label_x.suf;
 								},
 								label: function (tooltipItem) {
 
-									/* Format list values: */
-									var label = tooltipItem.label || '';
+									/* Series name and value of the point */
 									var label_y = _formats[tooltipItem.datasetIndex].label_y;
-									var y_dec = label_y.dec;
-									var y_unit = label_y.suf;
-									var y_pos = tooltipItem.element.y as number;
-									if (label) {
-										label += ': ';
+									var y_pos = tooltipItem.parsed.y as number;
+									if (y_pos === null || isNaN(y_pos)) {
+										return '';
 									}
-									label += y_pos.toFixed(y_dec) + y_unit;
-									return label;
+									return (tooltipItem.dataset.label || '') + ': ' + y_pos.toFixed(label_y.dec) + ' ' + label_y.suf;
 								},
 								footer: function (tooltipItem: any) {
 
@@ -573,7 +628,8 @@ export class WPGPXMaps {
 
 				(hoptions.options?.scales as any)[_id] = yaxe;
 				_formats.push({ "label_x": label_x, "label_y": label_y });
-				hoptions.data.datasets.push(this.wpgpxmapsGetDataset(langs.altitude, myData.Items, color2, _id));
+				/* Altitude drawn as a filled profile */
+				hoptions.data.datasets.push({ ...this.wpgpxmapsGetDataset(langs.altitude, myData.Items, color2, _id), fill: 'start' } as any);
 
 			}
 
@@ -750,6 +806,26 @@ export class WPGPXMaps {
 				hoptions.data.datasets.push(this.wpgpxmapsGetDataset(langs.grade, myData.Items, color6, _id));
 			}
 
+			/* Vertical line on the point shown in the tooltip (mouse on the chart or on the track) */
+			hoptions.plugins = [{
+				id: 'wpgpxmapsCrosshair',
+				afterDatasetsDraw(chart: Chart) {
+					const active = chart.tooltip?.getActiveElements();
+					if (!active || active.length === 0) return;
+					const x = active[0].element.x;
+					const { top, bottom } = chart.chartArea;
+					const c = chart.ctx;
+					c.save();
+					c.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+					c.lineWidth = 1;
+					c.beginPath();
+					c.moveTo(x, top);
+					c.lineTo(x, bottom);
+					c.stroke();
+					c.restore();
+				}
+			}];
+
 			var ctx = (document.getElementById('myChart_' + targetId) as HTMLCanvasElement)?.getContext('2d');
 			if (ctx)
 				this.myChart = new Chart(ctx, hoptions);
@@ -757,6 +833,23 @@ export class WPGPXMaps {
 		} else {
 			el_chart?.style.setProperty("display", "none");
 		}
+
+		/*
+		 * Public event for add-ons (WP GPX Maps Pro), API version 1:
+		 * document.addEventListener('wpgpxmaps:ready', e => { e.detail.map, e.detail.chart, e.detail.params.extra, ... })
+		 */
+		el_map.ownerDocument.dispatchEvent(new CustomEvent('wpgpxmaps:ready', {
+			detail: {
+				apiVersion: 1,
+				instance: this,
+				targetId: targetId,
+				engine: this.map instanceof MapBoxMapEngine ? 'mapbox' : 'leaflet',
+				map: this.map?.map ?? null,
+				chart: this.myChart,
+				container: el,
+				params: this.params,
+			}
+		}));
 
 		return this;
 

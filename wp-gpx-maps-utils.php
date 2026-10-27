@@ -346,7 +346,8 @@ function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
 						if ( (float) $ele > (float) $lastEle ) {
 							$points->totalEleUp += $deltaEle;
 						} else {
-							$points->totalEleDown += $deltaEle;
+							/* Descent is shown as a positive number, like the climb */
+							$points->totalEleDown -= $deltaEle;
 						}
 						$grade = $deltaEle / $offset * 100;
 					}
@@ -657,6 +658,264 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
 		}
 	}
 	return $points;
+}
+
+/**
+ * Values used to color the track (attribute colorby), one per map point and in the same order as the map data
+ * (null where the tracks are separated). Returns an empty array when the GPX has no data for that value.
+ *
+ * grade: % slope averaged over about 100 m (raw GPS points change slope at every meter)
+ * speed: in the speed unit of the chart; hr: bpm; elevation: m or ft as the chart.
+ */
+function wpgpxmaps_colorValues( $points, $colorby, $unit_of_measure, $unit_of_measure_speed ) {
+
+	if ( ! in_array( $colorby, array( 'grade', 'speed', 'hr', 'elevation' ), true ) || ! is_array( $points->lat ) ) {
+		return array();
+	}
+
+	$keys    = array_keys( $points->lat );
+	$values  = array();
+	$hasData = false;
+	$feet    = ( wpgpxmaps_FEET_MILES == $unit_of_measure || wpgpxmaps_FEET_NAUTICALMILES == $unit_of_measure );
+
+	foreach ( $keys as $n => $k ) {
+
+		if ( null === $points->lat[ $k ] ) {
+			$values[] = null;
+			continue;
+		}
+
+		$value = null;
+
+		if ( 'grade' == $colorby ) {
+			/* Points about 50 m before and after (at least the next point on each side), inside the same track */
+			$dist = (float) $points->dist[ $k ];
+			$from = $n;
+			$to   = $n;
+			while ( $from > 0 && null !== $points->lat[ $keys[ $from - 1 ] ] && ( $from == $n || $dist - (float) $points->dist[ $keys[ $from - 1 ] ] <= 50 ) ) {
+				$from--;
+			}
+			while ( $to < count( $keys ) - 1 && null !== $points->lat[ $keys[ $to + 1 ] ] && ( $to == $n || (float) $points->dist[ $keys[ $to + 1 ] ] - $dist <= 50 ) ) {
+				$to++;
+			}
+			$run  = (float) $points->dist[ $keys[ $to ] ] - (float) $points->dist[ $keys[ $from ] ];
+			$ele1 = (float) $points->ele[ $keys[ $from ] ];
+			$ele2 = (float) $points->ele[ $keys[ $to ] ];
+			if ( $run > 0 && 0 != $ele1 && 0 != $ele2 ) {
+				$value = ( $ele2 - $ele1 ) / $run * 100;
+			}
+		} elseif ( 'speed' == $colorby ) {
+			if ( (float) $points->speed[ $k ] > 0 ) {
+				$value = (float) convertSpeed( $points->speed[ $k ], $unit_of_measure_speed );
+			}
+		} elseif ( 'hr' == $colorby ) {
+			if ( (float) $points->hr[ $k ] > 0 ) {
+				$value = (float) $points->hr[ $k ];
+			}
+		} elseif ( 'elevation' == $colorby ) {
+			if ( 0 != (float) $points->ele[ $k ] ) {
+				$value = (float) $points->ele[ $k ] * ( $feet ? 3.2808399 : 1 );
+			}
+		}
+
+		if ( null !== $value ) {
+			$hasData = true;
+			$value   = round( $value, 1 );
+		}
+		/* Points without a value keep the color of the previous one: use the previous value */
+		$values[] = ( null === $value && $n > 0 ) ? end( $values ) : $value;
+	}
+
+	return $hasData ? $values : array();
+}
+
+/**
+ * Distance keeps growing across tracks: every track (after a null separator) starts from the distance
+ * reached by the previous one, so the chart does not restart from 0.
+ */
+function wpgpxmaps_cumulativeDistance( $points ) {
+	$offset = 0;
+	$last   = 0;
+	foreach ( array_keys( $points->lat ) as $k ) {
+		if ( null === $points->lat[ $k ] ) {
+			$offset = $last;
+			continue;
+		}
+		if ( null !== $points->dist[ $k ] ) {
+			$points->dist[ $k ] = round( (float) $points->dist[ $k ] + $offset, 2 );
+			$last               = $points->dist[ $k ];
+		}
+	}
+	if ( $last > 0 ) {
+		$points->totalLength = $last;
+	}
+	return $points;
+}
+
+/**
+ * Merge the points of several GPX files (attribute gpx="a.gpx,b.gpx") into one result,
+ * with a null separator between the files and the statistics of the whole route.
+ */
+function wpgpxmaps_mergePoints( $parts ) {
+
+	$parts = array_values( array_filter( $parts, 'is_object' ) );
+
+	if ( count( $parts ) == 1 ) {
+		return wpgpxmaps_cumulativeDistance( $parts[0] );
+	}
+
+	$merged = wpgpxmaps_emptyPoints();
+	$fields = array( 'dt', 'lat', 'lon', 'ele', 'dist', 'speed', 'hr', 'atemp', 'cad', 'grade' );
+
+	foreach ( $parts as $part ) {
+		if ( ! $part->lat ) {
+			continue;
+		}
+		if ( $merged->lat ) {
+			foreach ( $fields as $f ) {
+				$merged->{$f}[] = null;
+			}
+		}
+		foreach ( $fields as $f ) {
+			foreach ( array_values( $part->$f ) as $value ) {
+				$merged->{$f}[] = $value;
+			}
+		}
+
+		if ( 0 != $part->maxEle || 0 != $part->minEle ) {
+			$merged->maxEle = ( 0 == $merged->maxEle && 0 == $merged->minEle ) ? $part->maxEle : max( $merged->maxEle, $part->maxEle );
+			$merged->minEle = ( 0 == $merged->minEle ) ? $part->minEle : min( $merged->minEle, $part->minEle );
+		}
+		$merged->totalEleUp   += (float) $part->totalEleUp;
+		$merged->totalEleDown += (float) $part->totalEleDown;
+		if ( $part->maxTime ) {
+			$merged->maxTime = max( (int) $merged->maxTime, (int) $part->maxTime );
+		}
+		if ( $part->minTime ) {
+			$merged->minTime = $merged->minTime ? min( (int) $merged->minTime, (int) $part->minTime ) : (int) $part->minTime;
+		}
+	}
+
+	/* Averages of the whole route */
+	$averages = array(
+		'avgSpeed' => array( 'speed', null ),
+		'avgCad'   => array( 'cad', 0 ),
+		'avgHr'    => array( 'hr', 0 ),
+		'avgTemp'  => array( 'atemp', 1 ),
+	);
+	foreach ( $averages as $stat => $def ) {
+		$values = array_filter( $merged->{$def[0]} );
+		if ( $values ) {
+			$avg              = array_sum( $values ) / count( $values );
+			$merged->$stat = null === $def[1] ? $avg : (float) round( $avg, $def[1] );
+		} else {
+			$merged->$stat = null;
+		}
+	}
+
+	return wpgpxmaps_cumulativeDistance( $merged );
+}
+
+/**
+ * Extra statistics from the parsed points (after the merge of several GPX files):
+ * movingTime (seconds, pauses excluded), maxSpeed (m/s, 99th percentile of the smoothed speed),
+ * maxGrade and minGrade (%, averaged over about 100 m).
+ */
+function wpgpxmaps_extraStats( $points ) {
+
+	$stats = array(
+		'movingTime' => 0,
+		'maxSpeed'   => 0,
+		'maxGrade'   => null,
+		'minGrade'   => null,
+	);
+
+	if ( ! is_array( $points->lat ) ) {
+		return $stats;
+	}
+
+	$keys   = array_keys( $points->lat );
+	$speeds = array();
+
+	foreach ( $keys as $n => $k ) {
+		if ( $n == 0 || null === $points->lat[ $k ] || null === $points->lat[ $keys[ $n - 1 ] ] ) {
+			continue;
+		}
+		$t1    = isset( $points->dt[ $keys[ $n - 1 ] ] ) ? (int) $points->dt[ $keys[ $n - 1 ] ] : 0;
+		$t2    = isset( $points->dt[ $k ] ) ? (int) $points->dt[ $k ] : 0;
+		$speed = (float) $points->speed[ $k ];
+		if ( $speed > 0 ) {
+			$speeds[] = $speed;
+		}
+		/* Moving: faster than 0.5 m/s (1.8 km/h); long stops between two points are excluded */
+		if ( $t1 > 0 && $t2 > $t1 && $speed >= 0.5 ) {
+			$stats['movingTime'] += $t2 - $t1;
+		}
+	}
+
+	/* Max speed on the smoothed speed (median of 5 points), like the chart: single GPS spikes do not count */
+	$speeds = array_values( array_filter( wpgpxmaps_smoothSpeed( $points ), function ( $v ) {
+		return $v > 0;
+	} ) );
+	if ( $speeds ) {
+		sort( $speeds );
+		$stats['maxSpeed'] = $speeds[ (int) floor( ( count( $speeds ) - 1 ) * 0.99 ) ];
+	}
+
+	$grades = array_filter( wpgpxmaps_colorValues( $points, 'grade', '0', '0' ), 'is_numeric' );
+	if ( $grades ) {
+		$stats['maxGrade'] = max( $grades );
+		$stats['minGrade'] = min( $grades );
+	}
+
+	return $stats;
+}
+
+/**
+ * Values in the order of the map points (as returned by wpgpxmaps_colorValues) keyed like $points->lat.
+ */
+function wpgpxmaps_valuesByKey( $points, $values ) {
+	$keys = array_keys( $points->lat );
+	return count( $keys ) === count( $values ) ? array_combine( $keys, $values ) : array();
+}
+
+/**
+ * Speed for the chart: median of 5 neighbouring points inside the same track, which removes single GPS spikes.
+ * Keyed like $points->speed.
+ */
+function wpgpxmaps_smoothSpeed( $points ) {
+	$keys   = array_keys( $points->lat );
+	$result = array();
+	foreach ( $keys as $n => $k ) {
+		if ( null === $points->lat[ $k ] ) {
+			continue;
+		}
+		$window = array();
+		for ( $j = $n - 2; $j <= $n + 2; $j++ ) {
+			if ( $j < 0 || $j >= count( $keys ) || null === $points->lat[ $keys[ $j ] ] ) {
+				continue;
+			}
+			/* Stop at the separator between two tracks */
+			$between = $j < $n ? array_slice( $keys, $j, $n - $j ) : array_slice( $keys, $n, $j - $n + 1 );
+			foreach ( $between as $b ) {
+				if ( null === $points->lat[ $b ] ) {
+					continue 2;
+				}
+			}
+			$window[] = (float) $points->speed[ $keys[ $j ] ];
+		}
+		sort( $window );
+		$result[ $k ] = $window ? $window[ (int) floor( count( $window ) / 2 ) ] : (float) $points->speed[ $k ];
+	}
+	return $result;
+}
+
+/**
+ * Seconds as h:mm:ss (hours are not limited to 24).
+ */
+function wpgpxmaps_formatDuration( $seconds ) {
+	$seconds = (int) $seconds;
+	return sprintf( '%02d:%02d:%02d', intdiv( $seconds, 3600 ), intdiv( $seconds % 3600, 60 ), $seconds % 60 );
 }
 
 function toRadians( $degrees ) {

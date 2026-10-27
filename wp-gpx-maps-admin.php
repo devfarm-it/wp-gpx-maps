@@ -169,6 +169,13 @@ function wpgpxmaps_ilc_admin_tabs( $current ) {
 		);
 	}
 
+	/**
+	 * Filters the tabs of the WP GPX Maps admin page. Add-ons print their tab with the action wpgpxmaps_admin_tab_{tab}.
+	 *
+	 * @param array $tabs Tab slug => label.
+	 */
+	$tabs = apply_filters( 'wpgpxmaps_admin_tabs', $tabs );
+
 	echo '<h2 class="nav-tab-wrapper">';
 	foreach ( $tabs as $tab => $name ) {
 		$class = ( $tab == $current ) ? ' nav-tab-active' : '';
@@ -245,6 +252,9 @@ function wpgpxmaps_html_page() {
 		include 'wp-gpx-maps-admin-administration.php';
 	} elseif ( 'help' == $tab ) {
 		include 'wp-gpx-maps-help.php';
+	} else {
+		/** Prints the content of a tab added with the wpgpxmaps_admin_tabs filter. */
+		do_action( 'wpgpxmaps_admin_tab_' . $tab );
 	}
 }
 ?>

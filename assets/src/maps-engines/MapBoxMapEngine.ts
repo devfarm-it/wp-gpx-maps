@@ -317,6 +317,15 @@ export class MapBoxMapEngine implements MapEngine<Map> {
             }
             this.markersAdded = true;
 
+            /* Hover on the track: move the marker and show the point in the chart (handlers stay when the style changes) */
+            this.map.on('mousemove', 'route', (e) => {
+                this.map.getCanvas().style.cursor = 'pointer';
+                this.MoveMarkerToPosition([e.lngLat.lat, e.lngLat.lng], true);
+            });
+            this.map.on('mouseleave', 'route', () => {
+                this.map.getCanvas().style.cursor = '';
+            });
+
             if ('' == currentIcon || null == currentIcon) {
                 currentIcon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
             }
@@ -381,11 +390,20 @@ export class MapBoxMapEngine implements MapEngine<Map> {
 
         this.CurrentLocationMarker?.setLngLat([LatLon[1], LatLon[0]]);
 
-        //throw new Error('Method not implemented.');
+        if (true == updateChart && this.EventSelectChart) {
+            this.EventSelectChart(LatLon);
+        }
     }
     SetCurrentGPSPosition(LatLon: [number, number], currentpositioncon: string, lng: LangTranslation): void {
         ///throw new Error('Method not implemented.');
     }
+    AddHtmlMarker(LatLon: [number, number], element: HTMLElement, title?: string): void {
+        if (title) {
+            element.title = title;
+        }
+        new mapboxgl.Marker({ element: element }).setLngLat([LatLon[1], LatLon[0]]).addTo(this.map);
+    }
+
     CenterMap(): void {
 
         try {
@@ -414,7 +432,10 @@ export class MapBoxMapEngine implements MapEngine<Map> {
                 const sw = new mapboxgl.LngLat(bounds.minLng, bounds.minLat);
                 const ne = new mapboxgl.LngLat(bounds.maxLng, bounds.maxLat);
 
-                this.map?.fitBounds(new mapboxgl.LngLatBounds(sw, ne), { padding: 30, animate: false });
+                /* Initial 3D view: tilt (pitch) and rotation (bearing) set in the shortcode / block */
+                const pitch = Number(this.otherParams?.MapBoxPitch) || 0;
+                const bearing = Number(this.otherParams?.MapBoxBearing) || 0;
+                this.map?.fitBounds(new mapboxgl.LngLatBounds(sw, ne), { padding: pitch > 0 ? 60 : 30, animate: false, pitch: pitch, bearing: bearing });
 
             }
 
