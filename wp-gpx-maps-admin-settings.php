@@ -172,12 +172,15 @@ function render_select($name, $label, $options, $selected) {
 			render_checkbox('wpgpxmaps_summary_avg_hr', 'Average heart rate:', $avg_hr);
 			render_checkbox('wpgpxmaps_summary_avg_temp', 'Average temperature:', $avg_temp);
 			render_checkbox('wpgpxmaps_summary_total_time', 'Total time:', $total_time);
+			render_checkbox('wpgpxmaps_summary_moving_time', 'Moving time:', get_option('wpgpxmaps_summary_moving_time'));
+			render_checkbox('wpgpxmaps_summary_max_speed', 'Max speed:', get_option('wpgpxmaps_summary_max_speed'));
+			render_checkbox('wpgpxmaps_summary_max_grade', 'Max grade (climb / descent):', get_option('wpgpxmaps_summary_max_grade'));
 			?>
 		</table>
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_summary,wpgpxmaps_summary_tot_len,wpgpxmaps_summary_max_ele,wpgpxmaps_summary_min_ele,wpgpxmaps_summary_total_ele_up,wpgpxmaps_summary_total_ele_down,wpgpxmaps_summary_avg_speed,wpgpxmaps_summary_avg_cad,wpgpxmaps_summary_avg_hr,wpgpxmaps_summary_avg_temp,wpgpxmaps_summary_total_time" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_summary,wpgpxmaps_summary_tot_len,wpgpxmaps_summary_max_ele,wpgpxmaps_summary_min_ele,wpgpxmaps_summary_total_ele_up,wpgpxmaps_summary_total_ele_down,wpgpxmaps_summary_avg_speed,wpgpxmaps_summary_avg_cad,wpgpxmaps_summary_avg_hr,wpgpxmaps_summary_avg_temp,wpgpxmaps_summary_total_time,wpgpxmaps_summary_moving_time,wpgpxmaps_summary_max_speed,wpgpxmaps_summary_max_grade" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>
@@ -236,6 +239,8 @@ function render_select($name, $label, $options, $selected) {
 				'hr' => 'Heart rate',
 				'elevation' => 'Elevation'
 			], get_option('wpgpxmaps_map_color_by'));
+			render_checkbox('wpgpxmaps_map_hide_start_end', 'Hide start / finish markers:', get_option('wpgpxmaps_map_hide_start_end'));
+			render_text_input('wpgpxmaps_map_km_markers', 'Distance markers every:', get_option('wpgpxmaps_map_km_markers'), 'width:60px;', 'km / mi (empty = none)');
 			render_checkbox('wpgpxmaps_zoomonscrollwheel', 'On mouse scroll wheel:', $zoomonscrollwheel);
 			render_checkbox('wpgpxmaps_show_waypoint', 'Waypoints support:', $showW);
 			render_text_input('wpgpxmaps_map_start_icon', 'Start track icon:', get_option('wpgpxmaps_map_start_icon'), 'width:400px;');
@@ -248,7 +253,7 @@ function render_select($name, $label, $options, $selected) {
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_map_color_by,wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_map_color_by,wpgpxmaps_map_hide_start_end,wpgpxmaps_map_km_markers,wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>

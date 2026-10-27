@@ -26,6 +26,8 @@ function wpgpxmaps_block_options() {
 		'gheight'          => 'wpgpxmaps_graph_height',
 		'mlinecolor'       => 'wpgpxmaps_map_line_color',
 		'colorby'          => 'wpgpxmaps_map_color_by',
+		'kmmarkers'        => 'wpgpxmaps_map_km_markers',
+		'startend'         => 'wpgpxmaps_map_hide_start_end',
 		'glinecolor'       => 'wpgpxmaps_graph_line_color',
 		'uom'              => 'wpgpxmaps_unit_of_measure',
 		'uomspeed'         => 'wpgpxmaps_unit_of_measure_speed',
@@ -46,6 +48,9 @@ function wpgpxmaps_block_options() {
 		'summaryeledown'   => 'wpgpxmaps_summary_total_ele_down',
 		'summaryavgspeed'  => 'wpgpxmaps_summary_avg_speed',
 		'summarytotaltime' => 'wpgpxmaps_summary_total_time',
+		'summarymovingtime' => 'wpgpxmaps_summary_moving_time',
+		'summarymaxspeed'  => 'wpgpxmaps_summary_max_speed',
+		'summarymaxgrade'  => 'wpgpxmaps_summary_max_grade',
 	);
 }
 
@@ -75,6 +80,8 @@ function wpgpxmaps_block_editor_data() {
 	if ( '' == $defaults['colorby'] ) {
 		$defaults['colorby'] = 'none';
 	}
+	/* The setting is "hide start / finish markers", the block option is "show" */
+	$defaults['startend'] = 'true' !== $defaults['startend'];
 
 	$settings_url = current_user_can( 'manage_options' ) ? admin_url( 'options-general.php?page=WP-GPX-Maps' ) : admin_url( 'admin.php?page=WP-GPX-Maps' );
 

@@ -31,6 +31,7 @@ define( 'WPGPXMAPS_CURRENT_VERSION', '1.8.00' );
  * in a way that is not backward compatible. Hooks: wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra,
  * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
  * wpgpxmaps_admin_tab_{tab}; JavaScript event "wpgpxmaps:ready" on document.
+ * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_module_url(); the module exports WPGPXMaps and Leaflet.
  */
 define( 'WPGPXMAPS_API_VERSION', 1 );
 
@@ -159,6 +160,95 @@ function wpgpxmaps_resolveLocalPath( $relativePath ) {
 function wpgpxmaps_module_version() {
 	$mtime = @filemtime( plugin_dir_path( __FILE__ ) . 'assets/dist/WP-GPX-Maps.es.js' );
 	return WPGPXMAPS_CURRENT_VERSION . ( $mtime ? '.' . $mtime : '' );
+}
+
+/**
+ * Public API (add-ons): URL of the map JavaScript module, which exports WPGPXMaps and Leaflet.
+ */
+function wpgpxmaps_module_url() {
+	return add_query_arg( 'ver', wpgpxmaps_module_version(), plugins_url( 'assets/dist/WP-GPX-Maps.es.js', __FILE__ ) );
+}
+
+/**
+ * Public API (add-ons): summary of a track, cached until the GPX files change.
+ *
+ * @param string $gpx Value of the gpx attribute (path from the site root or URL, several separated by commas).
+ * @return array|null start / end [lat, lon], bounds [[south, west], [north, east]], length (m), eleUp / eleDown (m),
+ *                    maxEle / minEle (m), duration (s, 0 when the GPX has no time), line (up to 100 [lat, lon] points,
+ *                    null between tracks) or null when no file can be read.
+ */
+function wpgpxmaps_get_track_info( $gpx ) {
+
+	$list  = array_values( array_filter( array_map( 'trim', explode( ',', (string) $gpx ) ) ) );
+	$files = array();
+	$key   = '';
+	foreach ( $list as $item ) {
+		$remote = ( 1 == preg_match( '/^(http(s)?\:\/\/)/', $item ) );
+		$path   = $remote ? '' : wpgpxmaps_resolveLocalPath( $item );
+		if ( ! $remote && '' == $path ) {
+			continue;
+		}
+		$files[] = array( 'item' => $item, 'path' => $path, 'remote' => $remote );
+		$key    .= $item . ( $remote ? '' : filemtime( $path ) ) . '|';
+	}
+	if ( ! $files ) {
+		return null;
+	}
+
+	$transient = 'wpgpxmaps_info_' . md5( $key . 'v1' );
+	$cached    = get_transient( $transient );
+	if ( is_array( $cached ) ) {
+		return $cached;
+	}
+
+	$parts = array();
+	foreach ( $files as $file ) {
+		$path = $file['remote'] ? downloadRemoteFile( $file['item'] ) : $file['path'];
+		if ( '' == $path ) {
+			continue;
+		}
+		/* Points every 50 m are enough for the summary */
+		$parts[] = wpgpxmaps_getPoints( $path, 50, false, 0 );
+		if ( $file['remote'] ) {
+			wp_delete_file( $path );
+		}
+	}
+	$points = $parts ? wpgpxmaps_mergePoints( $parts ) : null;
+	$real   = $points ? array_filter( $points->lat, 'is_numeric' ) : array();
+	if ( ! $real ) {
+		return null;
+	}
+
+	$keys  = array_keys( $points->lat );
+	$lats  = array_filter( $points->lat, 'is_numeric' );
+	$lons  = array_filter( $points->lon, 'is_numeric' );
+	$first = array_key_first( $real );
+	$last  = array_key_last( $real );
+	$step  = max( 1, (int) ceil( count( $keys ) / 100 ) );
+	$line  = array();
+	foreach ( $keys as $n => $k ) {
+		if ( null === $points->lat[ $k ] ) {
+			$line[] = null;
+		} elseif ( 0 == $n % $step || $k === $last ) {
+			$line[] = array( round( $points->lat[ $k ], 5 ), round( $points->lon[ $k ], 5 ) );
+		}
+	}
+
+	$info = array(
+		'start'    => array( (float) $points->lat[ $first ], (float) $points->lon[ $first ] ),
+		'end'      => array( (float) $points->lat[ $last ], (float) $points->lon[ $last ] ),
+		'bounds'   => array( array( min( $lats ), min( $lons ) ), array( max( $lats ), max( $lons ) ) ),
+		'length'   => round( (float) $points->totalLength ),
+		'eleUp'    => round( (float) $points->totalEleUp ),
+		'eleDown'  => round( (float) $points->totalEleDown ),
+		'maxEle'   => round( (float) $points->maxEle ),
+		'minEle'   => round( (float) $points->minEle ),
+		'duration' => ( $points->maxTime && $points->minTime ) ? (int) ( $points->maxTime - $points->minTime ) : 0,
+		'line'     => $line,
+	);
+
+	set_transient( $transient, $info, $files[0]['remote'] ? DAY_IN_SECONDS : MONTH_IN_SECONDS );
+	return $info;
 }
 
 /**
@@ -325,6 +415,9 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$p_avg_hr         = wpgpxmaps_findValue( $attr, 'summaryavghr', 'wpgpxmaps_summary_avg_hr', false );
 	$p_avg_temp       = wpgpxmaps_findValue( $attr, 'summaryavgtemp', 'wpgpxmaps_summary_avg_temp', false );
 	$p_total_time     = wpgpxmaps_findValue( $attr, 'summarytotaltime', 'wpgpxmaps_summary_total_time', false );
+	$p_moving_time    = wpgpxmaps_findValue( $attr, 'summarymovingtime', 'wpgpxmaps_summary_moving_time', false );
+	$p_max_speed      = wpgpxmaps_findValue( $attr, 'summarymaxspeed', 'wpgpxmaps_summary_max_speed', false );
+	$p_max_grade      = wpgpxmaps_findValue( $attr, 'summarymaxgrade', 'wpgpxmaps_summary_max_grade', false );
 	/* Map */
 	$mt                 = wpgpxmaps_findValue( $attr, 'mtype', 'wpgpxmaps_map_type', 'HYBRID' );
 	$color_map          = wpgpxmaps_findValue( $attr, 'mlinecolor', 'wpgpxmaps_map_line_color', '#3366cc' );
@@ -369,6 +462,13 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$donotreducegpx 	= wpgpxmaps_findValue( $attr, 'donotreducegpx', 'wpgpxmaps_donotreducegpx', false );
 	/* Track color: '' or 'none' (one color) or by grade, speed, heart rate, elevation */
 	$colorby = (string) wpgpxmaps_findValue( $attr, 'colorby', 'wpgpxmaps_map_color_by', '' );
+	/* Start / end markers are shown unless hidden in the shortcode (startend=false) or in the settings */
+	if ( isset( $attr['startend'] ) ) {
+		$startend = false !== wpgpxmaps_findValue( $attr, 'startend', '', true );
+	} else {
+		$startend = 'true' !== get_option( 'wpgpxmaps_map_hide_start_end' );
+	}
+	$kmmarkers = (float) wpgpxmaps_findValue( $attr, 'kmmarkers', 'wpgpxmaps_map_km_markers', 0 );
 	if ( ! in_array( $colorby, array( 'grade', 'speed', 'hr', 'elevation' ), true ) ) {
 		$colorby = '';
 	}
@@ -378,6 +478,19 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$ngImages    = implode( ',', array_filter( array_map( 'absint', explode( ',', $ngImages ) ) ) );
 
 	$colors_map = explode( ' ', $color_map );
+
+	/* Several GPX files in one map: gpx="a.gpx,b.gpx" */
+	$gpx_list = array_values( array_filter( array_map( 'trim', explode( ',', $gpx ) ) ) );
+
+	/* One color per file when there are several files and only one color is set (mlinecolor="#c00 #00c" sets them) */
+	$track_palette = array( '#3366cc', '#dc2626', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#ca8a04', '#db2777' );
+	$track_colors  = array();
+	$track_names   = array();
+	if ( count( $gpx_list ) > 1 ) {
+		foreach ( $gpx_list as $n => $item ) {
+			$track_names[] = preg_replace( '/\.gpx$/i', '', basename( wp_parse_url( $item, PHP_URL_PATH ) ) );
+		}
+	}
 
 	$gpxurl = esc_url_raw( $gpx );
 
@@ -404,15 +517,15 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$avg_hr             = 0;
 	$avg_temp           = 0;
 	$tot_len            = 0;
-
-	$isGpxUrl = ( preg_match( '/^(http(s)?\:\/\/)/', trim( $gpx ) ) == 1 );
+	$extra_stats        = array( 'movingTime' => 0, 'maxSpeed' => 0, 'maxGrade' => null, 'minGrade' => null );
 
 	/* Add file modification time to cache filename to catch new uploads with same file name */
-	$mtime = $isGpxUrl ? '' : wpgpxmaps_resolveLocalPath( $gpx );
-	if ( '' != $mtime && file_exists( $mtime ) ) {
-		$mtime = filemtime( $mtime );
-	} else {
-		$mtime = 0;
+	$mtime = 0;
+	foreach ( $gpx_list as $item ) {
+		$local = preg_match( '/^(http(s)?\:\/\/)/', $item ) ? '' : wpgpxmaps_resolveLocalPath( $item );
+		if ( '' != $local && file_exists( $local ) ) {
+			$mtime = max( $mtime, filemtime( $local ) );
+		}
 	}
 	$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$unit_of_measure_speed,$unit_of_measure,$distanceType,$colorby,v1.9.0";
 
@@ -457,6 +570,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$avg_hr             = $cache_obj['avg_hr'];
 			$avg_temp           = $cache_obj['avg_temp'];
 			$tot_len            = $cache_obj['tot_len'];
+			$extra_stats        = isset( $cache_obj['extra_stats'] ) && is_array( $cache_obj['extra_stats'] ) ? $cache_obj['extra_stats'] : $extra_stats;
+			$track_colors       = isset( $cache_obj['track_colors'] ) && is_array( $cache_obj['track_colors'] ) ? $cache_obj['track_colors'] : array();
 		}
 	}
 
@@ -464,18 +579,36 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 	if ( $points_maps == '' && $gpx != '' ) {
 
-		$gpx = trim( $gpx );
-
-		if ( true == $isGpxUrl ) {
-			$gpx = downloadRemoteFile( $gpx );
-		} else {
-			$gpx = wpgpxmaps_resolveLocalPath( $gpx );
+		/* Local path or downloaded copy of every file */
+		$gpx_files = array();
+		foreach ( $gpx_list as $item ) {
+			$remote = ( 1 == preg_match( '/^(http(s)?\:\/\/)/', $item ) );
+			$path   = $remote ? downloadRemoteFile( $item ) : wpgpxmaps_resolveLocalPath( $item );
+			if ( '' == $path ) {
+				foreach ( $gpx_files as $file ) {
+					if ( $file['remote'] ) {
+						wp_delete_file( $file['path'] );
+					}
+				}
+				return esc_html__( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' ) . ( count( $gpx_list ) > 1 ? ' ' . esc_html( basename( $item ) ) : '' );
+			}
+			$gpx_files[] = array( 'path' => $path, 'remote' => $remote );
 		}
-		if ( $gpx == '' ) {
-			return esc_html__( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' );
+
+		$parts = array();
+		foreach ( $gpx_files as $n => $file ) {
+			$part    = wpgpxmaps_getPoints( $file['path'], $pointsoffset, $donotreducegpx, $distanceType );
+			$parts[] = $part;
+			/* Every track of every file gets the color of its file */
+			if ( count( $gpx_files ) > 1 && count( $colors_map ) == 1 ) {
+				$segments = 1 + count( array_filter( $part->lat, 'is_null' ) );
+				for ( $s = 0; $s < $segments; $s++ ) {
+					$track_colors[] = $track_palette[ $n % count( $track_palette ) ];
+				}
+			}
 		}
 
-		$points = wpgpxmaps_getPoints( $gpx, $pointsoffset, $donotreducegpx, $distanceType );
+		$points = wpgpxmaps_mergePoints( $parts );
 
 		$points_maps        = '';
 		$points_graph_dist  = '';
@@ -492,6 +625,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		$points_x_lon  = $points->lon;
 
 		$points_color = wpgpxmaps_colorValues( $points, $colorby, $unit_of_measure, $unit_of_measure_speed );
+		$extra_stats  = wpgpxmaps_extraStats( $points );
 
 		$max_ele        = $points->maxEle;
 		$min_ele        = $points->minEle;
@@ -638,12 +772,17 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		$waypoints = '[]';
 
 		if ( true == $showW ) {
-			$wpoints   = wpgpxmaps_getWayPoints( $gpx );
+			$wpoints = array();
+			foreach ( $gpx_files as $file ) {
+				$wpoints = array_merge( $wpoints, wpgpxmaps_getWayPoints( $file['path'] ) );
+			}
 			$waypoints = wp_json_encode( $wpoints );
 		}
-		if ( true == $isGpxUrl ) {
-			/* Remove the temporary copy created by download_url() */
-			wp_delete_file( $gpx );
+		foreach ( $gpx_files as $file ) {
+			if ( $file['remote'] ) {
+				/* Remove the temporary copy created by download_url() */
+				wp_delete_file( $file['path'] );
+			}
 		}
 		if ( false == $showEle ) {
 			$points_graph_ele = '';
@@ -720,6 +859,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			'points_graph_cad'   => $points_graph_cad,
 			'points_graph_grade' => $points_graph_grade,
 			'points_color'       => $points_color,
+			'extra_stats'        => $extra_stats,
+			'track_colors'       => $track_colors,
 			'waypoints'          => $waypoints,
 			'max_ele'            => $max_ele,
 			'min_ele'            => $min_ele,
@@ -746,7 +887,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$r = (int) get_the_ID() . '_' . wp_rand( 1, 5000000 );
 
 	/* Same URL (and version) as the enqueued module, so the browser loads it only once */
-	$module_url = add_query_arg( 'ver', wpgpxmaps_module_version(), plugins_url( 'assets/dist/WP-GPX-Maps.es.js', __FILE__ ) );
+	$module_url = wpgpxmaps_module_url();
 
 	/**
 	 * Filters extra data passed to the map script (params.extra), read by add-ons in the "wpgpxmaps:ready" event.
@@ -788,9 +929,13 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 					waypoints          : ' . $waypoints_json . ',
 					unit               : "' . esc_js( $unit_of_measure ) . '",
 					unitspeed          : "' . esc_js( $unit_of_measure_speed ) . '",
-					color1             : ' . wp_json_encode( $colors_map, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ',
+					color1             : ' . wp_json_encode( $track_colors ? $track_colors : $colors_map, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ',
+					trackNames         : ' . wp_json_encode( $track_names, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ',
+					trackColors        : ' . wp_json_encode( array_slice( $track_palette, 0, count( $track_names ) ), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ',
 					colorBy            : "' . esc_js( $points_color ? $colorby : '' ) . '",
 					colorData          : ' . wp_json_encode( array_values( $points_color ) ) . ',
+					startEnd           : ' . ( $startend ? 'true' : 'false' ) . ',
+					kmMarkers          : ' . wp_json_encode( max( 0, $kmmarkers ) ) . ',
 					extra              : ' . wp_json_encode( $extra, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ',
 					color2             : "' . esc_js( $color_graph ) . '",
 					color3             : "' . esc_js( $color_graph_speed ) . '",
@@ -833,7 +978,9 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 						exitFullFcreen  : "' . esc_js( __( 'Exit full screen', 'wp-gpx-maps' ) ) . '",
 						hideImages      : "' . esc_js( __( 'Hide images', 'wp-gpx-maps' ) ) . '",
 						showImages      : "' . esc_js( __( 'Show images', 'wp-gpx-maps' ) ) . '",
-						backToCenter	: "' . esc_js( __( 'Back to center', 'wp-gpx-maps' ) ) . '"
+						backToCenter	: "' . esc_js( __( 'Back to center', 'wp-gpx-maps' ) ) . '",
+						start           : "' . esc_js( __( 'Start', 'wp-gpx-maps' ) ) . '",
+						finish          : "' . esc_js( __( 'Finish', 'wp-gpx-maps' ) ) . '"
 					}
 				});
 
@@ -878,9 +1025,17 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		}
 		if ( true == $p_total_time && $max_time > 0 ) {
 			/* Hours are not limited to 24, so long tracks are shown correctly */
-			$seconds   = (int) ( $max_time - $min_time );
-			$time_diff = sprintf( '%02d:%02d:%02d', intdiv( $seconds, 3600 ), intdiv( $seconds % 3600, 60 ), $seconds % 60 );
+			$time_diff = wpgpxmaps_formatDuration( $max_time - $min_time );
 			$output   .= "<span class='totaltime'><span class='summarylabel'>" . esc_html__( 'Total time:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> $time_diff</span></span><br />";
+		}
+		if ( true == $p_moving_time && $extra_stats['movingTime'] > 0 ) {
+			$output .= "<span class='movingtime'><span class='summarylabel'>" . esc_html__( 'Moving time:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> " . esc_html( wpgpxmaps_formatDuration( $extra_stats['movingTime'] ) ) . '</span></span><br />';
+		}
+		if ( true == $p_max_speed && $extra_stats['maxSpeed'] > 0 ) {
+			$output .= "<span class='maxspeed'><span class='summarylabel'>" . esc_html__( 'Max speed:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> " . esc_html( convertSpeed( $extra_stats['maxSpeed'], $unit_of_measure_speed, true ) ) . '</span></span><br />';
+		}
+		if ( true == $p_max_grade && null !== $extra_stats['maxGrade'] ) {
+			$output .= "<span class='maxgrade'><span class='summarylabel'>" . esc_html__( 'Max grade:', 'wp-gpx-maps' ) . "</span><span class='summaryvalue'> " . esc_html( round( $extra_stats['maxGrade'], 1 ) . '% / ' . round( $extra_stats['minGrade'], 1 ) . '%' ) . '</span></span><br />';
 		}
 		$output .= '</div>';
 	}
@@ -889,15 +1044,16 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 	/* Print download link */
 	if ( (true === $download || 'true' === $download ) && $gpxurl != '' ) {
-		if ( true == $isGpxUrl ) {
-
-
-		} else {
-
-			$dummy  = ( defined( 'WP_SITEURL' ) ) ? WP_SITEURL : get_bloginfo( 'url' );
-			$gpxurl = $dummy . $gpxurl;
+		$links = array();
+		foreach ( $gpx_list as $item ) {
+			$url = esc_url_raw( $item );
+			if ( 1 != preg_match( '/^(http(s)?\:\/\/)/', $item ) ) {
+				$dummy = ( defined( 'WP_SITEURL' ) ) ? WP_SITEURL : get_bloginfo( 'url' );
+				$url   = $dummy . $url;
+			}
+			$links[] = "<a href='" . esc_url( $url ) . "' target='_new' download>" . esc_html( basename( $url ) ) . '</a>';
 		}
-		$output .= "Download file: <a href='" . esc_url( $gpxurl ) . "' target='_new' download>" . esc_html( basename( $gpxurl ) ) . '</a>';
+		$output .= 'Download file: ' . implode( ', ', $links );
 	}
 
 	/**
@@ -1001,10 +1157,15 @@ function wpgpxmaps_install_option() {
 		'wpgpxmaps_summary_avg_hr' => '',
 		'wpgpxmaps_summary_avg_temp' => '',
 		'wpgpxmaps_summary_total_time' => '',
+		'wpgpxmaps_summary_moving_time' => '',
+		'wpgpxmaps_summary_max_speed' => '',
+		'wpgpxmaps_summary_max_grade' => '',
 		// Map
 		'wpgpxmaps_map_type' => 'HYBRID',
 		'wpgpxmaps_map_line_color' => '#3366cc',
 		'wpgpxmaps_map_color_by' => '',
+		'wpgpxmaps_map_hide_start_end' => '',
+		'wpgpxmaps_map_km_markers' => '',
 		'wpgpxmaps_zoomonscrollwheel' => '',
 		'wpgpxmaps_show_waypoint' => '',
 		'wpgpxmaps_map_start_icon' => '',
@@ -1073,10 +1234,15 @@ function wpgpxmaps_remove_option() {
 		'wpgpxmaps_summary_avg_hr',
 		'wpgpxmaps_summary_avg_temp',
 		'wpgpxmaps_summary_total_time',
+		'wpgpxmaps_summary_moving_time',
+		'wpgpxmaps_summary_max_speed',
+		'wpgpxmaps_summary_max_grade',
 		// Map
 		'wpgpxmaps_map_type',
 		'wpgpxmaps_map_line_color',
 		'wpgpxmaps_map_color_by',
+		'wpgpxmaps_map_hide_start_end',
+		'wpgpxmaps_map_km_markers',
 		'wpgpxmaps_zoomonscrollwheel',
 		'wpgpxmaps_show_waypoint',
 		'wpgpxmaps_map_start_icon',

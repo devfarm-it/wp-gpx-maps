@@ -177,6 +177,15 @@
 				text( 'mheight', __( 'Map height' ), __( 'For example 450px' ) ),
 				select( 'colorby', __( 'Color the track by' ), COLOR_BY ),
 				effective( attributes, 'colorby' ) === 'none' ? color( 'mlinecolor', __( 'Track color' ) ) : null,
+				toggle( 'startend', __( 'Start / finish markers' ) ),
+				select( 'kmmarkers', __( 'Distance markers' ), [
+					{ value: '0', label: __( 'None' ) },
+					{ value: '1', label: '1 km / mi' },
+					{ value: '2', label: '2 km / mi' },
+					{ value: '5', label: '5 km / mi' },
+					{ value: '10', label: '10 km / mi' },
+					{ value: '20', label: '20 km / mi' },
+				] ),
 				toggle( 'waypoints', __( 'Show waypoints' ) ),
 				toggle( 'zoomonscrollwheel', __( 'Zoom with the mouse wheel' ) ),
 				toggle( 'download', __( 'GPX download link' ) )
@@ -205,7 +214,10 @@
 				summaryOn ? toggle( 'summaryeleup', __( 'Total climbing' ) ) : null,
 				summaryOn ? toggle( 'summaryeledown', __( 'Total descent' ) ) : null,
 				summaryOn ? toggle( 'summaryavgspeed', __( 'Average speed' ) ) : null,
-				summaryOn ? toggle( 'summarytotaltime', __( 'Total time' ) ) : null
+				summaryOn ? toggle( 'summarytotaltime', __( 'Total time' ) ) : null,
+				summaryOn ? toggle( 'summarymovingtime', __( 'Moving time' ) ) : null,
+				summaryOn ? toggle( 'summarymaxspeed', __( 'Max speed' ) ) : null,
+				summaryOn ? toggle( 'summarymaxgrade', __( 'Max grade' ) ) : null
 			),
 			el(
 				PanelBody,
