@@ -22,6 +22,16 @@ import { MapBoxMapEngine } from './maps-engines/MapBoxMapEngine';
 import L from 'leaflet';
 export { L as Leaflet };
 
+/*
+ * Default Leaflet marker icons. Leaflet looks for them next to leaflet.css, which does not work once bundled
+ * (the browser asked for "marker-icon.png" relative to the page): use the images inlined in the bundle.
+ */
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({ iconUrl: markerIcon, iconRetinaUrl: markerIcon2x, shadowUrl: markerShadow });
+
 const wpgpxmaps_FEET_MILES = "1";
 const wpgpxmaps_METERS_KILOMETERS = "2";
 const wpgpxmaps_METERS_NAUTICALMILES = "3";
