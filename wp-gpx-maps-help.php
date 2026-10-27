@@ -202,6 +202,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</td>
 				</tr>
 				<tr>
+					<td>description</td>
+					<td>
+						<?php esc_html_e( 'Text description of the track for screen readers, search engines and AI assistants: hidden (not shown on the page), visible (under the map) or false', 'wp-gpx-maps' ); ?>
+					</td>
+					<td>
+						<?php
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>hidden</strong>
+					</td>
+					<td>
+						<?php echo esc_html( get_option( 'wpgpxmaps_description' ) ); ?>
+					</td>
+				</tr>
+				<tr>
+					<td>structureddata</td>
+					<td>
+						<?php esc_html_e( 'Schema.org structured data (JSON-LD) of the track: distance, elevation, time and the route line. The file is linked only when download is on', 'wp-gpx-maps' ); ?>
+					</td>
+					<td>
+						<?php
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>true</strong>
+					</td>
+					<td>
+						<?php echo esc_html( get_option( 'wpgpxmaps_no_structured_data' ) ? 'false' : 'true' ); ?>
+					</td>
+				</tr>
+				<tr>
 					<td>skipcache</td>
 					<td>
 						<?php esc_html_e( 'Do not use cache. If TRUE might be very slow', 'wp-gpx-maps' ); ?>

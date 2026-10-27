@@ -30,7 +30,8 @@ define( 'WPGPXMAPS_CURRENT_VERSION', '1.9.00' );
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
  * in a way that is not backward compatible. Hooks: wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra,
  * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
- * wpgpxmaps_admin_tab_{tab}, wpgpxmaps_load_assets, wpgpxmaps_lazy_load; JavaScript event "wpgpxmaps:ready" on document.
+ * wpgpxmaps_admin_tab_{tab}, wpgpxmaps_load_assets, wpgpxmaps_lazy_load, wpgpxmaps_track_description,
+ * wpgpxmaps_structured_data; JavaScript event "wpgpxmaps:ready" on document.
  * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_module_url(), wpgpxmaps_enqueue_assets() (map style with the
  * Leaflet CSS, for add-ons that draw their own maps); the module exports WPGPXMaps and Leaflet.
  */
@@ -984,8 +985,11 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$extra = apply_filters( 'wpgpxmaps_map_extra', array(), $attr );
 	$extra = is_array( $extra ) ? $extra : array();
 
+	/* Text and structured data of the track, for screen readers, search engines and AI assistants */
+	$about = wpgpxmaps_track_about( $gpx, $gpx_list, $unit_of_measure, $attr, $r, true === $download || 'true' === $download );
+
 	$output = '
-		<div id="wpgpxmaps_' . esc_attr( $r ) . '" class="wpgpxmaps">
+		<div id="wpgpxmaps_' . esc_attr( $r ) . '" class="wpgpxmaps"' . ( '' != $about['description'] ? ' role="figure" aria-describedby="wpgpxmaps_' . esc_attr( $r ) . '_description"' : '' ) . '>
 			<div id="map_' . esc_attr( $r ) . '_cont" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $mh ) . ';position:relative" >
 				<div id="map_' . esc_attr( $r ) . '" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $mh ) . '"></div>
 				<div id="wpgpxmaps_' . esc_attr( $r ) . '_osm_footer" class="wpgpxmaps_osm_footer" style="display:none;"><span> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</span></div>
@@ -993,6 +997,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			<canvas id="myChart_' . esc_attr( $r ) . '" class="plot" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $gh ) . '"></canvas>
 			<div id="ngimages_' . esc_attr( $r ) . '" class="ngimages" style="display:none">' . $ngimgs_data . '</div>
 			<div id="report_' . esc_attr( $r ) . '" class="report"></div>
+			' . $about['description'] . $about['structured_data'] . '
 		</div>
 		' . esc_html( $error ) . '
 		<script type="module">
@@ -1171,6 +1176,216 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 }
 
 /**
+ * Length and height in the unit of measure of the settings (uom).
+ */
+function wpgpxmaps_formatLength( $meters, $unit_of_measure ) {
+	if ( in_array( (string) $unit_of_measure, array( wpgpxmaps_FEET_MILES, wpgpxmaps_METER_MILES ), true ) ) {
+		return number_format_i18n( $meters * 0.000621371192, 2 ) . ' mi';
+	}
+	if ( in_array( (string) $unit_of_measure, array( wpgpxmaps_METERS_NAUTICALMILES, wpgpxmaps_FEET_NAUTICALMILES ), true ) ) {
+		return number_format_i18n( $meters / 1852, 2 ) . ' NM';
+	}
+	if ( wpgpxmaps_METERS_KILOMETERS == $unit_of_measure ) {
+		return number_format_i18n( $meters / 1000, 2 ) . ' km';
+	}
+	return number_format_i18n( $meters ) . ' m';
+}
+
+function wpgpxmaps_formatHeight( $meters, $unit_of_measure ) {
+	if ( in_array( (string) $unit_of_measure, array( wpgpxmaps_FEET_MILES, wpgpxmaps_FEET_NAUTICALMILES ), true ) ) {
+		return number_format_i18n( $meters * 3.2808399 ) . ' ft';
+	}
+	return number_format_i18n( $meters ) . ' m';
+}
+
+/**
+ * Plain text description of a track (wpgpxmaps_get_track_info() result), e.g. "Map of the route “Sentiero 157”:
+ * 4.38 km, 145 m of climbing and 376 m of descent, elevation between 1,315 m and 1,580 m, time 01:54:36. ..."
+ */
+function wpgpxmaps_describeTrack( $info, $name, $unit_of_measure ) {
+
+	$facts = array( wpgpxmaps_formatLength( $info['length'], $unit_of_measure ) );
+
+	if ( $info['eleUp'] > 0 || $info['eleDown'] > 0 ) {
+		/* translators: 1: climbing, 2: descent, e.g. "145 m" */
+		$facts[] = sprintf( __( '%1$s of climbing and %2$s of descent', 'wp-gpx-maps' ), wpgpxmaps_formatHeight( $info['eleUp'], $unit_of_measure ), wpgpxmaps_formatHeight( $info['eleDown'], $unit_of_measure ) );
+	}
+	if ( $info['maxEle'] > 0 ) {
+		/* translators: 1: minimum elevation, 2: maximum elevation */
+		$facts[] = sprintf( __( 'elevation between %1$s and %2$s', 'wp-gpx-maps' ), wpgpxmaps_formatHeight( $info['minEle'], $unit_of_measure ), wpgpxmaps_formatHeight( $info['maxEle'], $unit_of_measure ) );
+	}
+	if ( $info['duration'] > 0 ) {
+		/* translators: %s: duration, hh:mm:ss */
+		$facts[] = sprintf( __( 'time %s', 'wp-gpx-maps' ), wpgpxmaps_formatDuration( $info['duration'] ) );
+	}
+
+	if ( '' != $name ) {
+		/* translators: 1: name of the route, 2: list of facts (length, climbing, ...) */
+		$text = sprintf( __( 'Map of the route “%1$s”: %2$s.', 'wp-gpx-maps' ), $name, implode( ', ', $facts ) );
+	} else {
+		/* translators: %s: list of facts (length, climbing, ...) */
+		$text = sprintf( __( 'Map of the route: %s.', 'wp-gpx-maps' ), implode( ', ', $facts ) );
+	}
+
+	$coords = function ( $point ) {
+		return number_format( $point[0], 5, '.', '' ) . ', ' . number_format( $point[1], 5, '.', '' );
+	};
+	if ( calculateDistance( $info['start'][0], $info['start'][1], 0, $info['end'][0], $info['end'][1], 0, '1' ) < 200 ) {
+		/* translators: %s: latitude, longitude */
+		$text .= ' ' . sprintf( __( 'It is a loop that starts and ends at %s (latitude, longitude).', 'wp-gpx-maps' ), $coords( $info['start'] ) );
+	} else {
+		/* translators: 1: start latitude, longitude, 2: finish latitude, longitude */
+		$text .= ' ' . sprintf( __( 'It starts at %1$s and ends at %2$s (latitude, longitude).', 'wp-gpx-maps' ), $coords( $info['start'] ), $coords( $info['end'] ) );
+	}
+	return $text;
+}
+
+/**
+ * Media type of a track file, from its name.
+ */
+function wpgpxmaps_trackMimeType( $file ) {
+	$types = array(
+		'gpx' => 'application/gpx+xml',
+		'tcx' => 'application/vnd.garmin.tcx+xml',
+		'kml' => 'application/vnd.google-earth.kml+xml',
+		'kmz' => 'application/vnd.google-earth.kmz',
+		'fit' => 'application/vnd.ant.fit',
+	);
+	$ext = strtolower( pathinfo( (string) wp_parse_url( $file, PHP_URL_PATH ), PATHINFO_EXTENSION ) );
+	return isset( $types[ $ext ] ) ? $types[ $ext ] : 'application/octet-stream';
+}
+
+/**
+ * HTML that describes the track for screen readers, search engines and AI assistants:
+ * a text description (attribute "description" / setting wpgpxmaps_description: hidden, visible or off) and
+ * schema.org structured data in JSON-LD (off with structureddata="false" or the setting wpgpxmaps_no_structured_data).
+ *
+ * @return array 'description' and 'structured_data' HTML, '' when off or when the track can't be read.
+ */
+function wpgpxmaps_track_about( $gpx, $gpx_list, $unit_of_measure, $attr, $r, $download ) {
+
+	$about = array(
+		'description'     => '',
+		'structured_data' => '',
+	);
+
+	$mode = wpgpxmaps_findValue( $attr, 'description', 'wpgpxmaps_description', 'hidden' );
+	$mode = in_array( $mode, array( 'visible', 'hidden' ), true ) ? $mode : 'off';
+	$json = false !== wpgpxmaps_findValue( $attr, 'structureddata', '', 'true' ) && ! get_option( 'wpgpxmaps_no_structured_data' );
+
+	if ( 'off' === $mode && ! $json ) {
+		return $about;
+	}
+
+	$info = wpgpxmaps_get_track_info( $gpx );
+	if ( ! $info ) {
+		return $about;
+	}
+
+	$title = get_the_ID() ? wp_strip_all_tags( get_the_title() ) : '';
+	$files = array();
+	foreach ( $gpx_list as $item ) {
+		$files[] = preg_replace( wpgpxmaps_trackFileRegex(), '', basename( (string) wp_parse_url( $item, PHP_URL_PATH ) ) );
+	}
+	$name = '' != $title ? $title : implode( ', ', $files );
+
+	/**
+	 * Filters the text description of a track, read by screen readers, search engines and AI assistants.
+	 *
+	 * @param string $text Plain text.
+	 * @param array  $info Track summary, see wpgpxmaps_get_track_info().
+	 * @param array  $attr Shortcode attributes.
+	 */
+	$text = (string) apply_filters( 'wpgpxmaps_track_description', wpgpxmaps_describeTrack( $info, $name, $unit_of_measure ), $info, $attr );
+
+	if ( 'off' !== $mode && '' != $text ) {
+		/* Hidden like the WordPress "screen-reader-text" class, inline so it does not depend on the theme */
+		$style                = 'hidden' === $mode ? ' style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0"' : '';
+		$about['description'] = '<p id="wpgpxmaps_' . esc_attr( $r ) . '_description" class="wpgpxmaps-description"' . $style . '>' . esc_html( $text ) . '</p>';
+	}
+
+	if ( ! $json ) {
+		return $about;
+	}
+
+	$line = array();
+	foreach ( $info['line'] as $point ) {
+		if ( is_array( $point ) ) {
+			$line[] = $point[0] . ' ' . $point[1];
+		}
+	}
+
+	$property   = function ( $label, $value, $code, $unit ) {
+		return array(
+			'@type'    => 'PropertyValue',
+			'name'     => $label,
+			'value'    => $value,
+			'unitCode' => $code,
+			'unitText' => $unit,
+		);
+	};
+	$properties = array( $property( 'Distance', $info['length'], 'MTR', 'm' ) );
+	if ( $info['eleUp'] > 0 || $info['eleDown'] > 0 ) {
+		$properties[] = $property( 'Elevation gain', $info['eleUp'], 'MTR', 'm' );
+		$properties[] = $property( 'Elevation loss', $info['eleDown'], 'MTR', 'm' );
+	}
+	if ( $info['maxEle'] > 0 ) {
+		$properties[] = $property( 'Maximum elevation', $info['maxEle'], 'MTR', 'm' );
+		$properties[] = $property( 'Minimum elevation', $info['minEle'], 'MTR', 'm' );
+	}
+	if ( $info['duration'] > 0 ) {
+		$properties[] = $property( 'Duration', $info['duration'], 'SEC', 's' );
+	}
+
+	$label = '' != $name ? $name : __( 'Route', 'wp-gpx-maps' );
+	$data  = array(
+		'@context'    => 'https://schema.org',
+		'@type'       => 'TouristTrip',
+		'name'        => $label,
+		'description' => $text,
+		'itinerary'   => array(
+			'@type'              => 'Place',
+			'name'               => $label,
+			'geo'                => array(
+				'@type' => 'GeoShape',
+				'line'  => implode( ' ', $line ),
+			),
+			'additionalProperty' => $properties,
+		),
+	);
+	if ( get_the_ID() ) {
+		$data['url'] = get_permalink();
+	}
+
+	/* The files are linked only when the download link is shown: some authors do not want their tracks downloaded */
+	if ( $download ) {
+		$files = array();
+		foreach ( $gpx_list as $item ) {
+			$files[] = array(
+				'@type'          => 'DataDownload',
+				'contentUrl'     => esc_url_raw( preg_match( '/^https?:\/\//', $item ) ? $item : home_url( $item ) ),
+				'encodingFormat' => wpgpxmaps_trackMimeType( $item ),
+			);
+		}
+		$data['subjectOf'] = 1 == count( $files ) ? $files[0] : $files;
+	}
+
+	/**
+	 * Filters the schema.org structured data (JSON-LD) of a map. Return an empty value to leave it out.
+	 *
+	 * @param array $data Structured data, a TouristTrip.
+	 * @param array $info Track summary, see wpgpxmaps_get_track_info().
+	 * @param array $attr Shortcode attributes.
+	 */
+	$data = apply_filters( 'wpgpxmaps_structured_data', $data, $info, $attr );
+
+	if ( $data ) {
+		$about['structured_data'] = '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP ) . '</script>';
+	}
+	return $about;
+}
+
+/**
  * Error shown instead of the map, with the file name when there are several files.
  */
 function wpgpxmaps_errorMessage( $message, $file = '' ) {
@@ -1257,6 +1472,9 @@ function wpgpxmaps_install_option() {
 		'wpgpxmaps_skipcache' => '',
 		'wpgpxmaps_download' => '',
 		'wpgpxmaps_usegpsposition' => '',
+		// AI and search engines
+		'wpgpxmaps_description' => 'hidden',
+		'wpgpxmaps_no_structured_data' => '',
 		// Print Summary Table
 		'wpgpxmaps_summary' => '',
 		'wpgpxmaps_summary_tot_len' => '',
@@ -1334,6 +1552,9 @@ function wpgpxmaps_remove_option() {
 		'wpgpxmaps_skipcache',
 		'wpgpxmaps_download',
 		'wpgpxmaps_usegpsposition',
+		// AI and search engines
+		'wpgpxmaps_description',
+		'wpgpxmaps_no_structured_data',
 		// Print Summary Table
 		'wpgpxmaps_summary',
 		'wpgpxmaps_summary_tot_len',

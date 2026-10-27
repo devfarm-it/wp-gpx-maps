@@ -190,6 +190,31 @@ function render_select($name, $label, $options, $selected) {
 	<form method="post" action="options.php">
 		<?php wp_nonce_field( 'update-options' ); ?>
 
+		<h3 class="title"><?php esc_html_e( 'Accessibility, search engines and AI', 'wp-gpx-maps' ); ?></h3>
+		<p><?php esc_html_e( 'A map drawn by JavaScript is invisible to screen readers, search engines and AI assistants (ChatGPT, Perplexity, Google AI Overviews...). Every map can also describe its track in text and in schema.org structured data.', 'wp-gpx-maps' ); ?></p>
+		<table class="form-table">
+			<?php
+			render_radio('wpgpxmaps_description', 'Text description of the track:', [
+				'hidden' => 'For screen readers, search engines and AI, not shown on the page (default)',
+				'visible' => 'Shown under the map',
+				'off' => 'Off'
+			], get_option( 'wpgpxmaps_description' ) ? get_option( 'wpgpxmaps_description' ) : 'hidden');
+			render_checkbox('wpgpxmaps_no_structured_data', 'Turn off the structured data (JSON-LD):', get_option( 'wpgpxmaps_no_structured_data' ));
+			?>
+		</table>
+
+		<p class="submit">
+			<input type="hidden" name="action" value="update" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_description,wpgpxmaps_no_structured_data" />
+			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
+		</p>
+	</form>
+
+	<hr />
+
+	<form method="post" action="options.php">
+		<?php wp_nonce_field( 'update-options' ); ?>
+
 		<h3 class="title"><?php esc_html_e( 'Map', 'wp-gpx-maps' ); ?></h3>
 		<table class="form-table">
 
