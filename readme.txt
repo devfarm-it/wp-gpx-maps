@@ -10,11 +10,11 @@ Stable tag: 1.9.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Show your GPX tracks on an interactive map with an elevation profile, speed and heart rate charts, 3D terrain and a route summary.
+GPX, FIT and KML tracks on an interactive map with elevation and heart rate charts, 3D terrain and a route summary that AI assistants can read.
 
 == Description ==
 
-WP GPX Maps turns a GPX file into an interactive map and charts: upload the track, add the **GPX Map** block (or the `[sgpx]` shortcode) and your readers get the route, the elevation profile and the statistics of your hike, ride or run.
+WP GPX Maps turns a GPX, FIT, TCX or KML file into an interactive map and charts: upload the track, add the **GPX Map** block (or the `[sgpx]` shortcode) and your readers get the route, the elevation profile and the statistics of your hike, ride or run.
 
 = Maps =
 
@@ -34,6 +34,14 @@ WP GPX Maps turns a GPX file into an interactive map and charts: upload the trac
 = Summary =
 
 Total distance, maximum and minimum elevation, total climbing and descent, average and maximum speed, maximum grade, average heart rate, cadence and temperature, total time and **moving time** (pauses excluded).
+
+= Readable by AI assistants, search engines and screen readers =
+
+A map drawn by JavaScript is invisible to ChatGPT, Perplexity, Google AI Overviews and other AI assistants, to search engines and to screen readers: they read the text of the page, not the map. WP GPX Maps also describes every track in the page itself:
+
+* **Text description** of the route, e.g. "Map of the route Sentiero 157: 4.38 km, 145 m of climbing and 376 m of descent, elevation between 1,315 m and 1,580 m, time 01:54:36. It starts at ... and ends at ...", linked to the map for screen readers. Not shown on the page by default, or shown under the map (`description="visible"`).
+* **Structured data** (schema.org `TouristTrip` in JSON-LD) with distance, climbing and descent, highest and lowest point, time and the line of the route, so AI assistants and search engines can answer questions like "how long is this hike?" with the right numbers. The track file is linked only when you allow its download.
+* Both can be turned off in **Settings > WP GPX Maps** or for one map (`description="false"`, `structureddata="false"`), and changed by developers with the `wpgpxmaps_track_description` and `wpgpxmaps_structured_data` filters.
 
 = Easy to use =
 
@@ -92,6 +100,7 @@ The main ones (every attribute also has a default in the settings; `true` / `fal
 * **summary** and **summarytotlen**, **summarymaxele**, **summaryminele**, **summaryeleup**, **summaryeledown**, **summaryavgspeed**, **summarymaxspeed**, **summarymaxgrade**, **summaryavgcad**, **summaryavghr**, **summaryavgtemp**, **summarytotaltime**, **summarymovingtime**.
 * **nggalleries**, **ngimages**, **attachments**, **dtoffset**: photos on the map.
 * **pointsoffset**, **donotreducegpx**, **skipcache**: processing of large files.
+* **description**: text description of the track for screen readers, search engines and AI, `hidden` (default), `visible` or `false`; **structureddata**: `false` leaves out the schema.org data.
 
 The complete list with the current defaults is in **Settings > WP GPX Maps > Help**.
 
@@ -106,6 +115,10 @@ GPX, FIT (the activity files of Garmin, Wahoo, Coros and most bike computers and
 = The map is not styled, or is missing, in a widget or a page builder =
 
 The plugin loads the map style only on the pages whose posts contain the block or the shortcode; maps added in other ways load it in the footer. To load it in the head of every page add `add_filter( 'wpgpxmaps_load_assets', '__return_true' );` to your theme. Maps start when they get near the screen: to start them as soon as the page has loaded use `add_filter( 'wpgpxmaps_lazy_load', '__return_false' );`.
+
+= Can AI assistants like ChatGPT read my routes? =
+
+Yes. Besides the map, every map prints a short text description of the route and schema.org structured data (JSON-LD) with distance, elevation, time and the route line. AI assistants, search engines and screen readers read them even though they can't run the map. The description is not shown on the page unless you choose so; you can turn both off in the settings.
 
 = Is it free? =
 
@@ -126,6 +139,7 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 = 1.10.00 =
 * New: FIT (Garmin, Wahoo and other devices), TCX and KML / KMZ files, with heart rate, cadence, temperature and times when the file has them; KML placemarks are shown as waypoints
 * New: the map style is loaded only on the pages that show a map, and every map downloads its code only when it gets near the screen (lazy load): faster pages, also for the pages without maps
+* New: every map describes its track in text (for screen readers, search engines and AI assistants) and in schema.org structured data (JSON-LD), with settings, shortcode attributes `description` and `structureddata` and filters to change them
 * New: OpenTopoMap (OSM9, replaces Hike & Bike, whose server is offline) and CyclOSM (OSM12) maps
 * Fix: a clear message instead of an empty map when the file is corrupted, is not a track file or has no track points
 * Fix: total distance too long when some points of the track have no elevation (a vertical jump to 0 m was added to the distance)

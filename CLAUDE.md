@@ -31,7 +31,8 @@ non si fanno più commit SVN a mano.
 - 1.9.00: blocco Gutenberg, più GPX in una mappa, traccia colorata, marker km, statistiche extra, hook per add-on.
 - 1.10.00 (branch `feature/1.10`, non rilasciata): formati FIT/TCX/KML in `wp-gpx-maps-formats.php` (ogni lettore produce punti
   grezzi, `wpgpxmaps_buildPoints()` calcola tutto), messaggio per file illeggibili, asset solo dove c'è una mappa + lazy load,
-  mappe Leaflet come tabella di provider (OSM9 = OpenTopoMap, OSM12 = CyclOSM). File di prova in `dev/gpx` (anche .fit/.tcx/.kml).
+  mappe Leaflet come tabella di provider (OSM9 = OpenTopoMap, OSM12 = CyclOSM). Ogni mappa stampa anche una descrizione testuale
+  (nascosta di default) e JSON-LD schema.org `TouristTrip` per screen reader, motori di ricerca e AI (`wpgpxmaps_track_about()`). File di prova in `dev/gpx` (anche .fit/.tcx/.kml).
 
 ## Piano
 ### Fase 2: modernizzare
