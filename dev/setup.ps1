@@ -27,7 +27,7 @@ Wp plugin activate wp-gpx-maps
 # Nested permalinks: the old relative module import broke maps on these URLs
 Wp rewrite structure '/%year%/%monthnum%/%postname%/' --hard
 
-docker compose run --rm --entrypoint sh cli -c 'mkdir -p /var/www/html/wp-content/uploads/gpx && cp /gpx-src/*.gpx /var/www/html/wp-content/uploads/gpx/'
+docker compose run --rm --entrypoint sh cli -c 'mkdir -p /var/www/html/wp-content/uploads/gpx && cp /gpx-src/* /var/www/html/wp-content/uploads/gpx/'
 
 $g = '/wp-content/uploads/gpx'
 $posts = [ordered]@{
@@ -49,6 +49,10 @@ $posts = [ordered]@{
     'Giro del Garda'                               = "[sgpx gpx=`"$g/garda.gpx`"]"
     'Colline toscane'                              = "[sgpx gpx=`"$g/toscana.gpx`"]"
     'Due mappe nella stessa pagina'                = "[sgpx gpx=`"$g/full.gpx`"]`n`n[sgpx gpx=`"$g/multitrack.gpx`"]"
+    'Formato TCX'                                  = "[sgpx gpx=`"$g/full.tcx`" showhr=true showcad=true summary=true summarytotlen=true summaryeleup=true summaryavghr=true summarytotaltime=true]"
+    'Formato FIT'                                  = "[sgpx gpx=`"$g/full.fit`" showspeed=true showhr=true showatemp=true summary=true summarytotlen=true summaryeleup=true summaryavghr=true summarytotaltime=true]`n`n[sgpx gpx=`"$g/compressed.fit`" summary=true summarytotlen=true summarytotaltime=true]"
+    'Formato KML'                                  = "[sgpx gpx=`"$g/full.kml`" waypoints=true showspeed=true summary=true summarytotlen=true summaryeleup=true summarytotaltime=true]"
+    'Mappe Leaflet: OpenTopoMap, OpenSeaMap, CyclOSM' = "[sgpx gpx=`"$g/garda.gpx`" mtype=OSM9]`n`n[sgpx gpx=`"$g/garda.gpx`" mtype=OSM10]`n`n[sgpx gpx=`"$g/garda.gpx`" mtype=OSM12]`n`n[sgpx gpx=`"$g/garda.gpx`" mtype=OSM2]"
 }
 foreach ($title in $posts.Keys) {
     Wp post create --post_type=post --post_status=publish --post_title="$title" --post_content="$($posts[$title])"

@@ -169,7 +169,7 @@ function wpgpxmaps_rest_tracks() {
 
 	foreach ( $files as $file ) {
 		$path = $file->getPathname();
-		if ( false !== strpos( $path, DIRECTORY_SEPARATOR . '~cache' ) || ! preg_match( '/\.gpx$/i', $path ) ) {
+		if ( false !== strpos( $path, DIRECTORY_SEPARATOR . '~cache' ) || ! preg_match( wpgpxmaps_trackFileRegex(), $path ) ) {
 			continue;
 		}
 		$tracks[] = array(

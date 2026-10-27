@@ -258,7 +258,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						esc_html_e( 'OSM2 = Thunderforest - Open Cycle Map (API Key required)', 'wp-gpx-maps' );
+						esc_html_e( 'OSM2 = Thunderforest - Open Cycle Map (API Key required, CyclOSM without key)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
@@ -278,22 +278,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						//esc_html_e( 'OSM6 = MapToolKit - Terrain', 'wp-gpx-maps' );
-						?>
-						<br />
-						<?php
-						/* translators: selection = map provider / map type */
 						esc_html_e( 'OSM7 = Open Street Map - Humanitarian map style', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						esc_html_e( 'OSM9 = Hike & Bike', 'wp-gpx-maps' );
+						esc_html_e( 'OSM9 = OpenTopoMap (hiking)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						esc_html_e( 'OSM10 = Open Sea Map', 'wp-gpx-maps' );
+						esc_html_e( 'OSM10 = Open Sea Map (sea marks over Open Street Map)', 'wp-gpx-maps' );
+						?>
+						<br />
+						<?php
+						/* translators: selection = map provider / map type */
+						esc_html_e( 'OSM11 = GSI Map (Japan)', 'wp-gpx-maps' );
+						?>
+						<br />
+						<?php
+						/* translators: selection = map provider / map type */
+						esc_html_e( 'OSM12 = CyclOSM (cycling)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php

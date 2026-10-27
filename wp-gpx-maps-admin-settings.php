@@ -197,15 +197,15 @@ function render_select($name, $label, $options, $selected) {
 			
 			render_radio('wpgpxmaps_map_type', 'Default map type:', [
 				'OSM1' => 'Open Street Map',
-				'OSM2' => 'Open Cycle Map / Thunderforest - Open Cycle Map (API Key required)',
+				'OSM2' => 'Thunderforest - Open Cycle Map (API Key required, CyclOSM without key)',
 				'OSM3' => 'Thunderforest - Outdoors (API Key required)',
 				'OSM4' => 'Thunderforest - Transport (API Key required)',
 				'OSM5' => 'Thunderforest - Landscape (API Key required)',
-				'OSM6' => 'MapToolKit - Terrain',
 				'OSM7' => 'Open Street Map - Humanitarian map style',
-				'OSM9' => 'Hike & Bike',
-				'OSM10' => 'Open Sea Map',
-				'OSM11' => 'GSI Map (Japan)'
+				'OSM9' => 'OpenTopoMap (hiking)',
+				'OSM10' => 'Open Sea Map (sea marks over Open Street Map)',
+				'OSM11' => 'GSI Map (Japan)',
+				'OSM12' => 'CyclOSM (cycling)'
 			], $t);		
 			
 			render_radio('wpgpxmaps_mapbox_type', 'MapBox default style:', [

@@ -18,7 +18,7 @@ WP GPX Maps turns a GPX file into an interactive map and charts: upload the trac
 
 = Maps =
 
-* **OpenStreetMap** and other free maps (no account needed): OpenStreetMap, Humanitarian, Hike & Bike, OpenSeaMap, and the Thunderforest maps (OpenCycleMap, Outdoors, Transport, Landscape) with a free Thunderforest API key.
+* **OpenStreetMap** and other free maps (no account needed): OpenStreetMap, OpenTopoMap, CyclOSM, Humanitarian, OpenSeaMap, and the Thunderforest maps (OpenCycleMap, Outdoors, Transport, Landscape) with a free Thunderforest API key.
 * **MapBox** with your own API key: Outdoors, Streets, Satellite, Satellite Streets, Light, Dark, Standard and custom styles, **3D terrain**, fog and a tilted 3D view (`pitch`, `bearing`).
 * **Track colored by grade** (blue descent, green flat, yellow to red climb), **speed**, **heart rate** or **elevation**, with a legend.
 * **Several GPX files in one map** (`gpx="a.gpx,b.gpx"`), one color per file with a legend.
@@ -40,8 +40,8 @@ Total distance, maximum and minimum elevation, total climbing and descent, avera
 * **GPX Map block** for the block editor with live preview: pick an uploaded GPX file from a list and set every option in the sidebar.
 * Upload and manage your GPX files in **Settings > WP GPX Maps** (editors and authors can upload their own files).
 * Every option has a default in the settings, so a simple `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]` is enough.
-* GPX 1.0 and 1.1, Garmin and Strava extensions (heart rate, cadence, temperature), multi-track files.
-* Cache of the processed tracks, scripts loaded as an ES module, works with PHP 7.4 to 8.4.
+* **GPX** 1.0 and 1.1 (Garmin and Strava extensions: heart rate, cadence, temperature), **FIT** files from Garmin, Wahoo and other devices, **TCX** and **KML / KMZ**, multi-track files.
+* Fast pages: the map style is loaded only on the pages with a map, and every map downloads its code only when it gets near the screen (lazy load). Cache of the processed tracks, works with PHP 7.4 to 8.4.
 
 = Support and development =
 
@@ -79,7 +79,7 @@ The main ones (every attribute also has a default in the settings; `true` / `fal
 
 * **gpx**: path of the GPX file from the site root, or its URL; several files separated by commas.
 * **mheight**, **gheight**, **width**: map height, chart height (`0px` hides the chart), width.
-* **mtype**: map type without MapBox: `OSM1` OpenStreetMap, `OSM2` OpenCycleMap, `OSM3` Thunderforest Outdoors, `OSM4` Transport, `OSM5` Landscape, `OSM7` Humanitarian, `OSM9` Hike & Bike, `OSM10` OpenSeaMap, `OSM11` GSI Japan.
+* **mtype**: map type without MapBox: `OSM1` OpenStreetMap, `OSM2` Thunderforest OpenCycleMap (CyclOSM without API key), `OSM3` Thunderforest Outdoors, `OSM4` Transport, `OSM5` Landscape (Thunderforest maps need an API key, otherwise OpenStreetMap is used), `OSM7` Humanitarian, `OSM9` OpenTopoMap, `OSM10` OpenSeaMap sea marks over OpenStreetMap, `OSM11` GSI Japan, `OSM12` CyclOSM.
 * **mapboxstyle**, **mapbox3d**, **pitch**, **bearing**: MapBox style, 3D terrain, view tilt (0-85) and rotation.
 * **colorby**: `grade`, `speed`, `hr`, `elevation` or `none`.
 * **mlinecolor**: track color (several colors separated by spaces, one per track).
@@ -99,6 +99,14 @@ The complete list with the current defaults is in **Settings > WP GPX Maps > Hel
 
 The plugin skips points closer than 10 meters (`pointsoffset`) and can keep about 200 points for the map and the chart, then caches the result, so even long tracks load fast.
 
+= Which file formats can I use? =
+
+GPX, FIT (the activity files of Garmin, Wahoo, Coros and most bike computers and watches), TCX and KML / KMZ (Google Earth). Use them like a GPX file: `[sgpx gpx="/wp-content/uploads/gpx/ride.fit"]`. The format is recognized from the content of the file.
+
+= The map is not styled, or is missing, in a widget or a page builder =
+
+The plugin loads the map style only on the pages whose posts contain the block or the shortcode; maps added in other ways load it in the footer. To load it in the head of every page add `add_filter( 'wpgpxmaps_load_assets', '__return_true' );` to your theme. Maps start when they get near the screen: to start them as soon as the page has loaded use `add_filter( 'wpgpxmaps_lazy_load', '__return_false' );`.
+
 = Is it free? =
 
 Yes, WP GPX Maps is free and open source (GPLv2 or later).
@@ -114,6 +122,19 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.10.00 =
+* New: FIT (Garmin, Wahoo and other devices), TCX and KML / KMZ files, with heart rate, cadence, temperature and times when the file has them; KML placemarks are shown as waypoints
+* New: the map style is loaded only on the pages that show a map, and every map downloads its code only when it gets near the screen (lazy load): faster pages, also for the pages without maps
+* New: OpenTopoMap (OSM9, replaces Hike & Bike, whose server is offline) and CyclOSM (OSM12) maps
+* Fix: a clear message instead of an empty map when the file is corrupted, is not a track file or has no track points
+* Fix: total distance too long when some points of the track have no elevation (a vertical jump to 0 m was added to the distance)
+* Fix: GPX files with only a route (no track) have distance, statistics and chart
+* Fix: Open Cycle Map without a Thunderforest API key stopped the map with a JavaScript error, it now shows CyclOSM; the other Thunderforest maps without a key show OpenStreetMap
+* Fix: the Thunderforest Outdoors address was misspelled, so that map never loaded
+* Fix: OpenSeaMap is shown over OpenStreetMap (it only has the sea marks) and can be turned on and off in the layer list
+* Fix: the map attributions credit the real map provider instead of MapBox; the OpenStreetMap tiles are no longer downloaded twice
+* Removed the "MapToolKit - Terrain" option (provider removed in 1.7.02): maps that still use it show OpenStreetMap
 
 = 1.9.00 =
 * New: "GPX Map" block for the block editor, with live preview, a list of the uploaded GPX files and all the main options in the sidebar (the [sgpx] shortcode keeps working)
