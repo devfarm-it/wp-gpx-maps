@@ -51,6 +51,8 @@ interface Params {
     /* Track color: '' (one color), 'grade', 'speed', 'hr' or 'elevation', with one value per mapData point */
     colorBy?: string;
     colorData?: Array<number | null>;
+    /* Data added by add-ons with the PHP filter wpgpxmaps_map_extra */
+    extra?: { [key: string]: any };
 }
 
 interface LangTranslation {

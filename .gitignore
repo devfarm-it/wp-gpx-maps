@@ -7,3 +7,4 @@ node_modules
 /vendor
 /dev/.env
 /build
+/dev/docker-compose.override.yml
