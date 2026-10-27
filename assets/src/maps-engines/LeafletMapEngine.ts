@@ -528,6 +528,18 @@ export class LeafletMapEngine implements MapEngine<Map> {
             this.EventSelectChart(LatLon);
     }
 
+    AddHtmlMarker(LatLon: [number, number], element: HTMLElement, title?: string): void {
+        if (this.map == null) {
+            return;
+        }
+        const size = element.offsetWidth || parseInt(element.style.width) || 16;
+        L.marker(L.latLng(LatLon), {
+            icon: L.divIcon({ html: element, className: 'wpgpxmaps-html-marker', iconSize: [size, size], iconAnchor: [size / 2, size / 2] }),
+            title: title ?? '',
+            interactive: !!title,
+        }).addTo(this.map);
+    }
+
     CenterMap(): void {
         try {
 

@@ -199,6 +199,14 @@ Yes!
 
 = 1.9.00 =
 * New: "GPX Map" block for the block editor, with live preview, a list of the uploaded GPX files and all the main options in the sidebar (the [sgpx] shortcode keeps working)
+* New: several GPX files in one map, gpx="a.gpx,b.gpx": one color per file, legend, cumulative distance and totals
+* New: start / finish markers (hide with startend="false") and distance markers every N km or miles (kmmarkers="5")
+* New: summary with moving time, max speed and max grade (summarymovingtime, summarymaxspeed, summarymaxgrade)
+* New: filled elevation profile and a vertical line on the selected point; hovering the track also shows the point in the chart with MapBox
+* Fix: "Total descent" was a negative number
+* Fix: the chart distance no longer restarts from 0 for each track of a multi-track GPX file
+* Fix: chart tooltip showed pixel positions instead of distance and values; selecting a point from the map did not show it in the chart
+* Developers: wpgpxmaps_get_track_info() and wpgpxmaps_module_url(); the map module exports Leaflet
 * New: color the track by grade (climb / descent), speed, heart rate or elevation, with a legend on the map: colorby="grade|speed|hr|elevation", in the block and in the settings
 * Fix: "false" values in the shortcode (e.g. showele=false, summary=false) now turn off options enabled in the settings
 * Maps also start when the page is already loaded (block editor preview, content loaded later)

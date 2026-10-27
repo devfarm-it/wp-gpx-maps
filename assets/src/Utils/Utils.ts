@@ -111,6 +111,66 @@ export const WPGPXMAPS = {
             return { mapData: outData, colors: colors };
         },
 
+        /* Distance in meters between two [lat, lon] points (haversine) */
+        Distance(a: [number, number], b: [number, number]): number {
+            const r = Math.PI / 180;
+            const dLat = (b[0] - a[0]) * r;
+            const dLon = (b[1] - a[1]) * r;
+            const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[0] * r) * Math.cos(b[0] * r) * Math.sin(dLon / 2) ** 2;
+            return 2 * 6371000 * Math.asin(Math.min(1, Math.sqrt(h)));
+        },
+
+        /*
+         * Points every `interval` units along the track (the gap between two tracks adds no distance).
+         * unitMeters: 1000 for km, 1609.344 for miles, 1852 for nautical miles.
+         */
+        DistanceMarkers(mapData: Array<[number, number] | null>, interval: number, unitMeters: number): Array<{ point: [number, number], value: number }> {
+            const result: Array<{ point: [number, number], value: number }> = [];
+            if (!(interval > 0)) return result;
+            const step = interval * unitMeters;
+            let total = 0;
+            let next = step;
+            let prev: [number, number] | null = null;
+            for (const point of mapData) {
+                if (point === null) { prev = null; continue; }
+                if (prev !== null) {
+                    const d = WPGPXMAPS.Utils.Distance(prev, point);
+                    while (d > 0 && total + d >= next) {
+                        const f = (next - total) / d;
+                        result.push({ point: [prev[0] + (point[0] - prev[0]) * f, prev[1] + (point[1] - prev[1]) * f], value: Math.round(next / unitMeters * 100) / 100 });
+                        next += step;
+                    }
+                    total += d;
+                }
+                prev = point;
+            }
+            return result;
+        },
+
+        /* Round label for start / end / distance markers */
+        MarkerElement(text: string, background: string, size: number = 18): HTMLElement {
+            const el = document.createElement('div');
+            el.className = 'wpgpxmaps-marker';
+            el.textContent = text;
+            el.style.cssText = `width:${size}px;height:${size}px;line-height:${size - 4}px;border-radius:50%;background:${background};color:#fff;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.4);font:bold ${text.length > 2 ? 8 : 10}px sans-serif;text-align:center;box-sizing:border-box;`;
+            return el;
+        },
+
+        /* Legend of the GPX files shown in the same map (name and color of each one) */
+        AddTracksLegend(container: HTMLElement, names: string[], colors: string[]): void {
+            const legend = document.createElement('div');
+            legend.className = 'wpgpxmaps-legend wpgpxmaps-tracks-legend';
+            legend.style.cssText = 'position:absolute;left:8px;bottom:30px;z-index:1000;background:rgba(255,255,255,.9);padding:4px 8px;border-radius:4px;font:11px/1.5 sans-serif;color:#222;box-shadow:0 1px 3px rgba(0,0,0,.3);pointer-events:none;max-width:60%';
+            names.forEach((name, i) => {
+                const row = document.createElement('div');
+                const swatch = document.createElement('span');
+                swatch.style.cssText = `display:inline-block;width:14px;height:4px;margin-right:6px;vertical-align:middle;border-radius:2px;background:${colors[i % colors.length]}`;
+                row.append(swatch, document.createTextNode(name));
+                legend.appendChild(row);
+            });
+            container.appendChild(legend);
+        },
+
         /* Small legend with the color bar, added on top of the map (works with Leaflet and MapBox) */
         AddTrackLegend(container: HTMLElement, title: string, stops: Array<[number, string]>, minLabel: string, maxLabel: string): void {
             const min = stops[0][0];

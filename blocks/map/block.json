@@ -15,6 +15,8 @@
 		"gheight": { "type": "string" },
 		"mlinecolor": { "type": "string" },
 		"colorby": { "type": "string" },
+		"kmmarkers": { "type": "string" },
+		"startend": { "type": "boolean" },
 		"glinecolor": { "type": "string" },
 		"uom": { "type": "string" },
 		"uomspeed": { "type": "string" },
@@ -34,7 +36,10 @@
 		"summaryeleup": { "type": "boolean" },
 		"summaryeledown": { "type": "boolean" },
 		"summaryavgspeed": { "type": "boolean" },
-		"summarytotaltime": { "type": "boolean" }
+		"summarytotaltime": { "type": "boolean" },
+		"summarymovingtime": { "type": "boolean" },
+		"summarymaxspeed": { "type": "boolean" },
+		"summarymaxgrade": { "type": "boolean" }
 	},
 	"supports": {
 		"html": false,

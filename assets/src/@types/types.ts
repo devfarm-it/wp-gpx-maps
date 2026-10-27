@@ -51,6 +51,13 @@ interface Params {
     /* Track color: '' (one color), 'grade', 'speed', 'hr' or 'elevation', with one value per mapData point */
     colorBy?: string;
     colorData?: Array<number | null>;
+    /* Several GPX files: file names and their colors, for the legend */
+    trackNames?: string[];
+    trackColors?: string[];
+    /* Default start / end markers when no icon is set */
+    startEnd?: boolean;
+    /* Distance marker every N km (or mi / NM, as the unit of measure); 0 = none */
+    kmMarkers?: number;
     /* Data added by add-ons with the PHP filter wpgpxmaps_map_extra */
     extra?: { [key: string]: any };
 }
@@ -67,7 +74,9 @@ interface LangTranslation {
     exitFullFcreen: string,
     hideImages: string,
     showImages: string,
-    backToCenter: string
+    backToCenter: string,
+    start?: string,
+    finish?: string
 }
 
 interface ChartUom {
@@ -102,6 +111,9 @@ interface MapEngine<T> {
     SetCurrentGPSPosition(LatLon: [number, number], currentpositioncon: string, lng: LangTranslation): void;
 
     AddPhotos(photos: any[]): void;
+
+    /* Marker drawn with an HTML element (start / end, distance markers), centered on the point */
+    AddHtmlMarker(LatLon: [number, number], element: HTMLElement, title?: string): void;
 
     CenterMap(): void;
 }

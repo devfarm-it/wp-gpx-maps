@@ -44,6 +44,10 @@ $posts = [ordered]@{
     'Colore per velocita, FC e quota'              = "[sgpx gpx=`"$g/full.gpx`" colorby=speed uomspeed=1]`n`n[sgpx gpx=`"$g/full.gpx`" colorby=hr]`n`n[sgpx gpx=`"$g/full.gpx`" colorby=elevation]"
     'Colore per pendenza, piu tracce'              = "[sgpx gpx=`"$g/multitrack.gpx`" colorby=grade]"
     'Colore per pendenza senza quota'              = "[sgpx gpx=`"$g/notime-noele.gpx`" colorby=grade]"
+    'Marker km e statistiche'                      = "[sgpx gpx=`"$g/full.gpx`" kmmarkers=2 summary=true summarytotlen=true summaryeleup=true summaryeledown=true summarymovingtime=true summarymaxspeed=true summarymaxgrade=true uomspeed=1]"
+    'Due GPX nella stessa mappa'                   = "[sgpx gpx=`"$g/full.gpx,$g/multitrack.gpx`" summary=true summarytotlen=true summaryeleup=true kmmarkers=5]"
+    'Giro del Garda'                               = "[sgpx gpx=`"$g/garda.gpx`"]"
+    'Colline toscane'                              = "[sgpx gpx=`"$g/toscana.gpx`"]"
     'Due mappe nella stessa pagina'                = "[sgpx gpx=`"$g/full.gpx`"]`n`n[sgpx gpx=`"$g/multitrack.gpx`"]"
 }
 foreach ($title in $posts.Keys) {
