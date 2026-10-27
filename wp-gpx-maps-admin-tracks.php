@@ -20,7 +20,7 @@ if ( $is_admin != 1 )
 	return;
 
 $wpgpxmapsUrl = esc_url( get_admin_url() . 'admin.php?page=WP-GPX-Maps' );
-$gpxRegEx     = '/.gpx$/i';
+$gpxRegEx     = wpgpxmaps_trackFileRegex();
 
 if ( current_user_can( 'manage_options' ) ) {
 

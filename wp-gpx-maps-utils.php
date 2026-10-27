@@ -148,8 +148,8 @@ function wpgpxmaps_getPoints( $gpxPath, $gpxOffset = 10, $donotreducegpx = false
 	if ( is_string( $gpxPath ) && '' != $gpxPath && file_exists( $gpxPath ) ) {
 		$points = wpgpxmaps_parseXml( $gpxPath, $gpxOffset, $distancetype );
 	} else {
-		$points = wpgpxmaps_emptyPoints();
-		echo esc_html__( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' ) . ' ' . esc_html( is_string( $gpxPath ) ? basename( $gpxPath ) : '' );
+		$points        = wpgpxmaps_emptyPoints();
+		$points->error = __( 'file not found.', 'wp-gpx-maps' );
 	}
 
 	/* Reduce the points to around 200 to speedup */
@@ -205,6 +205,9 @@ function wpgpxmaps_emptyPoints() {
 	$points->avgTemp      = 0;
 	$points->totalLength  = 0;
 
+	/* Why the file has no points, for the error message */
+	$points->error = '';
+
 	return $points;
 }
 
@@ -238,370 +241,24 @@ function wpgpxmaps_loadXmlFile( $filePath ) {
 	return @simplexml_load_file( $filePath, 'SimpleXMLElement', LIBXML_NONET );
 }
 
+/**
+ * Points of a track file (GPX, TCX, KML / KMZ or FIT). $points->error is set when the file can't be read
+ * or has no track points.
+ */
 function wpgpxmaps_parseXml( $filePath, $gpxOffset, $distancetype ) {
-	$points = wpgpxmaps_emptyPoints();
 
-	$gpx = wpgpxmaps_loadXmlFile( $filePath );
+	$tracks = wpgpxmaps_readTracks( $filePath );
 
-	if ( false === $gpx )
+	if ( false === $tracks ) {
+		$points        = wpgpxmaps_emptyPoints();
+		$points->error = __( 'the file is not a valid GPX, TCX, KML or FIT file.', 'wp-gpx-maps' );
 		return $points;
-
-		$gpx->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
-		$gpx->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
-		$gpx->registerXPathNamespace( 'ns3', 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1' );
-
-		$nodes = $gpx->xpath( '//trk | //a:trk | //b:trk ' );
-		$nodes = is_array( $nodes ) ? $nodes : array();
-		/* Normal GPX */
-
-	if ( count( $nodes ) > 0 ) {
-
-		foreach ( $nodes as $_trk ) {
-
-			// @ will remove the errors on namaspaces
-
-			$trk = @simplexml_load_string( $_trk->asXML(), 'SimpleXMLElement', LIBXML_NONET );
-
-			if ( false === $trk )
-				continue;
-
-			$trk->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );
-			$trk->registerXPathNamespace( 'b', 'http://www.topografix.com/GPX/1/1' );
-			$trk->registerXPathNamespace( 'ns3', 'http://www.garmin.com/xmlschemas/TrackPointExtension/v1' );
-
-			$trkpts = $trk->xpath( '//trkpt | //a:trkpt | //b:trkpt' );
-			$trkpts = is_array( $trkpts ) ? $trkpts : array();
-
-			$lastLat  = 0;
-			$lastLon  = 0;
-			$lastEle  = 0;
-			$lastTime = 0;
-			$dist     = 0;
-			$lastOffset  = 0;
-			$speedBuffer = array();
-
-			foreach ( $trkpts as $trkpt ) {
-
-				$lat   = (float) $trkpt['lat'];
-				$lon   = (float) $trkpt['lon'];
-				$ele   = (float) $trkpt->ele;
-				$time  = (string) $trkpt->time;
-				$speed = (float) $trkpt->speed;
-				$hr    = 0;
-				$atemp = 0;
-				$cad   = 0;
-				$grade = 0;
-
-				if ( isset( $trkpt->extensions ) ) {
-
-					$arr = json_decode( wp_json_encode( $trkpt->extensions ), 1 );
-
-					/* The namespace prefix depends on the device/app (ns3: Garmin, gpxtpx: Strava, none...) */
-					$hr    = wpgpxmaps_getExtensionValue( $arr, 'hr' );
-					$atemp = wpgpxmaps_getExtensionValue( $arr, 'atemp' );
-					$cad   = wpgpxmaps_getExtensionValue( $arr, 'cad' );
-				}
-
-				/* Empty extension elements are decoded as arrays: keep only numbers */
-				$hr    = is_numeric( $hr ) ? (float) $hr : 0;
-				$atemp = is_numeric( $atemp ) ? (float) $atemp : 0;
-				$cad   = is_numeric( $cad ) ? (float) $cad : 0;
-
-				if ( 0 == $lastLat && 0 == $lastLon ) {
-
-					/* Base Case  */
-					array_push( $points->dt, '' != $time ? strtotime( $time ) : false );
-					array_push( $points->lat, (float) $lat );
-					array_push( $points->lon, (float) $lon );
-					array_push( $points->ele, (float) round( $ele, 2 ) );
-					array_push( $points->dist, (float) round( $dist, 2 ) );
-					array_push( $points->speed, 0 );
-					array_push( $points->hr, (float) $hr );
-					array_push( $points->atemp, (float) $atemp );
-					array_push( $points->cad, (float) $cad );
-					array_push( $points->grade, $grade );
-
-					$lastLat  = $lat;
-					$lastLon  = $lon;
-					$lastEle  = $ele;
-					$lastTime = $time;
-				} else {
-					
-					/* Normal Case  */
-					$offset = calculateDistance( (float) $lat, (float) $lon, (float) $ele, (float) $lastLat, (float) $lastLon, (float) $lastEle, $distancetype );
-					$dist   = $dist + $offset;
-
-					$points->totalLength = $dist;
-
-					if ( $speed == 0 && '' != $time && '' != $lastTime ) {
-							$datediff = (float) my_date_diff( $lastTime, $time );
-						if ( $datediff != 0 ) {
-							$speed = $offset / $datediff;
-						}
-					}
-
-					if ( $ele != 0 && $lastEle != 0 && $offset != 0 ) {
-						$deltaEle = (float) ( $ele - $lastEle );
-
-						if ( (float) $ele > (float) $lastEle ) {
-							$points->totalEleUp += $deltaEle;
-						} else {
-							/* Descent is shown as a positive number, like the climb */
-							$points->totalEleDown -= $deltaEle;
-						}
-						$grade = $deltaEle / $offset * 100;
-					}
-
-					array_push( $speedBuffer, $speed );
-
-					if ( ( (float) $offset + (float) $lastOffset ) > $gpxOffset ) {
-						/* Bigger Offset -> write coordinate */
-						$avgSpeed = 0;
-
-						foreach ( $speedBuffer as $s ) {
-							$avgSpeed += $s;
-						}
-
-						$avgSpeed    = $avgSpeed / count( $speedBuffer );
-						$speedBuffer = array();
-
-						$lastOffset = 0;
-
-						array_push( $points->dt, '' != $time ? strtotime( $time ) : false );
-						array_push( $points->lat, (float) $lat );
-						array_push( $points->lon, (float) $lon );
-						array_push( $points->ele, (float) round( $ele, 2 ) );
-						array_push( $points->dist, (float) round( $dist, 2 ) );
-						array_push( $points->speed, (float) round( $avgSpeed, 1 ) );
-						array_push( $points->hr, $hr );
-						array_push( $points->atemp,	$atemp );
-						array_push( $points->cad, $cad );
-						array_push( $points->grade, (float) round( $grade, 2 ) );
-					} else {
-						/* Smoller Offset -> continue.. */
-						$lastOffset = (float) $lastOffset + (float) $offset;
-					}
-				}
-				$lastLat  = $lat;
-				$lastLon  = $lon;
-				$lastEle  = $ele;
-				$lastTime = $time;
-			}
-			array_push( $points->dt, null );
-			array_push( $points->lat, null );
-			array_push( $points->lon, null );
-			array_push( $points->ele, null );
-			array_push( $points->dist, null );
-			array_push( $points->speed, null );
-			array_push( $points->hr, null );
-			array_push( $points->atemp, null );
-			array_push( $points->cad, null );
-			array_push( $points->grade, null );
-
-			unset( $trkpts );
-		}
-		unset( $nodes );
-
-		try {
-			array_pop( $points->dt );
-			array_pop( $points->lat );
-			array_pop( $points->lon );
-			array_pop( $points->ele );
-			array_pop( $points->dist );
-			array_pop( $points->speed );
-			array_pop( $points->hr );
-			array_pop( $points->atemp );
-			array_pop( $points->cad );
-			array_pop( $points->grade );
-
-			$_time               = array_filter( $points->dt );
-			$_ele                = array_filter( $points->ele );
-			$_dist               = array_filter( $points->dist );
-
-			if (count($_dist) > 0)		
-			{
-				$points->totalLength = max( $_dist );
-			}
-
-			if (count($_ele) > 0) {
-				/* 	
-					There might be cases where ele is not set in the gpx (0.00).
-					array_filter will filter out those values and as a consequence min()/max() would fail. 
-				*/
-				$points->maxEle      = max( $_ele );
-				$points->minEle      = min( $_ele );
-			}
-
-			if (count($_time) > 0)		
-			{
-				$points->maxTime     = max( $_time );
-				$points->minTime     = min( $_time );
-			}
-			else
-			{
-				$points->maxTime     = null;
-				$points->minTime     = null;
-			}
-
-			/* Calculating Average Speed */
-			$_speed           = array_filter( $points->speed );
-			if (count($_speed) > 0)
-				$points->avgSpeed = array_sum( $_speed ) / count( $_speed );
-			else
-				$points->avgSpeed = null;
-
-			/* Calculating Average Cadence */
-			$_cad           = array_filter( $points->cad );
-			if (count($_cad) > 0)
-				$points->avgCad = (float) round( array_sum( $_cad ) / count( $_cad ), 0 );
-			else
-				$points->avgCad = null;
-
-			/* Calculating Average Heart Rate */
-			$_hr           = array_filter( $points->hr );
-			if (count($_hr) > 0)
-				$points->avgHr = (float) round( array_sum( $_hr ) / count( $_hr ), 0 );
-			else
-				$points->avgHr = null;
-
-			/* Calculating Average Temperature */
-			$_temp           = array_filter( $points->atemp );
-			if (count($_temp) > 0)
-				$points->avgTemp = (float) round( array_sum( $_temp ) / count( $_temp ), 1 );
-			else
-				$points->avgTemp = null;
-
-		} catch ( Exception $e ) {
-			print_r($e);
-		}
-	} else {
-
-		/* GPX Garmin case */
-		$gpx->registerXPathNamespace( 'gpxx', 'http://www.garmin.com/xmlschemas/GpxExtensions/v3' );
-
-		$nodes = $gpx->xpath( '//gpxx:rpt' );
-		$nodes = is_array( $nodes ) ? $nodes : array();
-
-		if ( count( $nodes ) > 0 ) {
-
-			$lastLat    = 0;
-			$lastLon    = 0;
-			$lastEle    = 0;
-			$dist       = 0;
-			$lastOffset = 0;
-
-			/* GPX Garmin case */
-			foreach ( $nodes as $rpt ) {
-
-				$lat = (float) $rpt['lat'];
-				$lon = (float) $rpt['lon'];
-				if ( 0 == $lastLat && 0 == $lastLon ) {
-
-					/* Base Case */
-					array_push( $points->lat, (float) $lat );
-					array_push( $points->lon, (float) $lon );
-					array_push( $points->ele, 0 );
-					array_push( $points->dist, 0 );
-					array_push( $points->speed, 0 );
-					array_push( $points->hr, 0 );
-					array_push( $points->atemp, 0 );
-					array_push( $points->cad, 0 );
-					array_push( $points->grade, 0 );
-					$lastLat = $lat;
-					$lastLon = $lon;
-				} else {
-
-					/* Base Case */
-					$offset = calculateDistance( $lat, $lon, 0, $lastLat, $lastLon, 0, $distancetype );
-					$dist   = $dist + $offset;
-					if ( ( (float) $offset + (float) $lastOffset ) > $gpxOffset ) {
-
-						/* Bigger Offset -> write coordinate */
-						$lastOffset = 0;
-						array_push( $points->lat, (float) $lat );
-						array_push( $points->lon, (float) $lon );
-						array_push( $points->ele, 0 );
-						array_push( $points->dist, 0 );
-						array_push( $points->speed, 0 );
-						array_push( $points->hr, 0 );
-						array_push( $points->atemp, 0 );
-						array_push( $points->cad, 0 );
-						array_push( $points->grade, 0 );
-					} else {
-
-						/* Smoller Offset -> continue.. */
-						$lastOffset = (float) $lastOffset + (float) $offset;
-					}
-				}
-				$lastLat = $lat;
-				$lastLon = $lon;
-			}
-			unset( $nodes );
-
-		} else {
-
-			/* GPX Strange case */
-			$nodes = $gpx->xpath( '//rtept | //a:rtept | //b:rtept' );
-			$nodes = is_array( $nodes ) ? $nodes : array();
-			if ( count( $nodes ) > 0 ) {
-
-				$lastLat    = 0;
-				$lastLon    = 0;
-				$lastEle    = 0;
-				$dist       = 0;
-				$lastOffset = 0;
-
-				/* Garmin case */
-				foreach ( $nodes as $rtept ) {
-
-					$lat = (float) $rtept['lat'];
-					$lon = (float) $rtept['lon'];
-					if ( 0 == $lastLat && 0 == $lastLon ) {
-
-						/* Base Case */
-						array_push( $points->lat, (float) $lat );
-						array_push( $points->lon, (float) $lon );
-						array_push( $points->ele, 0 );
-						array_push( $points->dist, 0 );
-						array_push( $points->speed, 0 );
-						array_push( $points->hr, 0 );
-						array_push( $points->atemp, 0 );
-						array_push( $points->cad, 0 );
-						array_push( $points->grade, 0 );
-						$lastLat = $lat;
-						$lastLon = $lon;
-					} else {
-
-						/* Normal Case */
-						$offset = calculateDistance( $lat, $lon, 0, $lastLat, $lastLon, 0, $distancetype );
-						$dist   = $dist + $offset;
-						if ( ( (float) $offset + (float) $lastOffset ) > $gpxOffset ) {
-
-							/* Bigger Offset -> write coordinate */
-							$lastOffset = 0;
-							array_push( $points->lat, (float) $lat );
-							array_push( $points->lon, (float) $lon );
-							array_push( $points->ele, 0 );
-							array_push( $points->dist, 0 );
-							array_push( $points->speed, 0 );
-							array_push( $points->hr, 0 );
-							array_push( $points->atemp, 0 );
-							array_push( $points->cad, 0 );
-							array_push( $points->grade, 0 );
-						} else {
-
-							/* Smoller Offset -> continue.. */
-							$lastOffset = (float) $lastOffset + (float) $offset;
-						}
-					}
-					$lastLat = $lat;
-					$lastLon = $lon;
-				}
-				unset( $nodes );
-			}
-		}
 	}
-	unset( $gpx );
+
+	$points = wpgpxmaps_buildPoints( $tracks, $gpxOffset, $distancetype );
+	if ( ! $points->lat ) {
+		$points->error = __( 'the file has no track points.', 'wp-gpx-maps' );
+	}
 	return $points;
 }
 
@@ -610,9 +267,9 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
 	if ( is_string( $gpxPath ) && '' != $gpxPath && file_exists( $gpxPath ) ) {
 		$gpx = wpgpxmaps_loadXmlFile( $gpxPath );
 
-		if ( false === $gpx ) {
-			echo esc_html__( 'WP GPX Maps Error: Can&#8217;t parse xml file!', 'wp-gpx-maps' ) . ' ' . esc_html( basename( $gpxPath ) );
-			return $points;
+		/* Not GPX: KML placemarks are waypoints, the other formats have none (unreadable files are reported by the track) */
+		if ( false === $gpx || 'gpx' !== strtolower( $gpx->getName() ) ) {
+			return wpgpxmaps_readKmlWaypoints( $gpxPath );
 		}
 
 			$gpx->registerXPathNamespace( 'a', 'http://www.topografix.com/GPX/1/0' );

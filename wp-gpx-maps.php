@@ -30,12 +30,13 @@ define( 'WPGPXMAPS_CURRENT_VERSION', '1.9.00' );
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
  * in a way that is not backward compatible. Hooks: wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra,
  * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
- * wpgpxmaps_admin_tab_{tab}; JavaScript event "wpgpxmaps:ready" on document.
+ * wpgpxmaps_admin_tab_{tab}, wpgpxmaps_load_assets, wpgpxmaps_lazy_load; JavaScript event "wpgpxmaps:ready" on document.
  * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_module_url(); the module exports WPGPXMaps and Leaflet.
  */
 define( 'WPGPXMAPS_API_VERSION', 1 );
 
 require 'wp-gpx-maps-utils.php';
+require 'wp-gpx-maps-formats.php';
 require 'wp-gpx-maps-admin.php';
 require 'wp-gpx-maps-block.php';
 
@@ -263,14 +264,60 @@ function wpgpxmaps_register_assets() {
 
 }
 
+/**
+ * Load the map style in the head only on the pages that show a map. The JavaScript module is not enqueued:
+ * every map imports it when it gets near the screen.
+ */
 function wpgpxmaps_enqueue_scripts() {
 
+	if ( wpgpxmaps_page_has_map() ) {
+		wpgpxmaps_enqueue_assets();
+	}
+
+}
+
+/**
+ * Map style and add-on assets, once per page. Also called by the shortcode, for maps that wpgpxmaps_page_has_map()
+ * can't see (widgets, page builders, theme templates): there the style is printed in the footer.
+ */
+function wpgpxmaps_enqueue_assets() {
+
+	static $done = false;
+	if ( $done ) {
+		return;
+	}
+	$done = true;
+
 	wp_enqueue_style( 'output-style' );
-	wp_enqueue_script_module( 'wp-gpx-maps' );
 
 	/** Fires after the map scripts are enqueued on the front end, for add-on scripts and styles. */
 	do_action( 'wpgpxmaps_enqueue_scripts' );
 
+}
+
+/**
+ * Whether a post of the current page has a map (shortcode or block).
+ */
+function wpgpxmaps_page_has_map() {
+
+	global $wp_query;
+
+	$found = false;
+	$posts = isset( $wp_query->posts ) && is_array( $wp_query->posts ) ? $wp_query->posts : array();
+	foreach ( $posts as $post ) {
+		if ( $post instanceof WP_Post && ( has_shortcode( $post->post_content, 'sgpx' ) || has_shortcode( $post->post_content, 'sgpxf' ) || has_block( 'wp-gpx-maps/map', $post ) ) ) {
+			$found = true;
+			break;
+		}
+	}
+
+	/**
+	 * Filters whether the map style is loaded in the head of the current page.
+	 * Return true for maps added in a way the plugin can't detect, to avoid a flash of unstyled map.
+	 *
+	 * @param bool $found True when a post of the page has the shortcode or the block.
+	 */
+	return (bool) apply_filters( 'wpgpxmaps_load_assets', $found );
 }
 
 function wpgpxmaps_findValue( $attr, $attributeName, $optionName, $defaultValue ) {
@@ -302,6 +349,8 @@ function wpgpxmaps_handle_folder_shortcodes( $attr, $content = '' ) {
 	$donotreducegpx 	= wpgpxmaps_findValue( $attr, 'donotreducegpx', 'wpgpxmaps_donotreducegpx', false );
 	$unit_of_measure    = wpgpxmaps_findValue( $attr, 'uom', 'wpgpxmaps_unit_of_measure', '0' );
 
+	wpgpxmaps_enqueue_assets();
+
 	/* Fix folder path */
 	$folder = wpgpxmaps_resolveLocalPath( $folder );
 
@@ -317,7 +366,7 @@ function wpgpxmaps_handle_folder_shortcodes( $attr, $content = '' ) {
 
 	foreach ( $files as $file ) {
 
-		if ( strtolower( substr( $file, - 4 ) ) == '.gpx' ) {
+		if ( preg_match( wpgpxmaps_trackFileRegex(), $file ) ) {
 
 			$gpx    = $folder . DIRECTORY_SEPARATOR . $file;
 			$points = wpgpxmaps_getPoints( $gpx, $pointsoffset, $donotreducegpx, $distanceType );
@@ -392,6 +441,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	 * @param array $attr Shortcode attributes.
 	 */
 	$attr = apply_filters( 'wpgpxmaps_shortcode_atts', $attr );
+
+	wpgpxmaps_enqueue_assets();
 
 	$error = '';
 	/* General */
@@ -501,7 +552,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$track_names   = array();
 	if ( count( $gpx_list ) > 1 ) {
 		foreach ( $gpx_list as $n => $item ) {
-			$track_names[] = preg_replace( '/\.gpx$/i', '', basename( wp_parse_url( $item, PHP_URL_PATH ) ) );
+			$track_names[] = preg_replace( wpgpxmaps_trackFileRegex(), '', basename( wp_parse_url( $item, PHP_URL_PATH ) ) );
 		}
 	}
 
@@ -603,14 +654,23 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 						wp_delete_file( $file['path'] );
 					}
 				}
-				return esc_html__( 'WP GPX Maps Error: GPX file not found!', 'wp-gpx-maps' ) . ( count( $gpx_list ) > 1 ? ' ' . esc_html( basename( $item ) ) : '' );
+				return wpgpxmaps_errorMessage( __( 'GPX file not found!', 'wp-gpx-maps' ), count( $gpx_list ) > 1 ? $item : '' );
 			}
-			$gpx_files[] = array( 'path' => $path, 'remote' => $remote );
+			$gpx_files[] = array( 'path' => $path, 'remote' => $remote, 'item' => $item );
 		}
 
 		$parts = array();
 		foreach ( $gpx_files as $n => $file ) {
-			$part    = wpgpxmaps_getPoints( $file['path'], $pointsoffset, $donotreducegpx, $distanceType );
+			$part = wpgpxmaps_getPoints( $file['path'], $pointsoffset, $donotreducegpx, $distanceType );
+			if ( '' != $part->error ) {
+				/* Without this the page would show an empty map */
+				foreach ( $gpx_files as $f ) {
+					if ( $f['remote'] ) {
+						wp_delete_file( $f['path'] );
+					}
+				}
+				return wpgpxmaps_errorMessage( __( 'Can&#8217;t show the track:', 'wp-gpx-maps' ) . ' ' . $part->error, $file['item'] );
+			}
 			$parts[] = $part;
 			/* Every track of every file gets the color of its file */
 			if ( count( $gpx_files ) > 1 && count( $colors_map ) == 1 ) {
@@ -903,8 +963,16 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 	$r = (int) get_the_ID() . '_' . wp_rand( 1, 5000000 );
 
-	/* Same URL (and version) as the enqueued module, so the browser loads it only once */
+	/* Same URL (and version) for every map and add-on, so the browser loads the module only once */
 	$module_url = wpgpxmaps_module_url();
+
+	/**
+	 * Filters whether the map starts only when it gets near the screen (default) or as soon as the page has loaded.
+	 *
+	 * @param bool  $lazy True to load the map when it is about to be seen.
+	 * @param array $attr Shortcode attributes.
+	 */
+	$lazy = (bool) apply_filters( 'wpgpxmaps_lazy_load', true, $attr );
 
 	/**
 	 * Filters extra data passed to the map script (params.extra), read by add-ons in the "wpgpxmaps:ready" event.
@@ -927,10 +995,9 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		</div>
 		' . esc_html( $error ) . '
 		<script type="module">
-		import { WPGPXMaps } from "' . esc_url( $module_url ) . '";
+		const wpgpxmapsStart_' . esc_js( $r ) . ' = async function() {
 
-		/* Start after the page has loaded, or at once if it already has (block editor preview, late-loaded content) */
-		const wpgpxmapsStart_' . esc_js( $r ) . ' = function() {
+			const { WPGPXMaps } = await import("' . esc_url( $module_url ) . '");
 
 			var wpgpxmaps_' . esc_js( $r ) . ' = new WPGPXMaps({
 					targetId           : "' . esc_js( $r ) . '",
@@ -1005,10 +1072,27 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 		};
 
+		/* Lazy load: start (and download the map code) when the map gets near the screen, after the page has loaded */
+		const wpgpxmapsWhenVisible_' . esc_js( $r ) . ' = function() {
+			const box = document.getElementById("wpgpxmaps_' . esc_js( $r ) . '");
+			if (!' . ( $lazy ? 'true' : 'false' ) . ' || !box || !("IntersectionObserver" in window)) {
+				wpgpxmapsStart_' . esc_js( $r ) . '();
+				return;
+			}
+			const observer = new IntersectionObserver(function(entries) {
+				if (entries.some(function(entry) { return entry.isIntersecting; })) {
+					observer.disconnect();
+					wpgpxmapsStart_' . esc_js( $r ) . '();
+				}
+			}, { rootMargin: "300px" });
+			observer.observe(box);
+		};
+
+		/* At once if the page has already loaded (block editor preview, late-loaded content) */
 		if (document.readyState === "complete") {
-			wpgpxmapsStart_' . esc_js( $r ) . '();
+			wpgpxmapsWhenVisible_' . esc_js( $r ) . '();
 		} else {
-			window.addEventListener("load", wpgpxmapsStart_' . esc_js( $r ) . ');
+			window.addEventListener("load", wpgpxmapsWhenVisible_' . esc_js( $r ) . ');
 		}
 
 		</script>';
@@ -1083,6 +1167,14 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	 * @param string $r      Map id: the elements are #wpgpxmaps_{id}, #map_{id}, #myChart_{id}.
 	 */
 	return apply_filters( 'wpgpxmaps_map_html', $output, $attr, $r );
+}
+
+/**
+ * Error shown instead of the map, with the file name when there are several files.
+ */
+function wpgpxmaps_errorMessage( $message, $file = '' ) {
+	return '<p class="wpgpxmaps-error"><strong>WP GPX Maps:</strong> ' . esc_html( html_entity_decode( $message, ENT_QUOTES, 'UTF-8' ) )
+		. ( '' != $file ? ' <code>' . esc_html( basename( (string) wp_parse_url( $file, PHP_URL_PATH ) ) ) . '</code>' : '' ) . '</p>';
 }
 
 function convertSeconds( $s ) {

@@ -5,7 +5,7 @@ Plugin WordPress (slug `wp-gpx-maps`), autore bastianonm. Questo repository GitH
 non si fanno più commit SVN a mano.
 
 ## Struttura
-- PHP del plugin nella radice; JS in `assets/src` (TypeScript) compilato con `npm run build` in `assets/dist`.
+- PHP del plugin nella radice (lettura dei file traccia in `wp-gpx-maps-formats.php`); JS in `assets/src` (TypeScript) compilato con `npm run build` in `assets/dist`.
 - Blocco `wp-gpx-maps/map`: `blocks/map/` (block.json, `index.js` in JS semplice sui globali `wp.*`, senza build) +
   `wp-gpx-maps-block.php` (registrazione, render tramite `wpgpxmaps_handle_shortcodes`, REST `wp-gpx-maps/v1/tracks`).
   Gli attributi hanno gli stessi nomi dello shortcode; quelli non impostati usano le impostazioni del plugin.
@@ -28,8 +28,10 @@ non si fanno più commit SVN a mano.
 
 ## Stato (ottobre 2026)
 - 1.8.00: fix sicurezza (XSS riflesso via query string, path traversal, CSRF), PHP 8, grafico multi-traccia, HR Strava, cache JS.
-- Comportamenti ancora da sistemare: distanza che riparte da zero per ogni traccia nel grafico, "Total descent" negativo,
-  GPX corrotto mostra mappa vuota senza messaggio.
+- 1.9.00: blocco Gutenberg, più GPX in una mappa, traccia colorata, marker km, statistiche extra, hook per add-on.
+- 1.10.00 (branch `feature/1.10`, non rilasciata): formati FIT/TCX/KML in `wp-gpx-maps-formats.php` (ogni lettore produce punti
+  grezzi, `wpgpxmaps_buildPoints()` calcola tutto), messaggio per file illeggibili, asset solo dove c'è una mappa + lazy load,
+  mappe Leaflet come tabella di provider (OSM9 = OpenTopoMap, OSM12 = CyclOSM). File di prova in `dev/gpx` (anche .fit/.tcx/.kml).
 
 ## Piano
 ### Fase 2: modernizzare

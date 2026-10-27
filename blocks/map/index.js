@@ -15,14 +15,15 @@
 
 	const MAP_TYPES = [
 		{ value: 'OSM1', label: 'Open Street Map' },
-		{ value: 'OSM2', label: 'Open Cycle Map (Thunderforest API key)' },
+		{ value: 'OSM2', label: 'Open Cycle Map (Thunderforest API key, CyclOSM without)' },
 		{ value: 'OSM3', label: 'Thunderforest Outdoors (API key)' },
 		{ value: 'OSM4', label: 'Thunderforest Transport (API key)' },
 		{ value: 'OSM5', label: 'Thunderforest Landscape (API key)' },
 		{ value: 'OSM7', label: 'Open Street Map - Humanitarian' },
-		{ value: 'OSM9', label: 'Hike & Bike' },
+		{ value: 'OSM9', label: 'OpenTopoMap (hiking)' },
 		{ value: 'OSM10', label: 'Open Sea Map' },
 		{ value: 'OSM11', label: 'GSI Map (Japan)' },
+		{ value: 'OSM12', label: 'CyclOSM (cycling)' },
 	];
 
 	const UNITS = [
