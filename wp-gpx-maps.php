@@ -31,7 +31,8 @@ define( 'WPGPXMAPS_CURRENT_VERSION', '1.9.00' );
  * in a way that is not backward compatible. Hooks: wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra,
  * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
  * wpgpxmaps_admin_tab_{tab}, wpgpxmaps_load_assets, wpgpxmaps_lazy_load; JavaScript event "wpgpxmaps:ready" on document.
- * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_module_url(); the module exports WPGPXMaps and Leaflet.
+ * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_module_url(), wpgpxmaps_enqueue_assets() (map style with the
+ * Leaflet CSS, for add-ons that draw their own maps); the module exports WPGPXMaps and Leaflet.
  */
 define( 'WPGPXMAPS_API_VERSION', 1 );
 
