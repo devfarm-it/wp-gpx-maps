@@ -1,7 +1,7 @@
 ﻿=== WP GPX Maps ===
 
 Contributors: bastianonm, Stephan Klein, Michel Selerin, TosattoSimonePio, Kniebremser
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8VHWLRW6JBTML
+Donate link: https://github.com/sponsors/bastianonm
 Tags: gpx, maps, track, leaflet, elevation
 Requires at least: 6.5
 Tested up to: 7.1
@@ -45,9 +45,10 @@ Total distance, maximum and minimum elevation, total climbing and descent, avera
 
 = Support and development =
 
-* Questions and bug reports: the [support forum](https://wordpress.org/support/plugin/wp-gpx-maps/).
+* Questions and bug reports: the [support forum](https://github.com/devfarm-it/wp-gpx-maps/discussions).
 * Development, issues and pull requests: [GitHub](https://github.com/devfarm-it/wp-gpx-maps).
 * Translations: [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-gpx-maps/).
+* Support the development: [GitHub Sponsors](https://github.com/sponsors/bastianonm).
 
 Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https://www.flaticon.com/), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 
