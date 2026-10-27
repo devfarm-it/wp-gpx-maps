@@ -463,6 +463,19 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	/* Track color: '' or 'none' (one color) or by grade, speed, heart rate, elevation */
 	$colorby = (string) wpgpxmaps_findValue( $attr, 'colorby', 'wpgpxmaps_map_color_by', '' );
 	/* Start / end markers are shown unless hidden in the shortcode (startend=false) or in the settings */
+	/* MapBox, per map: style (e.g. satellite-streets-v12 or a mapbox:// URL), 3D terrain, initial tilt and rotation of the view */
+	$mapbox_style   = (string) wpgpxmaps_findValue( $attr, 'mapboxstyle', '', '' );
+	$mapbox_3d      = wpgpxmaps_findValue( $attr, 'mapbox3d', 'wpgpxmaps_mapbox_3dterrain', false );
+	$mapbox_pitch   = max( 0, min( 85, (float) wpgpxmaps_findValue( $attr, 'pitch', '', 0 ) ) );
+	$mapbox_bearing = max( -180, min( 180, (float) wpgpxmaps_findValue( $attr, 'bearing', '', 0 ) ) );
+	if ( 0 === strpos( $mapbox_style, 'mapbox://' ) ) {
+		$mapbox_custom = $mapbox_style;
+		$mapbox_style  = '';
+	} else {
+		$mapbox_custom = $mapbox_style ? '' : get_option( 'wpgpxmaps_mapbox_customtype' );
+		$mapbox_style  = $mapbox_style ? preg_replace( '/[^a-z0-9\-]/', '', strtolower( $mapbox_style ) ) : get_option( 'wpgpxmaps_mapbox_type' );
+	}
+
 	if ( isset( $attr['startend'] ) ) {
 		$startend = false !== wpgpxmaps_findValue( $attr, 'startend', '', true );
 	} else {
@@ -639,6 +652,10 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		$avg_temp       = $points->avgTemp;
 		$tot_len        = $points->totalLength;
 
+		/* Chart values without GPS noise: grade averaged over about 100 m, speed median of 5 points */
+		$chart_grade = $showGrade ? wpgpxmaps_valuesByKey( $points, wpgpxmaps_colorValues( $points, 'grade', '0', '0' ) ) : array();
+		$chart_speed = $showSpeed ? wpgpxmaps_smoothSpeed( $points ) : array();
+
 		if ( is_array( $points_x_lat ) )
 		foreach ( array_keys(
 		$points_x_lat ) as $i ) {
@@ -697,7 +714,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 				$points_graph_ele  .= number_format( $_ele, 2, '.', '' ) . ',';
 
 				if ( true == $showSpeed ) {
-					$_speed              = (float) $points->speed[$i];
+					$_speed              = (float) ( $chart_speed[ $i ] ?? $points->speed[$i] );
 					$points_graph_speed .= convertSpeed( $_speed, $unit_of_measure_speed ) . ',';
 				}
 
@@ -714,7 +731,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 				}
 
 				if ( true == $showGrade ) {
-					$points_graph_grade .= number_format( (float) $points->grade[$i], 2, '.', '' ) . ',';
+					$points_graph_grade .= number_format( (float) ( $chart_grade[ $i ] ?? $points->grade[$i] ), 2, '.', '' ) . ',';
 				}
 			}
 		}
@@ -960,9 +977,11 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 					TFApiKey           : "' . esc_js( get_option( 'wpgpxmaps_openstreetmap_apikey' ) ) . '",
 					MapBoxApiKey           : "' . esc_js( get_option( 'wpgpxmaps_mapbox_apikey' ) ) . '",
 
-					MapBoxMapType           : "' . esc_js( get_option( 'wpgpxmaps_mapbox_type' ) ) . '",
-					MapBoxMapCustomType     : "' . esc_js( get_option( 'wpgpxmaps_mapbox_customtype' ) ) . '",
-					MapBox3dTerrain         : "' . esc_js( filter_var(get_option( 'wpgpxmaps_mapbox_3dterrain' ), FILTER_VALIDATE_BOOLEAN) ) . '",
+					MapBoxMapType           : "' . esc_js( $mapbox_style ) . '",
+					MapBoxMapCustomType     : "' . esc_js( $mapbox_custom ) . '",
+					MapBox3dTerrain         : "' . esc_js( filter_var( $mapbox_3d, FILTER_VALIDATE_BOOLEAN ) ) . '",
+					MapBoxPitch             : ' . wp_json_encode( $mapbox_pitch ) . ',
+					MapBoxBearing           : ' . wp_json_encode( $mapbox_bearing ) . ',
 					MapBoxFog           	: "' . esc_js( filter_var(get_option( 'wpgpxmaps_mapbox_fog' ), FILTER_VALIDATE_BOOLEAN) ) . '",
 					MapBoxAnimateOnLoading 	: "' . esc_js( get_option( 'wpgpxmaps_mapbox_load_animation' ) ) . '",
 

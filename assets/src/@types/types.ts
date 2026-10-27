@@ -48,6 +48,9 @@ interface Params {
     MapBoxMapCustomType: string;
     MapBox3dTerrain: boolean;
     MapBoxFog: boolean;
+    /* Initial 3D view of MapBox maps: tilt 0-85 degrees and rotation -180..180 */
+    MapBoxPitch?: number;
+    MapBoxBearing?: number;
     /* Track color: '' (one color), 'grade', 'speed', 'hr' or 'elevation', with one value per mapData point */
     colorBy?: string;
     colorData?: Array<number | null>;

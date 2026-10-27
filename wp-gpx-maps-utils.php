@@ -818,7 +818,7 @@ function wpgpxmaps_mergePoints( $parts ) {
 
 /**
  * Extra statistics from the parsed points (after the merge of several GPX files):
- * movingTime (seconds, pauses excluded), maxSpeed (m/s, 99th percentile so GPS spikes are ignored),
+ * movingTime (seconds, pauses excluded), maxSpeed (m/s, 99th percentile of the smoothed speed),
  * maxGrade and minGrade (%, averaged over about 100 m).
  */
 function wpgpxmaps_extraStats( $points ) {
@@ -853,6 +853,10 @@ function wpgpxmaps_extraStats( $points ) {
 		}
 	}
 
+	/* Max speed on the smoothed speed (median of 5 points), like the chart: single GPS spikes do not count */
+	$speeds = array_values( array_filter( wpgpxmaps_smoothSpeed( $points ), function ( $v ) {
+		return $v > 0;
+	} ) );
 	if ( $speeds ) {
 		sort( $speeds );
 		$stats['maxSpeed'] = $speeds[ (int) floor( ( count( $speeds ) - 1 ) * 0.99 ) ];
@@ -865,6 +869,45 @@ function wpgpxmaps_extraStats( $points ) {
 	}
 
 	return $stats;
+}
+
+/**
+ * Values in the order of the map points (as returned by wpgpxmaps_colorValues) keyed like $points->lat.
+ */
+function wpgpxmaps_valuesByKey( $points, $values ) {
+	$keys = array_keys( $points->lat );
+	return count( $keys ) === count( $values ) ? array_combine( $keys, $values ) : array();
+}
+
+/**
+ * Speed for the chart: median of 5 neighbouring points inside the same track, which removes single GPS spikes.
+ * Keyed like $points->speed.
+ */
+function wpgpxmaps_smoothSpeed( $points ) {
+	$keys   = array_keys( $points->lat );
+	$result = array();
+	foreach ( $keys as $n => $k ) {
+		if ( null === $points->lat[ $k ] ) {
+			continue;
+		}
+		$window = array();
+		for ( $j = $n - 2; $j <= $n + 2; $j++ ) {
+			if ( $j < 0 || $j >= count( $keys ) || null === $points->lat[ $keys[ $j ] ] ) {
+				continue;
+			}
+			/* Stop at the separator between two tracks */
+			$between = $j < $n ? array_slice( $keys, $j, $n - $j ) : array_slice( $keys, $n, $j - $n + 1 );
+			foreach ( $between as $b ) {
+				if ( null === $points->lat[ $b ] ) {
+					continue 2;
+				}
+			}
+			$window[] = (float) $points->speed[ $keys[ $j ] ];
+		}
+		sort( $window );
+		$result[ $k ] = $window ? $window[ (int) floor( count( $window ) / 2 ) ] : (float) $points->speed[ $k ];
+	}
+	return $result;
 }
 
 /**
