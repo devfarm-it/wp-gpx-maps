@@ -152,7 +152,8 @@ export const WPGPXMAPS = {
             const el = document.createElement('div');
             el.className = 'wpgpxmaps-marker';
             el.textContent = text;
-            el.style.cssText = `width:${size}px;height:${size}px;line-height:${size - 4}px;border-radius:50%;background:${background};color:#fff;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.4);font:bold ${text.length > 2 ? 8 : 10}px sans-serif;text-align:center;box-sizing:border-box;`;
+            // Flex centering does not depend on the font metrics; reset what the theme could inherit
+            el.style.cssText = `display:flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;margin:0;padding:0;border-radius:50%;background:${background};color:#fff;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.4);font:bold ${text.length > 2 ? 8 : 10}px/1 Arial, Helvetica, sans-serif;letter-spacing:0;font-variant-numeric:tabular-nums;text-align:center;box-sizing:border-box;`;
             return el;
         },
 
