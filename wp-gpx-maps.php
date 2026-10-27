@@ -3,7 +3,7 @@
  * Plugin Name: WP GPX Maps
  * Plugin URI: http://www.devfarm.it/
  * Description: Draws a GPX track with altitude chart
- * Version: 1.8.00
+ * Version: 1.9.00
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.8.00' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.9.00' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
