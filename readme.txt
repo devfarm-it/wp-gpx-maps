@@ -22,6 +22,7 @@ WP GPX Maps turns a GPX, FIT, TCX or KML file into an interactive map and charts
 * **MapBox** with your own API key: Outdoors, Streets, Satellite, Satellite Streets, Light, Dark, Standard and custom styles, **3D terrain**, fog and a tilted 3D view (`pitch`, `bearing`).
 * **Track colored by grade** (blue descent, green flat, yellow to red climb), **speed**, **heart rate** or **elevation**, with a legend.
 * **Several GPX files in one map** (`gpx="a.gpx,b.gpx"`), one color per file with a legend.
+* **Activities**: tag your routes as hiking, stroller-friendly, mountain bike, climbing, snowshoeing and more (or your own activities, each with an emoji icon). Every activity has its own page on the site, and the site search finds routes by activity.
 * **Soft edges**: the map can fade into the page instead of ending with a hard border (`fadeedges`).
 * Start / finish markers, **distance markers** every N km or miles, waypoints with popups, full screen, photos from NextGEN Gallery or from the images attached to the post.
 
@@ -114,6 +115,10 @@ The plugin skips points closer than 10 meters (`pointsoffset`) and can keep abou
 
 Upload them in the Media Library: WordPress puts them in a folder for each month, and you can search them, give them a title and see the post they belong to. Media folder plugins work with them too. In the GPX Map block choose a file with the **Media Library** button. Every uploaded track file is checked first: files that are not valid tracks, or that contain scripts or HTML, are refused.
 
+= Can visitors find all the stroller-friendly walks, or all the mountain bike routes? =
+
+Yes. Tick the activities of a route in the editor (Activities panel, like categories), in Quick Edit, or for many posts at once with Bulk Edit. Each activity has a page, e.g. `/activity/mountain-bike/`, you can add to the menu, and the site search finds the routes by activity. Edit the list and the icons in **Posts > Activities**. Media Library files can have activities too.
+
 = Which file formats can I use? =
 
 GPX, FIT (the activity files of Garmin, Wahoo, Coros and most bike computers and watches), TCX and KML / KMZ (Google Earth). Use them like a GPX file: `[sgpx gpx="/wp-content/uploads/gpx/ride.fit"]`. The format is recognized from the content of the file.
@@ -146,6 +151,7 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * New: FIT (Garmin, Wahoo and other devices), TCX and KML / KMZ files, with heart rate, cadence, temperature and times when the file has them; KML placemarks are shown as waypoints
 * New: the map style is loaded only on the pages that show a map, and every map downloads its code only when it gets near the screen (lazy load): faster pages, also for the pages without maps
 * New: every map describes its track in text (for screen readers, search engines and AI assistants) and in schema.org structured data (JSON-LD), with settings, shortcode attributes `description` and `structureddata` and filters to change them
+* New: activities (hiking, walking, stroller-friendly, mountain bike, road cycling, gravel, trail running, climbing, snowshoeing, ski touring, or your own) for posts, pages and track files, with an emoji icon, a page for each activity, site search by activity and the activities in the structured data
 * New: track files (GPX, FIT, TCX, KML, KMZ) in the Media Library, organized by month and searchable, with a "Media Library" button in the GPX Map block; links to the site's own files are read as local files instead of being downloaded
 * Security: every uploaded track file (Media Library and Tracks tab) is checked: it must be a valid track file, without scripts, HTML or XML entities
 * New: soft edges, the map fades into the page (setting, block option and `fadeedges` attribute, also with the color of the page)

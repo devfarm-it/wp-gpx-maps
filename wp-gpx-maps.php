@@ -32,6 +32,7 @@ define( 'WPGPXMAPS_CURRENT_VERSION', '1.9.00' );
  * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
  * wpgpxmaps_admin_tab_{tab}, wpgpxmaps_load_assets, wpgpxmaps_lazy_load, wpgpxmaps_track_description,
  * wpgpxmaps_structured_data; JavaScript event "wpgpxmaps:ready" on document.
+ * Activities: taxonomy WPGPXMAPS_ACTIVITY_TAXONOMY, wpgpxmaps_activity_icon( $term ), wpgpxmaps_post_activities( $post_id ).
  * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_get_waypoints( $gpx ), wpgpxmaps_module_url(), wpgpxmaps_enqueue_assets() (map style with the
  * Leaflet CSS, for add-ons that draw their own maps); the module exports WPGPXMaps and Leaflet.
  */
@@ -40,6 +41,7 @@ define( 'WPGPXMAPS_API_VERSION', 1 );
 require 'wp-gpx-maps-utils.php';
 require 'wp-gpx-maps-formats.php';
 require 'wp-gpx-maps-media.php';
+require 'wp-gpx-maps-activities.php';
 require 'wp-gpx-maps-admin.php';
 require 'wp-gpx-maps-block.php';
 
@@ -1390,6 +1392,11 @@ function wpgpxmaps_track_about( $gpx, $gpx_list, $unit_of_measure, $attr, $r, $d
 	);
 	if ( get_the_ID() ) {
 		$data['url'] = get_permalink();
+		/* Activities of the post (hiking, stroller-friendly...): who the route is for */
+		$activities = wp_list_pluck( wpgpxmaps_post_activities( get_the_ID() ), 'name' );
+		if ( $activities ) {
+			$data['touristType'] = $activities;
+		}
 	}
 
 	/* The files are linked only when the download link is shown: some authors do not want their tracks downloaded */

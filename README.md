@@ -92,6 +92,8 @@ it changes only when a hook changes in a way that is not backward compatible.
 
 - `wpgpxmaps_get_track_info( $gpx )`: summary of a track, cached until the file changes. Returns start, end,
   bounds, length, climbing / descent, max / min elevation, duration and a line of up to 100 points.
+- Activities: taxonomy `WPGPXMAPS_ACTIVITY_TAXONOMY` (`wpgpxmaps_activity`), `wpgpxmaps_activity_icon( $term )` (emoji),
+  `wpgpxmaps_post_activities( $post_id )` (id, slug, name, icon, url of each activity of a post).
 - `wpgpxmaps_get_waypoints( $gpx )`: waypoints of a file (GPX waypoints, KML placemarks) with lat, lon, ele, name and desc.
 - `wpgpxmaps_module_url()`: URL of the JavaScript module, which exports `WPGPXMaps` and `Leaflet`.
 - `wpgpxmaps_enqueue_assets()`: map style with the Leaflet CSS, for add-ons that draw their own maps.
