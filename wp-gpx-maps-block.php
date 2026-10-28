@@ -32,6 +32,7 @@ function wpgpxmaps_block_options() {
 		'bearing'          => '',
 		'kmmarkers'        => 'wpgpxmaps_map_km_markers',
 		'startend'         => 'wpgpxmaps_map_hide_start_end',
+		'fadeedges'        => 'wpgpxmaps_fade_edges',
 		'glinecolor'       => 'wpgpxmaps_graph_line_color',
 		'uom'              => 'wpgpxmaps_unit_of_measure',
 		'uomspeed'         => 'wpgpxmaps_unit_of_measure_speed',
@@ -95,6 +96,9 @@ function wpgpxmaps_block_editor_data() {
 			array(
 				'defaults'    => $defaults,
 				'tracksUrl'   => $settings_url,
+				'mimeTypes'   => array_values( wpgpxmaps_trackMimeTypes() ),
+				'uploadsUrl'  => preg_replace( '/^https?:/i', '', wp_upload_dir()['baseurl'] ),
+				'uploadsPath' => wpgpxmaps_siteRelativePath( wp_upload_dir()['baseurl'] ),
 				'canUpload'   => current_user_can( 'manage_options' ) || ( current_user_can( 'publish_posts' ) && 1 == get_option( 'wpgpxmaps_allow_users_upload' ) ),
 				'hasMapBoxKey' => strlen( (string) get_option( 'wpgpxmaps_mapbox_apikey' ) ) > 20,
 			)
@@ -152,20 +156,18 @@ function wpgpxmaps_register_rest_routes() {
 }
 
 /**
- * GPX files the current user can use: all of uploads/gpx for administrators, the own folder for authors.
- * The value is the path relative to the site root, as expected by the gpx attribute.
+ * Track files the current user can use: all of uploads/gpx for administrators, the own folder for authors,
+ * and the track files of the Media Library. The value is the path relative to the site root, as expected by the gpx attribute.
  */
 function wpgpxmaps_rest_tracks() {
 
-	$tracks = array();
+	$tracks = wpgpxmaps_mediaTracks();
 	$folder = realpath( gpxFolderPath() );
 	$root   = realpath( wp_gpx_maps_sitePath() );
 
-	if ( false === $folder || false === $root || ! is_dir( $folder ) ) {
-		return rest_ensure_response( $tracks );
-	}
-
-	$files = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $folder, FilesystemIterator::SKIP_DOTS ) );
+	$files = ( false === $folder || false === $root || ! is_dir( $folder ) )
+		? array()
+		: new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $folder, FilesystemIterator::SKIP_DOTS ) );
 
 	foreach ( $files as $file ) {
 		$path = $file->getPathname();

@@ -32,13 +32,14 @@ define( 'WPGPXMAPS_CURRENT_VERSION', '1.9.00' );
  * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
  * wpgpxmaps_admin_tab_{tab}, wpgpxmaps_load_assets, wpgpxmaps_lazy_load, wpgpxmaps_track_description,
  * wpgpxmaps_structured_data; JavaScript event "wpgpxmaps:ready" on document.
- * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_module_url(), wpgpxmaps_enqueue_assets() (map style with the
+ * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_get_waypoints( $gpx ), wpgpxmaps_module_url(), wpgpxmaps_enqueue_assets() (map style with the
  * Leaflet CSS, for add-ons that draw their own maps); the module exports WPGPXMaps and Leaflet.
  */
 define( 'WPGPXMAPS_API_VERSION', 1 );
 
 require 'wp-gpx-maps-utils.php';
 require 'wp-gpx-maps-formats.php';
+require 'wp-gpx-maps-media.php';
 require 'wp-gpx-maps-admin.php';
 require 'wp-gpx-maps-block.php';
 
@@ -182,7 +183,7 @@ function wpgpxmaps_module_url() {
  */
 function wpgpxmaps_get_track_info( $gpx ) {
 
-	$list  = array_values( array_filter( array_map( 'trim', explode( ',', (string) $gpx ) ) ) );
+	$list  = array_values( array_filter( array_map( 'wpgpxmaps_siteRelativePath', explode( ',', (string) $gpx ) ) ) );
 	$files = array();
 	$key   = '';
 	foreach ( $list as $item ) {
@@ -252,6 +253,39 @@ function wpgpxmaps_get_track_info( $gpx ) {
 
 	set_transient( $transient, $info, $files[0]['remote'] ? DAY_IN_SECONDS : MONTH_IN_SECONDS );
 	return $info;
+}
+
+/**
+ * Public API (add-ons): waypoints of one track file (GPX waypoints, KML placemarks).
+ *
+ * @param string $gpx Path of the file from the site root, or its URL.
+ * @return array Waypoints, each with lat, lon, ele (m), name and desc (plain text); empty when there are none.
+ */
+function wpgpxmaps_get_waypoints( $gpx ) {
+
+	$gpx    = wpgpxmaps_siteRelativePath( $gpx );
+	$remote = ( 1 == preg_match( '/^(http(s)?\:\/\/)/', $gpx ) );
+	$path   = $remote ? downloadRemoteFile( $gpx ) : wpgpxmaps_resolveLocalPath( $gpx );
+
+	if ( '' == $path ) {
+		return array();
+	}
+
+	$waypoints = array();
+	foreach ( wpgpxmaps_getWayPoints( $path ) as $point ) {
+		$waypoints[] = array(
+			'lat'  => (float) $point['lat'],
+			'lon'  => (float) $point['lon'],
+			'ele'  => (float) $point['ele'],
+			'name' => html_entity_decode( (string) $point['name'], ENT_QUOTES, 'UTF-8' ),
+			'desc' => html_entity_decode( (string) $point['desc'], ENT_QUOTES, 'UTF-8' ),
+		);
+	}
+
+	if ( $remote ) {
+		wp_delete_file( $path );
+	}
+	return $waypoints;
 }
 
 /**
@@ -535,6 +569,12 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		$startend = 'true' !== get_option( 'wpgpxmaps_map_hide_start_end' );
 	}
 	$kmmarkers = (float) wpgpxmaps_findValue( $attr, 'kmmarkers', 'wpgpxmaps_map_km_markers', 0 );
+
+	/* Soft edges: the map fades into the page. fadeedges="true", or the color of the page behind the map, e.g. "#f4f1ea" */
+	$fadeedges  = wpgpxmaps_findValue( $attr, 'fadeedges', 'wpgpxmaps_fade_edges', false );
+	$fade_color = is_string( $fadeedges ) ? sanitize_hex_color( $fadeedges ) : null;
+	$fade_html  = ( $fade_color || 'true' === $fadeedges || true === $fadeedges ) ? ' wpgpxmaps-fade' : '';
+	$fade_style = $fade_color ? ' style="--wpgpxmaps-fade-color:' . esc_attr( $fade_color ) . '"' : '';
 	if ( ! in_array( $colorby, array( 'grade', 'speed', 'hr', 'elevation' ), true ) ) {
 		$colorby = '';
 	}
@@ -546,7 +586,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$colors_map = explode( ' ', $color_map );
 
 	/* Several GPX files in one map: gpx="a.gpx,b.gpx" */
-	$gpx_list = array_values( array_filter( array_map( 'trim', explode( ',', $gpx ) ) ) );
+	/* URLs of the site's own files (e.g. chosen in the Media Library) are read as local files */
+	$gpx_list = array_values( array_filter( array_map( 'wpgpxmaps_siteRelativePath', explode( ',', $gpx ) ) ) );
 
 	/* One color per file when there are several files and only one color is set (mlinecolor="#c00 #00c" sets them) */
 	$track_palette = array( '#3366cc', '#dc2626', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#ca8a04', '#db2777' );
@@ -989,7 +1030,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$about = wpgpxmaps_track_about( $gpx, $gpx_list, $unit_of_measure, $attr, $r, true === $download || 'true' === $download );
 
 	$output = '
-		<div id="wpgpxmaps_' . esc_attr( $r ) . '" class="wpgpxmaps"' . ( '' != $about['description'] ? ' role="figure" aria-describedby="wpgpxmaps_' . esc_attr( $r ) . '_description"' : '' ) . '>
+		<div id="wpgpxmaps_' . esc_attr( $r ) . '" class="wpgpxmaps' . $fade_html . '"' . $fade_style . ( '' != $about['description'] ? ' role="figure" aria-describedby="wpgpxmaps_' . esc_attr( $r ) . '_description"' : '' ) . '>
 			<div id="map_' . esc_attr( $r ) . '_cont" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $mh ) . ';position:relative" >
 				<div id="map_' . esc_attr( $r ) . '" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $mh ) . '"></div>
 				<div id="wpgpxmaps_' . esc_attr( $r ) . '_osm_footer" class="wpgpxmaps_osm_footer" style="display:none;"><span> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</span></div>
@@ -1244,14 +1285,8 @@ function wpgpxmaps_describeTrack( $info, $name, $unit_of_measure ) {
  * Media type of a track file, from its name.
  */
 function wpgpxmaps_trackMimeType( $file ) {
-	$types = array(
-		'gpx' => 'application/gpx+xml',
-		'tcx' => 'application/vnd.garmin.tcx+xml',
-		'kml' => 'application/vnd.google-earth.kml+xml',
-		'kmz' => 'application/vnd.google-earth.kmz',
-		'fit' => 'application/vnd.ant.fit',
-	);
-	$ext = strtolower( pathinfo( (string) wp_parse_url( $file, PHP_URL_PATH ), PATHINFO_EXTENSION ) );
+	$types = wpgpxmaps_trackMimeTypes();
+	$ext   = strtolower( pathinfo( (string) wp_parse_url( $file, PHP_URL_PATH ), PATHINFO_EXTENSION ) );
 	return isset( $types[ $ext ] ) ? $types[ $ext ] : 'application/octet-stream';
 }
 
@@ -1496,6 +1531,7 @@ function wpgpxmaps_install_option() {
 		'wpgpxmaps_map_color_by' => '',
 		'wpgpxmaps_map_hide_start_end' => '',
 		'wpgpxmaps_map_km_markers' => '',
+		'wpgpxmaps_fade_edges' => '',
 		'wpgpxmaps_zoomonscrollwheel' => '',
 		'wpgpxmaps_show_waypoint' => '',
 		'wpgpxmaps_map_start_icon' => '',
@@ -1576,6 +1612,7 @@ function wpgpxmaps_remove_option() {
 		'wpgpxmaps_map_color_by',
 		'wpgpxmaps_map_hide_start_end',
 		'wpgpxmaps_map_km_markers',
+		'wpgpxmaps_fade_edges',
 		'wpgpxmaps_zoomonscrollwheel',
 		'wpgpxmaps_show_waypoint',
 		'wpgpxmaps_map_start_icon',

@@ -202,6 +202,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</td>
 				</tr>
 				<tr>
+					<td>fadeedges</td>
+					<td>
+						<?php esc_html_e( 'Soft edges: the map fades into the page. true, or the color of the page behind the map (e.g. #f4f1ea)', 'wp-gpx-maps' ); ?>
+					</td>
+					<td>
+						<?php
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>false</strong>
+					</td>
+					<td>
+						<?php echo esc_html( get_option( 'wpgpxmaps_fade_edges' ) ); ?>
+					</td>
+				</tr>
+				<tr>
 					<td>description</td>
 					<td>
 						<?php esc_html_e( 'Text description of the track for screen readers, search engines and AI assistants: hidden (not shown on the page), visible (under the map) or false', 'wp-gpx-maps' ); ?>

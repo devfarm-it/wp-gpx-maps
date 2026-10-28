@@ -5,7 +5,7 @@ Plugin WordPress (slug `wp-gpx-maps`), autore bastianonm. Questo repository GitH
 non si fanno più commit SVN a mano.
 
 ## Struttura
-- PHP del plugin nella radice (lettura dei file traccia in `wp-gpx-maps-formats.php`); JS in `assets/src` (TypeScript) compilato con `npm run build` in `assets/dist`.
+- PHP del plugin nella radice (lettura dei file traccia in `wp-gpx-maps-formats.php`, Libreria media e controllo dei file caricati in `wp-gpx-maps-media.php`); JS in `assets/src` (TypeScript) compilato con `npm run build` in `assets/dist`.
 - Blocco `wp-gpx-maps/map`: `blocks/map/` (block.json, `index.js` in JS semplice sui globali `wp.*`, senza build) +
   `wp-gpx-maps-block.php` (registrazione, render tramite `wpgpxmaps_handle_shortcodes`, REST `wp-gpx-maps/v1/tracks`).
   Gli attributi hanno gli stessi nomi dello shortcode; quelli non impostati usano le impostazioni del plugin.
