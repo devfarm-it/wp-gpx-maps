@@ -9,3 +9,4 @@ node_modules
 /build
 /dev/docker-compose.override.yml
 dev/snapshot.php
+dev/checkfiles.php

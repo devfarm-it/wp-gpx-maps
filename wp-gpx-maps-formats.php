@@ -20,6 +20,19 @@ function wpgpxmaps_trackFileRegex() {
 	return '/\.(gpx|tcx|kml|kmz|fit)$/i';
 }
 
+/**
+ * Media types of the track files, by extension (Media Library uploads, structured data).
+ */
+function wpgpxmaps_trackMimeTypes() {
+	return array(
+		'gpx' => 'application/gpx+xml',
+		'tcx' => 'application/vnd.garmin.tcx+xml',
+		'kml' => 'application/vnd.google-earth.kml+xml',
+		'kmz' => 'application/vnd.google-earth.kmz',
+		'fit' => 'application/vnd.ant.fit',
+	);
+}
+
 function wpgpxmaps_rawPoint( $lat, $lon, $ele = 0, $time = null, $speed = 0, $hr = 0, $atemp = 0, $cad = 0 ) {
 	return array(
 		'lat'   => (float) $lat,
@@ -80,8 +93,10 @@ function wpgpxmaps_readTracks( $filePath ) {
 
 /**
  * KMZ is a zip file with the KML inside (doc.kml, or the first .kml file).
+ *
+ * @return string|false The KML text.
  */
-function wpgpxmaps_loadKmz( $filePath ) {
+function wpgpxmaps_kmzContent( $filePath ) {
 	if ( ! class_exists( 'ZipArchive' ) ) {
 		return false;
 	}
@@ -96,6 +111,11 @@ function wpgpxmaps_loadKmz( $filePath ) {
 		}
 	}
 	$zip->close();
+	return $kml;
+}
+
+function wpgpxmaps_loadKmz( $filePath ) {
+	$kml = wpgpxmaps_kmzContent( $filePath );
 	return false === $kml ? false : @simplexml_load_string( $kml, 'SimpleXMLElement', LIBXML_NONET );
 }
 

@@ -22,6 +22,7 @@ WP GPX Maps turns a GPX, FIT, TCX or KML file into an interactive map and charts
 * **MapBox** with your own API key: Outdoors, Streets, Satellite, Satellite Streets, Light, Dark, Standard and custom styles, **3D terrain**, fog and a tilted 3D view (`pitch`, `bearing`).
 * **Track colored by grade** (blue descent, green flat, yellow to red climb), **speed**, **heart rate** or **elevation**, with a legend.
 * **Several GPX files in one map** (`gpx="a.gpx,b.gpx"`), one color per file with a legend.
+* **Soft edges**: the map can fade into the page instead of ending with a hard border (`fadeedges`).
 * Start / finish markers, **distance markers** every N km or miles, waypoints with popups, full screen, photos from NextGEN Gallery or from the images attached to the post.
 
 = Charts =
@@ -46,7 +47,7 @@ A map drawn by JavaScript is invisible to ChatGPT, Perplexity, Google AI Overvie
 = Easy to use =
 
 * **GPX Map block** for the block editor with live preview: pick an uploaded GPX file from a list and set every option in the sidebar.
-* Upload and manage your GPX files in **Settings > WP GPX Maps** (editors and authors can upload their own files).
+* Upload your track files in the **Media Library**, like images: they are organized by month, searchable and attached to the post. Or keep them in **Settings > WP GPX Maps > Tracks** (editors and authors can upload their own files).
 * Every option has a default in the settings, so a simple `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]` is enough.
 * **GPX** 1.0 and 1.1 (Garmin and Strava extensions: heart rate, cadence, temperature), **FIT** files from Garmin, Wahoo and other devices, **TCX** and **KML / KMZ**, multi-track files.
 * Fast pages: the map style is loaded only on the pages with a map, and every map downloads its code only when it gets near the screen (lazy load). Cache of the processed tracks, works with PHP 7.4 to 8.4.
@@ -63,7 +64,7 @@ Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https:
 == Installation ==
 
 1. Install the plugin from **Plugins > Add New** (search for "WP GPX Maps") and activate it.
-1. Upload your GPX files in **Settings > WP GPX Maps > Tracks**, or use any GPX file already on your site or on another site.
+1. Upload your GPX files in the Media Library (also from the block, with the **Media Library** button) or in **Settings > WP GPX Maps > Tracks**, or use any GPX file already on your site or on another site.
 1. In a post or page add the **GPX Map** block and choose the GPX file. With the classic editor use the shortcode, for example `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]`.
 1. Optional: in **Settings > WP GPX Maps** set the defaults for all the maps, a Thunderforest API key for the Thunderforest maps or a MapBox API key for the MapBox maps and 3D terrain.
 
@@ -92,6 +93,7 @@ The main ones (every attribute also has a default in the settings; `true` / `fal
 * **colorby**: `grade`, `speed`, `hr`, `elevation` or `none`.
 * **mlinecolor**: track color (several colors separated by spaces, one per track).
 * **kmmarkers**: distance marker every N km or miles; **startend**: start / finish markers.
+* **fadeedges**: `true` to fade the edges of the map into the page, or the color of the page behind the map, e.g. `#f4f1ea`.
 * **waypoints**, **startIcon**, **endIcon**, **currentIcon**, **waypointicon**, **zoomonscrollwheel**, **download**.
 * **showele**, **showspeed**, **showhr**, **showcad**, **showatemp**, **showgrade** and their colors **glinecolor**, **glinecolorspeed**, **glinecolorhr**, **glinecolorcad**, **glinecoloratemp**, **glinecolorgrade**.
 * **uom**: 0 meters, 1 feet/miles, 2 meters/kilometers, 3 meters/nautical miles, 4 meters/miles, 5 feet/nautical miles.
@@ -107,6 +109,10 @@ The complete list with the current defaults is in **Settings > WP GPX Maps > Hel
 = What happens with very large GPX files? =
 
 The plugin skips points closer than 10 meters (`pointsoffset`) and can keep about 200 points for the map and the chart, then caches the result, so even long tracks load fast.
+
+= How do I keep many GPX files organized? =
+
+Upload them in the Media Library: WordPress puts them in a folder for each month, and you can search them, give them a title and see the post they belong to. Media folder plugins work with them too. In the GPX Map block choose a file with the **Media Library** button. Every uploaded track file is checked first: files that are not valid tracks, or that contain scripts or HTML, are refused.
 
 = Which file formats can I use? =
 
@@ -140,6 +146,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * New: FIT (Garmin, Wahoo and other devices), TCX and KML / KMZ files, with heart rate, cadence, temperature and times when the file has them; KML placemarks are shown as waypoints
 * New: the map style is loaded only on the pages that show a map, and every map downloads its code only when it gets near the screen (lazy load): faster pages, also for the pages without maps
 * New: every map describes its track in text (for screen readers, search engines and AI assistants) and in schema.org structured data (JSON-LD), with settings, shortcode attributes `description` and `structureddata` and filters to change them
+* New: track files (GPX, FIT, TCX, KML, KMZ) in the Media Library, organized by month and searchable, with a "Media Library" button in the GPX Map block; links to the site's own files are read as local files instead of being downloaded
+* Security: every uploaded track file (Media Library and Tracks tab) is checked: it must be a valid track file, without scripts, HTML or XML entities
+* New: soft edges, the map fades into the page (setting, block option and `fadeedges` attribute, also with the color of the page)
 * New: OpenTopoMap (OSM9, replaces Hike & Bike, whose server is offline) and CyclOSM (OSM12) maps
 * Fix: a clear message instead of an empty map when the file is corrupted, is not a track file or has no track points
 * Fix: total distance too long when some points of the track have no elevation (a vertical jump to 0 m was added to the distance)

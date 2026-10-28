@@ -21,6 +21,7 @@
 		"bearing": { "type": "string" },
 		"kmmarkers": { "type": "string" },
 		"startend": { "type": "boolean" },
+		"fadeedges": { "type": "boolean" },
 		"glinecolor": { "type": "string" },
 		"uom": { "type": "string" },
 		"uomspeed": { "type": "string" },
