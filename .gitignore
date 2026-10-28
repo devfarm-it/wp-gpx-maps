@@ -10,3 +10,4 @@ node_modules
 /dev/docker-compose.override.yml
 dev/snapshot.php
 dev/checkfiles.php
+dev/variation.php

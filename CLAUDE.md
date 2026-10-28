@@ -21,6 +21,11 @@ non si fanno più commit SVN a mano.
   `./setup.ps1` la prima volta (installa WP, attiva il plugin, copia `dev/gpx/*.gpx`, crea un articolo per ogni caso).
   Sito su http://localhost:8080, credenziali in `dev/.env` (ignorato da git).
 
+## Pagina Free vs Pro
+- Ogni volta che si aggiunge, cambia o toglie una funzionalità (free o Pro) va aggiornata anche la pagina di confronto
+  Free vs Pro su devfarm.it: sorgente in `D:\Projects\wp-gpx-maps\build\posts\compare.html` (tabella in un blocco HTML, una riga
+  per funzionalità con link a un post di esempio). Il login sul sito lo fa l'utente nel browser integrato.
+
 ## Controlli e rilascio
 - `.github/workflows/ci.yml`: lint PHP 7.4–8.4, PHPCS (`phpcs.xml.dist`: PHPCompatibilityWP + WordPress.Security), build JS, Plugin Check.
   In locale: `composer install` poi `vendor/bin/phpcs`.
