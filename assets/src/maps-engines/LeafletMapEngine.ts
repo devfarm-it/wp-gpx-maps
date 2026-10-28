@@ -8,6 +8,39 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.fullscreen/Control.FullScreen.css';
 
+/**
+ * Tile layer that also works in the block editor. The editor canvas is a blob: frame, so its images are requested
+ * without a Referer and OpenStreetMap answers with "Access blocked" tiles: there the tiles are fetched with the
+ * site as referrer.
+ */
+const EditorTileLayer = L.TileLayer.extend({
+    createTile: function (coords: L.Coords, done: L.DoneCallback) {
+        const tile = document.createElement('img');
+        tile.alt = '';
+        tile.setAttribute('role', 'presentation');
+        fetch(this.getTileUrl(coords), { referrer: location.origin + '/' })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Tile ' + response.status);
+                }
+                return response.blob();
+            })
+            .then((blob) => {
+                tile.onload = () => {
+                    URL.revokeObjectURL(tile.src);
+                    done(undefined, tile);
+                };
+                tile.src = URL.createObjectURL(blob);
+            })
+            .catch((error) => done(error, tile));
+        return tile;
+    }
+});
+
+function tileLayer(url: string, options?: L.TileLayerOptions): L.TileLayer {
+    return /^https?:$/.test(location.protocol) ? L.tileLayer(url, options) : new (EditorTileLayer as any)(url, options);
+}
+
 class ClusterPhotos {
 
     map: Map | null = null;
@@ -169,11 +202,11 @@ export class LeafletMapEngine implements MapEngine<Map> {
         const baseMaps: any = {};
         Object.keys(layers).forEach((code) => {
             const l = layers[code];
-            baseMaps[l.name] = L.tileLayer(l.url, { maxZoom: l.maxZoom || 18, attribution: l.attribution });
+            baseMaps[l.name] = tileLayer(l.url, { maxZoom: l.maxZoom || 18, attribution: l.attribution });
         });
 
         /* Open Sea Map: sea marks drawn over the base map */
-        const seaMarks = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+        const seaMarks = tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
             maxZoom: 18,
             attribution: 'Sea marks &copy; <a href="https://www.openseamap.org/">OpenSeaMap</a> contributors'
         });

@@ -1035,7 +1035,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		<div id="wpgpxmaps_' . esc_attr( $r ) . '" class="wpgpxmaps' . $fade_html . '"' . $fade_style . ( '' != $about['description'] ? ' role="figure" aria-describedby="wpgpxmaps_' . esc_attr( $r ) . '_description"' : '' ) . '>
 			<div id="map_' . esc_attr( $r ) . '_cont" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $mh ) . ';position:relative" >
 				<div id="map_' . esc_attr( $r ) . '" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $mh ) . '"></div>
-				<div id="wpgpxmaps_' . esc_attr( $r ) . '_osm_footer" class="wpgpxmaps_osm_footer" style="display:none;"><span> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</span></div>
+				<div id="wpgpxmaps_' . esc_attr( $r ) . '_osm_footer" class="wpgpxmaps_osm_footer" style="display:none;"><span> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</span></div>
 			</div>
 			<canvas id="myChart_' . esc_attr( $r ) . '" class="plot" style="width:' . esc_attr( $w ) . '; height:' . esc_attr( $gh ) . '"></canvas>
 			<div id="ngimages_' . esc_attr( $r ) . '" class="ngimages" style="display:none">' . $ngimgs_data . '</div>
