@@ -159,6 +159,8 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * Fix: a clear message instead of an empty map when the file is corrupted, is not a track file or has no track points
 * Fix: total distance too long when some points of the track have no elevation (a vertical jump to 0 m was added to the distance)
 * Fix: GPX files with only a route (no track) have distance, statistics and chart
+* Fix: the OpenStreetMap credit link uses https (no mixed content warning on https sites)
+* Fix: OpenStreetMap maps in the block editor showed "Access blocked" tiles (the editor sends no Referer for images)
 * Fix: Open Cycle Map without a Thunderforest API key stopped the map with a JavaScript error, it now shows CyclOSM; the other Thunderforest maps without a key show OpenStreetMap
 * Fix: the Thunderforest Outdoors address was misspelled, so that map never loaded
 * Fix: OpenSeaMap is shown over OpenStreetMap (it only has the sea marks) and can be turned on and off in the layer list
