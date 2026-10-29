@@ -16,6 +16,10 @@ GPX, FIT and KML tracks on an interactive map with elevation and heart rate char
 
 WP GPX Maps turns a GPX, FIT, TCX or KML file into an interactive map and charts: upload the track, add the **GPX Map** block (or the `[sgpx]` shortcode) and your readers get the route, the elevation profile and the statistics of your hike, ride or run.
 
+See how it works in under three minutes: the block, the shortcode, the charts, 3D maps and activities.
+
+https://www.youtube.com/watch?v=n55Yzw2ig7A
+
 = Maps =
 
 * **OpenStreetMap** and other free maps (no account needed): OpenStreetMap, OpenTopoMap, CyclOSM, Humanitarian, OpenSeaMap, and the Thunderforest maps (OpenCycleMap, Outdoors, Transport, Landscape) with a free Thunderforest API key.
