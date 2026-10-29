@@ -95,3 +95,35 @@
 	background-size: contain;
 	background-repeat: no-repeat;
 }
+
+/*
+ * Soft edges (fadeedges): a shadow of the page color inside the map, over the map and the track but under the
+ * controls and the attribution, so the map fades into the page. --wpgpxmaps-fade-color: the color behind the map
+ * (default: the background of block themes, or white).
+ */
+.wpgpxmaps-fade .leaflet-container::after,
+.wpgpxmaps-fade .mapboxgl-map::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	box-shadow: inset 0 0 var(--wpgpxmaps-fade-size, 40px) calc(var(--wpgpxmaps-fade-size, 40px) / 3) var(--wpgpxmaps-fade-color, var(--wp--preset--color--base, #fff));
+}
+
+/* Leaflet: above the tiles and the track (panes 200-400), under the markers (600) and the controls (1000) */
+.wpgpxmaps-fade .leaflet-container::after {
+	z-index: 450;
+}
+
+/* Mapbox: above the map canvas, under the controls (z-index 2) */
+.wpgpxmaps-fade .mapboxgl-map::after {
+	z-index: 1;
+}
+
+/* Full screen: there is no page around the map */
+.wpgpxmaps-fade .leaflet-container:fullscreen::after,
+.wpgpxmaps-fade .leaflet-pseudo-fullscreen::after,
+.wpgpxmaps-fade .mapboxgl-map:fullscreen::after,
+.wpgpxmaps-fade :fullscreen .mapboxgl-map::after {
+	display: none;
+}

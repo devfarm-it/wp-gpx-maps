@@ -8,6 +8,39 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.fullscreen/Control.FullScreen.css';
 
+/**
+ * Tile layer that also works in the block editor. The editor canvas is a blob: frame, so its images are requested
+ * without a Referer and OpenStreetMap answers with "Access blocked" tiles: there the tiles are fetched with the
+ * site as referrer.
+ */
+const EditorTileLayer = L.TileLayer.extend({
+    createTile: function (coords: L.Coords, done: L.DoneCallback) {
+        const tile = document.createElement('img');
+        tile.alt = '';
+        tile.setAttribute('role', 'presentation');
+        fetch(this.getTileUrl(coords), { referrer: location.origin + '/' })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Tile ' + response.status);
+                }
+                return response.blob();
+            })
+            .then((blob) => {
+                tile.onload = () => {
+                    URL.revokeObjectURL(tile.src);
+                    done(undefined, tile);
+                };
+                tile.src = URL.createObjectURL(blob);
+            })
+            .catch((error) => done(error, tile));
+        return tile;
+    }
+});
+
+function tileLayer(url: string, options?: L.TileLayerOptions): L.TileLayer {
+    return /^https?:$/.test(location.protocol) ? L.tileLayer(url, options) : new (EditorTileLayer as any)(url, options);
+}
+
 class ClusterPhotos {
 
     map: Map | null = null;
@@ -143,194 +176,46 @@ export class LeafletMapEngine implements MapEngine<Map> {
         // Add fullscreen control to the map. 
         this.map.addControl(fsControl);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: 'Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(this.map);
+        const osm = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+        const thunderforest = 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a>, ' + osm;
+        const hasThunderforestApiKey = null != ThunderforestApiKey && (ThunderforestApiKey + '').length > 0;
 
-        var hasThunderforestApiKey = (ThunderforestApiKey + '').length > 0;
+        /* Map types (setting "mtype"): name in the layer control, tiles and attribution */
+        const layers: { [code: string]: { name: string, url: string, attribution: string, maxZoom?: number } } = {
+            OSM1: { name: 'Open Street Map', url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', attribution: osm, maxZoom: 19 },
+            OSM7: { name: 'Humanitarian Map Style', url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', attribution: osm + ', tiles by <a href="https://www.hotosm.org/">HOT</a>' },
+            OSM9: { name: 'OpenTopoMap', url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', attribution: osm + ', <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)', maxZoom: 17 },
+            OSM11: { name: 'GSI Map (Japan)', url: 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html">国土地理院</a>' },
+            OSM12: { name: 'CyclOSM', url: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', attribution: osm + ', <a href="https://www.cyclosm.org">CyclOSM</a>' },
+        };
 
-        var baseMaps: any = {};
-
-        var overlayMaps = {};
-
-        var defaultMpaLayer = null;
-
+        /* Thunderforest maps need an API key: without it Open Cycle Map becomes CyclOSM, the others Open Street Map */
+        const fallback: { [code: string]: string } = { OSM2: 'OSM12', OSM3: 'OSM1', OSM4: 'OSM1', OSM5: 'OSM1', OSM6: 'OSM1', OSM10: 'OSM1' };
         if (hasThunderforestApiKey) {
-
-            /* Map type: Thunderforest - OpenCycleMap with API key */
-            baseMaps['Thunderforest - Cycle'] = L.tileLayer('https://a.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
-                maxZoom: 18,
-                attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
-                    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+            const key = encodeURIComponent(ThunderforestApiKey + '');
+            [['OSM2', 'Thunderforest - Cycle', 'cycle'], ['OSM3', 'Thunderforest - Outdoors', 'outdoors'], ['OSM4', 'Thunderforest - Transport', 'transport'], ['OSM5', 'Thunderforest - Landscape', 'landscape']].forEach(([code, name, style]) => {
+                layers[code] = { name: name, url: 'https://tile.thunderforest.com/' + style + '/{z}/{x}/{y}.png?apikey=' + key, attribution: thunderforest, maxZoom: 22 };
+                delete fallback[code];
             });
-
-        } else {
-
-            /* Map type: Open Cycle Map - Cycle */
-            baseMaps['Open Cycle Map'] = L.tileLayer('http://a.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
-                    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-            });
-
         }
 
-        /* Map type: Thunderforest - Outdoors with API key */
-        baseMaps['Thunderforest - Outdoors'] = L.tileLayer('https://a.tile.thunderforest.com/outddors/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
-            maxZoom: 18,
-            attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+        const baseMaps: any = {};
+        Object.keys(layers).forEach((code) => {
+            const l = layers[code];
+            baseMaps[l.name] = tileLayer(l.url, { maxZoom: l.maxZoom || 18, attribution: l.attribution });
         });
 
-        /* Map type: Thunderforest - Transport with API key */
-        baseMaps['Thunderforest - Transport'] = L.tileLayer('https://a.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
+        /* Open Sea Map: sea marks drawn over the base map */
+        const seaMarks = tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+            attribution: 'Sea marks &copy; <a href="https://www.openseamap.org/">OpenSeaMap</a> contributors'
         });
+        const overlayMaps: any = { 'Open Sea Map': seaMarks };
 
-        /* Map type: Thunderforest - Landscape with API key */
-        baseMaps['Thunderforest - Landscape'] = L.tileLayer('https://a.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + ThunderforestApiKey, {
-            maxZoom: 18,
-            attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-        });
-
-        /* Map type: Open Street Map */
-        baseMaps['Open Street Map'] = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Maps &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-        });
-
-        ///* Map type: MapToolKit - Terrain */
-        //baseMaps['MapToolKit - Terrain'] = L.tileLayer( 'https://tile2.maptoolkit.net/terrain/{z}/{x}/{y}.png', {
-        //	maxZoom: 18,
-        //	attribution: 'Maps &copy; <a href="https://www.maptoolkit.net/">Maptoolkit</a> contributors, ' +
-        //		'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        //		'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-        //});
-
-        /* Map type: Open Street Map - Humanitarian Map Style */
-        baseMaps['Humanitarian Map Style'] = L.tileLayer('https://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Maps &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-        });
-
-        /*
-        Map type: Open Ski Map
-        baseMaps['Open Ski Map'] = L.tileLayer( 'http://tiles.skimap.org/openskimap/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        });
-        */
-
-        /* Map type: Hike & Bike */
-        baseMaps['Hike & Bike'] = L.tileLayer('http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Maps &copy; <a href="https://hikebikemap.org/">Hike & Bike Map</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-        });
-
-        /* Map type: Open Sea Map */
-        baseMaps['Open Sea Map'] = L.tileLayer('http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Maps &copy; <a href="https://www.openseamap.org/">OpenSeaMap</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-        });
-
-        baseMaps['GSI Map (Japan)'] = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-        });
-
-        switch (mapType) {
-
-            /* Map type: Open Street Map */
-            case 'OSM1': {
-                baseMaps['Open Street Map'].addTo(this.map);
-                break;
-            }
-
-            /* Map type: Thunderforest - Open Cycle Maps with API key */
-            case 'OSM2': {
-                baseMaps['Thunderforest - Cycle'].addTo(this.map);
-                break;
-            }
-
-            /* Map type: Thunderforest - Outdoors with API key */
-            case 'OSM3': {
-                baseMaps['Thunderforest - Outdoors'].addTo(this.map);
-                break;
-            }
-
-            /* Map type: Thunderforest - Landscape with API key */
-            case 'OSM4': {
-                baseMaps['Thunderforest - Transport'].addTo(this.map);
-                break;
-            }
-
-            /* Map type: Thunderforest - Landscape with API key */
-            case 'OSM5': {
-                baseMaps['Thunderforest - Landscape'].addTo(this.map);
-                break;
-            }
-
-            ///* Map type: MapToolKit - Terrain */
-            //case 'OSM6': {
-            //	baseMaps['MapToolKit - Terrain'].addTo( this.map );
-            //	break;
-            //}
-
-            /* Map type: Open Street Map - Humanitarian Map Style*/
-            case 'OSM7': {
-                baseMaps['Humanitarian Map Style'].addTo(this.map);
-                break;
-            }
-
-            /*
-            Map type: Open Ski Map
-            case 'OSM8': {
-                baseMaps['Open Ski Map'].addTo( this.map );
-                break;
-            }
-            */
-
-            /* Map type: Hike & Bike */
-            case 'OSM9': {
-                baseMaps['Hike & Bike'].addTo(this.map);
-                break;
-            }
-
-            /* Map type: Open Sea Map */
-            case 'OSM10': {
-                baseMaps['Open Sea Map'].addTo(this.map);
-                break;
-            }
-
-            case 'OSM11': {
-                baseMaps['GSI Map (Japan)'].addTo(this.map);
-                break;
-            }
-
-            /* Map type: Open Street Map */
-            default: {
-                baseMaps['Open Street Map'].addTo(this.map);
-            }
-
+        const code = layers[mapType] ? mapType : (fallback[mapType] || 'OSM1');
+        baseMaps[layers[code].name].addTo(this.map);
+        if ('OSM10' == mapType) {
+            seaMarks.addTo(this.map);
         }
 
         L.control.layers(baseMaps, overlayMaps).addTo(this.map);

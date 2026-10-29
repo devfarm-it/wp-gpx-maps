@@ -190,6 +190,31 @@ function render_select($name, $label, $options, $selected) {
 	<form method="post" action="options.php">
 		<?php wp_nonce_field( 'update-options' ); ?>
 
+		<h3 class="title"><?php esc_html_e( 'Accessibility, search engines and AI', 'wp-gpx-maps' ); ?></h3>
+		<p><?php esc_html_e( 'A map drawn by JavaScript is invisible to screen readers, search engines and AI assistants (ChatGPT, Perplexity, Google AI Overviews...). Every map can also describe its track in text and in schema.org structured data.', 'wp-gpx-maps' ); ?></p>
+		<table class="form-table">
+			<?php
+			render_radio('wpgpxmaps_description', 'Text description of the track:', [
+				'hidden' => 'For screen readers, search engines and AI, not shown on the page (default)',
+				'visible' => 'Shown under the map',
+				'off' => 'Off'
+			], get_option( 'wpgpxmaps_description' ) ? get_option( 'wpgpxmaps_description' ) : 'hidden');
+			render_checkbox('wpgpxmaps_no_structured_data', 'Turn off the structured data (JSON-LD):', get_option( 'wpgpxmaps_no_structured_data' ));
+			?>
+		</table>
+
+		<p class="submit">
+			<input type="hidden" name="action" value="update" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_description,wpgpxmaps_no_structured_data" />
+			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
+		</p>
+	</form>
+
+	<hr />
+
+	<form method="post" action="options.php">
+		<?php wp_nonce_field( 'update-options' ); ?>
+
 		<h3 class="title"><?php esc_html_e( 'Map', 'wp-gpx-maps' ); ?></h3>
 		<table class="form-table">
 
@@ -197,15 +222,15 @@ function render_select($name, $label, $options, $selected) {
 			
 			render_radio('wpgpxmaps_map_type', 'Default map type:', [
 				'OSM1' => 'Open Street Map',
-				'OSM2' => 'Open Cycle Map / Thunderforest - Open Cycle Map (API Key required)',
+				'OSM2' => 'Thunderforest - Open Cycle Map (API Key required, CyclOSM without key)',
 				'OSM3' => 'Thunderforest - Outdoors (API Key required)',
 				'OSM4' => 'Thunderforest - Transport (API Key required)',
 				'OSM5' => 'Thunderforest - Landscape (API Key required)',
-				'OSM6' => 'MapToolKit - Terrain',
 				'OSM7' => 'Open Street Map - Humanitarian map style',
-				'OSM9' => 'Hike & Bike',
-				'OSM10' => 'Open Sea Map',
-				'OSM11' => 'GSI Map (Japan)'
+				'OSM9' => 'OpenTopoMap (hiking)',
+				'OSM10' => 'Open Sea Map (sea marks over Open Street Map)',
+				'OSM11' => 'GSI Map (Japan)',
+				'OSM12' => 'CyclOSM (cycling)'
 			], $t);		
 			
 			render_radio('wpgpxmaps_mapbox_type', 'MapBox default style:', [
@@ -240,6 +265,7 @@ function render_select($name, $label, $options, $selected) {
 				'elevation' => 'Elevation'
 			], get_option('wpgpxmaps_map_color_by'));
 			render_checkbox('wpgpxmaps_map_hide_start_end', 'Hide start / finish markers:', get_option('wpgpxmaps_map_hide_start_end'));
+			render_checkbox('wpgpxmaps_fade_edges', 'Soft edges (the map fades into the page):', get_option('wpgpxmaps_fade_edges'));
 			render_text_input('wpgpxmaps_map_km_markers', 'Distance markers every:', get_option('wpgpxmaps_map_km_markers'), 'width:60px;', 'km / mi (empty = none)');
 			render_checkbox('wpgpxmaps_zoomonscrollwheel', 'On mouse scroll wheel:', $zoomonscrollwheel);
 			render_checkbox('wpgpxmaps_show_waypoint', 'Waypoints support:', $showW);
@@ -253,7 +279,7 @@ function render_select($name, $label, $options, $selected) {
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_map_color_by,wpgpxmaps_map_hide_start_end,wpgpxmaps_map_km_markers,wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_map_color_by,wpgpxmaps_map_hide_start_end,wpgpxmaps_fade_edges,wpgpxmaps_map_km_markers,wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>
