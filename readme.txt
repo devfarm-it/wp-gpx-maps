@@ -6,22 +6,28 @@ Tags: gpx, maps, track, leaflet, elevation
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.9.00
+Stable tag: 1.10.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Show your GPX tracks on an interactive map with an elevation profile, speed and heart rate charts, 3D terrain and a route summary.
+GPX, FIT and KML tracks on an interactive map with elevation and heart rate charts, 3D terrain and a route summary that AI assistants can read.
 
 == Description ==
 
-WP GPX Maps turns a GPX file into an interactive map and charts: upload the track, add the **GPX Map** block (or the `[sgpx]` shortcode) and your readers get the route, the elevation profile and the statistics of your hike, ride or run.
+WP GPX Maps turns a GPX, FIT, TCX or KML file into an interactive map and charts: upload the track, add the **GPX Map** block (or the `[sgpx]` shortcode) and your readers get the route, the elevation profile and the statistics of your hike, ride or run.
+
+See how it works in under three minutes: the block, the shortcode, the charts, 3D maps and activities.
+
+https://www.youtube.com/watch?v=n55Yzw2ig7A
 
 = Maps =
 
-* **OpenStreetMap** and other free maps (no account needed): OpenStreetMap, Humanitarian, Hike & Bike, OpenSeaMap, and the Thunderforest maps (OpenCycleMap, Outdoors, Transport, Landscape) with a free Thunderforest API key.
+* **OpenStreetMap** and other free maps (no account needed): OpenStreetMap, OpenTopoMap, CyclOSM, Humanitarian, OpenSeaMap, and the Thunderforest maps (OpenCycleMap, Outdoors, Transport, Landscape) with a free Thunderforest API key.
 * **MapBox** with your own API key: Outdoors, Streets, Satellite, Satellite Streets, Light, Dark, Standard and custom styles, **3D terrain**, fog and a tilted 3D view (`pitch`, `bearing`).
 * **Track colored by grade** (blue descent, green flat, yellow to red climb), **speed**, **heart rate** or **elevation**, with a legend.
 * **Several GPX files in one map** (`gpx="a.gpx,b.gpx"`), one color per file with a legend.
+* **Activities**: tag your routes as hiking, stroller-friendly, mountain bike, climbing, snowshoeing and more (or your own activities, each with an emoji icon). Every activity has its own page on the site, and the site search finds routes by activity.
+* **Soft edges**: the map can fade into the page instead of ending with a hard border (`fadeedges`).
 * Start / finish markers, **distance markers** every N km or miles, waypoints with popups, full screen, photos from NextGEN Gallery or from the images attached to the post.
 
 = Charts =
@@ -35,13 +41,21 @@ WP GPX Maps turns a GPX file into an interactive map and charts: upload the trac
 
 Total distance, maximum and minimum elevation, total climbing and descent, average and maximum speed, maximum grade, average heart rate, cadence and temperature, total time and **moving time** (pauses excluded).
 
+= Readable by AI assistants, search engines and screen readers =
+
+A map drawn by JavaScript is invisible to ChatGPT, Perplexity, Google AI Overviews and other AI assistants, to search engines and to screen readers: they read the text of the page, not the map. WP GPX Maps also describes every track in the page itself:
+
+* **Text description** of the route, e.g. "Map of the route Sentiero 157: 4.38 km, 145 m of climbing and 376 m of descent, elevation between 1,315 m and 1,580 m, time 01:54:36. It starts at ... and ends at ...", linked to the map for screen readers. Not shown on the page by default, or shown under the map (`description="visible"`).
+* **Structured data** (schema.org `TouristTrip` in JSON-LD) with distance, climbing and descent, highest and lowest point, time and the line of the route, so AI assistants and search engines can answer questions like "how long is this hike?" with the right numbers. The track file is linked only when you allow its download.
+* Both can be turned off in **Settings > WP GPX Maps** or for one map (`description="false"`, `structureddata="false"`), and changed by developers with the `wpgpxmaps_track_description` and `wpgpxmaps_structured_data` filters.
+
 = Easy to use =
 
 * **GPX Map block** for the block editor with live preview: pick an uploaded GPX file from a list and set every option in the sidebar.
-* Upload and manage your GPX files in **Settings > WP GPX Maps** (editors and authors can upload their own files).
+* Upload your track files in the **Media Library**, like images: they are organized by month, searchable and attached to the post. Or keep them in **Settings > WP GPX Maps > Tracks** (editors and authors can upload their own files).
 * Every option has a default in the settings, so a simple `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]` is enough.
-* GPX 1.0 and 1.1, Garmin and Strava extensions (heart rate, cadence, temperature), multi-track files.
-* Cache of the processed tracks, scripts loaded as an ES module, works with PHP 7.4 to 8.4.
+* **GPX** 1.0 and 1.1 (Garmin and Strava extensions: heart rate, cadence, temperature), **FIT** files from Garmin, Wahoo and other devices, **TCX** and **KML / KMZ**, multi-track files.
+* Fast pages: the map style is loaded only on the pages with a map, and every map downloads its code only when it gets near the screen (lazy load). Cache of the processed tracks, works with PHP 7.4 to 8.4.
 
 = Support and development =
 
@@ -55,7 +69,7 @@ Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https:
 == Installation ==
 
 1. Install the plugin from **Plugins > Add New** (search for "WP GPX Maps") and activate it.
-1. Upload your GPX files in **Settings > WP GPX Maps > Tracks**, or use any GPX file already on your site or on another site.
+1. Upload your GPX files in the Media Library (also from the block, with the **Media Library** button) or in **Settings > WP GPX Maps > Tracks**, or use any GPX file already on your site or on another site.
 1. In a post or page add the **GPX Map** block and choose the GPX file. With the classic editor use the shortcode, for example `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]`.
 1. Optional: in **Settings > WP GPX Maps** set the defaults for all the maps, a Thunderforest API key for the Thunderforest maps or a MapBox API key for the MapBox maps and 3D terrain.
 
@@ -79,11 +93,12 @@ The main ones (every attribute also has a default in the settings; `true` / `fal
 
 * **gpx**: path of the GPX file from the site root, or its URL; several files separated by commas.
 * **mheight**, **gheight**, **width**: map height, chart height (`0px` hides the chart), width.
-* **mtype**: map type without MapBox: `OSM1` OpenStreetMap, `OSM2` OpenCycleMap, `OSM3` Thunderforest Outdoors, `OSM4` Transport, `OSM5` Landscape, `OSM7` Humanitarian, `OSM9` Hike & Bike, `OSM10` OpenSeaMap, `OSM11` GSI Japan.
+* **mtype**: map type without MapBox: `OSM1` OpenStreetMap, `OSM2` Thunderforest OpenCycleMap (CyclOSM without API key), `OSM3` Thunderforest Outdoors, `OSM4` Transport, `OSM5` Landscape (Thunderforest maps need an API key, otherwise OpenStreetMap is used), `OSM7` Humanitarian, `OSM9` OpenTopoMap, `OSM10` OpenSeaMap sea marks over OpenStreetMap, `OSM11` GSI Japan, `OSM12` CyclOSM.
 * **mapboxstyle**, **mapbox3d**, **pitch**, **bearing**: MapBox style, 3D terrain, view tilt (0-85) and rotation.
 * **colorby**: `grade`, `speed`, `hr`, `elevation` or `none`.
 * **mlinecolor**: track color (several colors separated by spaces, one per track).
 * **kmmarkers**: distance marker every N km or miles; **startend**: start / finish markers.
+* **fadeedges**: `true` to fade the edges of the map into the page, or the color of the page behind the map, e.g. `#f4f1ea`.
 * **waypoints**, **startIcon**, **endIcon**, **currentIcon**, **waypointicon**, **zoomonscrollwheel**, **download**.
 * **showele**, **showspeed**, **showhr**, **showcad**, **showatemp**, **showgrade** and their colors **glinecolor**, **glinecolorspeed**, **glinecolorhr**, **glinecolorcad**, **glinecoloratemp**, **glinecolorgrade**.
 * **uom**: 0 meters, 1 feet/miles, 2 meters/kilometers, 3 meters/nautical miles, 4 meters/miles, 5 feet/nautical miles.
@@ -92,12 +107,33 @@ The main ones (every attribute also has a default in the settings; `true` / `fal
 * **summary** and **summarytotlen**, **summarymaxele**, **summaryminele**, **summaryeleup**, **summaryeledown**, **summaryavgspeed**, **summarymaxspeed**, **summarymaxgrade**, **summaryavgcad**, **summaryavghr**, **summaryavgtemp**, **summarytotaltime**, **summarymovingtime**.
 * **nggalleries**, **ngimages**, **attachments**, **dtoffset**: photos on the map.
 * **pointsoffset**, **donotreducegpx**, **skipcache**: processing of large files.
+* **description**: text description of the track for screen readers, search engines and AI, `hidden` (default), `visible` or `false`; **structureddata**: `false` leaves out the schema.org data.
 
 The complete list with the current defaults is in **Settings > WP GPX Maps > Help**.
 
 = What happens with very large GPX files? =
 
 The plugin skips points closer than 10 meters (`pointsoffset`) and can keep about 200 points for the map and the chart, then caches the result, so even long tracks load fast.
+
+= How do I keep many GPX files organized? =
+
+Upload them in the Media Library: WordPress puts them in a folder for each month, and you can search them, give them a title and see the post they belong to. Media folder plugins work with them too. In the GPX Map block choose a file with the **Media Library** button. Every uploaded track file is checked first: files that are not valid tracks, or that contain scripts or HTML, are refused.
+
+= Can visitors find all the stroller-friendly walks, or all the mountain bike routes? =
+
+Yes. Tick the activities of a route in the editor (Activities panel, like categories), in Quick Edit, or for many posts at once with Bulk Edit. Each activity has a page, e.g. `/activity/mountain-bike/`, you can add to the menu, and the site search finds the routes by activity. Edit the list and the icons in **Posts > Activities**. Media Library files can have activities too.
+
+= Which file formats can I use? =
+
+GPX, FIT (the activity files of Garmin, Wahoo, Coros and most bike computers and watches), TCX and KML / KMZ (Google Earth). Use them like a GPX file: `[sgpx gpx="/wp-content/uploads/gpx/ride.fit"]`. The format is recognized from the content of the file.
+
+= The map is not styled, or is missing, in a widget or a page builder =
+
+The plugin loads the map style only on the pages whose posts contain the block or the shortcode; maps added in other ways load it in the footer. To load it in the head of every page add `add_filter( 'wpgpxmaps_load_assets', '__return_true' );` to your theme. Maps start when they get near the screen: to start them as soon as the page has loaded use `add_filter( 'wpgpxmaps_lazy_load', '__return_false' );`.
+
+= Can AI assistants like ChatGPT read my routes? =
+
+Yes. Besides the map, every map prints a short text description of the route and schema.org structured data (JSON-LD) with distance, elevation, time and the route line. AI assistants, search engines and screen readers read them even though they can't run the map. The description is not shown on the page unless you choose so; you can turn both off in the settings.
 
 = Is it free? =
 
@@ -114,6 +150,26 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.10.00 =
+* New: FIT (Garmin, Wahoo and other devices), TCX and KML / KMZ files, with heart rate, cadence, temperature and times when the file has them; KML placemarks are shown as waypoints
+* New: the map style is loaded only on the pages that show a map, and every map downloads its code only when it gets near the screen (lazy load): faster pages, also for the pages without maps
+* New: every map describes its track in text (for screen readers, search engines and AI assistants) and in schema.org structured data (JSON-LD), with settings, shortcode attributes `description` and `structureddata` and filters to change them
+* New: activities (hiking, walking, stroller-friendly, mountain bike, road cycling, gravel, trail running, climbing, snowshoeing, ski touring, or your own) for posts, pages and track files, with an emoji icon, a page for each activity, site search by activity and the activities in the structured data
+* New: track files (GPX, FIT, TCX, KML, KMZ) in the Media Library, organized by month and searchable, with a "Media Library" button in the GPX Map block; links to the site's own files are read as local files instead of being downloaded
+* Security: every uploaded track file (Media Library and Tracks tab) is checked: it must be a valid track file, without scripts, HTML or XML entities
+* New: soft edges, the map fades into the page (setting, block option and `fadeedges` attribute, also with the color of the page)
+* New: OpenTopoMap (OSM9, replaces Hike & Bike, whose server is offline) and CyclOSM (OSM12) maps
+* Fix: a clear message instead of an empty map when the file is corrupted, is not a track file or has no track points
+* Fix: total distance too long when some points of the track have no elevation (a vertical jump to 0 m was added to the distance)
+* Fix: GPX files with only a route (no track) have distance, statistics and chart
+* Fix: the OpenStreetMap credit link uses https (no mixed content warning on https sites)
+* Fix: OpenStreetMap maps in the block editor showed "Access blocked" tiles (the editor sends no Referer for images)
+* Fix: Open Cycle Map without a Thunderforest API key stopped the map with a JavaScript error, it now shows CyclOSM; the other Thunderforest maps without a key show OpenStreetMap
+* Fix: the Thunderforest Outdoors address was misspelled, so that map never loaded
+* Fix: OpenSeaMap is shown over OpenStreetMap (it only has the sea marks) and can be turned on and off in the layer list
+* Fix: the map attributions credit the real map provider instead of MapBox; the OpenStreetMap tiles are no longer downloaded twice
+* Removed the "MapToolKit - Terrain" option (provider removed in 1.7.02): maps that still use it show OpenStreetMap
 
 = 1.9.00 =
 * New: "GPX Map" block for the block editor, with live preview, a list of the uploaded GPX files and all the main options in the sidebar (the [sgpx] shortcode keeps working)
@@ -391,6 +447,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.10.00 =
+FIT, TCX and KML files, track files in the Media Library, activities for your routes, faster pages (the map code loads only where there is a map), maps that screen readers, search engines and AI assistants can read.
 
 = 1.9.00 =
 Security and PHP 8 fixes, new GPX Map block, colored tracks, 3D view, several GPX files in one map. Requires WordPress 6.5 and PHP 7.4. Shortcode parameters can no longer be passed in the page URL.

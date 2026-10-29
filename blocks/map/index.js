@@ -7,7 +7,7 @@
 ( function ( blocks, element, blockEditor, components, i18n, apiFetch, ServerSideRender ) {
 	const el = element.createElement;
 	const { useState, useEffect, useRef, Fragment } = element;
-	const { InspectorControls, useBlockProps } = blockEditor;
+	const { InspectorControls, useBlockProps, MediaUpload, MediaUploadCheck } = blockEditor;
 	const { PanelBody, SelectControl, TextControl, ToggleControl, Placeholder, Button, Spinner, Notice, ComboboxControl } = components;
 	const __ = ( text ) => i18n.__( text, 'wp-gpx-maps' );
 
@@ -15,14 +15,15 @@
 
 	const MAP_TYPES = [
 		{ value: 'OSM1', label: 'Open Street Map' },
-		{ value: 'OSM2', label: 'Open Cycle Map (Thunderforest API key)' },
+		{ value: 'OSM2', label: 'Open Cycle Map (Thunderforest API key, CyclOSM without)' },
 		{ value: 'OSM3', label: 'Thunderforest Outdoors (API key)' },
 		{ value: 'OSM4', label: 'Thunderforest Transport (API key)' },
 		{ value: 'OSM5', label: 'Thunderforest Landscape (API key)' },
 		{ value: 'OSM7', label: 'Open Street Map - Humanitarian' },
-		{ value: 'OSM9', label: 'Hike & Bike' },
+		{ value: 'OSM9', label: 'OpenTopoMap (hiking)' },
 		{ value: 'OSM10', label: 'Open Sea Map' },
 		{ value: 'OSM11', label: 'GSI Map (Japan)' },
+		{ value: 'OSM12', label: 'CyclOSM (cycling)' },
 	];
 
 	const UNITS = [
@@ -106,19 +107,39 @@
 		}, [ hasPreview ] );
 	}
 
+	/* A file of the Media Library is stored as its path from the site root, like the files of the list */
+	function mediaPath( url ) {
+		const noScheme = String( url || '' ).replace( /^https?:/i, '' );
+		return data.uploadsUrl && data.uploadsPath && noScheme.indexOf( data.uploadsUrl + '/' ) === 0
+			? data.uploadsPath + decodeURI( noScheme.slice( data.uploadsUrl.length ) )
+			: url;
+	}
+
 	function GpxPicker( { attributes, setAttributes, tracks } ) {
 		const options = ( tracks || [] ).map( ( t ) => ( { value: t.value, label: t.label } ) );
 		return el(
 			Fragment,
 			null,
+			MediaUpload && data.mimeTypes
+				? el(
+					MediaUploadCheck,
+					null,
+					el( MediaUpload, {
+						title: __( 'Choose or upload a track file (GPX, FIT, TCX, KML)' ),
+						allowedTypes: data.mimeTypes,
+						onSelect: ( media ) => setAttributes( { gpx: mediaPath( media.url ) } ),
+						render: ( { open } ) => el( Button, { variant: 'secondary', onClick: open, style: { marginBottom: '12px' } }, __( 'Media Library' ) ),
+					} )
+				)
+				: null,
 			tracks === null
 				? el( Spinner )
 				: el( ComboboxControl, {
-					label: __( 'Uploaded GPX file' ),
+					label: __( 'Uploaded track file' ),
 					value: options.some( ( o ) => o.value === attributes.gpx ) ? attributes.gpx : null,
 					options: options,
 					onChange: ( value ) => setAttributes( { gpx: value || '' } ),
-					help: options.length ? null : __( 'No GPX file uploaded yet.' ),
+					help: options.length ? null : __( 'No track file uploaded yet.' ),
 				} ),
 			el( TextControl, {
 				label: __( 'Or GPX path / URL' ),
@@ -190,6 +211,7 @@
 				select( 'colorby', __( 'Color the track by' ), COLOR_BY ),
 				effective( attributes, 'colorby' ) === 'none' ? color( 'mlinecolor', __( 'Track color' ) ) : null,
 				toggle( 'startend', __( 'Start / finish markers' ) ),
+				toggle( 'fadeedges', __( 'Soft edges (the map fades into the page)' ) ),
 				select( 'kmmarkers', __( 'Distance markers' ), [
 					{ value: '0', label: __( 'None' ) },
 					{ value: '1', label: '1 km / mi' },

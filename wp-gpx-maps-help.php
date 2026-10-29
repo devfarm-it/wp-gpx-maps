@@ -202,6 +202,54 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</td>
 				</tr>
 				<tr>
+					<td>fadeedges</td>
+					<td>
+						<?php esc_html_e( 'Soft edges: the map fades into the page. true, or the color of the page behind the map (e.g. #f4f1ea)', 'wp-gpx-maps' ); ?>
+					</td>
+					<td>
+						<?php
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>false</strong>
+					</td>
+					<td>
+						<?php echo esc_html( get_option( 'wpgpxmaps_fade_edges' ) ); ?>
+					</td>
+				</tr>
+				<tr>
+					<td>description</td>
+					<td>
+						<?php esc_html_e( 'Text description of the track for screen readers, search engines and AI assistants: hidden (not shown on the page), visible (under the map) or false', 'wp-gpx-maps' ); ?>
+					</td>
+					<td>
+						<?php
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>hidden</strong>
+					</td>
+					<td>
+						<?php echo esc_html( get_option( 'wpgpxmaps_description' ) ); ?>
+					</td>
+				</tr>
+				<tr>
+					<td>structureddata</td>
+					<td>
+						<?php esc_html_e( 'Schema.org structured data (JSON-LD) of the track: distance, elevation, time and the route line. The file is linked only when download is on', 'wp-gpx-maps' ); ?>
+					</td>
+					<td>
+						<?php
+						esc_html_e( 'Default is:', 'wp-gpx-maps' );
+						echo ' ';
+						?>
+						<strong>true</strong>
+					</td>
+					<td>
+						<?php echo esc_html( get_option( 'wpgpxmaps_no_structured_data' ) ? 'false' : 'true' ); ?>
+					</td>
+				</tr>
+				<tr>
 					<td>skipcache</td>
 					<td>
 						<?php esc_html_e( 'Do not use cache. If TRUE might be very slow', 'wp-gpx-maps' ); ?>
@@ -258,7 +306,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						esc_html_e( 'OSM2 = Thunderforest - Open Cycle Map (API Key required)', 'wp-gpx-maps' );
+						esc_html_e( 'OSM2 = Thunderforest - Open Cycle Map (API Key required, CyclOSM without key)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
@@ -278,22 +326,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						//esc_html_e( 'OSM6 = MapToolKit - Terrain', 'wp-gpx-maps' );
-						?>
-						<br />
-						<?php
-						/* translators: selection = map provider / map type */
 						esc_html_e( 'OSM7 = Open Street Map - Humanitarian map style', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						esc_html_e( 'OSM9 = Hike & Bike', 'wp-gpx-maps' );
+						esc_html_e( 'OSM9 = OpenTopoMap (hiking)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
 						/* translators: selection = map provider / map type */
-						esc_html_e( 'OSM10 = Open Sea Map', 'wp-gpx-maps' );
+						esc_html_e( 'OSM10 = Open Sea Map (sea marks over Open Street Map)', 'wp-gpx-maps' );
+						?>
+						<br />
+						<?php
+						/* translators: selection = map provider / map type */
+						esc_html_e( 'OSM11 = GSI Map (Japan)', 'wp-gpx-maps' );
+						?>
+						<br />
+						<?php
+						/* translators: selection = map provider / map type */
+						esc_html_e( 'OSM12 = CyclOSM (cycling)', 'wp-gpx-maps' );
 						?>
 						<br />
 						<?php
