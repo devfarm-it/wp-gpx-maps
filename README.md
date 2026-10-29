@@ -15,6 +15,10 @@ This page is for developers.
 
 ![A track on a Mapbox 3D map, with the elevation chart and the route summary](.wordpress-org/screenshot-1.png)
 
+**Video:** how the plugin works in under three minutes (block, shortcode, charts, 3D maps, activities).
+
+[![WP GPX Maps: how it works, on YouTube](https://img.youtube.com/vi/n55Yzw2ig7A/maxresdefault.jpg)](https://www.youtube.com/watch?v=n55Yzw2ig7A)
+
 ## Repository
 
 The root of the repository is the plugin folder. wordpress.org SVN is updated only by GitHub Actions when a version tag is pushed.
