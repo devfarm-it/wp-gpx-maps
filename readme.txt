@@ -6,7 +6,7 @@ Tags: gpx, maps, track, leaflet, elevation
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.10.00
+Stable tag: 1.10.01
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,6 +150,10 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.10.01 =
+* Fix: the "Reduce GPX" and "Cache" checkboxes in the settings had labels that said the opposite of what they do: they are now "Keep all GPX points (do not reduce)" and "Do not use the cache" (the saved settings do not change)
+* Fix: the labels and options of the settings page can be translated
 
 = 1.10.00 =
 * New: FIT (Garmin, Wahoo and other devices), TCX and KML / KMZ files, with heart rate, cadence, temperature and times when the file has them; KML placemarks are shown as waypoints
@@ -447,6 +451,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.10.01 =
+Clearer labels for the "Reduce GPX" and "Cache" settings, and the settings page can be translated.
 
 = 1.10.00 =
 FIT, TCX and KML files, track files in the Media Library, activities for your routes, faster pages (the map code loads only where there is a map), maps that screen readers, search engines and AI assistants can read.
