@@ -6,7 +6,7 @@ Tags: gpx, maps, track, leaflet, elevation
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.10.01
+Stable tag: 1.10.02
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,6 +150,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.10.02 =
+* Fix: the max grade in the summary is measured over about 200 m instead of 100 m, so a small elevation error of the GPS no longer gives grades like 50-70% (tested also on 30,000-point tracks); the track colors by grade do not change
 
 = 1.10.01 =
 * Fix: the "Reduce GPX" and "Cache" checkboxes in the settings had labels that said the opposite of what they do: they are now "Keep all GPX points (do not reduce)" and "Do not use the cache" (the saved settings do not change)
@@ -451,6 +454,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.10.02 =
+More realistic max grade in the summary.
 
 = 1.10.01 =
 Clearer labels for the "Reduce GPX" and "Cache" settings, and the settings page can be translated.
