@@ -321,10 +321,10 @@ function wpgpxmaps_getWayPoints( $gpxPath ) {
  * Values used to color the track (attribute colorby), one per map point and in the same order as the map data
  * (null where the tracks are separated). Returns an empty array when the GPX has no data for that value.
  *
- * grade: % slope averaged over about 100 m (raw GPS points change slope at every meter)
+ * grade: % slope averaged over about 2 x $grade_half meters (raw GPS points change slope at every meter)
  * speed: in the speed unit of the chart; hr: bpm; elevation: m or ft as the chart.
  */
-function wpgpxmaps_colorValues( $points, $colorby, $unit_of_measure, $unit_of_measure_speed ) {
+function wpgpxmaps_colorValues( $points, $colorby, $unit_of_measure, $unit_of_measure_speed, $grade_half = 50 ) {
 
 	if ( ! in_array( $colorby, array( 'grade', 'speed', 'hr', 'elevation' ), true ) || ! is_array( $points->lat ) ) {
 		return array();
@@ -345,14 +345,14 @@ function wpgpxmaps_colorValues( $points, $colorby, $unit_of_measure, $unit_of_me
 		$value = null;
 
 		if ( 'grade' == $colorby ) {
-			/* Points about 50 m before and after (at least the next point on each side), inside the same track */
+			/* Points about $grade_half m before and after (at least the next point on each side), inside the same track */
 			$dist = (float) $points->dist[ $k ];
 			$from = $n;
 			$to   = $n;
-			while ( $from > 0 && null !== $points->lat[ $keys[ $from - 1 ] ] && ( $from == $n || $dist - (float) $points->dist[ $keys[ $from - 1 ] ] <= 50 ) ) {
+			while ( $from > 0 && null !== $points->lat[ $keys[ $from - 1 ] ] && ( $from == $n || $dist - (float) $points->dist[ $keys[ $from - 1 ] ] <= $grade_half ) ) {
 				$from--;
 			}
-			while ( $to < count( $keys ) - 1 && null !== $points->lat[ $keys[ $to + 1 ] ] && ( $to == $n || (float) $points->dist[ $keys[ $to + 1 ] ] - $dist <= 50 ) ) {
+			while ( $to < count( $keys ) - 1 && null !== $points->lat[ $keys[ $to + 1 ] ] && ( $to == $n || (float) $points->dist[ $keys[ $to + 1 ] ] - $dist <= $grade_half ) ) {
 				$to++;
 			}
 			$run  = (float) $points->dist[ $keys[ $to ] ] - (float) $points->dist[ $keys[ $from ] ];
@@ -476,7 +476,8 @@ function wpgpxmaps_mergePoints( $parts ) {
 /**
  * Extra statistics from the parsed points (after the merge of several GPX files):
  * movingTime (seconds, pauses excluded), maxSpeed (m/s, 99th percentile of the smoothed speed),
- * maxGrade and minGrade (%, averaged over about 100 m).
+ * maxGrade and minGrade (%, averaged over about 200 m: over shorter stretches a small elevation error of the GPS or
+ * of a terrain model gives grades like 70%).
  */
 function wpgpxmaps_extraStats( $points ) {
 
@@ -519,7 +520,7 @@ function wpgpxmaps_extraStats( $points ) {
 		$stats['maxSpeed'] = $speeds[ (int) floor( ( count( $speeds ) - 1 ) * 0.99 ) ];
 	}
 
-	$grades = array_filter( wpgpxmaps_colorValues( $points, 'grade', '0', '0' ), 'is_numeric' );
+	$grades = array_filter( wpgpxmaps_colorValues( $points, 'grade', '0', '0', 100 ), 'is_numeric' );
 	if ( $grades ) {
 		$stats['maxGrade'] = max( $grades );
 		$stats['minGrade'] = min( $grades );
