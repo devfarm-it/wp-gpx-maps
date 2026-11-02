@@ -20,6 +20,14 @@ See how it works in under three minutes: the block, the shortcode, the charts, 3
 
 https://www.youtube.com/watch?v=n55Yzw2ig7A
 
+= Fast, also with very long tracks =
+
+The map code is loaded only on the pages that show a map, and every map starts when it gets near the screen. Even long-distance trails open in a second or two. See them live:
+
+* [Camino Francés](https://devfarm.it/camino-frances-saint-jean-pied-de-port-to-santiago/): 769 km, 32,962 points, a 2 MB GPX file
+* [Alta Via 1 of the Dolomites](https://devfarm.it/alta-via-1-of-the-dolomites-lago-di-braies-to-belluno/): 120 km, 7,441 points
+* [Alta Via degli Eroi on Monte Grappa](https://devfarm.it/alta-via-degli-eroi-feltre-to-bassano-over-monte-grappa/): 40 km over the First World War front line
+
 = Maps =
 
 * **OpenStreetMap** and other free maps (no account needed): OpenStreetMap, OpenTopoMap, CyclOSM, Humanitarian, OpenSeaMap, and the Thunderforest maps (OpenCycleMap, Outdoors, Transport, Landscape) with a free Thunderforest API key.
