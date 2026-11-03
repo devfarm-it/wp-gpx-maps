@@ -6,7 +6,7 @@ Tags: gpx, maps, track, leaflet, elevation
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.10.02
+Stable tag: 1.10.03
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,12 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.10.03 =
+* Fix: deactivating the plugin no longer deletes its settings; they are removed only when the plugin is deleted
+* The notice after an update shows what is new, with the video, instead of the old message about Mapbox: the free OpenStreetMap maps do not need a Mapbox key
+* A short request to leave a review, two weeks after the installation or the update (only for administrators, on the dashboard, the plugins page and the WP GPX Maps page; it can be postponed or turned off)
+* Links to leave a review, to support the development and to get notified about WP GPX Maps Pro at the top of the WP GPX Maps page
 
 = 1.10.02 =
 * Fix: the max grade in the summary is measured over about 200 m instead of 100 m, so a small elevation error of the GPS no longer gives grades like 50-70% (tested also on 30,000-point tracks); the track colors by grade do not change
@@ -462,6 +468,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.10.03 =
+Deactivating the plugin no longer resets its settings.
 
 = 1.10.02 =
 More realistic max grade in the summary.
