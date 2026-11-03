@@ -78,8 +78,14 @@ function wpgpxmaps_plugin_upgrade() {
 	delete_site_option( 'wpgpxmaps_version' );
 	update_option( 'wpgpxmaps_version', wpgpxmaps_get_current_version() );
 
-	delete_option( 'wpgpxmaps_show_notice', 0 );
-	update_site_option( 'wpgpxmaps_show_notice', 1 );
+	/* The "what's new" notice only for a new 1.x version (1.10 -> 1.11), not for fixes (1.10.03 -> 1.10.04) */
+	$minor = function ( $version ) {
+		return implode( '.', array_slice( explode( '.', (string) $version ), 0, 2 ) );
+	};
+	if ( $minor( wpgpxmaps_get_current_version() ) !== $minor( $installed_version ) ) {
+		delete_option( 'wpgpxmaps_show_notice', 0 );
+		update_site_option( 'wpgpxmaps_show_notice', 1 );
+	}
 
 	/* The review request waits two weeks after the installation or the first update with this feature */
 	if ( false === get_option( 'wpgpxmaps_review_after' ) ) {
