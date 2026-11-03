@@ -3,7 +3,7 @@
  * Plugin Name: WP GPX Maps
  * Plugin URI: http://www.devfarm.it/
  * Description: Draws a GPX track with altitude chart
- * Version: 1.10.02
+ * Version: 1.10.03
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.10.02' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.10.03' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
@@ -61,7 +61,8 @@ define("wpgpxmaps_MINUTES_PER_100METERS", "6");
 add_shortcode( 'sgpx', 'wpgpxmaps_handle_shortcodes' );
 add_shortcode( 'sgpxf', 'wpgpxmaps_handle_folder_shortcodes' );
 register_activation_hook( __FILE__, 'wpgpxmaps_install_option' );
-register_deactivation_hook( __FILE__, 'wpgpxmaps_remove_option' );
+/* Settings are removed only when the plugin is deleted: deactivating it (e.g. to look for a conflict) keeps them */
+register_uninstall_hook( __FILE__, 'wpgpxmaps_remove_option' );
 add_filter( 'plugin_action_links', 'wpgpxmaps_action_links', 10, 2 );
 add_action( 'init', 'wpgpxmaps_register_assets' );
 add_action( 'wp_enqueue_scripts', 'wpgpxmaps_enqueue_scripts' );
@@ -1658,7 +1659,8 @@ function wpgpxmaps_remove_option() {
 		'wpgpxmaps_donotreducegpx',
 		// Administration
 		'wpgpxmaps_allow_users_upload',
-		'wpgpxmaps_show_notice'
+		'wpgpxmaps_show_notice',
+		'wpgpxmaps_review_after'
 	);
 
 	foreach ( $options as $key ) {
