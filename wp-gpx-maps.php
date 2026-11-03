@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: WP GPX Maps
- * Plugin URI: http://www.devfarm.it/
- * Description: Draws a GPX track with altitude chart
- * Version: 1.10.03
+ * Plugin Name: WP GPX Maps – GPX, FIT & KML maps with elevation profile
+ * Plugin URI: https://devfarm.it/
+ * Description: Show your hikes, rides and runs from GPX, FIT, TCX or KML files on an interactive map with elevation profile, charts and route summary.
+ * Version: 1.10.04
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.10.03' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.10.04' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
