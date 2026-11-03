@@ -4,9 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+define( 'WPGPXMAPS_REVIEW_URL', 'https://wordpress.org/support/plugin/wp-gpx-maps/reviews/#new-post' );
+
 if ( is_admin() ) {
 	add_action( 'admin_init', 'wpgpxmaps_admin_init' );
 	add_action( 'admin_menu', 'wpgpxmaps_admin_menu' );
+	add_action( 'admin_notices', 'wpgpxmaps_show_review_notice' );
+	add_action( 'admin_post_wpgpxmaps_review', 'wpgpxmaps_review_answer' );
 }
 
 function wpgpxmaps_admin_init() {
@@ -76,6 +80,11 @@ function wpgpxmaps_plugin_upgrade() {
 
 	delete_option( 'wpgpxmaps_show_notice', 0 );
 	update_site_option( 'wpgpxmaps_show_notice', 1 );
+
+	/* The review request waits two weeks after the installation or the first update with this feature */
+	if ( false === get_option( 'wpgpxmaps_review_after' ) ) {
+		update_option( 'wpgpxmaps_review_after', time() + 14 * DAY_IN_SECONDS, false );
+	}
 }
 
 /**
@@ -86,7 +95,7 @@ function wpgpxmaps_show_update_notice() {
 
 	?>
 
-	<div id="wpgpxmaps-notice" class="notice is-dismissible">
+	<div id="wpgpxmaps-notice" class="notice notice-info is-dismissible">
 		<p>
 			<strong>
 				<?php echo 		sprintf(
@@ -94,26 +103,19 @@ function wpgpxmaps_show_update_notice() {
 					esc_html__( 'What&lsquo;s new in WP GPX Maps %1s', 'wp-gpx-maps' ),
 					esc_html( WPGPXMAPS_CURRENT_VERSION )
 				) ?>
-
 			</strong>
-			<br/>
-			<br/>
-			IMPORTANT! this plugin will migrate to MapBox API.
-			<a href="https://console.mapbox.com/account/access-tokens/" target="_blank" rel="noopener noreferrer">
-				You need to create an account and get an API key.
-			</a>
-			This will enable beautiful 3D maps and more features.
-			<em>
-				<a href="https://wordpress.org/plugins/wp-gpx-maps/#developers" target="_blank" rel="noopener noreferrer">
-					<?php echo esc_html__( 'You can find the complete changelog here.', 'wp-gpx-maps' ) ?> 
-				</a>
-			</em>
-			<br/>
-			<br/>
-			<a id="wpgpxmaps-post-dismiss-notice" href="javascript:wpgpxmaps_dismiss_notice();">
-				<?php echo esc_html__( 'Dismiss this notice', 'wp-gpx-maps' ) ?> 
-			</a>
-
+		</p>
+		<p>
+			<?php esc_html_e( 'GPX, FIT, TCX and KML files in the Media Library, the GPX Map block, tracks colored by grade or speed, activities for your routes and faster pages. The free OpenStreetMap maps work as before: a Mapbox key is only needed for the Mapbox 3D maps.', 'wp-gpx-maps' ); ?>
+		</p>
+		<p>
+			<a href="https://www.youtube.com/watch?v=n55Yzw2ig7A" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Watch the 3-minute video', 'wp-gpx-maps' ); ?></a>
+			&middot;
+			<a href="https://wordpress.org/plugins/wp-gpx-maps/#developers" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Changelog', 'wp-gpx-maps' ); ?></a>
+			&middot;
+			<a href="<?php echo esc_url( WPGPXMAPS_REVIEW_URL ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Enjoying it? Leave a review', 'wp-gpx-maps' ); ?></a>
+			&middot;
+			<a id="wpgpxmaps-post-dismiss-notice" href="javascript:wpgpxmaps_dismiss_notice();"><?php esc_html_e( 'Dismiss this notice', 'wp-gpx-maps' ); ?></a>
 		</p>
 	</div>
 	<script>
@@ -149,6 +151,79 @@ function wpgpxmaps_dismiss_notice() {
 
 	update_site_option( 'wpgpxmaps_show_notice', 0 );
 	wp_send_json_success();
+}
+
+/**
+ * Review request: two weeks after the installation (or the update), only to administrators, only on the dashboard,
+ * the plugins page and the WP GPX Maps page, never together with the update notice. "Maybe later" asks again
+ * after 30 days, "Leave a review" and "I already did" never again.
+ */
+function wpgpxmaps_show_review_notice() {
+	if ( ! current_user_can( 'manage_options' ) || 1 == get_site_option( 'wpgpxmaps_show_notice' ) ) {
+		return;
+	}
+	$after = (int) get_option( 'wpgpxmaps_review_after', 0 );
+	if ( $after <= 0 || time() < $after ) {
+		return;
+	}
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || ! in_array( $screen->id, array( 'dashboard', 'plugins', 'settings_page_WP-GPX-Maps' ), true ) ) {
+		return;
+	}
+	$link = function ( $answer ) {
+		return wp_nonce_url( admin_url( 'admin-post.php?action=wpgpxmaps_review&answer=' . $answer ), 'wpgpxmaps_review' );
+	};
+	?>
+	<div class="notice notice-info">
+		<p><?php esc_html_e( 'You have been using WP GPX Maps for a while: is it useful? A short review on wordpress.org helps other people find it, and keeps it free and maintained.', 'wp-gpx-maps' ); ?></p>
+		<p>
+			<a class="button button-primary" href="<?php echo esc_url( $link( 'rate' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Leave a review', 'wp-gpx-maps' ); ?></a>
+			<a class="button" href="<?php echo esc_url( $link( 'later' ) ); ?>"><?php esc_html_e( 'Maybe later', 'wp-gpx-maps' ); ?></a>
+			<a class="button-link" style="margin-left:8px" href="<?php echo esc_url( $link( 'done' ) ); ?>"><?php esc_html_e( 'I already did', 'wp-gpx-maps' ); ?></a>
+		</p>
+	</div>
+	<?php
+}
+
+function wpgpxmaps_review_answer() {
+	check_admin_referer( 'wpgpxmaps_review' );
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( esc_html__( 'Sorry, you are not allowed to do this.', 'wp-gpx-maps' ), 403 );
+	}
+	$answer = isset( $_GET['answer'] ) ? sanitize_key( wp_unslash( $_GET['answer'] ) ) : '';
+	if ( 'later' === $answer ) {
+		update_option( 'wpgpxmaps_review_after', time() + 30 * DAY_IN_SECONDS, false );
+		wp_safe_redirect( wp_get_referer() ? wp_get_referer() : admin_url() );
+		exit;
+	}
+	/* Rated or already rated: never ask again */
+	update_option( 'wpgpxmaps_review_after', -1, false );
+	if ( 'rate' === $answer ) {
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- fixed wordpress.org address
+		wp_redirect( WPGPXMAPS_REVIEW_URL );
+		exit;
+	}
+	wp_safe_redirect( wp_get_referer() ? wp_get_referer() : admin_url() );
+	exit;
+}
+
+/**
+ * Small box at the top of the WP GPX Maps page: review, sponsor, Pro waitlist.
+ */
+function wpgpxmaps_support_box() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	?>
+	<div class="wpgpxmaps-support-box" style="margin:12px 0;padding:10px 14px;background:#fff;border:1px solid #c3c4c7;border-left:4px solid #0F6E56">
+		<?php esc_html_e( 'WP GPX Maps is free and open source.', 'wp-gpx-maps' ); ?>
+		<a href="<?php echo esc_url( WPGPXMAPS_REVIEW_URL ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Leave a review', 'wp-gpx-maps' ); ?></a>
+		&middot;
+		<a href="https://github.com/sponsors/bastianonm" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support the development', 'wp-gpx-maps' ); ?></a>
+		&middot;
+		<a href="https://devfarm.it/wp-gpx-maps-free-vs-pro/#waitlist" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'WP GPX Maps Pro is coming: get notified', 'wp-gpx-maps' ); ?></a>
+	</div>
+	<?php
 }
 
 function wpgpxmaps_ilc_admin_tabs( $current ) {
@@ -214,6 +289,8 @@ function wpgpxmaps_html_page() {
 	<!-- The First Div (for body) ends in the respective file for the corresponding tab -->
 
 	<?php
+
+	wpgpxmaps_support_box();
 
 	if ( file_exists( $realGpxPath ) && is_dir( $realGpxPath ) ) {
 		// Directory exists
