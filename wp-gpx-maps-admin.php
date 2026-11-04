@@ -112,7 +112,7 @@ function wpgpxmaps_show_update_notice() {
 			</strong>
 		</p>
 		<p>
-			<?php esc_html_e( 'New MapLibre maps: vector maps and 3D terrain for free, without an API key, and lighter pages for every map. Your maps keep the engine they use today: to try MapLibre, choose it in Settings > WP GPX Maps > Map engine, or for a single map in the block.', 'wp-gpx-maps' ); ?>
+			<?php esc_html_e( 'New map effects for MapLibre and MapBox: fog and sky, shaded relief and the height of the 3D terrain, in Settings > WP GPX Maps > Map or for a single map in the block. Since 1.11: free MapLibre maps with 3D terrain, without an API key.', 'wp-gpx-maps' ); ?>
 		</p>
 		<p>
 			<a href="https://www.youtube.com/watch?v=n55Yzw2ig7A" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Watch the 3-minute video', 'wp-gpx-maps' ); ?></a>

@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.11.01
+Stable tag: 1.12.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,7 +31,7 @@ The map code is loaded only on the pages that show a map, and every map starts w
 = Maps =
 
 * **OpenStreetMap** and other free maps (no account needed): OpenStreetMap, OpenTopoMap, CyclOSM, Humanitarian, OpenSeaMap, and the Thunderforest maps (OpenCycleMap, Outdoors, Transport, Landscape) with a free Thunderforest API key.
-* **MapLibre** (recommended), free and without an API key: vector maps (OpenFreeMap Liberty, Bright, Positron), OpenStreetMap, OpenTopoMap and CyclOSM, **3D terrain**, fog and a tilted 3D view, or your own style (MapTiler, Stadia Maps...).
+* **MapLibre** (recommended), free and without an API key: vector maps (OpenFreeMap Liberty, Bright, Positron), OpenStreetMap, OpenTopoMap and CyclOSM, **3D terrain**, fog and sky, shaded relief and a tilted 3D view, or your own style (MapTiler, Stadia Maps...).
 * **MapBox** with your own API key: Outdoors, Streets, Satellite, Satellite Streets, Light, Dark, Standard and custom styles, **3D terrain**, fog and a tilted 3D view (`pitch`, `bearing`).
 * **Track colored by grade** (blue descent, green flat, yellow to red climb), **speed**, **heart rate** or **elevation**, with a legend.
 * **Several GPX files in one map** (`gpx="a.gpx,b.gpx"`), one color per file with a legend.
@@ -106,6 +106,7 @@ The main ones (every attribute also has a default in the settings; `true` / `fal
 * **engine**: map engine, `leaflet`, `maplibre` or `mapbox` (MapBox needs an access token).
 * **maplibrestyle**: MapLibre style, `liberty`, `bright`, `positron`, `osm`, `topo`, `cyclosm`, or the https URL of a style.json.
 * **mapboxstyle**, **mapbox3d**, **pitch**, **bearing**: MapBox style, 3D terrain (MapLibre and MapBox), view tilt (0-85) and rotation.
+* **fog**, **hillshade**, **exaggeration** (MapLibre and MapBox): fog and sky on the horizon, shaded relief (also without 3D terrain), height of the 3D terrain (`1` real, up to `3`, default `1.5`).
 * **colorby**: `grade`, `speed`, `hr`, `elevation` or `none`.
 * **mlinecolor**: track color (several colors separated by spaces, one per track).
 * **kmmarkers**: distance marker every N km or miles; **startend**: start / finish markers.
@@ -161,6 +162,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.12.00 =
+* New: map effects for MapLibre and MapBox, in the settings, in the block and in the shortcode: fog and sky (`fog`), shaded relief that shows mountains and valleys also on flat maps (`hillshade`) and the height of the 3D terrain (`exaggeration`)
 
 = 1.11.01 =
 * Fix: no more 404 error in the browser console for maplibre-gl-worker.mjs.map on the MapLibre maps
@@ -486,6 +490,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.12.00 =
+New map effects for MapLibre and MapBox: fog and sky, shaded relief, height of the 3D terrain.
 
 = 1.11.01 =
 Fixes a 404 error in the browser console on the MapLibre maps.
