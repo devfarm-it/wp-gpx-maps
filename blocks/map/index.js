@@ -46,6 +46,20 @@
 		{ value: 'satellite-streets-v12', label: 'Satellite Streets' },
 	];
 
+	const MAPLIBRE_STYLES = [
+		{ value: 'liberty', label: 'Liberty (OpenFreeMap)' },
+		{ value: 'bright', label: 'Bright (OpenFreeMap)' },
+		{ value: 'positron', label: 'Positron (OpenFreeMap)' },
+		{ value: 'osm', label: 'Open Street Map' },
+		{ value: 'topo', label: 'OpenTopoMap (hiking)' },
+		{ value: 'cyclosm', label: 'CyclOSM (cycling)' },
+	];
+
+	const ENGINES = [
+		{ value: 'leaflet', label: 'Leaflet (2D)' },
+		{ value: 'maplibre', label: 'MapLibre (3D, no key)' },
+	].concat( data.hasMapBoxKey ? [ { value: 'mapbox', label: 'Mapbox (3D)' } ] : [] );
+
 	const COLOR_BY = [
 		{ value: 'none', label: 'One color' },
 		{ value: 'grade', label: 'Grade (climb / descent)' },
@@ -195,6 +209,8 @@
 			} );
 
 		const summaryOn = isOn( effective( attributes, 'summary' ) );
+		const engine = effective( attributes, 'engine' );
+		const is3d = engine === 'maplibre' || engine === 'mapbox';
 
 		const inspector = el(
 			InspectorControls,
@@ -203,10 +219,13 @@
 			el(
 				PanelBody,
 				{ title: __( 'Map' ), initialOpen: false },
-				data.hasMapBoxKey ? select( 'mapboxstyle', __( 'MapBox style' ), MAPBOX_STYLES ) : select( 'mtype', __( 'Map type' ), MAP_TYPES ),
-				data.hasMapBoxKey ? toggle( 'mapbox3d', __( '3D terrain' ) ) : null,
-				data.hasMapBoxKey ? text( 'pitch', __( 'View tilt (0-85)' ), __( 'For example 60 for a 3D view' ) ) : null,
-				data.hasMapBoxKey ? text( 'bearing', __( 'View rotation (-180 to 180)' ) ) : null,
+				select( 'engine', __( 'Map engine' ), ENGINES ),
+				engine === 'mapbox' ? select( 'mapboxstyle', __( 'MapBox style' ), MAPBOX_STYLES ) : null,
+				engine === 'maplibre' ? select( 'maplibrestyle', __( 'Map style' ), MAPLIBRE_STYLES ) : null,
+				is3d ? null : select( 'mtype', __( 'Map type' ), MAP_TYPES ),
+				is3d ? toggle( 'mapbox3d', __( '3D terrain' ) ) : null,
+				is3d ? text( 'pitch', __( 'View tilt (0-85)' ), __( 'For example 60 for a 3D view' ) ) : null,
+				is3d ? text( 'bearing', __( 'View rotation (-180 to 180)' ) ) : null,
 				text( 'mheight', __( 'Map height' ), __( 'For example 450px' ) ),
 				select( 'colorby', __( 'Color the track by' ), COLOR_BY ),
 				effective( attributes, 'colorby' ) === 'none' ? color( 'mlinecolor', __( 'Track color' ) ) : null,

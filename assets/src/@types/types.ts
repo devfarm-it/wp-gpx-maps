@@ -43,6 +43,10 @@ interface Params {
     usegpsposition: string;
     currentpositioncon: string;
     TFApiKey: string;
+    /* Map engine: 'leaflet', 'maplibre' or 'mapbox' ('' = Mapbox when a key is set, otherwise Leaflet) */
+    MapEngine?: string;
+    /* MapLibre style: a key of MapLibreStyles (liberty, bright, positron, osm, topo, cyclosm) or the https URL of a style.json */
+    MapLibreStyle?: string;
     MapBoxApiKey: string;
     MapBoxMapType: string;
     MapBoxMapCustomType: string;
