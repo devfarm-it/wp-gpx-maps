@@ -52785,4 +52785,3 @@ export {
   kn as Leaflet,
   aI as WPGPXMaps
 };
-//# sourceMappingURL=WP-GPX-Maps.es.js.map
