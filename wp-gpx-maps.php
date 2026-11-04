@@ -1537,6 +1537,9 @@ function unescape( $value ) {
 }
 
 function wpgpxmaps_install_option() {
+	/* First installation: no setting saved yet */
+	$new_install = false === get_option( 'wpgpxmaps_height' );
+
 	$options = array(
 		// General
 		'wpgpxmaps_width' => '100%',
@@ -1615,6 +1618,11 @@ function wpgpxmaps_install_option() {
 	foreach ( $options as $key => $value ) {
 		add_option( $key, $value, '', 'yes' );
 	}
+
+	/* New sites start with MapLibre (recommended); existing sites keep the automatic engine they had */
+	if ( $new_install ) {
+		add_option( 'wpgpxmaps_map_engine', 'maplibre', '', 'yes' );
+	}
 }
 
 function wpgpxmaps_remove_option() {
@@ -1622,6 +1630,9 @@ function wpgpxmaps_remove_option() {
 		// General
 		'wpgpxmaps_width',
 		'wpgpxmaps_height',
+		'wpgpxmaps_map_engine',
+		'wpgpxmaps_maplibre_style',
+		'wpgpxmaps_maplibre_customstyle',
 		'wpgpxmaps_graph_height',
 		'wpgpxmaps_distance_type',
 		'wpgpxmaps_skipcache',
