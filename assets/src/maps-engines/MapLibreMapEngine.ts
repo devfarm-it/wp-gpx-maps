@@ -29,14 +29,16 @@ function rasterStyle(tiles: string[], attribution: string, maxzoom: number = 19)
     };
 }
 
-/* Styles of the switcher: the key is the value of the setting / shortcode (maplibrestyle) */
+/*
+ * Styles of the switcher: the key is the value of the setting / shortcode (maplibrestyle).
+ * Only tile servers that allow CORS: MapLibre fetches the tiles (CyclOSM does not allow it, a map with it stays empty).
+ */
 export const MapLibreStyles: { [key: string]: { title: string, style: () => string | StyleSpecification } } = {
     liberty: { title: 'Liberty', style: () => 'https://tiles.openfreemap.org/styles/liberty' },
     bright: { title: 'Bright', style: () => 'https://tiles.openfreemap.org/styles/bright' },
     positron: { title: 'Positron', style: () => 'https://tiles.openfreemap.org/styles/positron' },
     osm: { title: 'OpenStreetMap', style: () => rasterStyle(['https://tile.openstreetmap.org/{z}/{x}/{y}.png'], osm) },
     topo: { title: 'OpenTopoMap', style: () => rasterStyle(['a', 'b', 'c'].map(s => `https://${s}.tile.opentopomap.org/{z}/{x}/{y}.png`), osm + ', <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)', 17) },
-    cyclosm: { title: 'CyclOSM', style: () => rasterStyle(['a', 'b', 'c'].map(s => `https://${s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png`), osm + ', <a href="https://www.cyclosm.org">CyclOSM</a>') },
 };
 
 /* Free elevation tiles (Mapterhorn, open data) for the 3D terrain */

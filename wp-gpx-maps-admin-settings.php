@@ -259,8 +259,7 @@ function render_select($name, $label, $options, $selected) {
 				'bright' => __( 'Bright (OpenFreeMap)', 'wp-gpx-maps' ),
 				'positron' => __( 'Positron, light (OpenFreeMap)', 'wp-gpx-maps' ),
 				'osm' => __( 'Open Street Map', 'wp-gpx-maps' ),
-				'topo' => __( 'OpenTopoMap (hiking)', 'wp-gpx-maps' ),
-				'cyclosm' => __( 'CyclOSM (cycling)', 'wp-gpx-maps' )
+				'topo' => __( 'OpenTopoMap (hiking)', 'wp-gpx-maps' )
 			], get_option('wpgpxmaps_maplibre_style') ? get_option('wpgpxmaps_maplibre_style') : 'liberty');
 
 			render_text_input('wpgpxmaps_maplibre_customstyle', __( 'Custom MapLibre style:', 'wp-gpx-maps' ), get_option('wpgpxmaps_maplibre_customstyle'), 'width:400px;', ' ' . __( 'https URL of a style.json, for example from MapTiler or Stadia Maps', 'wp-gpx-maps' ));
