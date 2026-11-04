@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve } from "path";
-import { copyFileSync, readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 
 /* The MapLibre worker is copied next to the bundle; its version in the name keeps browsers from using an old cached worker */
 const maplibreVersion = JSON.parse(readFileSync(resolve(__dirname, 'node_modules/maplibre-gl/package.json'), 'utf8')).version;
@@ -30,7 +30,9 @@ export default defineConfig({
     {
       name: 'copy-maplibre-worker',
       closeBundle() {
-        copyFileSync(resolve(__dirname, 'node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs'), resolve(__dirname, 'assets/dist', maplibreWorker));
+        // Without the sourceMappingURL line: the .map files are not in the package and browsers would ask for them (404)
+        const worker = readFileSync(resolve(__dirname, 'node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs'), 'utf8');
+        writeFileSync(resolve(__dirname, 'assets/dist', maplibreWorker), worker.replace(/\n\/\/# sourceMappingURL=.*\s*$/, '\n'));
       },
     },
   ],
