@@ -112,7 +112,7 @@ function wpgpxmaps_show_update_notice() {
 			</strong>
 		</p>
 		<p>
-			<?php esc_html_e( 'GPX, FIT, TCX and KML files in the Media Library, the GPX Map block, tracks colored by grade or speed, activities for your routes and faster pages. The free OpenStreetMap maps work as before: a Mapbox key is only needed for the Mapbox 3D maps.', 'wp-gpx-maps' ); ?>
+			<?php esc_html_e( 'New MapLibre maps: vector maps and 3D terrain for free, without an API key, and lighter pages for every map. Your maps keep the engine they use today: to try MapLibre, choose it in Settings > WP GPX Maps > Map engine, or for a single map in the block.', 'wp-gpx-maps' ); ?>
 		</p>
 		<p>
 			<a href="https://www.youtube.com/watch?v=n55Yzw2ig7A" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Watch the 3-minute video', 'wp-gpx-maps' ); ?></a>

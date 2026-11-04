@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.10.04
+Stable tag: 1.11.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -483,6 +483,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.11.00 =
+New free MapLibre maps with 3D terrain, no API key needed, and lighter pages. Your maps keep the engine they use today.
 
 = 1.10.04 =
 New plugin name and description, no change to your maps.
