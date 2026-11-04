@@ -3,7 +3,7 @@ import { resolve } from "path";
 import { readFileSync, writeFileSync } from "fs";
 
 /* The MapLibre worker is copied next to the bundle; its version in the name keeps browsers from using an old cached worker */
-const maplibreVersion = JSON.parse(readFileSync(resolve(__dirname, 'node_modules/maplibre-gl/package.json'), 'utf8')).version;
+const maplibreVersion = JSON.parse(readFileSync(resolve(import.meta.dirname, 'node_modules/maplibre-gl/package.json'), 'utf8')).version;
 const maplibreWorker = `maplibre-gl-worker-${maplibreVersion}.js`;
 
 export default defineConfig({
@@ -15,9 +15,11 @@ export default defineConfig({
     // 'hidden': maps are generated but not referenced, since .distignore leaves them out of the package
     sourcemap: 'hidden',
     lib: {
-      entry: resolve(__dirname, "assets/src/WP-GPX-Maps.ts"),
+      entry: resolve(import.meta.dirname, "assets/src/WP-GPX-Maps.ts"),
       name: "WPGPXMaps",
       fileName: (format) => `WP-GPX-Maps.${format}.js`,
+      // The stylesheet keeps the name loaded by PHP (Vite 8 would name it after the package)
+      cssFileName: 'style',
       // ES module only: the Mapbox and MapLibre engines are separate files loaded when a map needs them
       formats: ["es"],
     },
@@ -31,8 +33,8 @@ export default defineConfig({
       name: 'copy-maplibre-worker',
       closeBundle() {
         // Without the sourceMappingURL line: the .map files are not in the package and browsers would ask for them (404)
-        const worker = readFileSync(resolve(__dirname, 'node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs'), 'utf8');
-        writeFileSync(resolve(__dirname, 'assets/dist', maplibreWorker), worker.replace(/\n\/\/# sourceMappingURL=.*\s*$/, '\n'));
+        const worker = readFileSync(resolve(import.meta.dirname, 'node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs'), 'utf8');
+        writeFileSync(resolve(import.meta.dirname, 'assets/dist', maplibreWorker), worker.replace(/\n\/\/# sourceMappingURL=.*\s*$/, '\n'));
       },
     },
   ],
