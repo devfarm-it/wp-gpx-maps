@@ -52,7 +52,6 @@
 		{ value: 'positron', label: 'Positron (OpenFreeMap)' },
 		{ value: 'osm', label: 'Open Street Map' },
 		{ value: 'topo', label: 'OpenTopoMap (hiking)' },
-		{ value: 'cyclosm', label: 'CyclOSM (cycling)' },
 	];
 
 	const ENGINES = [
