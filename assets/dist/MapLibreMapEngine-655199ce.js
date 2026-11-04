@@ -1,4 +1,4 @@
-import { W as Cx } from "./WP-GPX-Maps-b630a584.js";
+import { W as Cx } from "./WP-GPX-Maps-74695ef2.js";
 import { b as Px, l as rf, a as Ax } from "./index-851476b9.js";
 /**
 * MapLibre GL JS
