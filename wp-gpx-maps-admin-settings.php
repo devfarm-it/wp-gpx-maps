@@ -142,13 +142,19 @@ function render_select($name, $label, $options, $selected) {
 			render_checkbox('wpgpxmaps_usegpsposition', __( 'Use browser GPS position:', 'wp-gpx-maps' ), $usegpsposition);
 			render_text_input('wpgpxmaps_openstreetmap_apikey', __( 'Thunderforest API Key (Open Cycle Map):', 'wp-gpx-maps' ), get_option('wpgpxmaps_openstreetmap_apikey'), 'width:400px');
 			render_text_input('wpgpxmaps_mapbox_apikey', __( 'Mapbox API Key:', 'wp-gpx-maps' ), get_option('wpgpxmaps_mapbox_apikey'), 'width:400px');
+			render_select('wpgpxmaps_map_engine', __( 'Map engine:', 'wp-gpx-maps' ), [
+				'' => __( 'Automatic: Mapbox when a Mapbox key is set, otherwise Leaflet', 'wp-gpx-maps' ),
+				'maplibre' => __( 'MapLibre (recommended): vector maps and 3D terrain, free, no key needed', 'wp-gpx-maps' ),
+				'leaflet' => __( 'Leaflet: 2D maps, the lightest', 'wp-gpx-maps' ),
+				'mapbox' => __( 'Mapbox: Mapbox styles and 3D terrain (Mapbox key required)', 'wp-gpx-maps' )
+			], get_option('wpgpxmaps_map_engine'));
 
 			?>
 		</table>
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey,wpgpxmaps_mapbox_apikey" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_height,wpgpxmaps_graph_height,wpgpxmaps_width,wpgpxmaps_download,wpgpxmaps_skipcache,wpgpxmaps_distance_type,wpgpxmaps_usegpsposition,wpgpxmaps_openstreetmap_apikey,wpgpxmaps_mapbox_apikey,wpgpxmaps_map_engine" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>
@@ -248,13 +254,24 @@ function render_select($name, $label, $options, $selected) {
 
 			render_text_input('wpgpxmaps_mapbox_customtype', __( 'Custom MapBox style:', 'wp-gpx-maps' ), $mapboxCustomMapType, 'width:400px;');
 			
-			render_radio('wpgpxmaps_mapbox_load_animation', __( 'MapBox animation on load:', 'wp-gpx-maps' ), [
+			render_radio('wpgpxmaps_maplibre_style', __( 'MapLibre default style:', 'wp-gpx-maps' ), [
+				'liberty' => __( 'Liberty (OpenFreeMap)', 'wp-gpx-maps' ),
+				'bright' => __( 'Bright (OpenFreeMap)', 'wp-gpx-maps' ),
+				'positron' => __( 'Positron, light (OpenFreeMap)', 'wp-gpx-maps' ),
+				'osm' => __( 'Open Street Map', 'wp-gpx-maps' ),
+				'topo' => __( 'OpenTopoMap (hiking)', 'wp-gpx-maps' ),
+				'cyclosm' => __( 'CyclOSM (cycling)', 'wp-gpx-maps' )
+			], get_option('wpgpxmaps_maplibre_style') ? get_option('wpgpxmaps_maplibre_style') : 'liberty');
+
+			render_text_input('wpgpxmaps_maplibre_customstyle', __( 'Custom MapLibre style:', 'wp-gpx-maps' ), get_option('wpgpxmaps_maplibre_customstyle'), 'width:400px;', ' ' . __( 'https URL of a style.json, for example from MapTiler or Stadia Maps', 'wp-gpx-maps' ));
+
+			render_radio('wpgpxmaps_mapbox_load_animation', __( 'MapLibre / MapBox animation on load:', 'wp-gpx-maps' ), [
 				'0' => __( 'Disabled', 'wp-gpx-maps' ),
 				'1' => __( 'Draw line from start to end', 'wp-gpx-maps' ),
 			], $mapboxLoadAnimation);		
 
-			render_checkbox('wpgpxmaps_mapbox_3dterrain', __( 'MapBox 3d terrain:', 'wp-gpx-maps' ), $mapbox3dTerrain);
-			render_checkbox('wpgpxmaps_mapbox_fog', __( 'MapBox fog:', 'wp-gpx-maps' ), $mapboxFog);
+			render_checkbox('wpgpxmaps_mapbox_3dterrain', __( 'MapLibre / MapBox 3d terrain:', 'wp-gpx-maps' ), $mapbox3dTerrain);
+			render_checkbox('wpgpxmaps_mapbox_fog', __( 'MapLibre / MapBox fog:', 'wp-gpx-maps' ), $mapboxFog);
 
 			render_text_input('wpgpxmaps_map_line_color', __( 'Map line color:', 'wp-gpx-maps' ), get_option('wpgpxmaps_map_line_color'), 'width:100px;');
 			render_select('wpgpxmaps_map_color_by', __( 'Track color by:', 'wp-gpx-maps' ), [
@@ -279,7 +296,7 @@ function render_select($name, $label, $options, $selected) {
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_map_color_by,wpgpxmaps_map_hide_start_end,wpgpxmaps_fade_edges,wpgpxmaps_map_km_markers,wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_map_color_by,wpgpxmaps_map_hide_start_end,wpgpxmaps_fade_edges,wpgpxmaps_map_km_markers,wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_maplibre_style,wpgpxmaps_maplibre_customstyle,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>
