@@ -13,7 +13,8 @@
     "leaflet.fullscreen": "^3.0.2",
     "leaflet.markercluster": "^1.5.3",
     "mapbox-gl": "^3.9.4",
-    "mapbox-gl-style-switcher": "^1.0.11"
+    "mapbox-gl-style-switcher": "^1.0.11",
+    "maplibre-gl": "^6.16.0"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.16",

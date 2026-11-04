@@ -5,7 +5,7 @@
 [![Active installs](https://img.shields.io/wordpress/plugin/installs/wp-gpx-maps)](https://wordpress.org/plugins/wp-gpx-maps/)
 [![License: GPL v2+](https://img.shields.io/badge/license-GPLv2%2B-blue)](https://www.gnu.org/licenses/gpl-2.0.html)
 
-WordPress plugin that shows GPX, FIT, TCX and KML tracks on an interactive map (Leaflet or Mapbox, with 3D terrain)
+WordPress plugin that shows GPX, FIT, TCX and KML tracks on an interactive map (Leaflet, MapLibre or Mapbox, with 3D terrain)
 with elevation, speed and heart rate charts and a route summary. It has a block for the block editor and the `[sgpx]`
 shortcode.
 
@@ -99,7 +99,7 @@ it changes only when a hook changes in a way that is not backward compatible.
 - Activities: taxonomy `WPGPXMAPS_ACTIVITY_TAXONOMY` (`wpgpxmaps_activity`), `wpgpxmaps_activity_icon( $term )` (emoji),
   `wpgpxmaps_post_activities( $post_id )` (id, slug, name, icon, url of each activity of a post).
 - `wpgpxmaps_get_waypoints( $gpx )`: waypoints of a file (GPX waypoints, KML placemarks) with lat, lon, ele, name and desc.
-- `wpgpxmaps_module_url()`: URL of the JavaScript module, which exports `WPGPXMaps` and `Leaflet`.
+- `wpgpxmaps_module_url()`: URL of the JavaScript module, which exports `WPGPXMaps`, `Leaflet` and `loadMapEngine( 'mapbox' | 'maplibre' )`. Mapbox and MapLibre are separate files in `assets/dist`, loaded by `loadMapEngine()` only for the maps that use them.
 - `wpgpxmaps_enqueue_assets()`: map style with the Leaflet CSS, for add-ons that draw their own maps.
 
 ### JavaScript event
@@ -107,7 +107,7 @@ it changes only when a hook changes in a way that is not backward compatible.
 ```js
 document.addEventListener( 'wpgpxmaps:ready', ( event ) => {
 	const { apiVersion, engine, map, chart, container, params } = event.detail;
-	// engine: 'leaflet' or 'mapbox'; map: the Leaflet or Mapbox GL map; chart: the Chart.js chart
+	// engine: 'leaflet', 'maplibre' or 'mapbox'; map: the Leaflet, MapLibre GL or Mapbox GL map (MapLibre has the same API as Mapbox); chart: the Chart.js chart
 	// params.extra: the data added with the wpgpxmaps_map_extra filter
 } );
 ```

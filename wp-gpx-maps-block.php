@@ -26,6 +26,8 @@ function wpgpxmaps_block_options() {
 		'gheight'          => 'wpgpxmaps_graph_height',
 		'mlinecolor'       => 'wpgpxmaps_map_line_color',
 		'colorby'          => 'wpgpxmaps_map_color_by',
+		'engine'           => 'wpgpxmaps_map_engine',
+		'maplibrestyle'    => 'wpgpxmaps_maplibre_style',
 		'mapboxstyle'      => 'wpgpxmaps_mapbox_type',
 		'mapbox3d'         => 'wpgpxmaps_mapbox_3dterrain',
 		'pitch'            => '',
@@ -81,6 +83,11 @@ function wpgpxmaps_block_editor_data() {
 	}
 	if ( '' == $defaults['mtype'] ) {
 		$defaults['mtype'] = 'OSM1';
+	}
+	/* The engine the map really uses (automatic: Mapbox with a key, otherwise Leaflet) */
+	$defaults['engine'] = wpgpxmaps_map_engine( array() );
+	if ( '' == $defaults['maplibrestyle'] ) {
+		$defaults['maplibrestyle'] = 'liberty';
 	}
 	if ( '' == $defaults['colorby'] ) {
 		$defaults['colorby'] = 'none';

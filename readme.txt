@@ -31,6 +31,7 @@ The map code is loaded only on the pages that show a map, and every map starts w
 = Maps =
 
 * **OpenStreetMap** and other free maps (no account needed): OpenStreetMap, OpenTopoMap, CyclOSM, Humanitarian, OpenSeaMap, and the Thunderforest maps (OpenCycleMap, Outdoors, Transport, Landscape) with a free Thunderforest API key.
+* **MapLibre**, free and without an API key: vector maps (OpenFreeMap Liberty, Bright, Positron), OpenStreetMap, OpenTopoMap and CyclOSM, **3D terrain**, fog and a tilted 3D view, or your own style (MapTiler, Stadia Maps...).
 * **MapBox** with your own API key: Outdoors, Streets, Satellite, Satellite Streets, Light, Dark, Standard and custom styles, **3D terrain**, fog and a tilted 3D view (`pitch`, `bearing`).
 * **Track colored by grade** (blue descent, green flat, yellow to red climb), **speed**, **heart rate** or **elevation**, with a legend.
 * **Several GPX files in one map** (`gpx="a.gpx,b.gpx"`), one color per file with a legend.
@@ -85,11 +86,11 @@ Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https:
 
 = Do I need an API key? =
 
-No. OpenStreetMap, Humanitarian, Hike & Bike and OpenSeaMap work without a key. The Thunderforest maps need a free Thunderforest API key. MapBox styles and 3D terrain need your own MapBox access token: when it is set in the settings, all the maps use MapBox.
+No. OpenStreetMap, Humanitarian, Hike & Bike and OpenSeaMap work without a key. The Thunderforest maps need a free Thunderforest API key. The 3D terrain works without a key with the **MapLibre** map engine. MapBox styles need your own MapBox access token. The map engine (Leaflet, MapLibre or MapBox) is chosen in the settings, or for a single map in the block or with `engine` in the shortcode; by default the maps use MapBox when a MapBox token is set, otherwise Leaflet.
 
 = How do I show the 3D view? =
 
-Set a MapBox access token, then enable **3D terrain** and a **view tilt** in the block (or `mapbox3d=true pitch=60` in the shortcode). `bearing` rotates the view, `mapboxstyle` chooses the style of a single map, for example `satellite-streets-v12`.
+Choose the **MapLibre** engine (free, no key) or set a MapBox access token, then enable **3D terrain** and a **view tilt** in the block (or `engine=maplibre mapbox3d=true pitch=60` in the shortcode). `bearing` rotates the view, `mapboxstyle` chooses the style of a single map, for example `satellite-streets-v12`.
 
 = How do I show several tracks in one map? =
 
@@ -102,7 +103,9 @@ The main ones (every attribute also has a default in the settings; `true` / `fal
 * **gpx**: path of the GPX file from the site root, or its URL; several files separated by commas.
 * **mheight**, **gheight**, **width**: map height, chart height (`0px` hides the chart), width.
 * **mtype**: map type without MapBox: `OSM1` OpenStreetMap, `OSM2` Thunderforest OpenCycleMap (CyclOSM without API key), `OSM3` Thunderforest Outdoors, `OSM4` Transport, `OSM5` Landscape (Thunderforest maps need an API key, otherwise OpenStreetMap is used), `OSM7` Humanitarian, `OSM9` OpenTopoMap, `OSM10` OpenSeaMap sea marks over OpenStreetMap, `OSM11` GSI Japan, `OSM12` CyclOSM.
-* **mapboxstyle**, **mapbox3d**, **pitch**, **bearing**: MapBox style, 3D terrain, view tilt (0-85) and rotation.
+* **engine**: map engine, `leaflet`, `maplibre` or `mapbox` (MapBox needs an access token).
+* **maplibrestyle**: MapLibre style, `liberty`, `bright`, `positron`, `osm`, `topo`, `cyclosm`, or the https URL of a style.json.
+* **mapboxstyle**, **mapbox3d**, **pitch**, **bearing**: MapBox style, 3D terrain (MapLibre and MapBox), view tilt (0-85) and rotation.
 * **colorby**: `grade`, `speed`, `hr`, `elevation` or `none`.
 * **mlinecolor**: track color (several colors separated by spaces, one per track).
 * **kmmarkers**: distance marker every N km or miles; **startend**: start / finish markers.
@@ -158,6 +161,12 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.11.00 =
+* New: MapLibre map engine, free and open source: vector maps and 3D terrain without an API key, fog, tilted view, animation on load, flyover and a style switcher. Choose it in the settings, in the block or with `engine=maplibre`
+* New: `maplibrestyle` and a custom MapLibre style (the https URL of a style.json, e.g. MapTiler or Stadia Maps)
+* Faster pages: MapBox and MapLibre are loaded only by the maps that use them, the Leaflet maps load about 4 times less JavaScript
+* Fix: no more 404 error in the browser console for WP-GPX-Maps.es.js.map
 
 = 1.10.04 =
 * New name on wordpress.org, "WP GPX Maps – GPX, FIT & KML maps with elevation profile", and new tags, so the plugin is easier to find
