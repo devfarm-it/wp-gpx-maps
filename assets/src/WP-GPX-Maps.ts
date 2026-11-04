@@ -16,7 +16,19 @@ import { WPGPXMAPS } from './Utils/Utils';
 
 import { LeafletMapEngine } from './maps-engines/LeafletMapEngine';
 
-import { MapBoxMapEngine } from './maps-engines/MapBoxMapEngine';
+/*
+ * Mapbox and MapLibre are big: they are separate files in assets/dist, loaded only by the maps that use them.
+ * The page calls loadMapEngine() before new WPGPXMaps(); a map whose engine is not loaded uses Leaflet.
+ */
+const glEngines: { [name: string]: new () => MapEngine<any> } = {};
+
+export async function loadMapEngine(name: string): Promise<void> {
+	if (name == 'mapbox' && !glEngines.mapbox) {
+		glEngines.mapbox = (await import('./maps-engines/MapBoxMapEngine')).MapBoxMapEngine;
+	} else if (name == 'maplibre' && !glEngines.maplibre) {
+		glEngines.maplibre = (await import('./maps-engines/MapLibreMapEngine')).MapLibreMapEngine;
+	}
+}
 
 /* Public API for add-ons (version 1): the bundled Leaflet (with MarkerCluster and FullScreen), to draw extra maps */
 import L from 'leaflet';
@@ -116,14 +128,9 @@ export class WPGPXMaps {
 
 		let _this = this;
 
-		if (this.params.MapBoxApiKey &&  this.params.MapBoxApiKey.length>20)
-		{
-			this.map = new MapBoxMapEngine();
-		}
-		else
-		{
-			this.map = new LeafletMapEngine();
-		}
+		/* Map engine chosen by PHP (shortcode engine=, block or settings): leaflet, maplibre or mapbox */
+		const engine = glEngines[this.params.MapEngine] ? this.params.MapEngine : 'leaflet';
+		this.map = engine == 'leaflet' ? new LeafletMapEngine() : new glEngines[engine]();
 
 		//map.lng = lng;
 		this.map.init(
@@ -843,7 +850,7 @@ export class WPGPXMaps {
 				apiVersion: 1,
 				instance: this,
 				targetId: targetId,
-				engine: this.map instanceof MapBoxMapEngine ? 'mapbox' : 'leaflet',
+				engine: engine,
 				map: this.map?.map ?? null,
 				chart: this.myChart,
 				container: el,

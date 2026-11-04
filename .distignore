@@ -10,7 +10,6 @@
 /vendor
 /assets/src
 /assets/dist/*.map
-/assets/dist/WP-GPX-Maps.umd.js
 # Old non-bundled libraries, no longer loaded (the plugin uses assets/dist)
 /ThirdParties
 /js/Chart.min.js

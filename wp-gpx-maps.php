@@ -3,7 +3,7 @@
  * Plugin Name: WP GPX Maps – GPX, FIT & KML maps with elevation profile
  * Plugin URI: https://devfarm.it/
  * Description: Show your hikes, rides and runs from GPX, FIT, TCX or KML files on an interactive map with elevation profile, charts and route summary.
- * Version: 1.10.04
+ * Version: 1.11.00
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.10.04' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.11.00' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
@@ -34,7 +34,8 @@ define( 'WPGPXMAPS_CURRENT_VERSION', '1.10.04' );
  * wpgpxmaps_structured_data; JavaScript event "wpgpxmaps:ready" on document.
  * Activities: taxonomy WPGPXMAPS_ACTIVITY_TAXONOMY, wpgpxmaps_activity_icon( $term ), wpgpxmaps_post_activities( $post_id ).
  * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_get_waypoints( $gpx ), wpgpxmaps_module_url(), wpgpxmaps_enqueue_assets() (map style with the
- * Leaflet CSS, for add-ons that draw their own maps); the module exports WPGPXMaps and Leaflet.
+ * Leaflet CSS, for add-ons that draw their own maps); the module exports WPGPXMaps, Leaflet and loadMapEngine( 'mapbox' | 'maplibre' ).
+ * The "engine" of the event is 'leaflet', 'maplibre' or 'mapbox' (MapLibre has the same map API as Mapbox).
  */
 define( 'WPGPXMAPS_API_VERSION', 1 );
 
@@ -359,6 +360,22 @@ function wpgpxmaps_page_has_map() {
 	return (bool) apply_filters( 'wpgpxmaps_load_assets', $found );
 }
 
+/**
+ * Map engine of a map: the shortcode / block attribute "engine", then the setting, then the old behavior
+ * (Mapbox when a Mapbox key is set, otherwise Leaflet). Mapbox without a key falls back to Leaflet.
+ */
+function wpgpxmaps_map_engine( $attr ) {
+	$has_mapbox_key = strlen( (string) get_option( 'wpgpxmaps_mapbox_apikey' ) ) > 20;
+	$engine         = strtolower( (string) wpgpxmaps_findValue( $attr, 'engine', 'wpgpxmaps_map_engine', '' ) );
+	if ( ! in_array( $engine, array( 'leaflet', 'maplibre', 'mapbox' ), true ) ) {
+		$engine = $has_mapbox_key ? 'mapbox' : 'leaflet';
+	}
+	if ( 'mapbox' === $engine && ! $has_mapbox_key ) {
+		$engine = 'leaflet';
+	}
+	return $engine;
+}
+
 function wpgpxmaps_findValue( $attr, $attributeName, $optionName, $defaultValue ) {
 
 	$val = '';
@@ -564,6 +581,17 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	} else {
 		$mapbox_custom = $mapbox_style ? '' : get_option( 'wpgpxmaps_mapbox_customtype' );
 		$mapbox_style  = $mapbox_style ? preg_replace( '/[^a-z0-9\-]/', '', strtolower( $mapbox_style ) ) : get_option( 'wpgpxmaps_mapbox_type' );
+	}
+
+	/* Map engine: leaflet (2D), maplibre (3D and vector maps, no key) or mapbox (API key). Not set: Mapbox when a key is set, as before */
+	$engine = wpgpxmaps_map_engine( $attr );
+	/* MapLibre style: one of the built-in styles or the https URL of a style.json (e.g. MapTiler with its key), then the custom style of the settings */
+	$maplibre_style = (string) wpgpxmaps_findValue( $attr, 'maplibrestyle', 'wpgpxmaps_maplibre_customstyle', '' );
+	if ( '' === $maplibre_style ) {
+		$maplibre_style = (string) wpgpxmaps_findValue( array(), '', 'wpgpxmaps_maplibre_style', 'liberty' );
+	}
+	if ( 0 !== strpos( $maplibre_style, 'https://' ) ) {
+		$maplibre_style = preg_replace( '/[^a-z]/', '', strtolower( $maplibre_style ) );
 	}
 
 	if ( isset( $attr['startend'] ) ) {
@@ -1047,7 +1075,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 		<script type="module">
 		const wpgpxmapsStart_' . esc_js( $r ) . ' = async function() {
 
-			const { WPGPXMaps } = await import("' . esc_url( $module_url ) . '");
+			const { WPGPXMaps, loadMapEngine } = await import("' . esc_url( $module_url ) . '");
+			await loadMapEngine("' . esc_js( $engine ) . '");
 
 			var wpgpxmaps_' . esc_js( $r ) . ' = new WPGPXMaps({
 					targetId           : "' . esc_js( $r ) . '",
@@ -1092,6 +1121,8 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 					ngImages           : [' . esc_js( $ngImages ) . '],
 					pluginUrl          : "' . esc_url( plugins_url() ) . '",
 					TFApiKey           : "' . esc_js( get_option( 'wpgpxmaps_openstreetmap_apikey' ) ) . '",
+					MapEngine              : "' . esc_js( $engine ) . '",
+					MapLibreStyle          : "' . esc_js( $maplibre_style ) . '",
 					MapBoxApiKey           : "' . esc_js( get_option( 'wpgpxmaps_mapbox_apikey' ) ) . '",
 
 					MapBoxMapType           : "' . esc_js( $mapbox_style ) . '",
@@ -1506,6 +1537,9 @@ function unescape( $value ) {
 }
 
 function wpgpxmaps_install_option() {
+	/* First installation: no setting saved yet */
+	$new_install = false === get_option( 'wpgpxmaps_height' );
+
 	$options = array(
 		// General
 		'wpgpxmaps_width' => '100%',
@@ -1584,6 +1618,11 @@ function wpgpxmaps_install_option() {
 	foreach ( $options as $key => $value ) {
 		add_option( $key, $value, '', 'yes' );
 	}
+
+	/* New sites start with MapLibre (recommended); existing sites keep the automatic engine they had */
+	if ( $new_install ) {
+		add_option( 'wpgpxmaps_map_engine', 'maplibre', '', 'yes' );
+	}
 }
 
 function wpgpxmaps_remove_option() {
@@ -1591,6 +1630,9 @@ function wpgpxmaps_remove_option() {
 		// General
 		'wpgpxmaps_width',
 		'wpgpxmaps_height',
+		'wpgpxmaps_map_engine',
+		'wpgpxmaps_maplibre_style',
+		'wpgpxmaps_maplibre_customstyle',
 		'wpgpxmaps_graph_height',
 		'wpgpxmaps_distance_type',
 		'wpgpxmaps_skipcache',
