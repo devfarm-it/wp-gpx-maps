@@ -144,8 +144,8 @@ function render_select($name, $label, $options, $selected) {
 			render_text_input('wpgpxmaps_mapbox_apikey', __( 'Mapbox API Key:', 'wp-gpx-maps' ), get_option('wpgpxmaps_mapbox_apikey'), 'width:400px');
 			render_select('wpgpxmaps_map_engine', __( 'Map engine:', 'wp-gpx-maps' ), [
 				'' => __( 'Automatic: Mapbox when a Mapbox key is set, otherwise Leaflet', 'wp-gpx-maps' ),
+				'maplibre' => __( 'MapLibre (recommended): vector maps and 3D terrain, free, no key needed', 'wp-gpx-maps' ),
 				'leaflet' => __( 'Leaflet: 2D maps, the lightest', 'wp-gpx-maps' ),
-				'maplibre' => __( 'MapLibre: vector maps and 3D terrain, free, no key needed', 'wp-gpx-maps' ),
 				'mapbox' => __( 'Mapbox: Mapbox styles and 3D terrain (Mapbox key required)', 'wp-gpx-maps' )
 			], get_option('wpgpxmaps_map_engine'));
 

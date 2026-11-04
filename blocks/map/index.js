@@ -56,8 +56,8 @@
 	];
 
 	const ENGINES = [
+		{ value: 'maplibre', label: 'MapLibre (recommended: 3D, no key)' },
 		{ value: 'leaflet', label: 'Leaflet (2D)' },
-		{ value: 'maplibre', label: 'MapLibre (3D, no key)' },
 	].concat( data.hasMapBoxKey ? [ { value: 'mapbox', label: 'Mapbox (3D)' } ] : [] );
 
 	const COLOR_BY = [
