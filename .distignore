@@ -28,3 +28,4 @@ phpcs.xml.dist
 tsconfig.json
 vite.config.ts
 /gpx-demo
+.nvmrc
