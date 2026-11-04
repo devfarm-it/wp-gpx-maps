@@ -235,9 +235,27 @@ export class MapBoxMapEngine implements MapEngine<Map> {
                     'maxzoom': 14
                 });
 
-                // add the DEM source as a terrain layer with exaggerated height
-                this.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+                // add the DEM source as a terrain layer with exaggerated height (1 is real, default 1.5)
+                const exaggeration = Number(otherParams?.MapTerrainExaggeration);
+                this.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': exaggeration > 0 ? Math.min(3, exaggeration) : 1.5 });
 
+            }
+
+            /* Shaded relief, also without 3D terrain, under the labels */
+            if (otherParams.MapHillshade) {
+                this.map.addSource('wpgpxmaps-hillshade', {
+                    'type': 'raster-dem',
+                    'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                    'tileSize': 512,
+                    'maxzoom': 14
+                });
+                const firstSymbol = this.map.getStyle().layers?.find(layer => layer.type == 'symbol');
+                this.map.addLayer({
+                    'id': 'wpgpxmaps-hillshade',
+                    'type': 'hillshade',
+                    'source': 'wpgpxmaps-hillshade',
+                    'paint': { 'hillshade-shadow-color': '#473B24', 'hillshade-exaggeration': 0.4 }
+                }, firstSymbol?.id);
             }
 
         });

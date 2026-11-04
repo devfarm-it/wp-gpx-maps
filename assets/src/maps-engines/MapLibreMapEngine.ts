@@ -42,6 +42,12 @@ export const MapLibreStyles: { [key: string]: { title: string, style: () => stri
 /* Free elevation tiles (Mapterhorn, open data) for the 3D terrain */
 const terrainTileJson = 'https://tiles.mapterhorn.com/tilejson.json';
 
+/* Height of the 3D terrain: 1 is real, the default 1.5 makes small hills visible */
+export function terrainExaggeration(params: any): number {
+    const value = Number(params?.MapTerrainExaggeration);
+    return value > 0 ? Math.min(3, value) : 1.5;
+}
+
 class StyleSwitcherControl implements IControl {
 
     container: HTMLElement;
@@ -218,7 +224,22 @@ export class MapLibreMapEngine implements MapEngine<Map> {
                     'type': 'raster-dem',
                     'url': terrainTileJson
                 });
-                this.map.setTerrain({ 'source': 'wpgpxmaps-dem', 'exaggeration': 1.5 });
+                this.map.setTerrain({ 'source': 'wpgpxmaps-dem', 'exaggeration': terrainExaggeration(otherParams) });
+            }
+
+            /* Shaded relief, also without 3D terrain: under the labels of the vector styles (a separate source renders better) */
+            if (otherParams.MapHillshade) {
+                this.map.addSource('wpgpxmaps-hillshade', {
+                    'type': 'raster-dem',
+                    'url': terrainTileJson
+                });
+                const firstSymbol = this.map.getStyle().layers.find(layer => layer.type == 'symbol');
+                this.map.addLayer({
+                    'id': 'wpgpxmaps-hillshade',
+                    'type': 'hillshade',
+                    'source': 'wpgpxmaps-hillshade',
+                    'paint': { 'hillshade-shadow-color': '#473B24', 'hillshade-exaggeration': 0.4 }
+                }, firstSymbol?.id);
             }
 
         });

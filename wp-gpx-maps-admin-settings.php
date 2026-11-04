@@ -271,7 +271,9 @@ function render_select($name, $label, $options, $selected) {
 			], $mapboxLoadAnimation);		
 
 			render_checkbox('wpgpxmaps_mapbox_3dterrain', __( 'MapLibre / MapBox 3d terrain:', 'wp-gpx-maps' ), $mapbox3dTerrain);
-			render_checkbox('wpgpxmaps_mapbox_fog', __( 'MapLibre / MapBox fog:', 'wp-gpx-maps' ), $mapboxFog);
+			render_checkbox('wpgpxmaps_mapbox_fog', __( 'MapLibre / MapBox fog and sky:', 'wp-gpx-maps' ), $mapboxFog);
+			render_checkbox('wpgpxmaps_map_hillshade', __( 'MapLibre / MapBox shaded relief:', 'wp-gpx-maps' ), get_option('wpgpxmaps_map_hillshade'));
+			render_text_input('wpgpxmaps_terrain_exaggeration', __( 'MapLibre / MapBox 3d terrain height:', 'wp-gpx-maps' ), get_option('wpgpxmaps_terrain_exaggeration'), 'width:60px;', ' ' . __( '1 = real, up to 3 (empty = 1.5)', 'wp-gpx-maps' ));
 
 			render_text_input('wpgpxmaps_map_line_color', __( 'Map line color:', 'wp-gpx-maps' ), get_option('wpgpxmaps_map_line_color'), 'width:100px;');
 			render_select('wpgpxmaps_map_color_by', __( 'Track color by:', 'wp-gpx-maps' ), [
@@ -296,7 +298,7 @@ function render_select($name, $label, $options, $selected) {
 
 		<p class="submit">
 			<input type="hidden" name="action" value="update" />
-			<input name="page_options" type="hidden" value="wpgpxmaps_map_color_by,wpgpxmaps_map_hide_start_end,wpgpxmaps_fade_edges,wpgpxmaps_map_km_markers,wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_maplibre_style,wpgpxmaps_maplibre_customstyle,wpgpxmaps_mapbox_fog,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
+			<input name="page_options" type="hidden" value="wpgpxmaps_map_color_by,wpgpxmaps_map_hide_start_end,wpgpxmaps_fade_edges,wpgpxmaps_map_km_markers,wpgpxmaps_mapbox_load_animation,wpgpxmaps_mapbox_customtype,wpgpxmaps_maplibre_style,wpgpxmaps_maplibre_customstyle,wpgpxmaps_mapbox_fog,wpgpxmaps_map_hillshade,wpgpxmaps_terrain_exaggeration,wpgpxmaps_mapbox_type,wpgpxmaps_mapbox_3dterrain,wpgpxmaps_map_type,wpgpxmaps_map_line_color,wpgpxmaps_zoomonscrollwheel,wpgpxmaps_show_waypoint,wpgpxmaps_map_start_icon,wpgpxmaps_map_end_icon,wpgpxmaps_map_current_icon,wpgpxmaps_currentpositioncon,wpgpxmaps_map_waypoint_icon" />
 			<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-gpx-maps' ); ?>" />
 		</p>
 	</form>
