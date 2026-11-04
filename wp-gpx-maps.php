@@ -3,7 +3,7 @@
  * Plugin Name: WP GPX Maps – GPX, FIT & KML maps with elevation profile
  * Plugin URI: https://devfarm.it/
  * Description: Show your hikes, rides and runs from GPX, FIT, TCX or KML files on an interactive map with elevation profile, charts and route summary.
- * Version: 1.11.01
+ * Version: 1.12.00
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.11.01' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.12.00' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
@@ -575,6 +575,10 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 	$mapbox_3d      = wpgpxmaps_findValue( $attr, 'mapbox3d', 'wpgpxmaps_mapbox_3dterrain', false );
 	$mapbox_pitch   = max( 0, min( 85, (float) wpgpxmaps_findValue( $attr, 'pitch', '', 0 ) ) );
 	$mapbox_bearing = max( -180, min( 180, (float) wpgpxmaps_findValue( $attr, 'bearing', '', 0 ) ) );
+	/* MapLibre and MapBox effects: fog and sky, shaded relief, height of the 3D terrain (1 = real, empty = 1.5) */
+	$map_fog          = filter_var( wpgpxmaps_findValue( $attr, 'fog', 'wpgpxmaps_mapbox_fog', false ), FILTER_VALIDATE_BOOLEAN );
+	$map_hillshade    = filter_var( wpgpxmaps_findValue( $attr, 'hillshade', 'wpgpxmaps_map_hillshade', false ), FILTER_VALIDATE_BOOLEAN );
+	$map_exaggeration = max( 0, min( 3, (float) wpgpxmaps_findValue( $attr, 'exaggeration', 'wpgpxmaps_terrain_exaggeration', 0 ) ) );
 	if ( 0 === strpos( $mapbox_style, 'mapbox://' ) ) {
 		$mapbox_custom = $mapbox_style;
 		$mapbox_style  = '';
@@ -1130,7 +1134,9 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 					MapBox3dTerrain         : "' . esc_js( filter_var( $mapbox_3d, FILTER_VALIDATE_BOOLEAN ) ) . '",
 					MapBoxPitch             : ' . wp_json_encode( $mapbox_pitch ) . ',
 					MapBoxBearing           : ' . wp_json_encode( $mapbox_bearing ) . ',
-					MapBoxFog           	: "' . esc_js( filter_var(get_option( 'wpgpxmaps_mapbox_fog' ), FILTER_VALIDATE_BOOLEAN) ) . '",
+					MapBoxFog              : ' . ( $map_fog ? 'true' : 'false' ) . ',
+					MapHillshade           : ' . ( $map_hillshade ? 'true' : 'false' ) . ',
+					MapTerrainExaggeration : ' . wp_json_encode( $map_exaggeration ) . ',
 					MapBoxAnimateOnLoading 	: "' . esc_js( get_option( 'wpgpxmaps_mapbox_load_animation' ) ) . '",
 
 					langs              : {
@@ -1633,6 +1639,8 @@ function wpgpxmaps_remove_option() {
 		'wpgpxmaps_map_engine',
 		'wpgpxmaps_maplibre_style',
 		'wpgpxmaps_maplibre_customstyle',
+		'wpgpxmaps_map_hillshade',
+		'wpgpxmaps_terrain_exaggeration',
 		'wpgpxmaps_graph_height',
 		'wpgpxmaps_distance_type',
 		'wpgpxmaps_skipcache',

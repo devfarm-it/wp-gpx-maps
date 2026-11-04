@@ -52,6 +52,9 @@ interface Params {
     MapBoxMapCustomType: string;
     MapBox3dTerrain: boolean;
     MapBoxFog: boolean;
+    /* MapLibre and MapBox: shaded relief and height of the 3D terrain (0 = default 1.5) */
+    MapHillshade?: boolean;
+    MapTerrainExaggeration?: number;
     /* Initial 3D view of MapBox maps: tilt 0-85 degrees and rotation -180..180 */
     MapBoxPitch?: number;
     MapBoxBearing?: number;
