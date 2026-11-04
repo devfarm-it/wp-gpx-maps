@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.11.00
+Stable tag: 1.11.01
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -161,6 +161,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.11.01 =
+* Fix: no more 404 error in the browser console for maplibre-gl-worker.mjs.map on the MapLibre maps
 
 = 1.11.00 =
 * New: MapLibre map engine, free and open source: vector maps and 3D terrain without an API key, fog, tilted view, animation on load, flyover and a style switcher. Choose it in the settings, in the block or with `engine=maplibre`
@@ -483,6 +486,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.11.01 =
+Fixes a 404 error in the browser console on the MapLibre maps.
 
 = 1.11.00 =
 New free MapLibre maps with 3D terrain, no API key needed, and lighter pages. Your maps keep the engine they use today.
