@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.12.01
+Stable tag: 1.13.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -162,6 +162,12 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.13.00 =
+* New: the mouse wheel zooms the map while it is in full screen (Leaflet, MapLibre and Mapbox), then follows the setting again when it leaves full screen
+* Map buttons redesigned: the same look for Leaflet, MapLibre and Mapbox, all on the right in the order zoom, full screen, map type, flyover; the map style of MapLibre and Mapbox is chosen from a layers button
+* Soft edges also on the MapLibre maps
+* Built with Node 26 LTS and Vite 8
 
 = 1.12.01 =
 * Fix: the CyclOSM style is no longer offered for the MapLibre maps, where it stayed empty (its server does not allow MapLibre to load the tiles); maps that used it show the Liberty style. CyclOSM still works with the Leaflet maps
@@ -493,6 +499,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.13.00 =
+Mouse wheel zoom in full screen and redesigned map buttons.
 
 = 1.12.01 =
 Fixes empty MapLibre maps with the CyclOSM style.

@@ -42,6 +42,12 @@ non si fanno più commit SVN a mano.
   (nascosta di default) e JSON-LD schema.org `TouristTrip` per screen reader, motori di ricerca e AI (`wpgpxmaps_track_about()`). File di prova in `dev/gpx` (anche .fit/.tcx/.kml).
   Libreria media per i file traccia, tassonomia Attività, bordi sfumati, tessere OSM anche nell'editor (fetch con referrer).
   Video "how it works" su YouTube (https://www.youtube.com/watch?v=n55Yzw2ig7A), linkato in readme.txt, README.md e home di devfarm.it.
+- 1.10.01–1.10.03: etichette impostazioni, pendenza massima su 200 m, impostazioni tenute alla disattivazione, richiesta recensione.
+- 1.10.04 (3 novembre 2026): nome "WP GPX Maps – GPX, FIT & KML maps with elevation profile" e nuovi tag (fase 2 della roadmap
+  di crescita); l'avviso "novità" compare solo quando cambia la versione 1.x. Lista d'attesa Pro su devfarm.it con il plugin Newsletter.
+- 1.11.00–1.12.01: motore MapLibre (consigliato, caricato su richiesta), effetti nebbia / rilievo ombreggiato / esagerazione 3D.
+- 1.13.00 (6 novembre 2026): Node 26 LTS (.nvmrc) e Vite 8, pulsanti mappa uguali per i tre motori (`Utils/MapControls.ts`),
+  zoom con la rotella in schermo intero.
 
 ## Piano
 ### Fase 2: modernizzare
