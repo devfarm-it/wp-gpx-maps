@@ -38,7 +38,7 @@ The root of the repository is the plugin folder. wordpress.org SVN is updated on
 
 ## Development
 
-Requirements: Node.js 22, Docker, and PHP with Composer for the coding standards (or run them in the Docker container).
+Requirements: Node.js 26 LTS (version in `.nvmrc`, at least 22.12 for Vite 8), Docker, and PHP with Composer for the coding standards (or run them in the Docker container).
 
 ```bash
 npm install

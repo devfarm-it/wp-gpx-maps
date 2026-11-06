@@ -166,15 +166,18 @@ export class LeafletMapEngine implements MapEngine<Map> {
 
         this.map = L.map(targetElement,
             {
-                scrollWheelZoom: scrollWheelZoom
+                scrollWheelZoom: scrollWheelZoom,
+                zoomControl: false
             }
         );
 
-        // create fullscreen control. 
-        var fsControl = new (L as any).Control.FullScreen();
+        // All the controls on the right, in this order: zoom, full screen, map type (added at the end of init)
+        L.control.zoom({ position: 'topright' }).addTo(this.map);
+        this.map.addControl(new (L as any).Control.FullScreen({ position: 'topright' }));
 
-        // Add fullscreen control to the map. 
-        this.map.addControl(fsControl);
+        // Mouse wheel zoom while the map is in full screen, then back to the setting
+        this.map.on('enterFullscreen', () => this.map?.scrollWheelZoom.enable());
+        this.map.on('exitFullscreen', () => scrollWheelZoom ? this.map?.scrollWheelZoom.enable() : this.map?.scrollWheelZoom.disable());
 
         const osm = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         const thunderforest = 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a>, ' + osm;
@@ -218,7 +221,7 @@ export class LeafletMapEngine implements MapEngine<Map> {
             seaMarks.addTo(this.map);
         }
 
-        L.control.layers(baseMaps, overlayMaps).addTo(this.map);
+        L.control.layers(baseMaps, overlayMaps, { position: 'topright' }).addTo(this.map);
 
     }
 
