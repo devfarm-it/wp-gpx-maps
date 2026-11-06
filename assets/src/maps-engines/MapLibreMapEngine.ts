@@ -2,6 +2,7 @@ import { WPGPXMAPS } from '../Utils/Utils';
 import * as maplibregl from 'maplibre-gl';
 import { ControlPosition, GeoJSONSource, IControl, LngLat, Map, Marker, StyleSpecification } from 'maplibre-gl';
 import * as turf from '@turf/turf';
+import { styleMenu, wheelZoomInFullscreen } from '../Utils/MapControls';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -50,6 +51,7 @@ export function terrainExaggeration(params: any): number {
     return value > 0 ? Math.min(3, value) : 1.5;
 }
 
+/* Map style menu (MapControls.ts), with "Custom" first when the style is the URL of a style.json */
 class StyleSwitcherControl implements IControl {
 
     container: HTMLElement;
@@ -57,27 +59,11 @@ class StyleSwitcherControl implements IControl {
     constructor(private current: string, private onChange: (key: string) => void) { }
 
     onAdd(map: Map): HTMLElement {
-        this.container = document.createElement('div');
-        this.container.className = 'maplibregl-ctrl maplibregl-ctrl-group wpgpxmaps-style-switcher';
-        const select = document.createElement('select');
-        select.setAttribute('aria-label', 'Map style');
-        for (const key in MapLibreStyles) {
-            const option = document.createElement('option');
-            option.value = key;
-            option.textContent = MapLibreStyles[key].title;
-            option.selected = key === this.current;
-            select.appendChild(option);
-        }
+        const items = Object.keys(MapLibreStyles).map(key => ({ key: key, title: MapLibreStyles[key].title }));
         if (!MapLibreStyles[this.current]) {
-            // Custom style URL from the settings
-            const option = document.createElement('option');
-            option.value = this.current;
-            option.textContent = 'Custom';
-            option.selected = true;
-            select.insertBefore(option, select.firstChild);
+            items.unshift({ key: this.current, title: 'Custom' });
         }
-        select.onchange = () => this.onChange(select.value);
-        this.container.appendChild(select);
+        this.container = styleMenu('maplibregl', items, this.current, this.onChange);
         return this.container;
     }
 
@@ -202,11 +188,14 @@ export class MapLibreMapEngine implements MapEngine<Map> {
 
         this.flyoverControl = new FlyoverControl(otherParams?.pluginUrl ?? '/wp-content/plugins');
 
-        this.map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }));
-        this.map.addControl(new maplibregl.FullscreenControl());
+        // All the controls on the right, in this order: zoom and compass, full screen, map style, flyover
+        this.map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+        this.map.addControl(new maplibregl.FullscreenControl(), 'top-right');
         // Without diff the whole style is loaded again and 'style.load' adds the track and the terrain again
-        this.map.addControl(new StyleSwitcherControl(styleKey, (key) => this.map.setStyle(styleOf(key), { diff: false })), 'top-left');
-        this.map.addControl(this.flyoverControl);
+        this.map.addControl(new StyleSwitcherControl(styleKey, (key) => this.map.setStyle(styleOf(key), { diff: false })), 'top-right');
+        this.map.addControl(this.flyoverControl, 'top-right');
+
+        wheelZoomInFullscreen(targetElement, (enabled) => enabled ? this.map.scrollZoom.enable() : this.map.scrollZoom.disable(), scrollWheelZoom);
 
         this.map.on('style.load', () => {
 

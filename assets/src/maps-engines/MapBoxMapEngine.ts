@@ -1,10 +1,9 @@
 import { WPGPXMAPS } from '../Utils/Utils';
-import { MapboxStyleDefinition, MapboxStyleSwitcherOptions, MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
 import mapboxgl, { ControlPosition, GeoJSONSource, IControl, LngLatBounds, Map, Marker } from 'mapbox-gl';
 import * as turf from '@turf/turf';
+import { styleMenu, wheelZoomInFullscreen } from '../Utils/MapControls';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import "mapbox-gl-style-switcher/styles.css";
 
 class AnumationControl implements IControl {
 
@@ -179,35 +178,31 @@ export class MapBoxMapEngine implements MapEngine<Map> {
 
         this.animationControl = new AnumationControl(otherParams?.pluginUrl ?? '/wp-content/plugins');
 
-        this.map.addControl(new mapboxgl.NavigationControl());
-        this.map.addControl(new mapboxgl.FullscreenControl());
+        // All the controls on the right, in this order: zoom and compass, full screen, map style, flyover
+        this.map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+        this.map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
 
-        const styles: MapboxStyleDefinition[] = [
-            { uri: 'mapbox://styles/mapbox/standard', title: 'Standard' },
-            { uri: 'mapbox://styles/mapbox/standard-satellite', title: 'Standard Satelite' },
-            { uri: 'mapbox://styles/mapbox/streets-v12', title: 'Streets' },
-            { uri: 'mapbox://styles/mapbox/outdoors-v12', title: 'Outdoors' },
-            { uri: 'mapbox://styles/mapbox/light-v11', title: 'Light' },
-            { uri: 'mapbox://styles/mapbox/dark-v11', title: 'Dark' },
-            { uri: 'mapbox://styles/mapbox/satellite-v9', title: 'Satellite' },
-            { uri: 'mapbox://styles/mapbox/satellite-streets-v12', title: 'Satellite Streets' },
-            { uri: 'mapbox://styles/mapbox/navigation-day-v1', title: 'Navigation Day' },
-            { uri: 'mapbox://styles/mapbox/navigation-night-v1', title: 'Navigation Night' }
+        const styles = [
+            { key: 'mapbox://styles/mapbox/standard', title: 'Standard' },
+            { key: 'mapbox://styles/mapbox/standard-satellite', title: 'Standard Satellite' },
+            { key: 'mapbox://styles/mapbox/streets-v12', title: 'Streets' },
+            { key: 'mapbox://styles/mapbox/outdoors-v12', title: 'Outdoors' },
+            { key: 'mapbox://styles/mapbox/light-v11', title: 'Light' },
+            { key: 'mapbox://styles/mapbox/dark-v11', title: 'Dark' },
+            { key: 'mapbox://styles/mapbox/satellite-v9', title: 'Satellite' },
+            { key: 'mapbox://styles/mapbox/satellite-streets-v12', title: 'Satellite Streets' },
+            { key: 'mapbox://styles/mapbox/navigation-day-v1', title: 'Navigation Day' },
+            { key: 'mapbox://styles/mapbox/navigation-night-v1', title: 'Navigation Night' }
         ];
+        if (!styles.some(item => item.key === style)) {
+            styles.unshift({ key: style, title: 'Custom' });
+        }
+        // 'style.load' runs again after setStyle and adds the track and the terrain again
+        const menu = styleMenu('mapboxgl', styles, style, (key) => this.map.setStyle(key));
+        this.map.addControl({ onAdd: () => menu, onRemove: () => menu.remove() }, 'top-right');
+        this.map.addControl(this.animationControl, 'top-right');
 
-        // Pass options (optional)
-        const options: MapboxStyleSwitcherOptions = {
-            defaultStyle: "Satellite Streets",
-            eventListeners: {
-                // return true if you want to stop execution
-                //           onOpen: (event: MouseEvent) => boolean;
-                //           onSelect: (event: MouseEvent) => boolean;
-                //           onChange: (event: MouseEvent, style: string) => boolean;
-            }
-        };
-
-        this.map.addControl(new MapboxStyleSwitcherControl() as IControl, 'top-left');
-        this.map.addControl(this.animationControl);
+        wheelZoomInFullscreen(targetElement, (enabled) => enabled ? this.map.scrollZoom.enable() : this.map.scrollZoom.disable(), scrollWheelZoom);
 
         this.map.on('style.load', async () => {
 
