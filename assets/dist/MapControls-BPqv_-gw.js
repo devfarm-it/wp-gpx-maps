@@ -282,4 +282,25 @@ function T(e, t, n) {
 	};
 	r.addEventListener("fullscreenchange", i), r.addEventListener("webkitfullscreenchange", i);
 }
-export { i as a, x as i, T as n, S as r, w as t };
+var E = {
+	version: 8,
+	sources: {},
+	layers: [{
+		id: "background",
+		type: "background",
+		paint: { "background-color": "#ece8df" }
+	}]
+};
+function D(e, t = 8e3) {
+	let n = !1;
+	e.once("style.load", () => {
+		n = !0;
+	});
+	let r = () => {
+		n || (n = !0, e.setStyle(E));
+	};
+	e.on("error", () => {
+		n || r();
+	}), typeof navigator < "u" && navigator.onLine === !1 && setTimeout(r, t);
+}
+export { x as a, S as i, w as n, i as o, T as r, D as t };
