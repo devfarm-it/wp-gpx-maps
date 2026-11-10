@@ -15,7 +15,16 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 // import.meta.url is in a variable: Vite rewrites new URL('...', import.meta.url) as relative to the page.
 declare const __MAPLIBRE_WORKER__: string;
 const moduleUrl = import.meta.url;
-maplibregl.setWorkerUrl(new URL(__MAPLIBRE_WORKER__, moduleUrl).href);
+const workerUrl = new URL(__MAPLIBRE_WORKER__, moduleUrl).href;
+// Started from a blob of the page, the worker belongs to the page: a service worker of the page (a page saved for
+// offline use) also answers its downloads (the worker file, tiles, fonts), which a worker at its own address would not get
+let workerStart = workerUrl;
+try {
+    workerStart = URL.createObjectURL(new Blob([`import ${JSON.stringify(workerUrl)};`], { type: 'text/javascript' }));
+} catch (e) {
+    workerStart = workerUrl;
+}
+maplibregl.setWorkerUrl(workerStart);
 
 const osm = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
