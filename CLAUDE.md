@@ -48,6 +48,8 @@ non si fanno più commit SVN a mano.
 - 1.11.00–1.12.01: motore MapLibre (consigliato, caricato su richiesta), effetti nebbia / rilievo ombreggiato / esagerazione 3D.
 - 1.13.00 (6 novembre 2026): Node 26 LTS (.nvmrc) e Vite 8, pulsanti mappa uguali per i tre motori (`Utils/MapControls.ts`),
   zoom con la rotella in schermo intero.
+- 1.13.01: senza mappa di base (offline, chiave Mapbox sbagliata) MapLibre e Mapbox passano a uno stile vuoto
+  (`fallbackWithoutBaseMap` in `Utils/MapControls.ts`) e mostrano comunque traccia e punti.
 
 ## Piano
 ### Fase 2: modernizzare

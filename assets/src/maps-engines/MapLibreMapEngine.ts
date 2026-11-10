@@ -2,7 +2,7 @@ import { WPGPXMAPS } from '../Utils/Utils';
 import * as maplibregl from 'maplibre-gl';
 import { ControlPosition, GeoJSONSource, IControl, LngLat, Map, Marker, StyleSpecification } from 'maplibre-gl';
 import * as turf from '@turf/turf';
-import { styleMenu, wheelZoomInFullscreen } from '../Utils/MapControls';
+import { fallbackWithoutBaseMap, styleMenu, wheelZoomInFullscreen } from '../Utils/MapControls';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -185,6 +185,7 @@ export class MapLibreMapEngine implements MapEngine<Map> {
             maxPitch: 85,
             scrollZoom: scrollWheelZoom
         });
+        fallbackWithoutBaseMap(this.map);
 
         this.flyoverControl = new FlyoverControl(otherParams?.pluginUrl ?? '/wp-content/plugins');
 
