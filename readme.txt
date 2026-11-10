@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.13.01
+Stable tag: 1.13.02
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -162,6 +162,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.13.02 =
+* Fix: MapLibre maps of pages saved for offline use (WP GPX Maps Pro) showed neither the base map nor the track without signal: the map worker now starts from the page, so it gets its files and tiles from the saved copy
 
 = 1.13.01 =
 * Fix: MapLibre and Mapbox maps stayed empty, without the track, when the base map could not be loaded (no signal on the trail, a page saved for offline use, a wrong Mapbox key): they now show the track, the points and the chart on a plain background
@@ -502,6 +505,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.13.02 =
+MapLibre maps saved for offline use work without signal.
 
 = 1.13.01 =
 MapLibre and Mapbox maps show the track also when the base map cannot be loaded (offline).
