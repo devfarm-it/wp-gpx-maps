@@ -92,3 +92,35 @@ export function wheelZoomInFullscreen(container: HTMLElement, setWheelZoom: (ena
     doc.addEventListener('fullscreenchange', update);
     doc.addEventListener('webkitfullscreenchange', update);
 }
+
+/* A style with only a background, for when the base map cannot be loaded */
+export const BLANK_STYLE = {
+    version: 8,
+    sources: {},
+    layers: [{ id: 'background', type: 'background', paint: { 'background-color': '#ece8df' } }]
+};
+
+/*
+ * MapLibre / Mapbox: without the base map (no signal on the trail, a page saved for offline use, a wrong Mapbox key)
+ * the style never loads and the map would stay empty, without the track. After an error before the first style, or
+ * after some seconds offline, a plain background is used instead: the track, the points and the view still work.
+ */
+export function fallbackWithoutBaseMap(map: any, offlineWaitMs = 8000): void {
+    let ready = false;
+    map.once('style.load', () => { ready = true; });
+    const fallback = () => {
+        if (!ready) {
+            ready = true;
+            map.setStyle(BLANK_STYLE);
+        }
+    };
+    map.on('error', () => {
+        if (!ready) {
+            fallback();
+        }
+    });
+    // Offline the request of the style can also hang instead of failing
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+        setTimeout(fallback, offlineWaitMs);
+    }
+}

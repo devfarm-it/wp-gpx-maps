@@ -1,7 +1,7 @@
 import { WPGPXMAPS } from '../Utils/Utils';
 import mapboxgl, { ControlPosition, GeoJSONSource, IControl, LngLatBounds, Map, Marker } from 'mapbox-gl';
 import * as turf from '@turf/turf';
-import { styleMenu, wheelZoomInFullscreen } from '../Utils/MapControls';
+import { fallbackWithoutBaseMap, styleMenu, wheelZoomInFullscreen } from '../Utils/MapControls';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -175,6 +175,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
             zoom: 1,
             scrollZoom: scrollWheelZoom
         });
+        fallbackWithoutBaseMap(this.map);
 
         this.animationControl = new AnumationControl(otherParams?.pluginUrl ?? '/wp-content/plugins');
 
