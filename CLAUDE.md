@@ -50,6 +50,9 @@ non si fanno più commit SVN a mano.
   zoom con la rotella in schermo intero.
 - 1.13.01: senza mappa di base (offline, chiave Mapbox sbagliata) MapLibre e Mapbox passano a uno stile vuoto
   (`fallbackWithoutBaseMap` in `Utils/MapControls.ts`) e mostrano comunque traccia e punti.
+- 1.13.02: il worker di MapLibre parte da un blob (`import "url-del-worker"`): così appartiene alla pagina e il service worker
+  offline del Pro (scope = pagina) risponde anche alle sue richieste (file del worker, tessere, font). Un worker al suo
+  indirizzo in wp-content non è nello scope e offline falliva tutto (niente mappa né traccia).
 
 ## Piano
 ### Fase 2: modernizzare
