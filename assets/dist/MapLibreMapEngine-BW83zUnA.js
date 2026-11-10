@@ -36342,10 +36342,15 @@ function rI(e) {
 	Fn.WORKER_URL = e;
 }
 // assets/src/maps-engines/MapLibreMapEngine.ts
-var iI = import.meta.url;
-rI(new URL("./maplibre-gl-worker-6.16.0.js", iI).href);
-var aI = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors";
-function oI(e, t, n = 19) {
+var iI = import.meta.url, aI = new URL("./maplibre-gl-worker-6.16.0.js", iI).href, oI = aI;
+try {
+	oI = URL.createObjectURL(new Blob([`import ${JSON.stringify(aI)};`], { type: "text/javascript" }));
+} catch {
+	oI = aI;
+}
+rI(oI);
+var sI = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors";
+function cI(e, t, n = 19) {
 	return {
 		version: 8,
 		sources: { raster: {
@@ -36362,7 +36367,7 @@ function oI(e, t, n = 19) {
 		}]
 	};
 }
-var sI = {
+var lI = {
 	liberty: {
 		title: "Liberty",
 		style: () => "https://tiles.openfreemap.org/styles/liberty"
@@ -36377,31 +36382,31 @@ var sI = {
 	},
 	osm: {
 		title: "OpenStreetMap",
-		style: () => oI(["https://tile.openstreetmap.org/{z}/{x}/{y}.png"], aI)
+		style: () => cI(["https://tile.openstreetmap.org/{z}/{x}/{y}.png"], sI)
 	},
 	topo: {
 		title: "OpenTopoMap",
-		style: () => oI([
+		style: () => cI([
 			"a",
 			"b",
 			"c"
-		].map((e) => `https://${e}.tile.opentopomap.org/{z}/{x}/{y}.png`), aI + ", <a href=\"https://opentopomap.org\">OpenTopoMap</a> (CC-BY-SA)", 17)
+		].map((e) => `https://${e}.tile.opentopomap.org/{z}/{x}/{y}.png`), sI + ", <a href=\"https://opentopomap.org\">OpenTopoMap</a> (CC-BY-SA)", 17)
 	}
-}, cI = "https://tiles.mapterhorn.com/tilejson.json";
-function lI(e) {
+}, uI = "https://tiles.mapterhorn.com/tilejson.json";
+function dI(e) {
 	let t = Number(e?.MapTerrainExaggeration);
 	return t > 0 ? Math.min(3, t) : 1.5;
 }
-var uI = class {
+var fI = class {
 	constructor(e, t) {
 		this.current = e, this.onChange = t;
 	}
 	onAdd(e) {
-		let t = Object.keys(sI).map((e) => ({
+		let t = Object.keys(lI).map((e) => ({
 			key: e,
-			title: sI[e].title
+			title: lI[e].title
 		}));
-		return sI[this.current] || t.unshift({
+		return lI[this.current] || t.unshift({
 			key: this.current,
 			title: "Custom"
 		}), this.container = r("maplibregl", t, this.current, this.onChange), this.container;
@@ -36409,7 +36414,7 @@ var uI = class {
 	onRemove(e) {
 		this.container.remove();
 	}
-}, dI = class {
+}, pI = class {
 	constructor(e) {
 		this.start = 0, this.animationDuration = 8e4, this.cameraAltitude = 1e3, this.route = [], this.routeDistance = 0, this.isPlaying = !1, this.iconDefault = e + "/wp-gpx-maps/img/map-play-svgrepo-com.svg";
 	}
@@ -36436,7 +36441,7 @@ var uI = class {
 	onRemove(e) {
 		this.container.remove();
 	}
-}, fI = class {
+}, mI = class {
 	constructor() {
 		this.Bounds = [], this.EventSelectChart = null, this.CurrentLocationMarker = null, this.flyoverControl = null, this.markersAdded = !1, this.routeData = null, this.animateLineOptions = {
 			SpeedFactor: 30,
@@ -36447,8 +36452,8 @@ var uI = class {
 	init(e, t, n, r, i) {
 		this.otherParams = i;
 		let s = i?.MapLibreStyle || "liberty";
-		!sI[s] && !/^https:\/\//.test(s) && (s = "liberty");
-		let c = (e) => sI[e] ? sI[e].style() : e;
+		!lI[s] && !/^https:\/\//.test(s) && (s = "liberty");
+		let c = (e) => lI[e] ? lI[e].style() : e;
 		this.map = new NF({
 			container: e,
 			style: c(s),
@@ -36456,7 +36461,7 @@ var uI = class {
 			zoom: 1,
 			maxPitch: 85,
 			scrollZoom: n
-		}), o(this.map), this.flyoverControl = new dI(i?.pluginUrl ?? "/wp-content/plugins"), this.map.addControl(new FF({ visualizePitch: !0 }), "top-right"), this.map.addControl(new XF(), "top-right"), this.map.addControl(new uI(s, (e) => this.map.setStyle(c(e), { diff: !1 })), "top-right"), this.map.addControl(this.flyoverControl, "top-right"), a(e, (e) => e ? this.map.scrollZoom.enable() : this.map.scrollZoom.disable(), n), this.map.on("style.load", () => {
+		}), o(this.map), this.flyoverControl = new pI(i?.pluginUrl ?? "/wp-content/plugins"), this.map.addControl(new FF({ visualizePitch: !0 }), "top-right"), this.map.addControl(new XF(), "top-right"), this.map.addControl(new fI(s, (e) => this.map.setStyle(c(e), { diff: !1 })), "top-right"), this.map.addControl(this.flyoverControl, "top-right"), a(e, (e) => e ? this.map.scrollZoom.enable() : this.map.scrollZoom.disable(), n), this.map.on("style.load", () => {
 			if (i.MapBoxFog && this.map.setSky({
 				"sky-color": "#add8e6",
 				"horizon-color": "#ffffff",
@@ -36466,14 +36471,14 @@ var uI = class {
 				"fog-ground-blend": .6
 			}), i.MapBox3dTerrain && (this.map.addSource("wpgpxmaps-dem", {
 				type: "raster-dem",
-				url: cI
+				url: uI
 			}), this.map.setTerrain({
 				source: "wpgpxmaps-dem",
-				exaggeration: lI(i)
+				exaggeration: dI(i)
 			})), i.MapHillshade) {
 				this.map.addSource("wpgpxmaps-hillshade", {
 					type: "raster-dem",
-					url: cI
+					url: uI
 				});
 				let e = this.map.getStyle().layers.find((e) => e.type == "symbol");
 				this.map.addLayer({
@@ -36572,4 +36577,4 @@ var uI = class {
 		this.animateLineOptions.Data.features[0].geometry.coordinates = this.animateLineOptions.Coordinates.slice(0, i), t.setData(this.animateLineOptions.Data), i < r && requestAnimationFrame((e) => this.animateLine(e));
 	}
 };
-export { fI as MapLibreMapEngine };
+export { mI as MapLibreMapEngine };
