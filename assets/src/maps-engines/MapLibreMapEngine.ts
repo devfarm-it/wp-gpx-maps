@@ -3,6 +3,7 @@ import * as maplibregl from 'maplibre-gl';
 import { ControlPosition, GeoJSONSource, IControl, LngLat, Map, Marker, StyleSpecification } from 'maplibre-gl';
 import * as turf from '@turf/turf';
 import { fallbackWithoutBaseMap, styleMenu, wheelZoomInFullscreen } from '../Utils/MapControls';
+import { CURRENT_POSITION_ICON, WAYPOINT_ICON } from '../Utils/Icons';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -319,7 +320,7 @@ export class MapLibreMapEngine implements MapEngine<Map> {
             });
 
             if ('' == currentIcon || null == currentIcon) {
-                currentIcon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
+                currentIcon = CURRENT_POSITION_ICON;
             }
 
             this.CurrentLocationMarker = this._addMarker(this.Bounds[0] as [number, number], currentIcon, null);
@@ -345,7 +346,7 @@ export class MapLibreMapEngine implements MapEngine<Map> {
 
     AddWaypoints(waypoints: any, waypointIcon: string | null): void {
 
-        const defaultIcon = waypointIcon ? waypointIcon : 'https://maps.google.com/mapfiles/ms/micons/flag.png';
+        const defaultIcon = waypointIcon ? waypointIcon : WAYPOINT_ICON;
 
         for (const wpt of waypoints) {
 

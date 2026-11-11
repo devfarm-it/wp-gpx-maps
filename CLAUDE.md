@@ -53,6 +53,8 @@ non si fanno più commit SVN a mano.
 - 1.13.02: il worker di MapLibre parte da un blob (`import "url-del-worker"`): così appartiene alla pagina e il service worker
   offline del Pro (scope = pagina) risponde anche alle sue richieste (file del worker, tessere, font). Un worker al suo
   indirizzo in wp-content non è nello scope e offline falliva tutto (niente mappa né traccia).
+- 1.13.03 (GDPR, segnalato da hupe13 sul forum): icone predefinite di waypoint e posizione disegnate in
+  `assets/src/Utils/Icons.ts` (SVG come data URI) invece che caricate da maps.google.com. Nessuna risorsa da Google.
 
 ## Piano
 ### Fase 2: modernizzare

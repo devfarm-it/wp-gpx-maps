@@ -176,5 +176,5 @@ var e = { Utils: {
 		let a = (e - r.grade) / (i.grade - r.grade);
 		return n(r.color, i.color, a);
 	}
-} };
-export { e as t };
+} }, t = (e) => "data:image/svg+xml," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">${e}</svg>`), n = t("<path d=\"M9 3v27\" stroke=\"#4b5563\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><path d=\"M10 4h16l-4 5.5 4 5.5H10z\" fill=\"#dc2626\" stroke=\"#7f1d1d\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/>"), r = t("<circle cx=\"16\" cy=\"16\" r=\"13\" fill=\"#2563eb\" fill-opacity=\"0.25\"/><circle cx=\"16\" cy=\"16\" r=\"7.5\" fill=\"#2563eb\" stroke=\"#fff\" stroke-width=\"3\"/>");
+export { n, e as r, r as t };
