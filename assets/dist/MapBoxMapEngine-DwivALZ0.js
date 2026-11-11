@@ -1,8 +1,8 @@
 import { n as e, t } from "./rolldown-runtime-CYdcPHCu.js";
-import { t as n } from "./Utils-BFKxsrVO.js";
-import { a as r, i, n as a, o, r as s, t as c } from "./MapControls-BPqv_-gw.js";
+import { n, r, t as i } from "./Icons-CL32MmdS.js";
+import { a, i as o, n as s, o as c, r as l, t as u } from "./MapControls-BPqv_-gw.js";
 // node_modules/mapbox-gl/dist/mapbox-gl.css
-var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
+var d = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 	(function(n, r) {
 		typeof e == "object" && t !== void 0 ? t.exports = r() : typeof define == "function" && define.amd ? define(r) : (n = typeof globalThis < "u" ? globalThis : n || self, n.mapboxgl = r());
 	})(n, (function() {
@@ -40852,7 +40852,7 @@ var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 			};
 		})), n;
 	}));
-})))(), 1), u = class {
+})))(), 1), f = class {
 	constructor(e) {
 		this.start = 0, this.animationDuration = 8e4, this.cameraAltitude = 1e3, this.targetRoute = [], this.cameraRoute = [], this.routeDistance = 0, this.cameraRouteDistance = 0, this.isPlaying = !1, this.iconDefault = e + "/wp-gpx-maps/img/map-play-svgrepo-com.svg", this.iconStop = e + "/wp-gpx-maps/img/stop-svgrepo-com.svg";
 	}
@@ -40871,23 +40871,23 @@ var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 		t > 1 && setTimeout(() => {
 			this.start = 0;
 		}, 1500);
-		let n = r(o(this.targetRoute), this.routeDistance * t).geometry.coordinates, i = r(o(this.cameraRoute), this.cameraRouteDistance * t).geometry.coordinates, a = this.map.getFreeCameraOptions();
-		a.position = l.default.MercatorCoordinate.fromLngLat({
-			lng: i[0],
-			lat: i[1]
-		}, this.cameraAltitude), a.lookAtPoint({
+		let n = a(c(this.targetRoute), this.routeDistance * t).geometry.coordinates, r = a(c(this.cameraRoute), this.cameraRouteDistance * t).geometry.coordinates, i = this.map.getFreeCameraOptions();
+		i.position = d.default.MercatorCoordinate.fromLngLat({
+			lng: r[0],
+			lat: r[1]
+		}, this.cameraAltitude), i.lookAtPoint({
 			lng: n[0],
 			lat: n[1]
-		}), this.map.setFreeCameraOptions(a), window.requestAnimationFrame((e) => this._animationFrame(e));
+		}), this.map.setFreeCameraOptions(i), window.requestAnimationFrame((e) => this._animationFrame(e));
 	}
 	_stopAnimation() {}
 	_playAnimation() {
-		this.cameraRouteDistance = i(o(this.cameraRoute)), this.routeDistance = i(o(this.targetRoute)), window.requestAnimationFrame((e) => this._animationFrame(e));
+		this.cameraRouteDistance = o(c(this.cameraRoute)), this.routeDistance = o(c(this.targetRoute)), window.requestAnimationFrame((e) => this._animationFrame(e));
 	}
 	onRemove(e) {
 		this.container.remove();
 	}
-}, d = class {
+}, p = class {
 	constructor() {
 		this.Bounds = [], this.EventSelectChart = null, this.CurrentLocationMarker = null, this.animationControl = null, this.markersAdded = !1, this.animateLineOptions = {
 			SpeedFactor: 30,
@@ -40899,16 +40899,16 @@ var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 	}
 	init(e, t, n, r, i) {
 		this.otherParams = i;
-		let o = "mapbox://styles/mapbox/streets-v11";
-		i?.MapBoxMapCustomType ? o = i.MapBoxMapCustomType : i?.MapBoxMapType && (o = "mapbox://styles/mapbox/" + i.MapBoxMapType), this.map = new l.default.Map({
+		let a = "mapbox://styles/mapbox/streets-v11";
+		i?.MapBoxMapCustomType ? a = i.MapBoxMapCustomType : i?.MapBoxMapType && (a = "mapbox://styles/mapbox/" + i.MapBoxMapType), this.map = new d.default.Map({
 			container: e,
-			style: o,
+			style: a,
 			accessToken: i?.MapBoxApiKey ?? "",
 			center: [0, 0],
 			zoom: 1,
 			scrollZoom: n
-		}), c(this.map), this.animationControl = new u(i?.pluginUrl ?? "/wp-content/plugins"), this.map.addControl(new l.default.NavigationControl(), "top-right"), this.map.addControl(new l.default.FullscreenControl(), "top-right");
-		let d = [
+		}), u(this.map), this.animationControl = new f(i?.pluginUrl ?? "/wp-content/plugins"), this.map.addControl(new d.default.NavigationControl(), "top-right"), this.map.addControl(new d.default.FullscreenControl(), "top-right");
+		let o = [
 			{
 				key: "mapbox://styles/mapbox/standard",
 				title: "Standard"
@@ -40950,15 +40950,15 @@ var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 				title: "Navigation Night"
 			}
 		];
-		d.some((e) => e.key === o) || d.unshift({
-			key: o,
+		o.some((e) => e.key === a) || o.unshift({
+			key: a,
 			title: "Custom"
 		});
-		let f = a("mapboxgl", d, o, (e) => this.map.setStyle(e));
+		let c = s("mapboxgl", o, a, (e) => this.map.setStyle(e));
 		this.map.addControl({
-			onAdd: () => f,
-			onRemove: () => f.remove()
-		}, "top-right"), this.map.addControl(this.animationControl, "top-right"), s(e, (e) => e ? this.map.scrollZoom.enable() : this.map.scrollZoom.disable(), n), this.map.on("style.load", async () => {
+			onAdd: () => c,
+			onRemove: () => c.remove()
+		}, "top-right"), this.map.addControl(this.animationControl, "top-right"), l(e, (e) => e ? this.map.scrollZoom.enable() : this.map.scrollZoom.disable(), n), this.map.on("style.load", async () => {
 			if (i.MapBoxFog && this.map.setFog({
 				range: [-1, 2],
 				"horizon-blend": .3,
@@ -41003,16 +41003,16 @@ var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 		let r = document.createElement("div");
 		return r.className = "marker", r.style.backgroundImage = `url(${t})`, r.style.width = "32px", r.style.height = "32px", r.style.backgroundSize = "100%", r.addEventListener("click", (e) => {
 			n?.call(this, e);
-		}), new l.default.Marker(r).setLngLat([e[1], e[0]]).addTo(this.map);
+		}), new d.default.Marker(r).setLngLat([e[1], e[0]]).addTo(this.map);
 	}
-	AppPolylines(e, t, r, i, a) {
+	AppPolylines(e, t, n, a, o) {
 		this.Bounds = e.filter((e) => e != null), this.map.on("style.load", async () => {
-			let o = n.Utils.DividePolylinesPoints(e), s = this.Bounds.map((e) => [e[1], e[0]]);
-			if (this.animationControl.cameraRoute = s, this.animationControl.targetRoute = s, this.map.addSource("route", {
+			let s = r.Utils.DividePolylinesPoints(e), c = this.Bounds.map((e) => [e[1], e[0]]);
+			if (this.animationControl.cameraRoute = c, this.animationControl.targetRoute = c, this.map.addSource("route", {
 				type: "geojson",
 				data: {
 					type: "FeatureCollection",
-					features: o.map((e, n) => ({
+					features: s.map((e, n) => ({
 						type: "Feature",
 						properties: { color: n < t.length ? t[n] : t[t.length - 1] },
 						geometry: {
@@ -41038,24 +41038,24 @@ var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 					this.map.getCanvas().style.cursor = "pointer", this.MoveMarkerToPosition([e.lngLat.lat, e.lngLat.lng], !0);
 				}), this.map.on("mouseleave", "route", () => {
 					this.map.getCanvas().style.cursor = "";
-				}), (r == "" || r == null) && (r = "https://maps.google.com/mapfiles/kml/pal4/icon25.png"), this.CurrentLocationMarker = this._addMarker(e[0], r, (e) => {}), i != "") {
+				}), (n == "" || n == null) && (n = i), this.CurrentLocationMarker = this._addMarker(e[0], n, (e) => {}), a != "") {
 					let t = e[0];
-					t != null && this._addMarker(t, i, null);
-				}
-				if (a != "" && e[e.length - 1] != null) {
-					let t = e[e.length - 1];
 					t != null && this._addMarker(t, a, null);
+				}
+				if (o != "" && e[e.length - 1] != null) {
+					let t = e[e.length - 1];
+					t != null && this._addMarker(t, o, null);
 				}
 				this.CenterMap(), this.otherParams.MapBoxAnimateOnLoading == "1" && (this.animateLineOptions.StartTime = performance.now(), this.animateLine());
 			}
 		});
 	}
 	AddWaypoints(e, t) {
-		let n = t || "https://maps.google.com/mapfiles/ms/micons/flag.png";
+		let r = t || n;
 		for (let t of e) {
 			this.Bounds.push([t.lat, t.lon]);
 			let e = t.name == "" ? `<div>${t.desc}</div>` : `<div><b>${t.name}</b><br />${t.desc}</div>`;
-			e += `<p><a href='https://maps.google.com?daddr=${t.lat},${t.lon}' target='_blank' rel='noopener noreferrer'>Itin&eacute;raire</a></p>`, this._addMarker([t.lat, t.lon], t.img ? t.img : n, null).setPopup(new l.default.Popup({ offset: 16 }).setHTML(e));
+			e += `<p><a href='https://maps.google.com?daddr=${t.lat},${t.lon}' target='_blank' rel='noopener noreferrer'>Itin&eacute;raire</a></p>`, this._addMarker([t.lat, t.lon], t.img ? t.img : r, null).setPopup(new d.default.Popup({ offset: 16 }).setHTML(e));
 		}
 		this.CenterMap();
 	}
@@ -41064,7 +41064,7 @@ var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 	}
 	SetCurrentGPSPosition(e, t, n) {}
 	AddHtmlMarker(e, t, n) {
-		n && (t.title = n), new l.default.Marker({ element: t }).setLngLat([e[1], e[0]]).addTo(this.map);
+		n && (t.title = n), new d.default.Marker({ element: t }).setLngLat([e[1], e[0]]).addTo(this.map);
 	}
 	CenterMap() {
 		try {
@@ -41080,8 +41080,8 @@ var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 					let [n, r] = t;
 					e.minLat = Math.min(e.minLat, n), e.maxLat = Math.max(e.maxLat, n), e.minLng = Math.min(e.minLng, r), e.maxLng = Math.max(e.maxLng, r);
 				});
-				let t = new l.default.LngLat(e.minLng, e.minLat), n = new l.default.LngLat(e.maxLng, e.maxLat), r = Number(this.otherParams?.MapBoxPitch) || 0, i = Number(this.otherParams?.MapBoxBearing) || 0;
-				this.map?.fitBounds(new l.default.LngLatBounds(t, n), {
+				let t = new d.default.LngLat(e.minLng, e.minLat), n = new d.default.LngLat(e.maxLng, e.maxLat), r = Number(this.otherParams?.MapBoxPitch) || 0, i = Number(this.otherParams?.MapBoxBearing) || 0;
+				this.map?.fitBounds(new d.default.LngLatBounds(t, n), {
 					padding: r > 0 ? 60 : 30,
 					animate: !1,
 					pitch: r,
@@ -41116,4 +41116,4 @@ var l = /* @__PURE__ */ e((/* @__PURE__ */ t(((e, t, n) => {
 		}
 	}
 };
-export { d as MapBoxMapEngine };
+export { p as MapBoxMapEngine };
