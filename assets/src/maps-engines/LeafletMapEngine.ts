@@ -3,6 +3,7 @@ import 'leaflet.fullscreen/Control.FullScreen.js';
 import 'leaflet.fullscreen';
 import 'leaflet.markercluster';
 import { WPGPXMAPS } from '../Utils/Utils';
+import { CURRENT_POSITION_ICON, WAYPOINT_ICON } from '../Utils/Icons';
 
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet/dist/leaflet.css';
@@ -238,7 +239,7 @@ export class LeafletMapEngine implements MapEngine<Map> {
         }
 
         if ('' == currentIcon || null == currentIcon) {
-            currentIcon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
+            currentIcon = CURRENT_POSITION_ICON;
         }
 
         var CurrentPositionMarker = L.marker(L.latLng(first), {
@@ -329,7 +330,7 @@ export class LeafletMapEngine implements MapEngine<Map> {
 
         if (null == this.CurrentGPSPositionMarker) {
             if ('' == currentpositioncon) {
-                currentpositioncon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
+                currentpositioncon = CURRENT_POSITION_ICON;
             }
 
             if (this.map != null) {
@@ -359,7 +360,7 @@ export class LeafletMapEngine implements MapEngine<Map> {
     AddWaypoints(waypoints: any, waypointIcon: string | null): void {
 
         var icon = L.icon({
-            iconUrl: 'https://maps.google.com/mapfiles/ms/micons/flag.png',
+            iconUrl: WAYPOINT_ICON,
             iconSize: [32, 32], // Size of the icon.
             iconAnchor: [16, 16] // Point of the icon which will correspond to marker's location.
         });

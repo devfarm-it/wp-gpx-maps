@@ -3,6 +3,7 @@ import mapboxgl, { ControlPosition, GeoJSONSource, IControl, LngLatBounds, Map, 
 import * as turf from '@turf/turf';
 import { fallbackWithoutBaseMap, styleMenu, wheelZoomInFullscreen } from '../Utils/MapControls';
 
+import { CURRENT_POSITION_ICON, WAYPOINT_ICON } from '../Utils/Icons';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 class AnumationControl implements IControl {
@@ -341,7 +342,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
             });
 
             if ('' == currentIcon || null == currentIcon) {
-                currentIcon = 'https://maps.google.com/mapfiles/kml/pal4/icon25.png';
+                currentIcon = CURRENT_POSITION_ICON;
             }
 
             this.CurrentLocationMarker = this._addMarker(mapData[0], currentIcon, (e) => {
@@ -384,7 +385,7 @@ export class MapBoxMapEngine implements MapEngine<Map> {
     }
     AddWaypoints(waypoints: any, waypointIcon: string | null): void {
 
-        const defaultIcon = waypointIcon ? waypointIcon : 'https://maps.google.com/mapfiles/ms/micons/flag.png';
+        const defaultIcon = waypointIcon ? waypointIcon : WAYPOINT_ICON;
 
         for (const wpt of waypoints) {
 
