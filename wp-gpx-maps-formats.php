@@ -503,6 +503,14 @@ function wpgpxmaps_buildPoints( $tracks, $gpxOffset, $distancetype ) {
 	$points = wpgpxmaps_emptyPoints();
 	$fields = array( 'dt', 'lat', 'lon', 'ele', 'dist', 'speed', 'hr', 'atemp', 'cad', 'grade' );
 
+	/**
+	 * Smallest elevation change, in meters, counted in the total climb and descent (GPS noise filter).
+	 * 0 adds up every change, as before version 1.13.04.
+	 *
+	 * @param float $threshold Meters, 5 by default.
+	 */
+	$climbThreshold = max( 0, (float) apply_filters( 'wpgpxmaps_climb_threshold', 5 ) );
+
 	foreach ( $tracks as $track ) {
 
 		if ( ! $track ) {
@@ -520,6 +528,7 @@ function wpgpxmaps_buildPoints( $tracks, $gpxOffset, $distancetype ) {
 		$dist        = 0;
 		$lastOffset  = 0;
 		$speedBuffer = array();
+		$eleRef      = null;
 
 		foreach ( $track as $p ) {
 
@@ -557,13 +566,25 @@ function wpgpxmaps_buildPoints( $tracks, $gpxOffset, $distancetype ) {
 
 				if ( 0 != $p['ele'] && 0 != $last['ele'] && 0 != $offset ) {
 					$deltaEle = (float) ( $p['ele'] - $last['ele'] );
-					if ( $deltaEle > 0 ) {
-						$points->totalEleUp += $deltaEle;
-					} else {
-						/* Descent is shown as a positive number, like the climb */
-						$points->totalEleDown -= $deltaEle;
+					$grade    = $deltaEle / $offset * 100;
+				}
+
+				/*
+				 * Climb and descent: GPS elevation goes up and down by a few meters even on flat ground, and adding up
+				 * every small change gives far too much climbing (a 300 m hike can show 1,600 m). The elevation is
+				 * counted only when it has moved at least $climbThreshold meters from the last counted point: real
+				 * climbs are counted whole, the small ups and downs of the noise are not. Descent is a positive number.
+				 */
+				if ( 0 != $p['ele'] ) {
+					if ( null === $eleRef ) {
+						$eleRef = (float) $p['ele'];
+					} elseif ( $p['ele'] - $eleRef >= $climbThreshold ) {
+						$points->totalEleUp += $p['ele'] - $eleRef;
+						$eleRef              = (float) $p['ele'];
+					} elseif ( $eleRef - $p['ele'] >= $climbThreshold ) {
+						$points->totalEleDown += $eleRef - $p['ele'];
+						$eleRef                = (float) $p['ele'];
 					}
-					$grade = $deltaEle / $offset * 100;
 				}
 
 				$speedBuffer[] = $speed;

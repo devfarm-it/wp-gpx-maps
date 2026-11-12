@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.13.03
+Stable tag: 1.13.04
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -162,6 +162,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.13.04 =
+* Fix: total climbing and descent were far too high on tracks with noisy GPS elevation, because every small up and down was added (a hike between 1,515 and 1,827 m showed 1,608 m of climbing). Changes under 5 meters are now ignored as noise, while real climbs are still counted whole: the same hike now shows 605 m. Tracks from planners and barometric devices change little (about 5% less). Developers can change the 5 meters with the new `wpgpxmaps_climb_threshold` filter (0 gives the old numbers)
 
 = 1.13.03 =
 * Privacy (GDPR): the default waypoint flag and current position icons are now part of the plugin, so maps no longer load anything from maps.google.com and no longer send the IP address of visitors to Google. Thanks to hupe13 for the report
@@ -508,6 +511,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.13.04 =
+More realistic total climbing and descent on tracks with noisy GPS elevation.
 
 = 1.13.03 =
 Maps no longer load icons from Google (GDPR).
