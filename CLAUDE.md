@@ -58,6 +58,10 @@ non si fanno più commit SVN a mano.
 - 1.13.04: salita e discesa totali con soglia di rumore (isteresi 5 m, filtro `wpgpxmaps_climb_threshold`, 0 = somma
   di ogni variazione come prima) in `wpgpxmaps_buildPoints()`. Prima un'escursione di 300 m di dislivello mostrava 1.608 m.
   Chiavi delle cache alzate (file `v1.13.04`, transient info `v2`). Il Pro usa già 10 m per tappe, sole e navigazione.
+- 1.14.00: dati strutturati con `itinerary.containsPlace` (partenza, waypoint visibili in ordine lungo il percorso,
+  arrivo; `Place` con `GeoCoordinates` e `hasMap` OpenStreetMap) in `wpgpxmaps_structured_places()`. Waypoint solo se la mappa
+  li mostra (la caccia al tesoro Pro forza waypoints=false), letti con cache transient `wpgpxmaps_wpts_`. FAQ: i dati
+  strutturati non migliorano il posizionamento da soli (nessun rich result Google per TouristTrip, Google Maps non li legge).
 
 ## Piano
 ### Fase 2: modernizzare

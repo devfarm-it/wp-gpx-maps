@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.13.04
+Stable tag: 1.14.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,7 +55,7 @@ Total distance, maximum and minimum elevation, total climbing and descent, avera
 A map drawn by JavaScript is invisible to ChatGPT, Perplexity, Google AI Overviews and other AI assistants, to search engines and to screen readers: they read the text of the page, not the map. WP GPX Maps also describes every track in the page itself:
 
 * **Text description** of the route, e.g. "Map of the route Sentiero 157: 4.38 km, 145 m of climbing and 376 m of descent, elevation between 1,315 m and 1,580 m, time 01:54:36. It starts at ... and ends at ...", linked to the map for screen readers. Not shown on the page by default, or shown under the map (`description="visible"`).
-* **Structured data** (schema.org `TouristTrip` in JSON-LD) with distance, climbing and descent, highest and lowest point, time and the line of the route, so AI assistants and search engines can answer questions like "how long is this hike?" with the right numbers. The track file is linked only when you allow its download.
+* **Structured data** (schema.org `TouristTrip` in JSON-LD) with distance, climbing and descent, highest and lowest point, time, the line of the route, the start and finish and the waypoints shown on the map (each with its coordinates and a link to OpenStreetMap), so AI assistants and search engines can answer questions like "how long is this hike?" with the right numbers. The track file is linked only when you allow its download.
 * Both can be turned off in **Settings > WP GPX Maps** or for one map (`description="false"`, `structureddata="false"`), and changed by developers with the `wpgpxmaps_track_description` and `wpgpxmaps_structured_data` filters.
 
 = Easy to use =
@@ -147,6 +147,10 @@ The plugin loads the map style only on the pages whose posts contain the block o
 
 Yes. Besides the map, every map prints a short text description of the route and schema.org structured data (JSON-LD) with distance, elevation, time and the route line. AI assistants, search engines and screen readers read them even though they can't run the map. The description is not shown on the page unless you choose so; you can turn both off in the settings.
 
+= Will the structured data improve my ranking on Google or Google Maps? =
+
+Not by itself, and no plugin can promise that. Google does not show a special result for routes (schema.org `TouristTrip`) and says that structured data is not a ranking factor, and Google Maps does not read the pages of your site. What the structured data does is make the facts of the route (distance, climbing, start, finish, the places along the way) readable by machines: search engines and AI assistants can understand what the page is about and answer questions like "how long is this hike?" or "where does it start?" with your numbers. Waypoints are included only when the map shows them.
+
 = Is it free? =
 
 Yes, WP GPX Maps is free and open source (GPLv2 or later).
@@ -162,6 +166,10 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.14.00 =
+* Structured data: the route now also lists its start and finish (one place for a loop) and the waypoints shown on the map, in the order they are met along the way, each as a schema.org Place with its coordinates (and elevation for waypoints) and a link to the point on OpenStreetMap. Waypoints hidden on the map, for example in a WP GPX Maps Pro treasure hunt, stay out
+* New FAQ: what structured data can and cannot do for search engines
 
 = 1.13.04 =
 * Fix: total climbing and descent were far too high on tracks with noisy GPS elevation, because every small up and down was added (a hike between 1,515 and 1,827 m showed 1,608 m of climbing). Changes under 5 meters are now ignored as noise, while real climbs are still counted whole: the same hike now shows 605 m. Tracks from planners and barometric devices change little (about 5% less). Developers can change the 5 meters with the new `wpgpxmaps_climb_threshold` filter (0 gives the old numbers)
@@ -511,6 +519,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.14.00 =
+Start, finish and waypoints of every route in the structured data for search engines and AI assistants.
 
 = 1.13.04 =
 More realistic total climbing and descent on tracks with noisy GPS elevation.
