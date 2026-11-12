@@ -3,7 +3,7 @@
  * Plugin Name: WP GPX Maps – GPX, FIT & KML maps with elevation profile
  * Plugin URI: https://devfarm.it/
  * Description: Show your hikes, rides and runs from GPX, FIT, TCX or KML files on an interactive map with elevation profile, charts and route summary.
- * Version: 1.13.04
+ * Version: 1.14.00
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.13.04' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.14.00' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
@@ -1322,6 +1322,110 @@ function wpgpxmaps_describeTrack( $info, $name, $unit_of_measure ) {
 }
 
 /**
+ * schema.org Place with coordinates and a link to the point on OpenStreetMap.
+ */
+function wpgpxmaps_structured_place( $name, $lat, $lon, $ele = 0, $description = '' ) {
+	$lat   = round( (float) $lat, 5 );
+	$lon   = round( (float) $lon, 5 );
+	$geo   = array(
+		'@type'     => 'GeoCoordinates',
+		'latitude'  => $lat,
+		'longitude' => $lon,
+	);
+	if ( $ele > 0 ) {
+		$geo['elevation'] = round( (float) $ele );
+	}
+	$place = array(
+		'@type'  => 'Place',
+		'name'   => $name,
+		'geo'    => $geo,
+		'hasMap' => 'https://www.openstreetmap.org/?mlat=' . $lat . '&mlon=' . $lon . '#map=16/' . $lat . '/' . $lon,
+	);
+	if ( '' != $description ) {
+		$place['description'] = $description;
+	}
+	return $place;
+}
+
+/**
+ * Places of a route for the structured data: start and finish (one place for a loop) and, when the map shows them,
+ * the named waypoints of the local files in the order they are met along the route (at most 50).
+ *
+ * @param array  $info          Track summary, see wpgpxmaps_get_track_info().
+ * @param string $label         Name of the route.
+ * @param array  $gpx_list      Files of the map.
+ * @param bool   $showWaypoints Whether the map shows the waypoints: hidden ones (e.g. a treasure hunt) stay private.
+ */
+function wpgpxmaps_structured_places( $info, $label, $gpx_list, $showWaypoints ) {
+
+	if ( empty( $info['start'] ) || empty( $info['end'] ) ) {
+		return array();
+	}
+
+	$places = array();
+	$loop   = calculateDistance( $info['start'][0], $info['start'][1], 0, $info['end'][0], $info['end'][1], 0, '1' ) < 200;
+	if ( $loop ) {
+		/* translators: %s: name of the route */
+		$places[] = wpgpxmaps_structured_place( sprintf( __( 'Start and finish of %s', 'wp-gpx-maps' ), $label ), $info['start'][0], $info['start'][1] );
+	} else {
+		/* translators: %s: name of the route */
+		$places[] = wpgpxmaps_structured_place( sprintf( __( 'Start of %s', 'wp-gpx-maps' ), $label ), $info['start'][0], $info['start'][1] );
+	}
+
+	if ( true == $showWaypoints ) {
+		$line      = array_values( array_filter( (array) $info['line'], 'is_array' ) );
+		$waypoints = array();
+		foreach ( $gpx_list as $item ) {
+			$item = wpgpxmaps_siteRelativePath( $item );
+			$path = preg_match( '/^https?:\/\//', $item ) ? '' : wpgpxmaps_resolveLocalPath( $item );
+			if ( '' == $path ) {
+				continue;
+			}
+			/* Cached until the file changes: reading a long GPX file on every page view would be slow */
+			$key  = 'wpgpxmaps_wpts_' . md5( $item . filemtime( $path ) );
+			$list = get_transient( $key );
+			if ( false === $list ) {
+				$list = wpgpxmaps_get_waypoints( $item );
+				set_transient( $key, $list, MONTH_IN_SECONDS );
+			}
+			foreach ( (array) $list as $wpt ) {
+				$wptName = trim( wp_strip_all_tags( (string) $wpt['name'] ) );
+				if ( '' == $wptName ) {
+					continue;
+				}
+				/* Position along the route: index of the closest point of the simplified line */
+				$at   = 0;
+				$best = INF;
+				foreach ( $line as $i => $point ) {
+					$d = ( $point[0] - $wpt['lat'] ) * ( $point[0] - $wpt['lat'] ) + ( $point[1] - $wpt['lon'] ) * ( $point[1] - $wpt['lon'] );
+					if ( $d < $best ) {
+						$best = $d;
+						$at   = $i;
+					}
+				}
+				$desc        = wp_trim_words( wp_strip_all_tags( (string) $wpt['desc'] ), 50, '…' );
+				$waypoints[] = array( $at, wpgpxmaps_structured_place( $wptName, $wpt['lat'], $wpt['lon'], $wpt['ele'], $desc ) );
+			}
+		}
+		usort(
+			$waypoints,
+			function ( $a, $b ) {
+				return $a[0] - $b[0];
+			}
+		);
+		foreach ( array_slice( $waypoints, 0, 50 ) as $wpt ) {
+			$places[] = $wpt[1];
+		}
+	}
+
+	if ( ! $loop ) {
+		/* translators: %s: name of the route */
+		$places[] = wpgpxmaps_structured_place( sprintf( __( 'Finish of %s', 'wp-gpx-maps' ), $label ), $info['end'][0], $info['end'][1] );
+	}
+	return $places;
+}
+
+/**
  * Media type of a track file, from its name.
  */
 function wpgpxmaps_trackMimeType( $file ) {
@@ -1428,6 +1532,12 @@ function wpgpxmaps_track_about( $gpx, $gpx_list, $unit_of_measure, $attr, $r, $d
 			'additionalProperty' => $properties,
 		),
 	);
+
+	/* Start, finish and the waypoints shown on the map, as places with coordinates and a link to the map */
+	$places = wpgpxmaps_structured_places( $info, $label, $gpx_list, wpgpxmaps_findValue( $attr, 'waypoints', 'wpgpxmaps_show_waypoint', false ) );
+	if ( $places ) {
+		$data['itinerary']['containsPlace'] = $places;
+	}
 	if ( get_the_ID() ) {
 		$data['url'] = get_permalink();
 		/* Activities of the post (hiking, stroller-friendly...): who the route is for */
