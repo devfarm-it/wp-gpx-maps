@@ -55,6 +55,9 @@ non si fanno più commit SVN a mano.
   indirizzo in wp-content non è nello scope e offline falliva tutto (niente mappa né traccia).
 - 1.13.03 (GDPR, segnalato da hupe13 sul forum): icone predefinite di waypoint e posizione disegnate in
   `assets/src/Utils/Icons.ts` (SVG come data URI) invece che caricate da maps.google.com. Nessuna risorsa da Google.
+- 1.13.04: salita e discesa totali con soglia di rumore (isteresi 5 m, filtro `wpgpxmaps_climb_threshold`, 0 = somma
+  di ogni variazione come prima) in `wpgpxmaps_buildPoints()`. Prima un'escursione di 300 m di dislivello mostrava 1.608 m.
+  Chiavi delle cache alzate (file `v1.13.04`, transient info `v2`). Il Pro usa già 10 m per tappe, sole e navigazione.
 
 ## Piano
 ### Fase 2: modernizzare
