@@ -87,6 +87,7 @@ it changes only when a hook changes in a way that is not backward compatible.
 | `wpgpxmaps_map_html` | `$output, $attr, $id` | HTML of a map (map, chart, summary, download link) |
 | `wpgpxmaps_track_description` | `$text, $info, $attr` | Text description of the track (screen readers, search engines, AI) |
 | `wpgpxmaps_structured_data` | `$data, $info, $attr` | schema.org `TouristTrip` JSON-LD of the map; return an empty value to remove it |
+| `wpgpxmaps_climb_threshold` | `$meters` | smallest elevation change counted in total climb and descent (GPS noise filter, default 5; 0 adds up every change) |
 | `wpgpxmaps_load_assets` | `$found` | Load the map style in the head of the page (default: only when a post has a map) |
 | `wpgpxmaps_lazy_load` | `$lazy, $attr` | Start the map only when it gets near the screen (default `true`) |
 | `wpgpxmaps_enqueue_scripts` | | Action: enqueue your scripts and styles where maps are shown |

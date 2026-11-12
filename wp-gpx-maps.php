@@ -3,7 +3,7 @@
  * Plugin Name: WP GPX Maps – GPX, FIT & KML maps with elevation profile
  * Plugin URI: https://devfarm.it/
  * Description: Show your hikes, rides and runs from GPX, FIT, TCX or KML files on an interactive map with elevation profile, charts and route summary.
- * Version: 1.13.03
+ * Version: 1.13.04
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
@@ -24,14 +24,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.13.03' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.13.04' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
  * in a way that is not backward compatible. Hooks: wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra,
  * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
  * wpgpxmaps_admin_tab_{tab}, wpgpxmaps_load_assets, wpgpxmaps_lazy_load, wpgpxmaps_track_description,
- * wpgpxmaps_structured_data; JavaScript event "wpgpxmaps:ready" on document.
+ * wpgpxmaps_structured_data, wpgpxmaps_climb_threshold; JavaScript event "wpgpxmaps:ready" on document.
  * Activities: taxonomy WPGPXMAPS_ACTIVITY_TAXONOMY, wpgpxmaps_activity_icon( $term ), wpgpxmaps_post_activities( $post_id ).
  * Functions: wpgpxmaps_get_track_info( $gpx ), wpgpxmaps_get_waypoints( $gpx ), wpgpxmaps_module_url(), wpgpxmaps_enqueue_assets() (map style with the
  * Leaflet CSS, for add-ons that draw their own maps); the module exports WPGPXMaps, Leaflet and loadMapEngine( 'mapbox' | 'maplibre' ).
@@ -203,7 +203,7 @@ function wpgpxmaps_get_track_info( $gpx ) {
 		return null;
 	}
 
-	$transient = 'wpgpxmaps_info_' . md5( $key . 'v1' );
+	$transient = 'wpgpxmaps_info_' . md5( $key . 'v2' );
 	$cached    = get_transient( $transient );
 	if ( is_array( $cached ) ) {
 		return $cached;
@@ -669,7 +669,7 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 			$mtime = max( $mtime, filemtime( $local ) );
 		}
 	}
-	$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$unit_of_measure_speed,$unit_of_measure,$distanceType,$colorby,v1.10.1";
+	$cacheFileName = "$gpx,$mtime,$w,$mh,$mt,$gh,$showEle,$showW,$showHr,$showAtemp,$showCad,$donotreducegpx,$pointsoffset,$showSpeed,$showGrade,$unit_of_measure_speed,$unit_of_measure,$distanceType,$colorby,v1.13.04";
 
 	$cacheFileName = md5( $cacheFileName );
 
