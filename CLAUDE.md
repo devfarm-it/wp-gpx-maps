@@ -62,6 +62,10 @@ non si fanno più commit SVN a mano.
   arrivo; `Place` con `GeoCoordinates` e `hasMap` OpenStreetMap) in `wpgpxmaps_structured_places()`. Waypoint solo se la mappa
   li mostra (la caccia al tesoro Pro forza waypoints=false), letti con cache transient `wpgpxmaps_wpts_`. FAQ: i dati
   strutturati non migliorano il posizionamento da soli (nessun rich result Google per TouristTrip, Google Maps non li legge).
+- 1.14.01 (sicurezza, XSS memorizzato segnalato da un ricercatore, richiesta CVE CAN-2026-2043316): il popup dei waypoint di
+  Leaflet faceva `unescape()` della descrizione già passata da esc_html (`%3C` tornava `<`); i popup delle foto inserivano
+  alt/href letti con getAttribute (decodificati). Ora `WPGPXMAPS.Utils.EscapeHtml` / `SafeImageUrl` in `Utils/Utils.ts`.
+  Regola: il testo letto dalla pagina o da un file traccia va sempre riescapato prima di finire in HTML.
 
 ## Piano
 ### Fase 2: modernizzare
