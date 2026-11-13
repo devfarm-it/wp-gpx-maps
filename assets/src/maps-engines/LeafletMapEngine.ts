@@ -70,9 +70,9 @@ class ClusterPhotos {
                         {
                             className: "leaflet-marker-photo",
                             html:
-                                '<div style="background-image: url(' +
-                                cluster.getAllChildMarkers()[0].photo.thumbnail +
-                                ');"></div>​<b>' +
+                                '<div style="background-image: url(&quot;' +
+                                WPGPXMAPS.Utils.SafeImageUrl(cluster.getAllChildMarkers()[0].photo.thumbnail) +
+                                '&quot;);"></div>​<b>' +
                                 cluster.getChildCount() +
                                 "</b>",
                         },
@@ -86,8 +86,9 @@ class ClusterPhotos {
 
         this.markers.on('click', function (evt: any) {
             var photo = evt.layer.photo;
-            var template = '<img src="{url}" /></a><p>{name}</p>';
-            evt.layer.bindPopup(L.Util.template(template, photo), {
+            // name and url are read from the page with getAttribute(), which decodes them: escape them again
+            var html = '<img src="' + WPGPXMAPS.Utils.SafeImageUrl(photo.url) + '" alt="" /><p>' + WPGPXMAPS.Utils.EscapeHtml(photo.name) + '</p>';
+            evt.layer.bindPopup(html, {
                 minWidth: 'auto'
             }).openPopup();
         });
@@ -116,9 +117,9 @@ class ClusterPhotos {
                     L.extend(
                         {
                             html:
-                                '<div style="background-image: url(' +
-                                photo.thumbnail +
-                                ');"></div>',
+                                '<div style="background-image: url(&quot;' +
+                                WPGPXMAPS.Utils.SafeImageUrl(photo.thumbnail) +
+                                '&quot;);"></div>',
                             className: "leaflet-marker-photo",
                         },
                         photo,
@@ -390,10 +391,11 @@ export class LeafletMapEngine implements MapEngine<Map> {
             var marker = L.marker([lat, lon], { icon: icon });
             var cnt = '';
 
+            // name and desc are already HTML-escaped by PHP (esc_html): never decode them (unescape() turned %3C into <)
             if (wpt.name == '') {
-                cnt = "<div>" + unescape(wpt.desc) + "</div>";
+                cnt = "<div>" + wpt.desc + "</div>";
             } else {
-                cnt = "<div><b>" + wpt.name + "</b><br />" + unescape(wpt.desc) + "</div>";
+                cnt = "<div><b>" + wpt.name + "</b><br />" + wpt.desc + "</div>";
             }
             cnt += "<br /><p><a href='https://maps.google.com?daddr=" + lat + "," + lon + "' target='_blank'>Itin&eacute;raire</a></p>";
 
@@ -474,9 +476,9 @@ export class LeafletMapEngine implements MapEngine<Map> {
                     L.extend(
                         {
                             html:
-                                '<div style="background-image: url(' +
-                                photo.thumbnail +
-                                ');"></div>',
+                                '<div style="background-image: url(&quot;' +
+                                WPGPXMAPS.Utils.SafeImageUrl(photo.thumbnail) +
+                                '&quot;);"></div>',
                             className: "leaflet-marker-photo",
                         },
                         photo,
@@ -488,7 +490,7 @@ export class LeafletMapEngine implements MapEngine<Map> {
                 title: photo.caption || "",
             });
 
-            m.bindPopup('<img src="' + photo.url + '" /></a><p>' + photo.name + '</p>', { minWidth: 500 });
+            m.bindPopup('<img src="' + WPGPXMAPS.Utils.SafeImageUrl(photo.url) + '" alt="" /><p>' + WPGPXMAPS.Utils.EscapeHtml(photo.name) + '</p>', { minWidth: 500 });
 
             m.addTo(this.map);
             //this.map.addLayer(m);
