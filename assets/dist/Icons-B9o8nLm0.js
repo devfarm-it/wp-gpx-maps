@@ -1,5 +1,18 @@
 // assets/src/Utils/Utils.ts
 var e = { Utils: {
+	EscapeHtml(e) {
+		return String(e ?? "").replace(/[&<>"']/g, (e) => ({
+			"&": "&amp;",
+			"<": "&lt;",
+			">": "&gt;",
+			"\"": "&quot;",
+			"'": "&#39;"
+		})[e]);
+	},
+	SafeImageUrl(t) {
+		let n = String(t ?? "").trim();
+		return /^(https?:)?\/\//i.test(n) || /^\/(?!\/)/.test(n) ? e.Utils.EscapeHtml(n) : "";
+	},
 	DividePolylinesPoints(e) {
 		let t = [], n = [];
 		for (let r of e) r === null ? (n.length > 0 && t.push(n), n = []) : n.push(r);
