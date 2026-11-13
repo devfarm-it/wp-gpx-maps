@@ -1,6 +1,17 @@
 
 export const WPGPXMAPS = {
     Utils: {
+        // Text for HTML (popups): values read back from the page (alt, href) come out as plain text and must be escaped again
+        EscapeHtml(value: unknown): string {
+            return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' } as { [c: string]: string })[c]);
+        },
+
+        // Image address for a popup: only http(s) or relative, escaped for an attribute
+        SafeImageUrl(value: unknown): string {
+            const url = String(value ?? '').trim();
+            return /^(https?:)?\/\//i.test(url) || /^\/(?!\/)/.test(url) ? WPGPXMAPS.Utils.EscapeHtml(url) : '';
+        },
+
         // Splits the points on the null separators between tracks; never returns null points or empty tracks
         DividePolylinesPoints(mapData: any[]): any[] {
             const result: any[] = [];

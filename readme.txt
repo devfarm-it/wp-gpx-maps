@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.14.00
+Stable tag: 1.14.01
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -166,6 +166,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.14.01 =
+* Security fix: the texts of waypoints and photos are now always escaped in the map popups of the Leaflet engine. Update recommended. Thanks to the security researcher who reported it responsibly
 
 = 1.14.00 =
 * Structured data: the route now also lists its start and finish (one place for a loop) and the waypoints shown on the map, in the order they are met along the way, each as a schema.org Place with its coordinates (and elevation for waypoints) and a link to the point on OpenStreetMap. Waypoints hidden on the map, for example in a WP GPX Maps Pro treasure hunt, stay out
@@ -519,6 +522,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.14.01 =
+Security fix for the map popups of the Leaflet engine. Update recommended.
 
 = 1.14.00 =
 Start, finish and waypoints of every route in the structured data for search engines and AI assistants.
