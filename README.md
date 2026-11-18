@@ -47,7 +47,10 @@ npm run build        # assets/src -> assets/dist
 
 ### Local test site
 
-`dev/` runs WordPress 7.1 with PHP 8.4 and mounts this repository as the plugin.
+`dev/` runs WordPress 7.1 with PHP 8.4 and mounts this repository as the plugin. The plugin also supports WordPress 6.0 and
+PHP 7.4 (`Requires at least` / `Requires PHP`): before a release that touches WordPress APIs or the block editor, try it on
+those versions too, for example with the `wordpress:6.0-php7.4-apache` image. APIs newer than 6.0, such as script modules,
+must be guarded with `function_exists()`.
 
 ```bash
 cd dev

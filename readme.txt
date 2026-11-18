@@ -3,10 +3,10 @@
 Contributors: bastianonm, Stephan Klein, Michel Selerin, TosattoSimonePio, Kniebremser
 Donate link: https://github.com/sponsors/bastianonm
 Tags: gpx, hiking, cycling, elevation profile, map
-Requires at least: 6.5
+Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.14.01
+Stable tag: 1.14.02
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -166,6 +166,11 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.14.02 =
+* Works again on WordPress 6.0 to 6.4: sites that could not update from 1.7 because of the WordPress 6.5 requirement can now update
+* Fix: on WordPress versions before 6.3 the map preview of the block started twice in the editor and the chart showed an error
+* Fix: after an update the block editor could keep using an old copy of the block script from the browser cache
 
 = 1.14.01 =
 * Security fix: the texts of waypoints and photos are now always escaped in the map popups of the Leaflet engine. Update recommended. Thanks to the security researcher who reported it responsibly
@@ -522,6 +527,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.14.02 =
+Works again on WordPress 6.0 to 6.4. Sites still on 1.7 because of the WordPress 6.5 requirement can now update.
 
 = 1.14.01 =
 Security fix for the map popups of the Leaflet engine. Update recommended.
