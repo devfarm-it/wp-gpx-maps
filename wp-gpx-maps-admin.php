@@ -9,8 +9,22 @@ define( 'WPGPXMAPS_REVIEW_URL', 'https://wordpress.org/support/plugin/wp-gpx-map
 if ( is_admin() ) {
 	add_action( 'admin_init', 'wpgpxmaps_admin_init' );
 	add_action( 'admin_menu', 'wpgpxmaps_admin_menu' );
+	add_action( 'admin_notices', 'wpgpxmaps_show_pro_notice' );
 	add_action( 'admin_notices', 'wpgpxmaps_show_review_notice' );
 	add_action( 'admin_post_wpgpxmaps_review', 'wpgpxmaps_review_answer' );
+	add_action( 'admin_post_wpgpxmaps_pro_notice', 'wpgpxmaps_pro_notice_answer' );
+}
+
+/**
+ * Page about WP GPX Maps Pro on devfarm.it. $place says where the link is (notice, block, settings, help), so the visits
+ * from each place can be counted: it is a plain link parameter, nothing is sent from the site.
+ */
+function wpgpxmaps_pro_url( $place ) {
+	return 'https://devfarm.it/wp-gpx-maps-free-vs-pro/?utm_source=wp-gpx-maps&utm_medium=' . rawurlencode( $place ) . '#waitlist';
+}
+
+function wpgpxmaps_pro_active() {
+	return defined( 'WPGPXMAPS_PRO_VERSION' );
 }
 
 function wpgpxmaps_admin_init() {
@@ -91,6 +105,11 @@ function wpgpxmaps_plugin_upgrade() {
 	if ( false === get_option( 'wpgpxmaps_review_after' ) ) {
 		update_option( 'wpgpxmaps_review_after', time() + 14 * DAY_IN_SECONDS, false );
 	}
+
+	/* The Pro notice waits three days after the installation or the first update with this feature, and is shown once */
+	if ( false === get_option( 'wpgpxmaps_pro_notice_after' ) ) {
+		update_option( 'wpgpxmaps_pro_notice_after', time() + 3 * DAY_IN_SECONDS, false );
+	}
 }
 
 /**
@@ -165,7 +184,7 @@ function wpgpxmaps_dismiss_notice() {
  * after 30 days, "Leave a review" and "I already did" never again.
  */
 function wpgpxmaps_show_review_notice() {
-	if ( ! current_user_can( 'manage_options' ) || 1 == get_site_option( 'wpgpxmaps_show_notice' ) ) {
+	if ( ! current_user_can( 'manage_options' ) || 1 == get_site_option( 'wpgpxmaps_show_notice' ) || wpgpxmaps_pro_notice_due() ) {
 		return;
 	}
 	$after = (int) get_option( 'wpgpxmaps_review_after', 0 );
@@ -214,6 +233,58 @@ function wpgpxmaps_review_answer() {
 }
 
 /**
+ * WP GPX Maps Pro notice: once, three days after the installation (or the update), only to administrators, only on the
+ * dashboard, the plugins page and the WP GPX Maps page, never together with the update notice and not when Pro is active.
+ * Both answers hide it for good. The free plugin stays complete: the notice only says what the separate add-on adds.
+ */
+function wpgpxmaps_pro_notice_due() {
+	if ( wpgpxmaps_pro_active() || ! current_user_can( 'manage_options' ) || 1 == get_site_option( 'wpgpxmaps_show_notice' ) ) {
+		return false;
+	}
+	$after = (int) get_option( 'wpgpxmaps_pro_notice_after', 0 );
+	if ( $after <= 0 || time() < $after ) {
+		return false;
+	}
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	return $screen && in_array( $screen->id, array( 'dashboard', 'plugins', 'settings_page_WP-GPX-Maps' ), true );
+}
+
+function wpgpxmaps_show_pro_notice() {
+	if ( ! wpgpxmaps_pro_notice_due() ) {
+		return;
+	}
+	$link = function ( $answer ) {
+		return wp_nonce_url( admin_url( 'admin-post.php?action=wpgpxmaps_pro_notice&answer=' . $answer ), 'wpgpxmaps_pro_notice' );
+	};
+	?>
+	<div class="notice notice-info">
+		<p><strong><?php esc_html_e( 'WP GPX Maps Pro is coming', 'wp-gpx-maps' ); ?></strong></p>
+		<p><?php esc_html_e( 'A separate add-on for the routes you publish: offline maps and navigation on the phone in the mountains without signal, stages that end at the huts, weather and sun along the route, story maps, a map of all your routes, an image for social media. WP GPX Maps stays free with every feature it has today.', 'wp-gpx-maps' ); ?></p>
+		<p>
+			<a class="button button-primary" href="<?php echo esc_url( $link( 'more' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'See what Pro adds and get the launch discount', 'wp-gpx-maps' ); ?></a>
+			<a class="button-link" style="margin-left:8px" href="<?php echo esc_url( $link( 'no' ) ); ?>"><?php esc_html_e( 'Not interested', 'wp-gpx-maps' ); ?></a>
+		</p>
+	</div>
+	<?php
+}
+
+function wpgpxmaps_pro_notice_answer() {
+	check_admin_referer( 'wpgpxmaps_pro_notice' );
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( esc_html__( 'Sorry, you are not allowed to do this.', 'wp-gpx-maps' ), 403 );
+	}
+	update_option( 'wpgpxmaps_pro_notice_after', -1, false );
+	$answer = isset( $_GET['answer'] ) ? sanitize_key( wp_unslash( $_GET['answer'] ) ) : '';
+	if ( 'more' === $answer ) {
+		// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- fixed devfarm.it address
+		wp_redirect( wpgpxmaps_pro_url( 'notice' ) );
+		exit;
+	}
+	wp_safe_redirect( wp_get_referer() ? wp_get_referer() : admin_url() );
+	exit;
+}
+
+/**
  * Small box at the top of the WP GPX Maps page: review, sponsor, Pro waitlist.
  */
 function wpgpxmaps_support_box() {
@@ -226,8 +297,10 @@ function wpgpxmaps_support_box() {
 		<a href="<?php echo esc_url( WPGPXMAPS_REVIEW_URL ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Leave a review', 'wp-gpx-maps' ); ?></a>
 		&middot;
 		<a href="https://github.com/sponsors/bastianonm" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support the development', 'wp-gpx-maps' ); ?></a>
-		&middot;
-		<a href="https://devfarm.it/wp-gpx-maps-free-vs-pro/#waitlist" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'WP GPX Maps Pro is coming: get notified', 'wp-gpx-maps' ); ?></a>
+		<?php if ( ! wpgpxmaps_pro_active() ) : ?>
+			&middot;
+			<a href="<?php echo esc_url( wpgpxmaps_pro_url( 'settings' ) ); ?>" target="_blank" rel="noopener noreferrer"><strong><?php esc_html_e( 'WP GPX Maps Pro is coming: get notified', 'wp-gpx-maps' ); ?></strong></a>
+		<?php endif; ?>
 	</div>
 	<?php
 }

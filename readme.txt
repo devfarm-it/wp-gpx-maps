@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.14.02
+Stable tag: 1.14.03
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,18 @@ A map drawn by JavaScript is invisible to ChatGPT, Perplexity, Google AI Overvie
 * Every option has a default in the settings, so a simple `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]` is enough.
 * **GPX** 1.0 and 1.1 (Garmin and Strava extensions: heart rate, cadence, temperature), **FIT** files from Garmin, Wahoo and other devices, **TCX** and **KML / KMZ**, multi-track files.
 * Fast pages: the map style is loaded only on the pages with a map, and every map downloads its code only when it gets near the screen (lazy load). Cache of the processed tracks, works with PHP 7.4 to 8.4.
+
+= WP GPX Maps Pro (coming soon) =
+
+A separate add-on for sites whose readers go out on the routes. The free plugin keeps every feature: Pro adds new ones.
+
+* **Offline maps and navigation**: readers save the route on the phone and follow it in the mountains without signal, with distance and climb left and an off-route warning.
+* **Stages planner**: the route split in days that end at the huts along the way.
+* **Weather and sun along the route** at the passage times, real sunrise and sunset.
+* **Story maps** that follow the text as readers scroll, and a **map of all your routes** with filters by activity, distance and climb.
+* Estimated times (CAI times for hiking), MTB difficulty, steep slopes for ski touring, an image for social media and more.
+
+[Compare Free and Pro, and get notified at launch](https://devfarm.it/wp-gpx-maps-free-vs-pro/?utm_source=wp-gpx-maps&utm_medium=readme#waitlist) with a launch discount.
 
 = Support and development =
 
@@ -153,7 +165,11 @@ Not by itself, and no plugin can promise that. Google does not show a special re
 
 = Is it free? =
 
-Yes, WP GPX Maps is free and open source (GPLv2 or later).
+Yes, WP GPX Maps is free and open source (GPLv2 or later), and every feature it has stays free.
+
+= Is there a Pro version? =
+
+WP GPX Maps Pro is a separate add-on, coming soon, for sites that publish routes for people who will walk or ride them: offline maps and navigation on the phone, stages that end at the huts, weather and sun along the route, story maps, a map of all your routes with filters and more. It does not unlock anything in the free plugin. [See what Pro adds and get notified at launch](https://devfarm.it/wp-gpx-maps-free-vs-pro/?utm_source=wp-gpx-maps&utm_medium=readme#waitlist), with a launch discount for the people on the list.
 
 == Screenshots ==
 
@@ -166,6 +182,9 @@ Yes, WP GPX Maps is free and open source (GPLv2 or later).
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.14.03 =
+* WP GPX Maps Pro is coming: a notice shown once to administrators, three days after the update (two buttons, both hide it for good), a closed "More with WP GPX Maps Pro" panel in the block sidebar and a section in this page. Nothing changes in the free plugin and nothing is shown when Pro is active
 
 = 1.14.02 =
 * Works again on WordPress 6.0 to 6.4: sites that could not update from 1.7 because of the WordPress 6.5 requirement can now update
