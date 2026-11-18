@@ -3,8 +3,8 @@
  * Plugin Name: WP GPX Maps – GPX, FIT & KML maps with elevation profile
  * Plugin URI: https://devfarm.it/
  * Description: Show your hikes, rides and runs from GPX, FIT, TCX or KML files on an interactive map with elevation profile, charts and route summary.
- * Version: 1.14.01
- * Requires at least: 6.5
+ * Version: 1.14.02
+ * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
  * Author URI: http://www.devfarm.it/
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.14.01' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.14.02' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
@@ -300,7 +300,10 @@ function wpgpxmaps_register_assets() {
 	/* Output Style CSS */
 	wp_register_style( 'output-style', plugins_url( 'assets/dist/style.css', __FILE__ ), array(), wpgpxmaps_module_version() );
 
-	wp_register_script_module( 'wp-gpx-maps', plugins_url( 'assets/dist/WP-GPX-Maps.es.js', __FILE__ ), array(), wpgpxmaps_module_version() );
+	/* Script modules exist since WordPress 6.5. The maps import the file by URL, so older versions work without it. */
+	if ( function_exists( 'wp_register_script_module' ) ) {
+		wp_register_script_module( 'wp-gpx-maps', plugins_url( 'assets/dist/WP-GPX-Maps.es.js', __FILE__ ), array(), wpgpxmaps_module_version() );
+	}
 
 }
 
