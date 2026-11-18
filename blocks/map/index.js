@@ -305,7 +305,16 @@
 					},
 					__( 'Use plugin settings for all options' )
 				)
-			)
+			),
+			/* What the separate Pro add-on adds, closed by default; not shown when Pro is active */
+			data.proUrl
+				? el(
+					PanelBody,
+					{ title: __( 'More with WP GPX Maps Pro' ), initialOpen: false },
+					el( 'p', null, __( 'For readers on the trail: offline map and navigation on the phone, stages that end at the huts, weather and sun along the route, story maps that follow the text.' ) ),
+					el( 'p', null, el( 'a', { href: data.proUrl, target: '_blank', rel: 'noopener noreferrer' }, __( 'See what Pro adds and get the launch discount' ) ) )
+				)
+				: null
 		);
 
 		if ( ! attributes.gpx ) {

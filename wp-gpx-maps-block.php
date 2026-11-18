@@ -111,6 +111,7 @@ function wpgpxmaps_block_editor_data() {
 				'uploadsPath' => wpgpxmaps_siteRelativePath( wp_upload_dir()['baseurl'] ),
 				'canUpload'   => current_user_can( 'manage_options' ) || ( current_user_can( 'publish_posts' ) && 1 == get_option( 'wpgpxmaps_allow_users_upload' ) ),
 				'hasMapBoxKey' => strlen( (string) get_option( 'wpgpxmaps_mapbox_apikey' ) ) > 20,
+				'proUrl'       => function_exists( 'wpgpxmaps_pro_active' ) && ! wpgpxmaps_pro_active() ? wpgpxmaps_pro_url( 'block' ) : '',
 			)
 		) . ';',
 		'before'
