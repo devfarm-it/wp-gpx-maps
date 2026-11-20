@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.14.03
+Stable tag: 1.15.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,7 @@ A map drawn by JavaScript is invisible to ChatGPT, Perplexity, Google AI Overvie
 = Easy to use =
 
 * **GPX Map block** for the block editor with live preview: pick an uploaded GPX file from a list and set every option in the sidebar.
+* **GPX Map widget for Elementor**, with the same options and a live preview in the Elementor editor.
 * Upload your track files in the **Media Library**, like images: they are organized by month, searchable and attached to the post. Or keep them in **Settings > WP GPX Maps > Tracks** (editors and authors can upload their own files).
 * Every option has a default in the settings, so a simple `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]` is enough.
 * **GPX** 1.0 and 1.1 (Garmin and Strava extensions: heart rate, cadence, temperature), **FIT** files from Garmin, Wahoo and other devices, **TCX** and **KML / KMZ**, multi-track files.
@@ -95,6 +96,10 @@ Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https:
 1. Optional: in **Settings > WP GPX Maps** set the defaults for all the maps, a Thunderforest API key for the Thunderforest maps or a MapBox API key for the MapBox maps and 3D terrain.
 
 == Frequently Asked Questions ==
+
+= Does it work with Elementor? =
+
+Yes. With Elementor active, search for **GPX Map** in the widgets panel and drag it into the page: choose an uploaded track file (or type its path or URL) and set the map, chart and summary in the panel. Options left on "Plugin setting" use the values of **Settings > WP GPX Maps**, like the block and the shortcode. With other page builders use the `[sgpx]` shortcode in a text or shortcode element.
 
 = Do I need an API key? =
 
@@ -182,6 +187,11 @@ WP GPX Maps Pro is a separate add-on, coming soon, for sites that publish routes
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.15.00 =
+* New: GPX Map widget for Elementor, with the options of the block (file, map engine and style, colors, markers, charts, summary) and a live preview in the editor. Options left on "Plugin setting" use the values of Settings > WP GPX Maps
+* New: complete Italian and German translations, and the missing French and Spanish strings, included with the plugin until the language packs of translate.wordpress.org are complete
+* Fix: a map could start twice when an editor ran its script again (block editor before WordPress 6.3, Elementor)
 
 = 1.14.03 =
 * WP GPX Maps Pro is coming: a notice shown once to administrators, three days after the update (two buttons, both hide it for good), a closed "More with WP GPX Maps Pro" panel in the block sidebar and a section in this page. Nothing changes in the free plugin and nothing is shown when Pro is active
@@ -546,6 +556,9 @@ WP GPX Maps Pro is a separate add-on, coming soon, for sites that publish routes
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.15.00 =
+New GPX Map widget for Elementor, and complete Italian and German translations.
 
 = 1.14.02 =
 Works again on WordPress 6.0 to 6.4. Sites still on 1.7 because of the WordPress 6.5 requirement can now update.

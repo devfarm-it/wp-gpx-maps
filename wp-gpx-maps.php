@@ -3,7 +3,7 @@
  * Plugin Name: WP GPX Maps – GPX, FIT & KML maps with elevation profile
  * Plugin URI: https://devfarm.it/
  * Description: Show your hikes, rides and runs from GPX, FIT, TCX or KML files on an interactive map with elevation profile, charts and route summary.
- * Version: 1.14.03
+ * Version: 1.15.00
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
@@ -24,12 +24,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.14.03' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.15.00' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
  * in a way that is not backward compatible. Hooks: wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra,
- * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
+ * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_elementor_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
  * wpgpxmaps_admin_tab_{tab}, wpgpxmaps_load_assets, wpgpxmaps_lazy_load, wpgpxmaps_track_description,
  * wpgpxmaps_structured_data, wpgpxmaps_climb_threshold; JavaScript event "wpgpxmaps:ready" on document.
  * Activities: taxonomy WPGPXMAPS_ACTIVITY_TAXONOMY, wpgpxmaps_activity_icon( $term ), wpgpxmaps_post_activities( $post_id ).
@@ -45,6 +45,7 @@ require 'wp-gpx-maps-media.php';
 require 'wp-gpx-maps-activities.php';
 require 'wp-gpx-maps-admin.php';
 require 'wp-gpx-maps-block.php';
+require 'wp-gpx-maps-elementor.php';
 
 define("wpgpxmaps_FEET_MILES", "1");
 define("wpgpxmaps_METERS_KILOMETERS", "2");
@@ -1084,6 +1085,11 @@ function wpgpxmaps_handle_shortcodes( $attr, $content = '' ) {
 
 			const { WPGPXMaps, loadMapEngine } = await import("' . esc_url( $module_url ) . '");
 			await loadMapEngine("' . esc_js( $engine ) . '");
+
+			/* Once per map element: editors (block before WordPress 6.3, Elementor) can run this script twice */
+			const wpgpxmapsBox_' . esc_js( $r ) . ' = document.getElementById("map_' . esc_js( $r ) . '");
+			if (!wpgpxmapsBox_' . esc_js( $r ) . ' || wpgpxmapsBox_' . esc_js( $r ) . '.wpgpxmapsStarted) { return; }
+			wpgpxmapsBox_' . esc_js( $r ) . '.wpgpxmapsStarted = true;
 
 			var wpgpxmaps_' . esc_js( $r ) . ' = new WPGPXMaps({
 					targetId           : "' . esc_js( $r ) . '",

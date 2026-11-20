@@ -86,6 +86,7 @@ it changes only when a hook changes in a way that is not backward compatible.
 | --- | --- | --- |
 | `wpgpxmaps_shortcode_atts` | `$attr` | Change the attributes of a map before it is drawn |
 | `wpgpxmaps_block_shortcode_atts` | `$atts, $attributes` | Attributes produced by the block |
+| `wpgpxmaps_elementor_shortcode_atts` | `$atts, $settings` | Attributes produced by the Elementor widget (`wpgpxmaps-map`), e.g. for options added by an add-on |
 | `wpgpxmaps_map_extra` | `$extra, $attr` | Data for your script, received as `params.extra` in the `wpgpxmaps:ready` event |
 | `wpgpxmaps_map_html` | `$output, $attr, $id` | HTML of a map (map, chart, summary, download link) |
 | `wpgpxmaps_track_description` | `$text, $info, $attr` | Text description of the track (screen readers, search engines, AI) |
@@ -105,6 +106,12 @@ it changes only when a hook changes in a way that is not backward compatible.
 - `wpgpxmaps_get_waypoints( $gpx )`: waypoints of a file (GPX waypoints, KML placemarks) with lat, lon, ele, name and desc.
 - `wpgpxmaps_module_url()`: URL of the JavaScript module, which exports `WPGPXMaps`, `Leaflet` and `loadMapEngine( 'mapbox' | 'maplibre' )`. Mapbox and MapLibre are separate files in `assets/dist`, loaded by `loadMapEngine()` only for the maps that use them.
 - `wpgpxmaps_enqueue_assets()`: map style with the Leaflet CSS, for add-ons that draw their own maps.
+- `wpgpxmaps_track_files()`: track files the current user can use (uploads/gpx and Media Library), newest first, as `label` / `value` / `modified`.
+- `wpgpxmaps_block_defaults()`: value of every block / widget option when it is not set, from the plugin settings.
+
+The Elementor widget lives in `wp-gpx-maps-elementor.php` (loaded always, registers on `elementor/widgets/register`) and
+`wp-gpx-maps-elementor-widget.php` (the class, loaded only by Elementor). In the editor preview `elementor/preview.js`
+runs the map scripts that Elementor inserts as HTML; the map script itself starts only once per map element.
 
 ### JavaScript event
 
