@@ -76,7 +76,34 @@ function wpgpxmaps_register_block() {
 
 function wpgpxmaps_block_editor_data() {
 
-	/* Defaults from the plugin settings, so the editor shows the values the map will really use */
+	$settings_url = current_user_can( 'manage_options' ) ? admin_url( 'options-general.php?page=WP-GPX-Maps' ) : admin_url( 'admin.php?page=WP-GPX-Maps' );
+
+	wp_add_inline_script(
+		generate_block_asset_handle( 'wp-gpx-maps/map', 'editorScript' ),
+		'window.wpgpxmapsBlock = ' . wp_json_encode(
+			array(
+				'defaults'    => wpgpxmaps_block_defaults(),
+				'tracksUrl'   => $settings_url,
+				'mimeTypes'   => array_values( wpgpxmaps_trackMimeTypes() ),
+				'uploadsUrl'  => preg_replace( '/^https?:/i', '', wp_upload_dir()['baseurl'] ),
+				'uploadsPath' => wpgpxmaps_siteRelativePath( wp_upload_dir()['baseurl'] ),
+				'canUpload'   => current_user_can( 'manage_options' ) || ( current_user_can( 'publish_posts' ) && 1 == get_option( 'wpgpxmaps_allow_users_upload' ) ),
+				'hasMapBoxKey' => strlen( (string) get_option( 'wpgpxmaps_mapbox_apikey' ) ) > 20,
+				'proUrl'       => function_exists( 'wpgpxmaps_pro_active' ) && ! wpgpxmaps_pro_active() ? wpgpxmaps_pro_url( 'block' ) : '',
+			)
+		) . ';',
+		'before'
+	);
+}
+
+/**
+ * Value of every block option when it is not set, from the plugin settings: the editors (block, Elementor widget)
+ * show the values the map will really use.
+ *
+ * @return array Option name => value.
+ */
+function wpgpxmaps_block_defaults() {
+
 	$defaults = array();
 	foreach ( wpgpxmaps_block_options() as $attribute => $option ) {
 		$defaults[ $attribute ] = get_option( $option );
@@ -98,24 +125,7 @@ function wpgpxmaps_block_editor_data() {
 	/* The setting is "hide start / finish markers", the block option is "show" */
 	$defaults['startend'] = 'true' !== $defaults['startend'];
 
-	$settings_url = current_user_can( 'manage_options' ) ? admin_url( 'options-general.php?page=WP-GPX-Maps' ) : admin_url( 'admin.php?page=WP-GPX-Maps' );
-
-	wp_add_inline_script(
-		generate_block_asset_handle( 'wp-gpx-maps/map', 'editorScript' ),
-		'window.wpgpxmapsBlock = ' . wp_json_encode(
-			array(
-				'defaults'    => $defaults,
-				'tracksUrl'   => $settings_url,
-				'mimeTypes'   => array_values( wpgpxmaps_trackMimeTypes() ),
-				'uploadsUrl'  => preg_replace( '/^https?:/i', '', wp_upload_dir()['baseurl'] ),
-				'uploadsPath' => wpgpxmaps_siteRelativePath( wp_upload_dir()['baseurl'] ),
-				'canUpload'   => current_user_can( 'manage_options' ) || ( current_user_can( 'publish_posts' ) && 1 == get_option( 'wpgpxmaps_allow_users_upload' ) ),
-				'hasMapBoxKey' => strlen( (string) get_option( 'wpgpxmaps_mapbox_apikey' ) ) > 20,
-				'proUrl'       => function_exists( 'wpgpxmaps_pro_active' ) && ! wpgpxmaps_pro_active() ? wpgpxmaps_pro_url( 'block' ) : '',
-			)
-		) . ';',
-		'before'
-	);
+	return $defaults;
 }
 
 /**
@@ -171,6 +181,15 @@ function wpgpxmaps_register_rest_routes() {
  * and the track files of the Media Library. The value is the path relative to the site root, as expected by the gpx attribute.
  */
 function wpgpxmaps_rest_tracks() {
+	return rest_ensure_response( wpgpxmaps_track_files() );
+}
+
+/**
+ * Track files the current user can use, newest first, for the block and the Elementor widget.
+ *
+ * @return array Items with label (path inside uploads/gpx or file name), value (path from the site root) and modified (timestamp).
+ */
+function wpgpxmaps_track_files() {
 
 	$tracks = wpgpxmaps_mediaTracks();
 	$folder = realpath( gpxFolderPath() );
@@ -199,5 +218,5 @@ function wpgpxmaps_rest_tracks() {
 		}
 	);
 
-	return rest_ensure_response( $tracks );
+	return $tracks;
 }
