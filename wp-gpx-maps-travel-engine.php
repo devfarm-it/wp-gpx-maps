@@ -69,7 +69,7 @@ function wpgpxmaps_travel_engine_meta_box_html( $post ) {
 	?>
 	<p>
 		<label for="wpgpxmaps_trip_gpx"><strong><?php esc_html_e( 'Track files', 'wp-gpx-maps' ); ?></strong></label>
-		<input type="text" class="widefat" id="wpgpxmaps_trip_gpx" name="wpgpxmaps_trip[gpx]" list="wpgpxmaps_trip_files" value="<?php echo esc_attr( $settings['gpx'] ); ?>" placeholder="/wp-content/uploads/my-trek.gpx">
+		<input type="text" class="widefat" style="max-width:100%;box-sizing:border-box" id="wpgpxmaps_trip_gpx" name="wpgpxmaps_trip[gpx]" list="wpgpxmaps_trip_files" value="<?php echo esc_attr( $settings['gpx'] ); ?>" placeholder="/wp-content/uploads/my-trek.gpx">
 		<datalist id="wpgpxmaps_trip_files">
 			<?php foreach ( wpgpxmaps_track_files() as $file ) : ?>
 				<option value="<?php echo esc_attr( $file['value'] ); ?>"><?php echo esc_html( $file['label'] ); ?></option>
@@ -90,9 +90,9 @@ function wpgpxmaps_travel_engine_meta_box_html( $post ) {
 	</p>
 	<p>
 		<label for="wpgpxmaps_trip_position"><strong><?php esc_html_e( 'In the Map tab', 'wp-gpx-maps' ); ?></strong></label>
-		<select class="widefat" id="wpgpxmaps_trip_position" name="wpgpxmaps_trip[position]">
-			<option value="replace" <?php selected( $settings['position'], 'replace' ); ?>><?php esc_html_e( 'Show the GPX map instead of the trip map', 'wp-gpx-maps' ); ?></option>
-			<option value="before" <?php selected( $settings['position'], 'before' ); ?>><?php esc_html_e( 'Show the GPX map above the trip map', 'wp-gpx-maps' ); ?></option>
+		<select class="widefat" style="max-width:100%;box-sizing:border-box" id="wpgpxmaps_trip_position" name="wpgpxmaps_trip[position]">
+			<option value="replace" <?php selected( $settings['position'], 'replace' ); ?>><?php esc_html_e( 'Instead of the trip map', 'wp-gpx-maps' ); ?></option>
+			<option value="before" <?php selected( $settings['position'], 'before' ); ?>><?php esc_html_e( 'Above the trip map', 'wp-gpx-maps' ); ?></option>
 		</select>
 	</p>
 	<p>

@@ -1847,12 +1847,12 @@ msgid "In the Map tab"
 msgstr "En la pestaña Mapa"
 
 #: wp-gpx-maps-travel-engine.php
-msgid "Show the GPX map instead of the trip map"
-msgstr "Mostrar el mapa GPX en lugar del mapa del viaje"
+msgid "Instead of the trip map"
+msgstr "En lugar del mapa del viaje"
 
 #: wp-gpx-maps-travel-engine.php
-msgid "Show the GPX map above the trip map"
-msgstr "Mostrar el mapa GPX encima del mapa del viaje"
+msgid "Above the trip map"
+msgstr "Encima del mapa del viaje"
 
 #: wp-gpx-maps-travel-engine.php
 msgid "Add distance, climbing and highest point to the trip facts"
