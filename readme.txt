@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.16.00
+Stable tag: 1.16.01
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -192,6 +192,9 @@ WP GPX Maps Pro is a separate add-on, coming soon, for sites that publish routes
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.16.01 =
+* Fix: the GPX Map box of the WP Travel Engine trip editor no longer overflows the sidebar of the block editor (shorter labels for the Map tab position)
 
 = 1.16.00 =
 * New: works with WP Travel Engine. A GPX Map box in the trip editor (track file, or one file per day), the map and elevation profile in the Map tab of the trip page, and distance, climbing and highest point in the trip facts. Filters wpgpxmaps_travel_engine_shortcode_atts and wpgpxmaps_travel_engine_facts
