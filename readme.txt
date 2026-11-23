@@ -6,7 +6,7 @@ Tags: gpx, hiking, cycling, elevation profile, map
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.15.00
+Stable tag: 1.16.00
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,7 @@ A map drawn by JavaScript is invisible to ChatGPT, Perplexity, Google AI Overvie
 
 * **GPX Map block** for the block editor with live preview: pick an uploaded GPX file from a list and set every option in the sidebar.
 * **GPX Map widget for Elementor**, with the same options and a live preview in the Elementor editor.
+* **Works with WP Travel Engine**: add the track of a trek or a tour in the trip editor and the trip page shows the map and elevation profile in the Map tab, plus distance, climbing and highest point in the trip facts. One file per day for trips in stages.
 * Upload your track files in the **Media Library**, like images: they are organized by month, searchable and attached to the post. Or keep them in **Settings > WP GPX Maps > Tracks** (editors and authors can upload their own files).
 * Every option has a default in the settings, so a simple `[sgpx gpx="/wp-content/uploads/gpx/my-track.gpx"]` is enough.
 * **GPX** 1.0 and 1.1 (Garmin and Strava extensions: heart rate, cadence, temperature), **FIT** files from Garmin, Wahoo and other devices, **TCX** and **KML / KMZ**, multi-track files.
@@ -100,6 +101,10 @@ Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https:
 = Does it work with Elementor? =
 
 Yes. With Elementor active, search for **GPX Map** in the widgets panel and drag it into the page: choose an uploaded track file (or type its path or URL) and set the map, chart and summary in the panel. Options left on "Plugin setting" use the values of **Settings > WP GPX Maps**, like the block and the shortcode. With other page builders use the `[sgpx]` shortcode in a text or shortcode element.
+
+= Does it work with WP Travel Engine? =
+
+Yes. With WP Travel Engine active, the trip editor has a **GPX Map** box: choose the track file (GPX, FIT, TCX or KML from the Media Library), or one file per day separated by commas for a trip in stages. The trip page then shows the map and the elevation profile in the **Map** tab, instead of the map image or iframe of the trip or above it, and adds distance, total climbing and highest point to the trip facts. The Map tab must be enabled in the WP Travel Engine settings; map type, colors and chart come from **Settings > WP GPX Maps**.
 
 = Do I need an API key? =
 
@@ -187,6 +192,9 @@ WP GPX Maps Pro is a separate add-on, coming soon, for sites that publish routes
 7. The GPX Map block in the block editor: live preview and options in the sidebar.
 
 == Changelog ==
+
+= 1.16.00 =
+* New: works with WP Travel Engine. A GPX Map box in the trip editor (track file, or one file per day), the map and elevation profile in the Map tab of the trip page, and distance, climbing and highest point in the trip facts. Filters wpgpxmaps_travel_engine_shortcode_atts and wpgpxmaps_travel_engine_facts
 
 = 1.15.00 =
 * New: GPX Map widget for Elementor, with the options of the block (file, map engine and style, colors, markers, charts, summary) and a live preview in the editor. Options left on "Plugin setting" use the values of Settings > WP GPX Maps
@@ -556,6 +564,9 @@ WP GPX Maps Pro is a separate add-on, coming soon, for sites that publish routes
 * nextgen gallery display bug fixes
 
 == Upgrade Notice ==
+
+= 1.16.00 =
+Map and elevation profile on WP Travel Engine trip pages, from a GPX, FIT, TCX or KML file.
 
 = 1.15.00 =
 New GPX Map widget for Elementor, and complete Italian and German translations.

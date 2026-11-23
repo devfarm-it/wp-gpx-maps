@@ -1829,3 +1829,56 @@ msgstr "Aktuelle Position"
 #: wp-gpx-maps.php:1146 blocks/map/index.js:263
 msgid "Altitude"
 msgstr "Höhe"
+
+#: wp-gpx-maps-travel-engine.php
+msgid "GPX Map (WP GPX Maps)"
+msgstr "GPX-Karte (WP GPX Maps)"
+
+#: wp-gpx-maps-travel-engine.php
+msgid "Track files"
+msgstr "Track-Dateien"
+
+#: wp-gpx-maps-travel-engine.php
+#, php-format
+msgid ""
+"GPX, FIT, TCX or KML file from the <a href=\"%s\">Media Library</a>. For a "
+"trip in stages, one file per day separated by commas: each day gets its own "
+"color."
+msgstr ""
+"GPX-, FIT-, TCX- oder KML-Datei aus der <a href=\"%s\">Mediathek</a>. Für "
+"eine Reise in Etappen eine Datei pro Tag, durch Kommas getrennt: Jeder Tag "
+"bekommt eine eigene Farbe."
+
+#: wp-gpx-maps-travel-engine.php
+msgid "In the Map tab"
+msgstr "Im Tab Karte"
+
+#: wp-gpx-maps-travel-engine.php
+msgid "Show the GPX map instead of the trip map"
+msgstr "GPX-Karte statt der Reisekarte anzeigen"
+
+#: wp-gpx-maps-travel-engine.php
+msgid "Show the GPX map above the trip map"
+msgstr "GPX-Karte über der Reisekarte anzeigen"
+
+#: wp-gpx-maps-travel-engine.php
+msgid "Add distance, climbing and highest point to the trip facts"
+msgstr "Distanz, Anstieg und höchsten Punkt zu den Reisedaten hinzufügen"
+
+#: wp-gpx-maps-travel-engine.php
+#, php-format
+msgid ""
+"Map type, colors, chart and summary: <a href=\"%s\">Settings &gt; WP GPX "
+"Maps</a>. The Map tab must be enabled in the WP Travel Engine settings."
+msgstr ""
+"Kartentyp, Farben, Diagramm und Zusammenfassung: <a "
+"href=\"%s\">Einstellungen &gt; WP GPX Maps</a>. Der Tab Karte muss in den "
+"Einstellungen von WP Travel Engine aktiviert sein."
+
+#: wp-gpx-maps-travel-engine.php
+msgid "Distance"
+msgstr "Distanz"
+
+#: wp-gpx-maps-travel-engine.php
+msgid "Highest point"
+msgstr "Höchster Punkt"

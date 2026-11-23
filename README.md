@@ -87,6 +87,8 @@ it changes only when a hook changes in a way that is not backward compatible.
 | `wpgpxmaps_shortcode_atts` | `$attr` | Change the attributes of a map before it is drawn |
 | `wpgpxmaps_block_shortcode_atts` | `$atts, $attributes` | Attributes produced by the block |
 | `wpgpxmaps_elementor_shortcode_atts` | `$atts, $settings` | Attributes produced by the Elementor widget (`wpgpxmaps-map`), e.g. for options added by an add-on |
+| `wpgpxmaps_travel_engine_shortcode_atts` | `$atts, $trip_id` | Attributes of the map on a WP Travel Engine trip page (e.g. `summary`, `mtype`) |
+| `wpgpxmaps_travel_engine_facts` | `$facts, $info, $trip_id` | Track facts added to the WP Travel Engine trip facts: `key => array( label, value )` |
 | `wpgpxmaps_map_extra` | `$extra, $attr` | Data for your script, received as `params.extra` in the `wpgpxmaps:ready` event |
 | `wpgpxmaps_map_html` | `$output, $attr, $id` | HTML of a map (map, chart, summary, download link) |
 | `wpgpxmaps_track_description` | `$text, $info, $attr` | Text description of the track (screen readers, search engines, AI) |
@@ -112,6 +114,11 @@ it changes only when a hook changes in a way that is not backward compatible.
 The Elementor widget lives in `wp-gpx-maps-elementor.php` (loaded always, registers on `elementor/widgets/register`) and
 `wp-gpx-maps-elementor-widget.php` (the class, loaded only by Elementor). In the editor preview `elementor/preview.js`
 runs the map scripts that Elementor inserts as HTML; the map script itself starts only once per map element.
+
+The WP Travel Engine integration lives in `wp-gpx-maps-travel-engine.php` and is active only when WP Travel Engine is
+(constant `WP_TRAVEL_ENGINE_POST_TYPE`). The trip meta `_wpgpxmaps_trip` holds `gpx`, `position` (`replace` / `before`)
+and `facts`; the map replaces or precedes the output of the `[wte_trip_map]` shortcode (Map tab), the Map tab is kept
+visible through `wptravelengine_active_single_trip_tabs`, and the facts are printed on `wp_travel_engine_trip_facts`.
 
 ### JavaScript event
 

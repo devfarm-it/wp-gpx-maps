@@ -3,7 +3,7 @@
  * Plugin Name: WP GPX Maps – GPX, FIT & KML maps with elevation profile
  * Plugin URI: https://devfarm.it/
  * Description: Show your hikes, rides and runs from GPX, FIT, TCX or KML files on an interactive map with elevation profile, charts and route summary.
- * Version: 1.15.00
+ * Version: 1.16.00
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Bastianon Massimo
@@ -24,12 +24,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the plugin
  */
-define( 'WPGPXMAPS_CURRENT_VERSION', '1.15.00' );
+define( 'WPGPXMAPS_CURRENT_VERSION', '1.16.00' );
 
 /**
  * Version of the public hooks used by add-ons (WP GPX Maps Pro): raise it only when a hook changes
  * in a way that is not backward compatible. Hooks: wpgpxmaps_shortcode_atts, wpgpxmaps_map_extra,
- * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_elementor_shortcode_atts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
+ * wpgpxmaps_map_html, wpgpxmaps_block_shortcode_atts, wpgpxmaps_elementor_shortcode_atts, wpgpxmaps_travel_engine_shortcode_atts,
+ * wpgpxmaps_travel_engine_facts, wpgpxmaps_enqueue_scripts, wpgpxmaps_admin_tabs,
  * wpgpxmaps_admin_tab_{tab}, wpgpxmaps_load_assets, wpgpxmaps_lazy_load, wpgpxmaps_track_description,
  * wpgpxmaps_structured_data, wpgpxmaps_climb_threshold; JavaScript event "wpgpxmaps:ready" on document.
  * Activities: taxonomy WPGPXMAPS_ACTIVITY_TAXONOMY, wpgpxmaps_activity_icon( $term ), wpgpxmaps_post_activities( $post_id ).
@@ -46,6 +47,7 @@ require 'wp-gpx-maps-activities.php';
 require 'wp-gpx-maps-admin.php';
 require 'wp-gpx-maps-block.php';
 require 'wp-gpx-maps-elementor.php';
+require 'wp-gpx-maps-travel-engine.php';
 
 define("wpgpxmaps_FEET_MILES", "1");
 define("wpgpxmaps_METERS_KILOMETERS", "2");
